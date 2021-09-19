@@ -1,0 +1,14 @@
+#ifndef GAME_ENGINE_SETTINGS
+#define GAME_ENGINE_SETTINGS
+
+const int CRITICAL_FPS_RATE = 1;
+
+enum PAUSE_MODE {
+	NO_PAUSE = 0,
+	PAUSE = 1,
+	ONE_FRAME = 2,
+};
+
+const double OBJECTS_BUFFER_REFRESH_COEF = 0.2;
+
+#endif // GAME_ENGINE_SETTINGS
