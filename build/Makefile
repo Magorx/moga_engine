@@ -155,6 +155,30 @@ convert/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/convert.dir/build.make CMakeFiles/convert.dir/build
 .PHONY : convert/fast
 
+src/collections/objects.o: src/collections/objects.cpp.o
+.PHONY : src/collections/objects.o
+
+# target to build an object file
+src/collections/objects.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects.cpp.o
+.PHONY : src/collections/objects.cpp.o
+
+src/collections/objects.i: src/collections/objects.cpp.i
+.PHONY : src/collections/objects.i
+
+# target to preprocess a source file
+src/collections/objects.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects.cpp.i
+.PHONY : src/collections/objects.cpp.i
+
+src/collections/objects.s: src/collections/objects.cpp.s
+.PHONY : src/collections/objects.s
+
+# target to generate assembly for a file
+src/collections/objects.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects.cpp.s
+.PHONY : src/collections/objects.cpp.s
+
 src/collections/renderables.o: src/collections/renderables.cpp.o
 .PHONY : src/collections/renderables.o
 
@@ -250,6 +274,102 @@ src/main.s: src/main.cpp.s
 src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
+
+src/physics/collision/coll_circle_circle.o: src/physics/collision/coll_circle_circle.cpp.o
+.PHONY : src/physics/collision/coll_circle_circle.o
+
+# target to build an object file
+src/physics/collision/coll_circle_circle.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o
+.PHONY : src/physics/collision/coll_circle_circle.cpp.o
+
+src/physics/collision/coll_circle_circle.i: src/physics/collision/coll_circle_circle.cpp.i
+.PHONY : src/physics/collision/coll_circle_circle.i
+
+# target to preprocess a source file
+src/physics/collision/coll_circle_circle.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.i
+.PHONY : src/physics/collision/coll_circle_circle.cpp.i
+
+src/physics/collision/coll_circle_circle.s: src/physics/collision/coll_circle_circle.cpp.s
+.PHONY : src/physics/collision/coll_circle_circle.s
+
+# target to generate assembly for a file
+src/physics/collision/coll_circle_circle.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.s
+.PHONY : src/physics/collision/coll_circle_circle.cpp.s
+
+src/physics/physics_engine.o: src/physics/physics_engine.cpp.o
+.PHONY : src/physics/physics_engine.o
+
+# target to build an object file
+src/physics/physics_engine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o
+.PHONY : src/physics/physics_engine.cpp.o
+
+src/physics/physics_engine.i: src/physics/physics_engine.cpp.i
+.PHONY : src/physics/physics_engine.i
+
+# target to preprocess a source file
+src/physics/physics_engine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/physics_engine.cpp.i
+.PHONY : src/physics/physics_engine.cpp.i
+
+src/physics/physics_engine.s: src/physics/physics_engine.cpp.s
+.PHONY : src/physics/physics_engine.s
+
+# target to generate assembly for a file
+src/physics/physics_engine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/physics_engine.cpp.s
+.PHONY : src/physics/physics_engine.cpp.s
+
+src/physics/solid_body/sb_circle.o: src/physics/solid_body/sb_circle.cpp.o
+.PHONY : src/physics/solid_body/sb_circle.o
+
+# target to build an object file
+src/physics/solid_body/sb_circle.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o
+.PHONY : src/physics/solid_body/sb_circle.cpp.o
+
+src/physics/solid_body/sb_circle.i: src/physics/solid_body/sb_circle.cpp.i
+.PHONY : src/physics/solid_body/sb_circle.i
+
+# target to preprocess a source file
+src/physics/solid_body/sb_circle.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.i
+.PHONY : src/physics/solid_body/sb_circle.cpp.i
+
+src/physics/solid_body/sb_circle.s: src/physics/solid_body/sb_circle.cpp.s
+.PHONY : src/physics/solid_body/sb_circle.s
+
+# target to generate assembly for a file
+src/physics/solid_body/sb_circle.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.s
+.PHONY : src/physics/solid_body/sb_circle.cpp.s
+
+src/physics/solid_body/solid_body.o: src/physics/solid_body/solid_body.cpp.o
+.PHONY : src/physics/solid_body/solid_body.o
+
+# target to build an object file
+src/physics/solid_body/solid_body.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o
+.PHONY : src/physics/solid_body/solid_body.cpp.o
+
+src/physics/solid_body/solid_body.i: src/physics/solid_body/solid_body.cpp.i
+.PHONY : src/physics/solid_body/solid_body.i
+
+# target to preprocess a source file
+src/physics/solid_body/solid_body.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.i
+.PHONY : src/physics/solid_body/solid_body.cpp.i
+
+src/physics/solid_body/solid_body.s: src/physics/solid_body/solid_body.cpp.s
+.PHONY : src/physics/solid_body/solid_body.s
+
+# target to generate assembly for a file
+src/physics/solid_body/solid_body.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.s
+.PHONY : src/physics/solid_body/solid_body.cpp.s
 
 src/utils/vec3d.o: src/utils/vec3d.cpp.o
 .PHONY : src/utils/vec3d.o
@@ -406,6 +526,9 @@ help:
 	@echo "... convert"
 	@echo "... view"
 	@echo "... moga"
+	@echo "... src/collections/objects.o"
+	@echo "... src/collections/objects.i"
+	@echo "... src/collections/objects.s"
 	@echo "... src/collections/renderables.o"
 	@echo "... src/collections/renderables.i"
 	@echo "... src/collections/renderables.s"
@@ -418,6 +541,18 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/physics/collision/coll_circle_circle.o"
+	@echo "... src/physics/collision/coll_circle_circle.i"
+	@echo "... src/physics/collision/coll_circle_circle.s"
+	@echo "... src/physics/physics_engine.o"
+	@echo "... src/physics/physics_engine.i"
+	@echo "... src/physics/physics_engine.s"
+	@echo "... src/physics/solid_body/sb_circle.o"
+	@echo "... src/physics/solid_body/sb_circle.i"
+	@echo "... src/physics/solid_body/sb_circle.s"
+	@echo "... src/physics/solid_body/solid_body.o"
+	@echo "... src/physics/solid_body/solid_body.i"
+	@echo "... src/physics/solid_body/solid_body.s"
 	@echo "... src/utils/vec3d.o"
 	@echo "... src/utils/vec3d.i"
 	@echo "... src/utils/vec3d.s"

@@ -18,6 +18,8 @@ public:
 	}
 
 	virtual void render(Renderer *) {};
+
+	inline void del() { del_render = true; }
 };
 
 #endif // RENDERABLE

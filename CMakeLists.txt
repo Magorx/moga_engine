@@ -31,9 +31,16 @@ add_executable(moga
         src/visual/color/smart_color.cpp
         src/visual/renderer/renderer.cpp
 
+        # physics
+        src/physics/physics_engine.cpp
+        src/physics/collision/coll_circle_circle.cpp
+        src/physics/solid_body/solid_body.cpp
+        src/physics/solid_body/sb_circle.cpp
+
         # collections
         src/collections/smart_colors.cpp
         src/collections/renderables.cpp
+        src/collections/objects.cpp
 
         # components
         src/visual/visual_engine.cpp

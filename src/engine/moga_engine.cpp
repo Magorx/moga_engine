@@ -3,7 +3,7 @@
 
 void MogaEngine::frame_init_tick() {
 	prev_tick_time = current_time;
-	current_time = (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count() - init_time) / 1000000000.0;
+	current_time = (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count()) / 1000000000.0 - init_time;
 	// printf("%g\n", current_time);
 
     dt = prev_tick_time - current_time;
@@ -37,7 +37,8 @@ void MogaEngine::physics_tick() {
 	printf("[physics_tick] %lg\n", current_physics_time);
 	#endif
 
-	// physics.tick(current_physics_time, PHYSICS_ENGINE_TIME_STAMP, visual.pmap);
+	printf("bim\n");
+	physics->tick(0.02, physics_current_time);
 }
 
 void MogaEngine::logic_tick() {
@@ -81,8 +82,7 @@ MogaEngine::MogaEngine(const char  *window_name,
 					   const size_t screen_width,
 					   const size_t screen_height,
 					   const size_t):
-	// physics(),
-	// objects(),
+	tickables(),
 
 	current_time(0),
 	prev_tick_time(0),
@@ -100,12 +100,15 @@ MogaEngine::MogaEngine(const char  *window_name,
 
     mouse_pos(0, 0),
 
-	visual(new VisualEngine(window_name, screen_width, screen_height))
+	visual(new VisualEngine(window_name, screen_width, screen_height)),
+	physics(new PhysicsEngine())
 {
-	init_time            = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	current_time         = init_time;
-	physics_current_time = init_time;
-	fps_second_start     = init_time;
+	init_time            = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count() / 1000000000.0;
+	current_time         = 0;
+	physics_current_time = 0;
+	fps_second_start     = 0;
+
+	// printf("!!!!!!!!!! %g = %g\n", physics_current_time, init_time);
 }
 
 bool MogaEngine::add_tickable(Tickable *object) {
@@ -113,37 +116,32 @@ bool MogaEngine::add_tickable(Tickable *object) {
 	return true;
 }
 
-// bool MogaEngine::add_physics_tickable(Tickable *object) {
-// 	return physics.add_tickable(object);
-// }
+bool MogaEngine::add_physics_tickable(PhysTickable *object) {
+	return physics->add_phys_tickable(object);
+}
 
-// bool MogaEngine::add_physics_collidable(Collidable *object) {
-// 	return physics.add_collidable(object);
-// }
+bool MogaEngine::add_solid_body(SolidBody *object) {
+	return physics->add_solid(object);
+}
 
 bool MogaEngine::add_renderable(Renderable *object) {
 	return visual->add_renderable(object);
 }
 
-// bool MogaEngine::add_object(Object *object, bool is_collidable) {
-// 	if (!object) {
-// 		return false;
-// 	}
+bool MogaEngine::add_object(Object *object, bool is_collidable) {
+	if (!object) {
+		return false;
+	}
 
-// 	objects.push_back(object);
-// 	add_physics_tickable(object);
-// 	add_visual_renderable(object);
+	// tickables.push_back(object);
+	add_renderable(object->get_texture());
 
-// 	object->update_approximation(current_time);
+	if (is_collidable) {			
+		add_solid_body(object->get_solid_body());
+	}
 
-// 	if (is_collidable) {			
-// 		add_physics_collidable(object);
-// 	}
-
-// 	object->set_engine(this);
-
-// 	return true;
-// }
+	return true;
+}
 
 void MogaEngine::tick(const double, const double) {
 	frame_init_tick();
@@ -165,6 +163,7 @@ void MogaEngine::tick(const double, const double) {
     }
     logic_tick();
 
+	printf("%g - %g\n", current_time, physics_current_time);
 	while (current_time - physics_current_time > 0.02) {
 		physics_tick();
 		physics_current_time += 0.02;

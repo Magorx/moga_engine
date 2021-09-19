@@ -153,10 +153,66 @@ CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.s"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/visual/renderer/renderer.cpp -o CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.s
 
+CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o: CMakeFiles/moga.dir/flags.make
+CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o: ../src/physics/physics_engine.cpp
+CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o -MF CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o.d -o CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o -c /home/kctf/Repositories/moga_engine/src/physics/physics_engine.cpp
+
+CMakeFiles/moga.dir/src/physics/physics_engine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/moga.dir/src/physics/physics_engine.cpp.i"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kctf/Repositories/moga_engine/src/physics/physics_engine.cpp > CMakeFiles/moga.dir/src/physics/physics_engine.cpp.i
+
+CMakeFiles/moga.dir/src/physics/physics_engine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/physics/physics_engine.cpp.s"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/physics/physics_engine.cpp -o CMakeFiles/moga.dir/src/physics/physics_engine.cpp.s
+
+CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o: CMakeFiles/moga.dir/flags.make
+CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o: ../src/physics/collision/coll_circle_circle.cpp
+CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o -MF CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o.d -o CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o -c /home/kctf/Repositories/moga_engine/src/physics/collision/coll_circle_circle.cpp
+
+CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.i"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kctf/Repositories/moga_engine/src/physics/collision/coll_circle_circle.cpp > CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.i
+
+CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.s"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/physics/collision/coll_circle_circle.cpp -o CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.s
+
+CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o: CMakeFiles/moga.dir/flags.make
+CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o: ../src/physics/solid_body/solid_body.cpp
+CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o -MF CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o.d -o CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o -c /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.cpp
+
+CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.i"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.cpp > CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.i
+
+CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.s"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.cpp -o CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.s
+
+CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o: CMakeFiles/moga.dir/flags.make
+CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o: ../src/physics/solid_body/sb_circle.cpp
+CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o -MF CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o.d -o CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o -c /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_circle.cpp
+
+CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.i"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_circle.cpp > CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.i
+
+CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.s"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_circle.cpp -o CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.s
+
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o: ../src/collections/smart_colors.cpp
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o -MF CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o.d -o CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o -c /home/kctf/Repositories/moga_engine/src/collections/smart_colors.cpp
 
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.i: cmake_force
@@ -170,7 +226,7 @@ CMakeFiles/moga.dir/src/collections/smart_colors.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o: ../src/collections/renderables.cpp
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/moga.dir/src/collections/renderables.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/moga.dir/src/collections/renderables.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/collections/renderables.cpp.o -MF CMakeFiles/moga.dir/src/collections/renderables.cpp.o.d -o CMakeFiles/moga.dir/src/collections/renderables.cpp.o -c /home/kctf/Repositories/moga_engine/src/collections/renderables.cpp
 
 CMakeFiles/moga.dir/src/collections/renderables.cpp.i: cmake_force
@@ -181,10 +237,24 @@ CMakeFiles/moga.dir/src/collections/renderables.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/collections/renderables.cpp.s"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/collections/renderables.cpp -o CMakeFiles/moga.dir/src/collections/renderables.cpp.s
 
+CMakeFiles/moga.dir/src/collections/objects.cpp.o: CMakeFiles/moga.dir/flags.make
+CMakeFiles/moga.dir/src/collections/objects.cpp.o: ../src/collections/objects.cpp
+CMakeFiles/moga.dir/src/collections/objects.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/moga.dir/src/collections/objects.cpp.o"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/collections/objects.cpp.o -MF CMakeFiles/moga.dir/src/collections/objects.cpp.o.d -o CMakeFiles/moga.dir/src/collections/objects.cpp.o -c /home/kctf/Repositories/moga_engine/src/collections/objects.cpp
+
+CMakeFiles/moga.dir/src/collections/objects.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/moga.dir/src/collections/objects.cpp.i"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kctf/Repositories/moga_engine/src/collections/objects.cpp > CMakeFiles/moga.dir/src/collections/objects.cpp.i
+
+CMakeFiles/moga.dir/src/collections/objects.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/collections/objects.cpp.s"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/collections/objects.cpp -o CMakeFiles/moga.dir/src/collections/objects.cpp.s
+
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.cpp
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o -MF CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o.d -o CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o -c /home/kctf/Repositories/moga_engine/src/visual/visual_engine.cpp
 
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.i: cmake_force
@@ -198,7 +268,7 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: ../src/utils/vec3d.cpp
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/utils/vec3d.cpp.o -MF CMakeFiles/moga.dir/src/utils/vec3d.cpp.o.d -o CMakeFiles/moga.dir/src/utils/vec3d.cpp.o -c /home/kctf/Repositories/moga_engine/src/utils/vec3d.cpp
 
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.i: cmake_force
@@ -217,8 +287,13 @@ moga_OBJECTS = \
 "CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o" \
 "CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o" \
 "CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o" \
+"CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o" \
+"CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o" \
+"CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o" \
+"CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o" \
 "CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o" \
 "CMakeFiles/moga.dir/src/collections/renderables.cpp.o" \
+"CMakeFiles/moga.dir/src/collections/objects.cpp.o" \
 "CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o" \
 "CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
 
@@ -231,8 +306,13 @@ moga: CMakeFiles/moga.dir/src/visual/color/color.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o
+moga: CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o
+moga: CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o
+moga: CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o
+moga: CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o
 moga: CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o
 moga: CMakeFiles/moga.dir/src/collections/renderables.cpp.o
+moga: CMakeFiles/moga.dir/src/collections/objects.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o
 moga: CMakeFiles/moga.dir/src/utils/vec3d.cpp.o
 moga: CMakeFiles/moga.dir/build.make
@@ -240,7 +320,7 @@ moga: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1
 moga: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
 moga: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
 moga: CMakeFiles/moga.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable moga"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking CXX executable moga"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/moga.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

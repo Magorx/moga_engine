@@ -13,10 +13,11 @@
 #include <chrono>
 
 #include "moga_engine_settings.h"
-// #include "../physics/physics_engine.hpp"
+#include "../physics/physics_engine.h"
 #include "../visual/visual_engine.h"
 
 #include "tickable.h"
+#include "object.h"
 
 #include <vector>
 
@@ -43,7 +44,7 @@ class MogaEngine : Tickable
 
 public:
 	VisualEngine  *visual;
-	// PhysicsEngine *physics;
+	PhysicsEngine *physics;
 
 	MogaEngine(const char  *window_name,
 				const size_t screen_width,
@@ -51,10 +52,10 @@ public:
 				const size_t pixel_size);
 
 	bool add_tickable(Tickable *object);
-	// bool add_physics_tickable(Tickable *object);
-	// bool add_physics_collidable(Collidable *object);
+	bool add_physics_tickable(PhysTickable *object);
+	bool add_solid_body(SolidBody *object);
 	bool add_renderable(Renderable *object);
-	// bool add_object(Object *object, bool is_collidable = false);
+	bool add_object(Object *object, bool is_collidable = true);
 
 	virtual void frame_init_tick();
 	virtual void visual_render_tick();
