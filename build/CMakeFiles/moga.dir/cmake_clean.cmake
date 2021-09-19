@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/moga.dir/src/collections/renderables.cpp.o.d"
   "CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o"
   "CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o.d"
+  "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o"
+  "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o.d"
   "CMakeFiles/moga.dir/src/main.cpp.o"
   "CMakeFiles/moga.dir/src/main.cpp.o.d"
   "CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"

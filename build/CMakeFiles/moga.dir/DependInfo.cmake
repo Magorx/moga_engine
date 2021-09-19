@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kctf/Repositories/moga_engine/src/collections/renderables.cpp" "CMakeFiles/moga.dir/src/collections/renderables.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/renderables.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/collections/smart_colors.cpp" "CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o.d"
+  "/home/kctf/Repositories/moga_engine/src/engine/moga_engine.cpp" "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o" "gcc" "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/main.cpp" "CMakeFiles/moga.dir/src/main.cpp.o" "gcc" "CMakeFiles/moga.dir/src/main.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/utils/vec3d.cpp" "CMakeFiles/moga.dir/src/utils/vec3d.cpp.o" "gcc" "CMakeFiles/moga.dir/src/utils/vec3d.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/visual/color/color.cpp" "CMakeFiles/moga.dir/src/visual/color/color.cpp.o" "gcc" "CMakeFiles/moga.dir/src/visual/color/color.cpp.o.d"

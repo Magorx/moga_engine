@@ -83,10 +83,24 @@ CMakeFiles/moga.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/main.cpp.s"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/main.cpp -o CMakeFiles/moga.dir/src/main.cpp.s
 
+CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o: CMakeFiles/moga.dir/flags.make
+CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o: ../src/engine/moga_engine.cpp
+CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o -MF CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o.d -o CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o -c /home/kctf/Repositories/moga_engine/src/engine/moga_engine.cpp
+
+CMakeFiles/moga.dir/src/engine/moga_engine.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/moga.dir/src/engine/moga_engine.cpp.i"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kctf/Repositories/moga_engine/src/engine/moga_engine.cpp > CMakeFiles/moga.dir/src/engine/moga_engine.cpp.i
+
+CMakeFiles/moga.dir/src/engine/moga_engine.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/engine/moga_engine.cpp.s"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/engine/moga_engine.cpp -o CMakeFiles/moga.dir/src/engine/moga_engine.cpp.s
+
 CMakeFiles/moga.dir/src/visual/color/color.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/visual/color/color.cpp.o: ../src/visual/color/color.cpp
 CMakeFiles/moga.dir/src/visual/color/color.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/moga.dir/src/visual/color/color.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/moga.dir/src/visual/color/color.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/visual/color/color.cpp.o -MF CMakeFiles/moga.dir/src/visual/color/color.cpp.o.d -o CMakeFiles/moga.dir/src/visual/color/color.cpp.o -c /home/kctf/Repositories/moga_engine/src/visual/color/color.cpp
 
 CMakeFiles/moga.dir/src/visual/color/color.cpp.i: cmake_force
@@ -100,7 +114,7 @@ CMakeFiles/moga.dir/src/visual/color/color.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o: ../src/visual/color/rgba.cpp
 CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o -MF CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o.d -o CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o -c /home/kctf/Repositories/moga_engine/src/visual/color/rgba.cpp
 
 CMakeFiles/moga.dir/src/visual/color/rgba.cpp.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/moga.dir/src/visual/color/rgba.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o: ../src/visual/color/smart_color.cpp
 CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o -MF CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o.d -o CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o -c /home/kctf/Repositories/moga_engine/src/visual/color/smart_color.cpp
 
 CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.i: cmake_force
@@ -128,7 +142,7 @@ CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o: ../src/visual/renderer/renderer.cpp
 CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o -MF CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o.d -o CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.o -c /home/kctf/Repositories/moga_engine/src/visual/renderer/renderer.cpp
 
 CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/moga.dir/src/visual/renderer/renderer.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o: ../src/collections/smart_colors.cpp
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o -MF CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o.d -o CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o -c /home/kctf/Repositories/moga_engine/src/collections/smart_colors.cpp
 
 CMakeFiles/moga.dir/src/collections/smart_colors.cpp.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/moga.dir/src/collections/smart_colors.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o: ../src/collections/renderables.cpp
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/moga.dir/src/collections/renderables.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/moga.dir/src/collections/renderables.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/collections/renderables.cpp.o -MF CMakeFiles/moga.dir/src/collections/renderables.cpp.o.d -o CMakeFiles/moga.dir/src/collections/renderables.cpp.o -c /home/kctf/Repositories/moga_engine/src/collections/renderables.cpp
 
 CMakeFiles/moga.dir/src/collections/renderables.cpp.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/moga.dir/src/collections/renderables.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.cpp
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o -MF CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o.d -o CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o -c /home/kctf/Repositories/moga_engine/src/visual/visual_engine.cpp
 
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: ../src/utils/vec3d.cpp
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/utils/vec3d.cpp.o -MF CMakeFiles/moga.dir/src/utils/vec3d.cpp.o.d -o CMakeFiles/moga.dir/src/utils/vec3d.cpp.o -c /home/kctf/Repositories/moga_engine/src/utils/vec3d.cpp
 
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.i: cmake_force
@@ -198,6 +212,7 @@ CMakeFiles/moga.dir/src/utils/vec3d.cpp.s: cmake_force
 # Object files for target moga
 moga_OBJECTS = \
 "CMakeFiles/moga.dir/src/main.cpp.o" \
+"CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o" \
 "CMakeFiles/moga.dir/src/visual/color/color.cpp.o" \
 "CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o" \
 "CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o" \
@@ -211,6 +226,7 @@ moga_OBJECTS = \
 moga_EXTERNAL_OBJECTS =
 
 moga: CMakeFiles/moga.dir/src/main.cpp.o
+moga: CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/color/color.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/color/rgba.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/color/smart_color.cpp.o
@@ -224,7 +240,7 @@ moga: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1
 moga: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
 moga: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
 moga: CMakeFiles/moga.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable moga"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Linking CXX executable moga"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/moga.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

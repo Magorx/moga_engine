@@ -1,9 +1,11 @@
-#ifndef MOGA_ENGINE_H
-#define MOGA_ENGINE_H
+#ifndef MOGA_ENGINE_INCLUDE_H
+#define MOGA_ENGINE_INCLUDE_H
+
+#include "engine/moga_engine.h"
 
 #include "visual/visual_engine.h"
 
 #include "collections/renderables.h"
 #include "collections/smart_colors.h"
 
-#endif // MOGA_ENGINE_H
+#endif // MOGA_ENGINE_INCLUDE_H

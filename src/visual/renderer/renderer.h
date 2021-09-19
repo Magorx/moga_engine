@@ -39,7 +39,7 @@ public:
         sf::CircleShape circle(rad);
 
         circle.setFillColor(sf::Color(to_rgba(color).ui32));
-        circle.setPosition({static_cast<float> pos.x(), static_cast<float> pos.y()});
+        circle.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
         circle.setOrigin({static_cast<float>(rad), static_cast<float>(rad)});
 
         scr.window->draw(circle);

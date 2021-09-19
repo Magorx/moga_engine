@@ -203,6 +203,30 @@ src/collections/smart_colors.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors.cpp.s
 .PHONY : src/collections/smart_colors.cpp.s
 
+src/engine/moga_engine.o: src/engine/moga_engine.cpp.o
+.PHONY : src/engine/moga_engine.o
+
+# target to build an object file
+src/engine/moga_engine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o
+.PHONY : src/engine/moga_engine.cpp.o
+
+src/engine/moga_engine.i: src/engine/moga_engine.cpp.i
+.PHONY : src/engine/moga_engine.i
+
+# target to preprocess a source file
+src/engine/moga_engine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/engine/moga_engine.cpp.i
+.PHONY : src/engine/moga_engine.cpp.i
+
+src/engine/moga_engine.s: src/engine/moga_engine.cpp.s
+.PHONY : src/engine/moga_engine.s
+
+# target to generate assembly for a file
+src/engine/moga_engine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/engine/moga_engine.cpp.s
+.PHONY : src/engine/moga_engine.cpp.s
+
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
 
@@ -388,6 +412,9 @@ help:
 	@echo "... src/collections/smart_colors.o"
 	@echo "... src/collections/smart_colors.i"
 	@echo "... src/collections/smart_colors.s"
+	@echo "... src/engine/moga_engine.o"
+	@echo "... src/engine/moga_engine.i"
+	@echo "... src/engine/moga_engine.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

@@ -21,3 +21,5 @@ void SmartColor::set_rgb(const double r, const double g, const double b) {
 const Color SmartColor::rgb() {
     return color;
 }
+
+void SmartColor::tick(const double, const double) {}

@@ -10,7 +10,7 @@ public:
 	deleted(false)
 	{}
 
-	virtual void tick(const double, const double = 0) {};
+	virtual void tick(const double = 0, const double = 0) {};
 };
 
 #endif // TICKABLE
