@@ -8,11 +8,15 @@
 #include "renderables.h"
 
 class o_Ball : public Object {
-    // r_Circle *texture;
-	// sb_Circle *solid_body;
-
 public:
     o_Ball(Vec3d pos, double rad, SmartColor *color, double mass=1);
+
+    virtual void tick(const double = 0, const double = 0) override;
+};
+
+class o_Line : public Object {
+public:
+    o_Line(Vec3d p1, Vec3d p2, SmartColor *color);
 
     virtual void tick(const double = 0, const double = 0) override;
 };

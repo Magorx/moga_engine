@@ -103,6 +103,10 @@ struct Vec3d {
         content[ind] = value;
     }
 
+    inline Vec3d roted_90_xy() const {
+        return {-content[1], content[0], content[2]};
+    }
+
     inline static Vec3d random(double mn, double mx) {
         unsigned int random_values[4];
         Brans::rand_sse(random_values);
@@ -125,6 +129,10 @@ struct Vec3d {
 
     inline static double sign(const double x) {
         return fabs(x) < VEC3_EPS ? 0 : x > 0 ? 1 : -1;
+    }
+
+    inline void dump() const {
+        printf("(%g, %g, %g)\n", content[0], content[1], content[2]);
     }
 };
 

@@ -10,6 +10,7 @@
 
 class Object : public Tickable
 {
+protected:
 	Renderable *texture;
 	SolidBody  *solid_body;
 

@@ -1,5 +1,5 @@
-#ifndef CIRCLE_SB_H
-#define CIRCLE_SB_H
+#ifndef SB_CIRCLE_H
+#define SB_CIRCLE_H
 
 #include "solid_body.h"
 
@@ -14,4 +14,4 @@ public:
     inline double get_radius() const { return radius; }
 };
 
-#endif // CIRCLE_SB_H
+#endif // SB_CIRCLE_H

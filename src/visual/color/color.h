@@ -25,7 +25,7 @@ inline RGBA to_rgba(const Color &color) {
     return {(unsigned char) color.x(), 
             (unsigned char) color.y(),
             (unsigned char) color.z(),
-            255};
+            (unsigned char) 255};
 }
 
 void print_rgb(Color color, const double gamma_correction = 0.5, FILE *file = stdout);

@@ -6,6 +6,7 @@
 
 enum class SolidBodyType {
     Circle,
+    Line,
     None
 };
 
@@ -30,6 +31,12 @@ public:
     inline void apply_impulse(const Vec3d &impulse) { velocity += impulse / mass; }
 
     inline Vec3d get_position() { return position; }
+    inline Vec3d get_velocity() { return velocity; }
+    inline double get_mass()    { return mass; }
+
+    inline void set_position(Vec3d position_) { position = position_; }
+    inline void set_velocity(Vec3d velocity_) { velocity = velocity_; }
+    inline void set_mass    (double mass_)    { mass = mass_; }
 
     inline void del() { del_solid = true; }
 };

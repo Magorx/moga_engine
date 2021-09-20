@@ -299,6 +299,30 @@ src/physics/collision/coll_circle_circle.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.s
 .PHONY : src/physics/collision/coll_circle_circle.cpp.s
 
+src/physics/collision/coll_circle_line.o: src/physics/collision/coll_circle_line.cpp.o
+.PHONY : src/physics/collision/coll_circle_line.o
+
+# target to build an object file
+src/physics/collision/coll_circle_line.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/collision/coll_circle_line.cpp.o
+.PHONY : src/physics/collision/coll_circle_line.cpp.o
+
+src/physics/collision/coll_circle_line.i: src/physics/collision/coll_circle_line.cpp.i
+.PHONY : src/physics/collision/coll_circle_line.i
+
+# target to preprocess a source file
+src/physics/collision/coll_circle_line.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/collision/coll_circle_line.cpp.i
+.PHONY : src/physics/collision/coll_circle_line.cpp.i
+
+src/physics/collision/coll_circle_line.s: src/physics/collision/coll_circle_line.cpp.s
+.PHONY : src/physics/collision/coll_circle_line.s
+
+# target to generate assembly for a file
+src/physics/collision/coll_circle_line.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/collision/coll_circle_line.cpp.s
+.PHONY : src/physics/collision/coll_circle_line.cpp.s
+
 src/physics/physics_engine.o: src/physics/physics_engine.cpp.o
 .PHONY : src/physics/physics_engine.o
 
@@ -346,6 +370,30 @@ src/physics/solid_body/sb_circle.s: src/physics/solid_body/sb_circle.cpp.s
 src/physics/solid_body/sb_circle.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.s
 .PHONY : src/physics/solid_body/sb_circle.cpp.s
+
+src/physics/solid_body/sb_line.o: src/physics/solid_body/sb_line.cpp.o
+.PHONY : src/physics/solid_body/sb_line.o
+
+# target to build an object file
+src/physics/solid_body/sb_line.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/sb_line.cpp.o
+.PHONY : src/physics/solid_body/sb_line.cpp.o
+
+src/physics/solid_body/sb_line.i: src/physics/solid_body/sb_line.cpp.i
+.PHONY : src/physics/solid_body/sb_line.i
+
+# target to preprocess a source file
+src/physics/solid_body/sb_line.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/sb_line.cpp.i
+.PHONY : src/physics/solid_body/sb_line.cpp.i
+
+src/physics/solid_body/sb_line.s: src/physics/solid_body/sb_line.cpp.s
+.PHONY : src/physics/solid_body/sb_line.s
+
+# target to generate assembly for a file
+src/physics/solid_body/sb_line.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/physics/solid_body/sb_line.cpp.s
+.PHONY : src/physics/solid_body/sb_line.cpp.s
 
 src/physics/solid_body/solid_body.o: src/physics/solid_body/solid_body.cpp.o
 .PHONY : src/physics/solid_body/solid_body.o
@@ -544,12 +592,18 @@ help:
 	@echo "... src/physics/collision/coll_circle_circle.o"
 	@echo "... src/physics/collision/coll_circle_circle.i"
 	@echo "... src/physics/collision/coll_circle_circle.s"
+	@echo "... src/physics/collision/coll_circle_line.o"
+	@echo "... src/physics/collision/coll_circle_line.i"
+	@echo "... src/physics/collision/coll_circle_line.s"
 	@echo "... src/physics/physics_engine.o"
 	@echo "... src/physics/physics_engine.i"
 	@echo "... src/physics/physics_engine.s"
 	@echo "... src/physics/solid_body/sb_circle.o"
 	@echo "... src/physics/solid_body/sb_circle.i"
 	@echo "... src/physics/solid_body/sb_circle.s"
+	@echo "... src/physics/solid_body/sb_line.o"
+	@echo "... src/physics/solid_body/sb_line.i"
+	@echo "... src/physics/solid_body/sb_line.s"
 	@echo "... src/physics/solid_body/solid_body.o"
 	@echo "... src/physics/solid_body/solid_body.i"
 	@echo "... src/physics/solid_body/solid_body.s"

@@ -18,5 +18,16 @@ struct r_Circle : Renderable {
     void render(Renderer *renderer) override;
 };
 
+struct r_Line : Renderable {
+    Vec3d p1;
+    Vec3d p2;
+
+    SmartColor *color;
+
+    r_Line(Vec3d p1, Vec3d p2, SmartColor *color);
+
+    void render(Renderer *renderer) override;
+};
+
 
 #endif // RENDERABLES_COLLECTION_H

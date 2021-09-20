@@ -37,43 +37,13 @@ void MogaEngine::physics_tick() {
 	printf("[physics_tick] %lg\n", current_physics_time);
 	#endif
 
-	printf("bim\n");
-	physics->tick(0.02, physics_current_time);
+	physics->tick(PHYSICS_TIME_STEP, physics_current_time);
 }
 
 void MogaEngine::logic_tick() {
 	#ifdef PRINT_PHASE_TICK
 	printf("[logic_tick] %lg\n", current_time);
 	#endif
-
-	// int deleted_cnt = 0;
-	// for (size_t i = 0; i < objects.size(); ++i) {
-	// 	if (objects[i]->del_logic) {
-	// 		++deleted_cnt;
-	// 		continue;
-	// 	}
-
-	// 	objects[i]->logic_tick(current_time, dt);
-	// }
-
-	// if (deleted_cnt > objects.size() * OBJECTS_BUFFER_REFRESH_COEF && deleted_cnt) {
-	// 	int next_alive = 0;
-	// 	int i = 0;
-	// 	int objects_cnt = objects.size();
-	// 	for (; i < objects_cnt; ++i) {
-	// 		if (objects[i]->del_logic) {
-	// 			for (next_alive = std::max(i + 1, next_alive);
-	// 				 next_alive < objects_cnt && objects[next_alive]->del_logic;
-	// 				 ++next_alive); // find next alive object
-
-	// 			if (next_alive < objects_cnt) {
-	// 				std::swap(objects[i], objects[next_alive]);
-	// 				++next_alive;
-	// 			}
-	// 		}
-	// 	}
-	// 	objects.resize(objects.size() - deleted_cnt);
-	// }
 }
 
 void MogaEngine::handle_events() {}
@@ -133,10 +103,10 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 		return false;
 	}
 
-	// tickables.push_back(object);
+	tickables.push_back(object);
 	add_renderable(object->get_texture());
 
-	if (is_collidable) {			
+	if (is_collidable) {
 		add_solid_body(object->get_solid_body());
 	}
 
@@ -163,10 +133,9 @@ void MogaEngine::tick(const double, const double) {
     }
     logic_tick();
 
-	printf("%g - %g\n", current_time, physics_current_time);
-	while (current_time - physics_current_time > 0.02) {
+	while (current_time - physics_current_time > PHYSICS_TIME_STEP) {
 		physics_tick();
-		physics_current_time += 0.02;
+		physics_current_time += PHYSICS_TIME_STEP;
 	}
 
 	visual_render_tick();

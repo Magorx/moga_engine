@@ -38,11 +38,24 @@ public:
     inline void draw_circle(const Vec3d &pos, const double rad, const Color &color) {
         sf::CircleShape circle(rad);
 
-        circle.setFillColor(sf::Color(to_rgba(color).ui32));
+        RGBA rgba = to_rgba(color);
+        circle.setFillColor(sf::Color(rgba.r, rgba.g, rgba.b, rgba.a));
         circle.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
         circle.setOrigin({static_cast<float>(rad), static_cast<float>(rad)});
 
         scr.window->draw(circle);
+    }
+
+    inline void draw_line(const Vec3d &p1, const Vec3d &p2, const Color &color) {
+        RGBA rgba = to_rgba(color);
+        sf::Color sf_color(rgba.r, rgba.g, rgba.b, rgba.a);
+
+        sf::Vertex buffer[2] = {
+            sf::Vertex({static_cast<float>(p1.x()), static_cast<float>(p1.y())}, sf_color),
+            sf::Vertex({static_cast<float>(p2.x()), static_cast<float>(p2.y())}, sf_color),
+        };
+
+        scr.window->draw(buffer, 2, sf::Lines);
     }
 };
 

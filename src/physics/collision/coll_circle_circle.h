@@ -9,10 +9,10 @@ public:
     CircleCircleCollision(sb_Circle *first, sb_Circle *second);
 
     static inline bool do_collide(sb_Circle *first, sb_Circle *second) {
-        double distance = (first->get_position() - second->get_position()).len_squared();
+        double distance = (first->get_position() - second->get_position()).len();
         double radius_distance = first->get_radius() + second->get_radius();
         
-        return radius_distance * radius_distance > distance;
+        return radius_distance > distance;
     }
 
     void solve() override;

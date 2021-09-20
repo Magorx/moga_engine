@@ -33,9 +33,13 @@ add_executable(moga
 
         # physics
         src/physics/physics_engine.cpp
-        src/physics/collision/coll_circle_circle.cpp
         src/physics/solid_body/solid_body.cpp
+
+        src/physics/collision/coll_circle_circle.cpp
+        src/physics/collision/coll_circle_line.cpp
+        
         src/physics/solid_body/sb_circle.cpp
+        src/physics/solid_body/sb_line.cpp
 
         # collections
         src/collections/smart_colors.cpp

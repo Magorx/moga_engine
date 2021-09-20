@@ -4,7 +4,7 @@
 #include <cstdint>
 
 union RGBA {
-	unsigned char argb[4];
+	unsigned char rgba[4];
 	struct {
 		unsigned char r;
 		unsigned char g;

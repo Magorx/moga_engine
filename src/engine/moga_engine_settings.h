@@ -11,4 +11,6 @@ enum PAUSE_MODE {
 
 const double OBJECTS_BUFFER_REFRESH_COEF = 0.2;
 
+#define PHYSICS_TIME_STEP 0.01
+
 #endif // GAME_ENGINE_SETTINGS
