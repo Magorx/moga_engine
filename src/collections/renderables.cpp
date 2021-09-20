@@ -2,13 +2,13 @@
 
 
 r_Circle::r_Circle(Vec3d pos, double rad, SmartColor *color) :
-pos(pos),
+RenderableObject(pos),
 rad(rad),
 color(color)
 {}
 
 void r_Circle::render(Renderer *renderer) {
-    renderer->draw_circle(pos, rad, color->rgb());
+    renderer->draw_circle(position, rad, color->rgb());
 }
 
 r_Line::r_Line(Vec3d p1, Vec3d p2, SmartColor *color) :

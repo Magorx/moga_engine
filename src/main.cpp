@@ -5,7 +5,7 @@ const int SCR_H  = 600;
 
 void create_cage(MogaEngine *eng, SmartColor *color) {
     o_Line *line_1 = new o_Line({100, 100}, 
-                                {700, 100}, 
+                                {700, 50}, 
                                 color);
     
     o_Line *line_2 = new o_Line({100, 100}, 

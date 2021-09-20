@@ -6,7 +6,7 @@ Object(new r_Circle(pos, rad, color),
 {}
 
 void o_Ball::tick(const double, const double) {
-    ((r_Circle*) texture)->pos = solid_body->get_position();
+    texture->set_position(solid_body->get_position());
 }
 
 o_Line::o_Line(Vec3d p1, Vec3d p2, SmartColor *color):
