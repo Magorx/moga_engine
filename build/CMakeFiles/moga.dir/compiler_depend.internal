@@ -6,6 +6,7 @@ CMakeFiles/moga.dir/src/collections/objects.cpp.o
  /home/kctf/Repositories/moga_engine/src/collections/objects.h
  /home/kctf/Repositories/moga_engine/src/engine/object.h
  /home/kctf/Repositories/moga_engine/src/engine/tickable.h
+ /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable_object.h
  /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable.h
  /home/kctf/Repositories/moga_engine/src/visual/renderer/renderer.h
  /usr/include/SFML/Graphics.hpp
@@ -354,6 +355,7 @@ CMakeFiles/moga.dir/src/collections/objects.cpp.o
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o
  /home/kctf/Repositories/moga_engine/src/collections/renderables.cpp
  /home/kctf/Repositories/moga_engine/src/collections/renderables.h
+ /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable_object.h
  /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable.h
  /home/kctf/Repositories/moga_engine/src/visual/renderer/renderer.h
  /usr/include/SFML/Graphics.hpp
@@ -1287,6 +1289,7 @@ CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o
  /home/kctf/Repositories/moga_engine/src/visual/color/rgba.h
  /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable.h
  /home/kctf/Repositories/moga_engine/src/engine/object.h
+ /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable_object.h
 
 CMakeFiles/moga.dir/src/main.cpp.o
  /home/kctf/Repositories/moga_engine/src/main.cpp
@@ -1653,6 +1656,7 @@ CMakeFiles/moga.dir/src/main.cpp.o
  /home/kctf/Repositories/moga_engine/src/visual/color/rgba.h
  /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable.h
  /home/kctf/Repositories/moga_engine/src/engine/object.h
+ /home/kctf/Repositories/moga_engine/src/visual/renderer/renderable_object.h
  /home/kctf/Repositories/moga_engine/src/visual/visual_engine.h
  /home/kctf/Repositories/moga_engine/src/collections/renderables.h
  /home/kctf/Repositories/moga_engine/src/visual/color/smart_color.h

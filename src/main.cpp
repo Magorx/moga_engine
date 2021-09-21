@@ -5,8 +5,12 @@ const int SCR_H  = 600;
 
 void create_cage(MogaEngine *eng, SmartColor *color) {
     o_Line *line_1 = new o_Line({100, 100}, 
-                                {700, 50}, 
+                                {350, 0}, 
                                 color);
+
+    o_Line *line_11 = new o_Line({350, 0}, 
+                                 {700, 100}, 
+                                 color);
     
     o_Line *line_2 = new o_Line({100, 100}, 
                                 {100, 500}, 
@@ -24,6 +28,7 @@ void create_cage(MogaEngine *eng, SmartColor *color) {
     eng->add_object(line_2);
     eng->add_object(line_3);
     eng->add_object(line_4);
+    eng->add_object(line_11);
 }
 
 void generate_balls(MogaEngine *eng, int cnt = 100) {

@@ -5,6 +5,7 @@ CMakeFiles/moga.dir/src/collections/objects.cpp.o: ../src/collections/objects.cp
   ../src/collections/objects.h \
   ../src/engine/object.h \
   ../src/engine/tickable.h \
+  ../src/visual/renderer/renderable_object.h \
   ../src/visual/renderer/renderable.h \
   ../src/visual/renderer/renderer.h \
   /usr/include/SFML/Graphics.hpp \
@@ -352,6 +353,7 @@ CMakeFiles/moga.dir/src/collections/objects.cpp.o: ../src/collections/objects.cp
 
 CMakeFiles/moga.dir/src/collections/renderables.cpp.o: ../src/collections/renderables.cpp \
   ../src/collections/renderables.h \
+  ../src/visual/renderer/renderable_object.h \
   ../src/visual/renderer/renderable.h \
   ../src/visual/renderer/renderer.h \
   /usr/include/SFML/Graphics.hpp \
@@ -1282,7 +1284,8 @@ CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o: ../src/engine/moga_engine.cpp 
   ../src/visual/color/color.h \
   ../src/visual/color/rgba.h \
   ../src/visual/renderer/renderable.h \
-  ../src/engine/object.h
+  ../src/engine/object.h \
+  ../src/visual/renderer/renderable_object.h
 
 CMakeFiles/moga.dir/src/main.cpp.o: ../src/main.cpp \
   ../src/MogaEngine.h \
@@ -1648,6 +1651,7 @@ CMakeFiles/moga.dir/src/main.cpp.o: ../src/main.cpp \
   ../src/visual/color/rgba.h \
   ../src/visual/renderer/renderable.h \
   ../src/engine/object.h \
+  ../src/visual/renderer/renderable_object.h \
   ../src/visual/visual_engine.h \
   ../src/collections/renderables.h \
   ../src/visual/color/smart_color.h \
@@ -4435,6 +4439,8 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.
 
 /usr/include/c++/9/stdlib.h:
 
+/usr/lib/llvm-10/lib/clang/10.0.0/include/mm_malloc.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/cookie_io_functions_t.h:
 
 /usr/include/c++/9/bits/basic_string.h:
@@ -4643,19 +4649,25 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.
 
 /usr/include/c++/9/bits/exception_defines.h:
 
-/usr/include/stdc-predef.h:
+../src/collections/objects.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
+/usr/include/c++/9/bits/refwrap.h:
 
-/usr/include/SFML/System/Time.hpp:
+/usr/include/c++/9/bits/stl_bvector.h:
 
-/usr/include/pthread.h:
+/usr/include/c++/9/ext/alloc_traits.h:
 
-/usr/include/c++/9/bits/move.h:
+/usr/include/c++/9/ios:
 
-/usr/include/libintl.h:
+/usr/include/c++/9/bits/postypes.h:
 
-/usr/include/SFML/Graphics/Drawable.hpp:
+/usr/include/SFML/System.hpp:
+
+/usr/include/c++/9/map:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/9/type_traits:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
@@ -4679,6 +4691,10 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.
 
 /usr/include/SFML/Config.hpp:
 
+../src/engine/moga_engine.cpp:
+
+/usr/include/c++/9/iosfwd:
+
 /usr/include/SFML/Graphics/RenderWindow.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
@@ -4693,35 +4709,27 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.
 
 /usr/include/c++/9/bits/locale_classes.tcc:
 
+/usr/include/stdc-predef.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/FILE.h:
+
+/usr/include/SFML/System/Time.hpp:
+
+/usr/include/pthread.h:
+
+/usr/include/c++/9/bits/move.h:
+
+/usr/include/libintl.h:
+
+/usr/include/SFML/Graphics/Drawable.hpp:
+
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
 /usr/include/SFML/Graphics.hpp:
 
 /usr/include/SFML/Window.hpp:
 
-/usr/include/c++/9/ios:
-
-/usr/include/c++/9/bits/postypes.h:
-
-/usr/include/SFML/System.hpp:
-
-/usr/include/c++/9/ext/alloc_traits.h:
-
-/usr/include/c++/9/map:
-
-../src/collections/objects.h:
-
-/usr/include/c++/9/bits/refwrap.h:
-
-/usr/include/c++/9/bits/stl_bvector.h:
-
-../src/engine/moga_engine.cpp:
-
-/usr/include/c++/9/iosfwd:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/c++/9/type_traits:
+../src/visual/renderer/renderable_object.h:
 
 /usr/include/c++/9/ext/string_conversions.h:
 
@@ -4799,8 +4807,6 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.
 
 /usr/include/c++/9/bits/nested_exception.h:
 
-/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
-
 /usr/include/x86_64-linux-gnu/c++/9/bits/os_defines.h:
 
 /usr/include/c++/9/bits/stl_algobase.h:
@@ -4842,6 +4848,8 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.
 /usr/lib/llvm-10/lib/clang/10.0.0/include/stdint.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
 /usr/include/SFML/System/Utf.inl:
 
@@ -5146,5 +5154,3 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.
 /usr/include/c++/9/bits/cpp_type_traits.h:
 
 /usr/lib/llvm-10/lib/clang/10.0.0/include/xmmintrin.h:
-
-/usr/lib/llvm-10/lib/clang/10.0.0/include/mm_malloc.h:
