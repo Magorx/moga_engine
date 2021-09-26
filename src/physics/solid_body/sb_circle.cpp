@@ -10,6 +10,7 @@ radius(radius)
 Collision *sb_Circle::collide(SolidBody *other) {
     switch(other->get_type()) {
         case SolidBodyType::Circle :
+        case SolidBodyType::Square : 
             return CircleCircleCollision::collide(this, (sb_Circle*) other);
         
         case SolidBodyType::Line :

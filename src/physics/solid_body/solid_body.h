@@ -6,6 +6,7 @@
 
 enum class SolidBodyType {
     Circle,
+    Square,
     Line,
     None
 };
@@ -23,8 +24,6 @@ public:
     bool del_solid;
 
     Collision *collide(SolidBody *other);
-    
-    inline SolidBodyType get_type() const { return type; }
 
     inline void solid_tick(const double dt) { position += velocity * dt; }
 
@@ -37,6 +36,9 @@ public:
     inline void set_position(Vec3d position_) { position = position_; }
     inline void set_velocity(Vec3d velocity_) { velocity = velocity_; }
     inline void set_mass    (double mass_)    { mass = mass_; }
+
+    inline void set_type(SolidBodyType new_type) { type = new_type; }
+    inline SolidBodyType get_type() const { return type; }
 
     inline void del() { del_solid = true; }
 };

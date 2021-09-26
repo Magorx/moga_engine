@@ -54,7 +54,7 @@ Vec3d roty(const Vec3d vec, double ang) {
 }
 
 Vec3d rotz(const Vec3d vec, double ang) {
-    double x = vec.content[0] * cos(ang) - vec.content[1] * sin(ang);
+    double x = vec.content[0] * cos(ang) + vec.content[1] * sin(ang);
     double y = vec.content[1] * cos(ang) - vec.content[0] * sin(ang);
     double z = vec.content[2];
     return {x, y, z};

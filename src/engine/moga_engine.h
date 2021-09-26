@@ -23,7 +23,9 @@
 
 class MogaEngine : Tickable
 {
+protected:
 	std::vector<Tickable*> tickables;
+	std::vector<Object*> objects;
 
 	double current_time;
 	double prev_tick_time;

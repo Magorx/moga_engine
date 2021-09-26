@@ -9,6 +9,7 @@ normal(normal)
 Collision *sb_Line::collide(SolidBody *other) {
     switch(other->get_type()) {
         case SolidBodyType::Circle :
+        case SolidBodyType::Square :
             return CircleLineCollision::collide((sb_Circle*) other, this);
 
         default :

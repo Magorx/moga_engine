@@ -97,7 +97,11 @@ void PhysicsEngine::update_collisions() {
     collisions.clear();
     
     for (size_t i = 0; i < solids.size(); ++i) {
+        if (solids[i]->del_solid) continue;
+
         for (size_t j = i + 1; j < solids.size(); ++j) {
+            if (solids[j]->del_solid) continue;
+
             Collision *collision = solids[i]->collide(solids[j]);
             if (collision) {
                 collisions.push_back(collision);

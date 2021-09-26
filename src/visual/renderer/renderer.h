@@ -57,6 +57,18 @@ public:
 
         scr.window->draw(buffer, 2, sf::Lines);
     }
+
+    inline void draw_square(const Vec3d &pos, const double size, const Color &color) {
+        RGBA rgba = to_rgba(color);
+        sf::Color sf_color(rgba.r, rgba.g, rgba.b, rgba.a);
+
+        sf::RectangleShape rect({static_cast<float>(2 * size), static_cast<float>(2 * size)});
+        rect.setOrigin({static_cast<float>(size), static_cast<float>(size)});
+        rect.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
+        rect.setFillColor(sf_color);
+
+        scr.window->draw(rect);
+    }
 };
 
 #endif // RENDERER_H

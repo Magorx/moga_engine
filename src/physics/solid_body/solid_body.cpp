@@ -14,6 +14,7 @@ Collision *SolidBody::collide(SolidBody *other) {
     switch (get_type())
     {
     case SolidBodyType::Circle:
+    case SolidBodyType::Square:
         return ((sb_Circle*) this)->collide(other);
     
     case SolidBodyType::Line:

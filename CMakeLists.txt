@@ -22,6 +22,10 @@ find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
 add_executable(moga
         src/main.cpp
 
+        # chemistry
+        src/chemistry/chem_engine.cpp
+        src/chemistry/chem_reactions.cpp
+
         # engine
         src/engine/moga_engine.cpp
 

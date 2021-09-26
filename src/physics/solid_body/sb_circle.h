@@ -12,6 +12,7 @@ public:
     Collision *collide(SolidBody *other);
 
     inline double get_radius() const { return radius; }
+    inline void set_radius(const double radius_) { radius = radius_; }
 };
 
 #endif // SB_CIRCLE_H

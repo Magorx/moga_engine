@@ -53,6 +53,7 @@ MogaEngine::MogaEngine(const char  *window_name,
 					   const size_t screen_height,
 					   const size_t):
 	tickables(),
+	objects(),
 
 	current_time(0),
 	prev_tick_time(0),
@@ -103,6 +104,8 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 		return false;
 	}
 
+	objects.push_back(object);
+
 	tickables.push_back(object);
 	add_renderable(object->get_texture());
 
@@ -131,12 +134,13 @@ void MogaEngine::tick(const double, const double) {
     for (size_t i = 0; i < tickables.size(); ++i) {
     	tickables[i]->tick(dt, current_time);
     }
-    logic_tick();
 
 	while (current_time - physics_current_time > PHYSICS_TIME_STEP) {
 		physics_tick();
 		physics_current_time += PHYSICS_TIME_STEP;
 	}
+
+	logic_tick();
 
 	visual_render_tick();
 

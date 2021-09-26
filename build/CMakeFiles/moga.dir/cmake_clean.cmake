@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/moga.dir/src/chemistry/chem_engine.cpp.o"
+  "CMakeFiles/moga.dir/src/chemistry/chem_engine.cpp.o.d"
+  "CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.o"
+  "CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.o.d"
   "CMakeFiles/moga.dir/src/collections/objects.cpp.o"
   "CMakeFiles/moga.dir/src/collections/objects.cpp.o.d"
   "CMakeFiles/moga.dir/src/collections/renderables.cpp.o"

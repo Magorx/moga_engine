@@ -28,6 +28,8 @@ public:
 
 	void update_collisions();
 	void solve_collisions();
+
+	std::vector<Collision*> &get_collisions() { return collisions; }
 };
 
 #endif // PHYSICS_ENGINE

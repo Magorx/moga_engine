@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/kctf/Repositories/moga_engine/src/chemistry/chem_engine.cpp" "CMakeFiles/moga.dir/src/chemistry/chem_engine.cpp.o" "gcc" "CMakeFiles/moga.dir/src/chemistry/chem_engine.cpp.o.d"
+  "/home/kctf/Repositories/moga_engine/src/chemistry/chem_reactions.cpp" "CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.o" "gcc" "CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/collections/objects.cpp" "CMakeFiles/moga.dir/src/collections/objects.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/objects.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/collections/renderables.cpp" "CMakeFiles/moga.dir/src/collections/renderables.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/renderables.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/collections/smart_colors.cpp" "CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o.d"

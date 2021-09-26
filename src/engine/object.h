@@ -23,10 +23,10 @@ public:
 	del_logic(false)
 	{}
 
-	void obj_delete() {
+	inline void obj_delete() {
 		del_logic = true;
-		texture->del();
-		solid_body->del();
+		if (texture)    texture->del();
+		if (solid_body) solid_body->del();
 	}
 
 	virtual void tick(const double = 0, const double = 0) override {};

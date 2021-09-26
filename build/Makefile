@@ -155,6 +155,54 @@ convert/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/convert.dir/build.make CMakeFiles/convert.dir/build
 .PHONY : convert/fast
 
+src/chemistry/chem_engine.o: src/chemistry/chem_engine.cpp.o
+.PHONY : src/chemistry/chem_engine.o
+
+# target to build an object file
+src/chemistry/chem_engine.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/chemistry/chem_engine.cpp.o
+.PHONY : src/chemistry/chem_engine.cpp.o
+
+src/chemistry/chem_engine.i: src/chemistry/chem_engine.cpp.i
+.PHONY : src/chemistry/chem_engine.i
+
+# target to preprocess a source file
+src/chemistry/chem_engine.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/chemistry/chem_engine.cpp.i
+.PHONY : src/chemistry/chem_engine.cpp.i
+
+src/chemistry/chem_engine.s: src/chemistry/chem_engine.cpp.s
+.PHONY : src/chemistry/chem_engine.s
+
+# target to generate assembly for a file
+src/chemistry/chem_engine.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/chemistry/chem_engine.cpp.s
+.PHONY : src/chemistry/chem_engine.cpp.s
+
+src/chemistry/chem_reactions.o: src/chemistry/chem_reactions.cpp.o
+.PHONY : src/chemistry/chem_reactions.o
+
+# target to build an object file
+src/chemistry/chem_reactions.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.o
+.PHONY : src/chemistry/chem_reactions.cpp.o
+
+src/chemistry/chem_reactions.i: src/chemistry/chem_reactions.cpp.i
+.PHONY : src/chemistry/chem_reactions.i
+
+# target to preprocess a source file
+src/chemistry/chem_reactions.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.i
+.PHONY : src/chemistry/chem_reactions.cpp.i
+
+src/chemistry/chem_reactions.s: src/chemistry/chem_reactions.cpp.s
+.PHONY : src/chemistry/chem_reactions.s
+
+# target to generate assembly for a file
+src/chemistry/chem_reactions.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.s
+.PHONY : src/chemistry/chem_reactions.cpp.s
+
 src/collections/objects.o: src/collections/objects.cpp.o
 .PHONY : src/collections/objects.o
 
@@ -574,6 +622,12 @@ help:
 	@echo "... convert"
 	@echo "... view"
 	@echo "... moga"
+	@echo "... src/chemistry/chem_engine.o"
+	@echo "... src/chemistry/chem_engine.i"
+	@echo "... src/chemistry/chem_engine.s"
+	@echo "... src/chemistry/chem_reactions.o"
+	@echo "... src/chemistry/chem_reactions.i"
+	@echo "... src/chemistry/chem_reactions.s"
 	@echo "... src/collections/objects.o"
 	@echo "... src/collections/objects.i"
 	@echo "... src/collections/objects.s"
