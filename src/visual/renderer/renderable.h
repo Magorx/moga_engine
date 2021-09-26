@@ -13,6 +13,8 @@ public:
 	del_render(false)
 	{}
 
+	virtual ~Renderable() {}
+
 	inline void set_layer(const int layer_) {
 		layer = layer_;
 	}

@@ -17,6 +17,7 @@ class PhysicsEngine : Tickable
 
 public:
 	PhysicsEngine();
+	~PhysicsEngine();
 
 	bool add_phys_tickable(PhysTickable *object);
 	bool add_solid(SolidBody *object);

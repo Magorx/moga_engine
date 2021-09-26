@@ -142,8 +142,9 @@ void MogaEngine::tick(const double, const double) {
 
 	logic_tick();
 
+	printf("hi\n");
 	visual_render_tick();
-
+	printf("bye\n");
 	return;
 }
 

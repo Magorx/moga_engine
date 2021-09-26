@@ -28,7 +28,7 @@ class Renderer {
 public:
     Renderer(const char *window_name, int size_x, int size_y);
 
-    inline void clear() {scr.window->clear();}
+    inline void clear() { scr.window->clear(); }
     inline void display() {scr.window->display();}
 
     inline sf::RenderWindow *get_window() const {

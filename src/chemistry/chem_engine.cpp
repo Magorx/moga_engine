@@ -11,6 +11,8 @@ MogaEngine(window_name, screen_width, screen_height, pixel_size)
 void ChemEngine::physics_tick() {
 	physics->tick(PHYSICS_TIME_STEP, physics_current_time);
     reactions_process();
+
+    // printf("objs: %d\n", objects.size());
 }
 
 void ChemEngine::reactions_process() {

@@ -31,7 +31,7 @@ void create_cage(MogaEngine *eng, SmartColor *color) {
     eng->add_object(line_11);
 }
 
-void generate_balls(MogaEngine *eng, int cnt = 60) {
+void generate_balls(MogaEngine *eng, int cnt = 100) {
     for (int i = 0; i < cnt; ++i) {
         Vec3d col = Vec3d::random_unit() * 250;
         SmartColor *color = nullptr;

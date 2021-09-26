@@ -2427,6 +2427,7 @@ CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o
  /home/kctf/Repositories/moga_engine/src/physics/collision/collision.h
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_circle.h
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.h
+ /home/kctf/Repositories/moga_engine/src/physics/phys_tickable.h
  /home/kctf/Repositories/moga_engine/src/utils/vec3d.h
  /usr/include/c++/9/cmath
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h
@@ -2650,6 +2651,7 @@ CMakeFiles/moga.dir/src/physics/collision/coll_circle_line.cpp.o
  /home/kctf/Repositories/moga_engine/src/physics/collision/collision.h
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_circle.h
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.h
+ /home/kctf/Repositories/moga_engine/src/physics/phys_tickable.h
  /home/kctf/Repositories/moga_engine/src/utils/vec3d.h
  /usr/include/c++/9/cmath
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h
@@ -3104,6 +3106,7 @@ CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_circle.cpp
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_circle.h
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.h
+ /home/kctf/Repositories/moga_engine/src/physics/phys_tickable.h
  /home/kctf/Repositories/moga_engine/src/utils/vec3d.h
  /usr/include/c++/9/cmath
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h
@@ -3329,6 +3332,7 @@ CMakeFiles/moga.dir/src/physics/solid_body/sb_line.cpp.o
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_line.cpp
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/sb_line.h
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.h
+ /home/kctf/Repositories/moga_engine/src/physics/phys_tickable.h
  /home/kctf/Repositories/moga_engine/src/utils/vec3d.h
  /usr/include/c++/9/cmath
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h
@@ -3552,6 +3556,7 @@ CMakeFiles/moga.dir/src/physics/solid_body/sb_line.cpp.o
 CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.cpp
  /home/kctf/Repositories/moga_engine/src/physics/solid_body/solid_body.h
+ /home/kctf/Repositories/moga_engine/src/physics/phys_tickable.h
  /home/kctf/Repositories/moga_engine/src/utils/vec3d.h
  /usr/include/c++/9/cmath
  /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h

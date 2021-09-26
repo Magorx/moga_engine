@@ -7,6 +7,20 @@ solids(),
 collisions()
 {}
 
+PhysicsEngine::~PhysicsEngine() {
+    for (auto obj : tickables) {
+        delete obj;
+    }
+
+    for (auto obj : solids) {
+        delete obj;
+    }
+
+    for (auto obj : collisions) {
+        delete obj;
+    }
+}
+
 bool PhysicsEngine::add_phys_tickable(PhysTickable *object) {
     tickables.push_back(object);
     return true;

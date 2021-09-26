@@ -2419,6 +2419,7 @@ CMakeFiles/moga.dir/src/physics/collision/coll_circle_circle.cpp.o: ../src/physi
   ../src/physics/collision/collision.h \
   ../src/physics/solid_body/sb_circle.h \
   ../src/physics/solid_body/solid_body.h \
+  ../src/physics/phys_tickable.h \
   ../src/utils/vec3d.h \
   /usr/include/c++/9/cmath \
   /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \
@@ -2641,6 +2642,7 @@ CMakeFiles/moga.dir/src/physics/collision/coll_circle_line.cpp.o: ../src/physics
   ../src/physics/collision/collision.h \
   ../src/physics/solid_body/sb_circle.h \
   ../src/physics/solid_body/solid_body.h \
+  ../src/physics/phys_tickable.h \
   ../src/utils/vec3d.h \
   /usr/include/c++/9/cmath \
   /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \
@@ -3093,6 +3095,7 @@ CMakeFiles/moga.dir/src/physics/physics_engine.cpp.o: ../src/physics/physics_eng
 CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o: ../src/physics/solid_body/sb_circle.cpp \
   ../src/physics/solid_body/sb_circle.h \
   ../src/physics/solid_body/solid_body.h \
+  ../src/physics/phys_tickable.h \
   ../src/utils/vec3d.h \
   /usr/include/c++/9/cmath \
   /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \
@@ -3317,6 +3320,7 @@ CMakeFiles/moga.dir/src/physics/solid_body/sb_circle.cpp.o: ../src/physics/solid
 CMakeFiles/moga.dir/src/physics/solid_body/sb_line.cpp.o: ../src/physics/solid_body/sb_line.cpp \
   ../src/physics/solid_body/sb_line.h \
   ../src/physics/solid_body/solid_body.h \
+  ../src/physics/phys_tickable.h \
   ../src/utils/vec3d.h \
   /usr/include/c++/9/cmath \
   /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \
@@ -3539,6 +3543,7 @@ CMakeFiles/moga.dir/src/physics/solid_body/sb_line.cpp.o: ../src/physics/solid_b
 
 CMakeFiles/moga.dir/src/physics/solid_body/solid_body.cpp.o: ../src/physics/solid_body/solid_body.cpp \
   ../src/physics/solid_body/solid_body.h \
+  ../src/physics/phys_tickable.h \
   ../src/utils/vec3d.h \
   /usr/include/c++/9/cmath \
   /usr/include/x86_64-linux-gnu/c++/9/bits/c++config.h \

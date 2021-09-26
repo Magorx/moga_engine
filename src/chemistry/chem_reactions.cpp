@@ -1,3 +1,5 @@
+// BAD CODE HERE, IM SORRY
+
 #include "chem_reactions.h"
 
 void reaction_circle_circle(Object *first, Object *second, MogaEngine *engine) {
@@ -89,8 +91,9 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
 
     int balls_cnt = mass;
 
-    Vec3d rndvec = Vec3d::random_unit();
-    rndvec.set(2, 0);
+    Vec3d rndvec(0, 0, 0);
+    rndvec.set(0, rand() - RAND_MAX / 2);
+    rndvec.set(1, rand() - RAND_MAX / 2);
     rndvec.normalize();
 
     first->obj_delete();
@@ -112,7 +115,7 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
     for (int i = 0; i < balls_cnt; ++i) {
         double angle = 2.0 * M_PI / balls_cnt * i;
         Vec3d dpos = rotz(rndvec, angle);
-        Vec3d pos = sb_first->get_position() + dpos * balls_cnt * 2;
+        Vec3d pos = sb_first->get_position() + dpos * balls_cnt * 2.5;
 
         SmartColor *color = nullptr;
         if (rand() % 10) {
@@ -120,7 +123,7 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
         } else {
             color = new SmartColor(randcolor());
         }
-        o_Ball *ball = new o_Ball(pos, radius / balls_cnt, color, mass / balls_cnt);
+        o_Ball *ball = new o_Ball(pos, 5, color, 1);
         engine->add_object(ball);
 
         Vec3d vel = Vec3d::random_unit();
@@ -129,7 +132,7 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
         vel += dpos.normal() * 2;
         vel.normalize();
         vel *= vel_module;
-        ball->get_solid_body()->apply_impulse(vel);
+        ball->get_solid_body()->set_velocity(vel);
     }
 }
 

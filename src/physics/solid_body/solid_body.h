@@ -1,6 +1,8 @@
 #ifndef SOLID_BODY_H
 #define SOLID_BODY_H
 
+#include "physics/phys_tickable.h"
+
 #include "utils/vec3d.h"
 #include "collision/collision.h"
 
@@ -20,6 +22,7 @@ class SolidBody {
 
 public:
     SolidBody(SolidBodyType type, Vec3d position = {0, 0, 0}, Vec3d velocity = {0, 0, 0}, double mass = 1);
+    virtual ~SolidBody() {}
 
     bool del_solid;
 
