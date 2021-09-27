@@ -40,6 +40,7 @@ void reaction_circle_circle(Object *first, Object *second, MogaEngine *engine) {
     rect->get_solid_body()->set_velocity(vel);
 
     engine->add_object(rect);
+    engine->add_tickable(color);
 
     first->obj_delete();
     second->obj_delete();
@@ -121,6 +122,7 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
         }
         o_Ball *ball = new o_Ball(pos, 5, color, 1);
         engine->add_object(ball);
+        engine->add_tickable(color);
 
         Vec3d vel = Vec3d::random_unit();
         vel.set(2, 0);

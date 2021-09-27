@@ -25,6 +25,9 @@ void ChemEngine::reactions_process() {
         Object *obj_1 = objects[i];
 
         for (int j = i + 1; j < obj_cnt; ++j) {
+            if (objects[i]->del_logic) {
+                break;
+            }
             if (objects[j]->del_logic) {
                 continue;
             }

@@ -242,13 +242,13 @@ Vec3d MogaEngine::get_mouse_pos() const {
 }
 
 MogaEngine::~MogaEngine() {
-	// for (auto x : tickables) {
-	// 	delete x;
-	// }
+	for (auto x : tickables) {
+		delete x;
+	}
 
-	// for (auto x : objects) {
-	// 	delete x;
-	// }
+	for (auto x : objects) {
+		delete x;
+	}
 
 	delete visual;
 	delete physics;
