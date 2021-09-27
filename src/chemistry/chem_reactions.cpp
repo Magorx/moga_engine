@@ -31,9 +31,6 @@ void reaction_circle_circle(Object *first, Object *second, MogaEngine *engine) {
     // sb_first->set_velocity(vel);
     // sb_first->set_type(SolidBodyType::Square);
 
-    first->obj_delete();
-    second->obj_delete();
-
     SmartColor *color = new SmartColor(col); 
 
     Object *rect = new o_Rect(sb_first->get_position(),
@@ -44,6 +41,8 @@ void reaction_circle_circle(Object *first, Object *second, MogaEngine *engine) {
 
     engine->add_object(rect);
 
+    first->obj_delete();
+    second->obj_delete();
 }
 
 void reaction_circle_square(Object *first, Object *second, MogaEngine *) {
@@ -96,9 +95,6 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
     rndvec.set(1, rand() - RAND_MAX / 2);
     rndvec.normalize();
 
-    first->obj_delete();
-    second->obj_delete();
-
     Vec3d vel_first = sb_first->get_velocity();
     Vec3d vel_second = sb_second->get_velocity();
     
@@ -134,6 +130,9 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
         vel *= vel_module;
         ball->get_solid_body()->set_velocity(vel);
     }
+
+    first->obj_delete();
+    second->obj_delete();
 }
 
 typedef void (*ReactionFunc)(Object *first, Object *second, MogaEngine *engine);

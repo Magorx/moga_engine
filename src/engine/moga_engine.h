@@ -52,6 +52,8 @@ public:
 				const size_t screen_width,
 				const size_t screen_height,
 				const size_t pixel_size);
+	
+	virtual ~MogaEngine();
 
 	bool add_tickable(Tickable *object);
 	bool add_physics_tickable(PhysTickable *object);
@@ -62,6 +64,7 @@ public:
 	virtual void frame_init_tick();
 	virtual void visual_render_tick();
 	virtual void physics_tick();
+	virtual void tickable_tick();
 	virtual void logic_tick();
 
 	virtual void handle_events();
@@ -69,6 +72,9 @@ public:
 	virtual void everlasting_loop();
 
 	void tick(const double dt = 0, const double current_time = 0) override;
+
+	void clear_deleted_tickables();
+	void clear_deleted_objects();
 
 //  ===== get / set =====
 

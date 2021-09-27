@@ -40,6 +40,92 @@ void MogaEngine::physics_tick() {
 	physics->tick(PHYSICS_TIME_STEP, physics_current_time);
 }
 
+void MogaEngine::tickable_tick() {
+	int deleted_cnt = 0;
+	for (size_t i = 0; i < tickables.size(); ++i) {
+		if (tickables[i]->del_tickable) {
+			++deleted_cnt;
+			continue;
+		}
+
+    	tickables[i]->tick(dt, current_time);
+    }	
+
+	if (deleted_cnt > tickables.size() * 0.2) {
+		clear_deleted_tickables();
+	}
+
+	deleted_cnt = 0;
+	for (size_t i = 0; i < objects.size(); ++i) {
+		if (objects[i]->del_tickable) {
+			++deleted_cnt;
+			continue;
+		}
+
+    	objects[i]->tick(dt, current_time);
+    }	
+
+	if (deleted_cnt > objects.size() * 0.2) {
+		clear_deleted_objects();
+	}
+}
+
+void MogaEngine::clear_deleted_tickables() {
+	size_t next_alive = 0;
+    size_t tickables_cnt = tickables.size();
+    size_t i = 0;
+
+    for (; i < tickables_cnt; ++i) {
+        if (!tickables[i] || tickables[i]->del_tickable) {
+            for (next_alive = std::max(i + 1, next_alive);
+                next_alive < tickables_cnt && tickables[next_alive] && tickables[next_alive]->del_tickable;
+                ++next_alive); // find next alive object
+
+            if (next_alive < tickables_cnt) {
+                if (tickables[i]) {
+                    delete tickables[i];
+                }
+
+                tickables[i] = tickables[next_alive];
+                tickables[next_alive] = nullptr;
+                ++next_alive;
+            } else {
+                break;
+            }
+        }
+    }
+
+    tickables.resize(i);
+}
+
+void MogaEngine::clear_deleted_objects() {
+	size_t next_alive = 0;
+    size_t objects_cnt = objects.size();
+    size_t i = 0;
+
+    for (; i < objects_cnt; ++i) {
+        if (!objects[i] || objects[i]->del_tickable) {
+            for (next_alive = std::max(i + 1, next_alive);
+                next_alive < objects_cnt && objects[next_alive] && objects[next_alive]->del_tickable;
+                ++next_alive); // find next alive object
+
+            if (next_alive < objects_cnt) {
+                if (objects[i]) {
+                    delete objects[i];
+                }
+
+                objects[i] = objects[next_alive];
+                objects[next_alive] = nullptr;
+                ++next_alive;
+            } else {
+                break;
+            }
+        }
+    }
+
+    objects.resize(i);
+}
+
 void MogaEngine::logic_tick() {
 	#ifdef PRINT_PHASE_TICK
 	printf("[logic_tick] %lg\n", current_time);
@@ -106,7 +192,6 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 
 	objects.push_back(object);
 
-	tickables.push_back(object);
 	add_renderable(object->get_texture());
 
 	if (is_collidable) {
@@ -131,9 +216,7 @@ void MogaEngine::tick(const double, const double) {
 
     ++frames_cnt;
 
-    for (size_t i = 0; i < tickables.size(); ++i) {
-    	tickables[i]->tick(dt, current_time);
-    }
+	tickable_tick();
 
 	while (current_time - physics_current_time > PHYSICS_TIME_STEP) {
 		physics_tick();
@@ -142,9 +225,7 @@ void MogaEngine::tick(const double, const double) {
 
 	logic_tick();
 
-	printf("hi\n");
 	visual_render_tick();
-	printf("bye\n");
 	return;
 }
 
@@ -158,4 +239,17 @@ void MogaEngine::everlasting_loop() {
 
 Vec3d MogaEngine::get_mouse_pos() const {
 	return mouse_pos;
+}
+
+MogaEngine::~MogaEngine() {
+	// for (auto x : tickables) {
+	// 	delete x;
+	// }
+
+	// for (auto x : objects) {
+	// 	delete x;
+	// }
+
+	delete visual;
+	delete physics;
 }

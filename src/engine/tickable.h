@@ -4,13 +4,19 @@
 class Tickable
 {
 public:
-	bool deleted;
+	bool del_tickable;
 
 	Tickable():
-	deleted(false)
+	del_tickable(false)
 	{}
 
+	virtual ~Tickable() {
+		// del_tickable = true;
+	}
+
 	virtual void tick(const double = 0, const double = 0) {};
+
+	inline void del() { del_tickable = true; }
 };
 
 #endif // TICKABLE

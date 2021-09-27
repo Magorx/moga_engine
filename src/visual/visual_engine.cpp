@@ -29,7 +29,7 @@ bool VisualEngine::render() {
 
     int deleted_cnt = 0;
     for (size_t i = 0; i < obj_cnt; ++i) {
-        if (!render_objects[i] || render_objects[i]->del_render) {
+        if (render_objects[i]->del_render) {
             ++deleted_cnt;
             continue;
         }
@@ -38,7 +38,7 @@ bool VisualEngine::render() {
     }
 
     if (deleted_cnt && deleted_cnt > render_objects.size() * RENDERABLE_BUFFER_REFRESH_COEF) {
-        // clear_deleted_renderables();
+        clear_deleted_renderables();
     }
 
     return true;
@@ -52,14 +52,12 @@ void VisualEngine::clear_deleted_renderables() {
     for (; i < render_objects_cnt; ++i) {
         if (!render_objects[i] || render_objects[i]->del_render) {
             for (next_alive = std::max(i + 1, next_alive);
-                render_objects[next_alive] &&
-                next_alive < render_objects_cnt && render_objects[next_alive]->del_render;
+                next_alive < render_objects_cnt && render_objects[next_alive] && render_objects[next_alive]->del_render;
                 ++next_alive); // find next alive object
 
             if (next_alive < render_objects_cnt) {
                 if (render_objects[i]) {
-                    Renderable *x = render_objects[i];
-                    delete x;
+                    delete render_objects[i];
                 }
 
                 render_objects[i] = render_objects[next_alive];
