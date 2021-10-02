@@ -10,9 +10,7 @@ public:
 	del_tickable(false)
 	{}
 
-	virtual ~Tickable() {
-		// del_tickable = true;
-	}
+	virtual ~Tickable() {}
 
 	virtual void tick(const double = 0, const double = 0) {};
 

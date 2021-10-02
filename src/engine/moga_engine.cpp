@@ -132,7 +132,44 @@ void MogaEngine::logic_tick() {
 	#endif
 }
 
-void MogaEngine::handle_events() {}
+void MogaEngine::on_mouse_click(Vec2d click) {
+	if (main_view->clicked(click)) {
+		main_view->on_click(click);
+	}
+}
+
+void MogaEngine::on_mouse_hover(Vec2d hover) {
+	if (main_view->clicked(hover)) {
+		main_view->on_hover(mouse_pos, hover);
+	}
+}
+
+void MogaEngine::on_mouse_release(Vec2d click) {
+	if (main_view->clicked(click)) {
+		main_view->on_release(click);
+	}
+}
+
+void MogaEngine::handle_events(sf::RenderWindow &window) {
+	sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+			if (event.type == sf::Event::MouseButtonPressed) {
+				on_mouse_click({event.mouseButton.x, event.mouseButton.y});
+			}
+
+			if (event.type == sf::Event::MouseButtonReleased) {
+				on_mouse_click({event.mouseButton.x, event.mouseButton.y});
+			}
+
+			if (event.type == sf::Event::MouseMoved) {
+				on_mouse_click({event.mouseMove.x, event.mouseMove.y});
+				mouse_pos = {event.mouseMove.x, event.mouseMove.y, 0};
+			}
+        }
+}
 
 MogaEngine::MogaEngine(const char  *window_name,
 					   const size_t screen_width,
@@ -158,7 +195,8 @@ MogaEngine::MogaEngine(const char  *window_name,
     mouse_pos(0, 0),
 
 	visual(new VisualEngine(window_name, screen_width, screen_height)),
-	physics(new PhysicsEngine())
+	physics(new PhysicsEngine()),
+	main_view(new View(ViewBody{{0, 0}, {screen_width, screen_height}}))
 {
 	init_time            = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count() / 1000000000.0;
 	current_time         = 0;
@@ -201,9 +239,16 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 	return true;
 }
 
+bool MogaEngine::add_view(View *view) {
+	main_view->add_subview(view);
+	add_renderable(view);
+
+	return true;
+}
+
 void MogaEngine::tick(const double, const double) {
 	frame_init_tick();
-	handle_events();
+	handle_events(*visual->get_renderer()->get_window());
 
 	if (pause_mode) {
     	if (pause_mode == ONE_FRAME) {
@@ -230,7 +275,9 @@ void MogaEngine::tick(const double, const double) {
 }
 
 void MogaEngine::everlasting_loop() {
-	while (visual->get_renderer()->get_window()->isOpen()) {
+	sf::RenderWindow *window = visual->get_renderer()->get_window();
+
+	while (window->isOpen()) {
 		tick();
 	}
 }
@@ -242,6 +289,7 @@ Vec3d MogaEngine::get_mouse_pos() const {
 }
 
 MogaEngine::~MogaEngine() {
+	printf("hoya\n");
 	for (auto x : tickables) {
 		delete x;
 	}

@@ -15,6 +15,7 @@
 #include "moga_engine_settings.h"
 #include "../physics/physics_engine.h"
 #include "../visual/visual_engine.h"
+#include "../view/view.h"
 
 #include "tickable.h"
 #include "object.h"
@@ -47,6 +48,7 @@ protected:
 public:
 	VisualEngine  *visual;
 	PhysicsEngine *physics;
+	View *main_view;
 
 	MogaEngine(const char  *window_name,
 				const size_t screen_width,
@@ -60,6 +62,7 @@ public:
 	bool add_solid_body(SolidBody *object);
 	bool add_renderable(Renderable *object);
 	bool add_object(Object *object, bool is_collidable = true);
+	bool add_view(View *view);
 
 	virtual void frame_init_tick();
 	virtual void visual_render_tick();
@@ -67,7 +70,10 @@ public:
 	virtual void tickable_tick();
 	virtual void logic_tick();
 
-	virtual void handle_events();
+	virtual void on_mouse_click(Vec2d click);
+	virtual void on_mouse_hover(Vec2d click);
+	virtual void on_mouse_release(Vec2d click);
+	virtual void handle_events(sf::RenderWindow &window);
 
 	virtual void everlasting_loop();
 

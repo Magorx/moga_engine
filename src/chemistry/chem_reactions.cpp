@@ -87,7 +87,7 @@ void reaction_square_square(Object *first, Object *second, MogaEngine *engine) {
     }
 
     double mass = sb_first->get_mass() + sb_second->get_mass();
-    double radius = sb_first->get_radius() + sb_second->get_radius();
+    // double radius = sb_first->get_radius() + sb_second->get_radius();
 
     int balls_cnt = mass;
 

@@ -3,9 +3,7 @@
 
 #include "engine/object.h"
 
-#include "smart_colors.h"
-#include "solid_bodies.h"
-#include "renderables.h"
+#include "../Collections.h"
 
 class o_Ball : public Object {
 public:

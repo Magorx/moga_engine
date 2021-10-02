@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "utils/vec3d.h"
+#include "utils/vec2d.h"
 #include "visual/color/color.h"
 
 
@@ -27,6 +28,7 @@ class Renderer {
 
 public:
     Renderer(const char *window_name, int size_x, int size_y);
+    ~Renderer();
 
     inline void clear() { scr.window->clear(); }
     inline void display() {scr.window->display();}
@@ -64,6 +66,18 @@ public:
 
         sf::RectangleShape rect({static_cast<float>(2 * size), static_cast<float>(2 * size)});
         rect.setOrigin({static_cast<float>(size), static_cast<float>(size)});
+        rect.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
+        rect.setFillColor(sf_color);
+
+        scr.window->draw(rect);
+    }
+
+    inline void draw_rectangle(const Vec3d &pos, const Vec2d size, const Color &color) {
+        RGBA rgba = to_rgba(color);
+        sf::Color sf_color(rgba.r, rgba.g, rgba.b, rgba.a);
+
+        sf::RectangleShape rect({static_cast<float>(2 * size.x()), static_cast<float>(2 * size.y())});
+        rect.setOrigin({static_cast<float>(size.x()), static_cast<float>(size.y())});
         rect.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
         rect.setFillColor(sf_color);
 

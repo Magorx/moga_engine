@@ -15,18 +15,22 @@ include_directories(src
                     src/collections)
 
 set(CMAKE_EXE_LINKER_FLAGS "-pthread")
-set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native -fsanitize=address")
+set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native") #-fsanitize=address
 
 find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
 
 add_executable(moga
         src/main.cpp
 
+        # interface
+        src/view/view.cpp
+
         # chemistry
         src/chemistry/chem_engine.cpp
         src/chemistry/chem_reactions.cpp
 
         # engine
+        src/engine/object.cpp
         src/engine/moga_engine.cpp
 
         # visual
@@ -46,9 +50,9 @@ add_executable(moga
         src/physics/solid_body/sb_line.cpp
 
         # collections
-        src/collections/smart_colors.cpp
-        src/collections/renderables.cpp
-        src/collections/objects.cpp
+        src/collections/smart_colors/smart_colors.cpp
+        src/collections/renderables/renderables.cpp
+        src/collections/objects/objects.cpp
 
         # components
         src/visual/visual_engine.cpp

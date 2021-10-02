@@ -75,13 +75,18 @@ void PhysicsEngine::physics_tick(const double dt) {
         size_t i = 0;
         size_t tickables_cnt = tickables.size();
         for (; i < tickables_cnt; ++i) {
-            if (tickables[i]->del_phys_tickable) {
+            if (!tickables[i] || tickables[i]->del_phys_tickable) {
                 for (next_alive = std::max(i + 1, next_alive); 
                         next_alive < tickables_cnt && tickables[next_alive]->del_phys_tickable;
                         ++next_alive); // find next alive object
 
                 if (next_alive < tickables_cnt) {
-                    std::swap(tickables[i], tickables[next_alive]);
+                    if (tickables[i]) {
+                        delete tickables[i];
+                    }
+
+                    tickables[i] = tickables[next_alive];
+                    tickables[next_alive] = nullptr;
                     ++next_alive;
                 }
             }
@@ -97,6 +102,30 @@ void PhysicsEngine::physics_tick(const double dt) {
         }
 
         solids[i]->solid_tick(dt);
+    }
+
+    if (deleted_cnt > solids.size() * PHYS_TICKABLE_BUFFER_REFRESH_COEF && deleted_cnt) {
+        size_t next_alive = 0;
+        size_t i = 0;
+        size_t solids_cnt = solids.size();
+        for (; i < solids_cnt; ++i) {
+            if (!solids[i] || solids[i]->del_solid) {
+                for (next_alive = std::max(i + 1, next_alive); 
+                        next_alive < solids_cnt && solids[next_alive]->del_solid;
+                        ++next_alive); // find next alive object
+
+                if (next_alive < solids_cnt) {
+                    if (solids[i]) {
+                        delete solids[i];
+                    }
+
+                    solids[i] = solids[next_alive];
+                    solids[next_alive] = nullptr;
+                    ++next_alive;
+                }
+            }
+        }
+        solids.resize(solids.size() - deleted_cnt);
     }
 }
 

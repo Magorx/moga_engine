@@ -203,77 +203,77 @@ src/chemistry/chem_reactions.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/chemistry/chem_reactions.cpp.s
 .PHONY : src/chemistry/chem_reactions.cpp.s
 
-src/collections/objects.o: src/collections/objects.cpp.o
-.PHONY : src/collections/objects.o
+src/collections/objects/objects.o: src/collections/objects/objects.cpp.o
+.PHONY : src/collections/objects/objects.o
 
 # target to build an object file
-src/collections/objects.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects.cpp.o
-.PHONY : src/collections/objects.cpp.o
+src/collections/objects/objects.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects/objects.cpp.o
+.PHONY : src/collections/objects/objects.cpp.o
 
-src/collections/objects.i: src/collections/objects.cpp.i
-.PHONY : src/collections/objects.i
+src/collections/objects/objects.i: src/collections/objects/objects.cpp.i
+.PHONY : src/collections/objects/objects.i
 
 # target to preprocess a source file
-src/collections/objects.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects.cpp.i
-.PHONY : src/collections/objects.cpp.i
+src/collections/objects/objects.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects/objects.cpp.i
+.PHONY : src/collections/objects/objects.cpp.i
 
-src/collections/objects.s: src/collections/objects.cpp.s
-.PHONY : src/collections/objects.s
+src/collections/objects/objects.s: src/collections/objects/objects.cpp.s
+.PHONY : src/collections/objects/objects.s
 
 # target to generate assembly for a file
-src/collections/objects.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects.cpp.s
-.PHONY : src/collections/objects.cpp.s
+src/collections/objects/objects.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/objects/objects.cpp.s
+.PHONY : src/collections/objects/objects.cpp.s
 
-src/collections/renderables.o: src/collections/renderables.cpp.o
-.PHONY : src/collections/renderables.o
+src/collections/renderables/renderables.o: src/collections/renderables/renderables.cpp.o
+.PHONY : src/collections/renderables/renderables.o
 
 # target to build an object file
-src/collections/renderables.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/renderables.cpp.o
-.PHONY : src/collections/renderables.cpp.o
+src/collections/renderables/renderables.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/renderables/renderables.cpp.o
+.PHONY : src/collections/renderables/renderables.cpp.o
 
-src/collections/renderables.i: src/collections/renderables.cpp.i
-.PHONY : src/collections/renderables.i
+src/collections/renderables/renderables.i: src/collections/renderables/renderables.cpp.i
+.PHONY : src/collections/renderables/renderables.i
 
 # target to preprocess a source file
-src/collections/renderables.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/renderables.cpp.i
-.PHONY : src/collections/renderables.cpp.i
+src/collections/renderables/renderables.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/renderables/renderables.cpp.i
+.PHONY : src/collections/renderables/renderables.cpp.i
 
-src/collections/renderables.s: src/collections/renderables.cpp.s
-.PHONY : src/collections/renderables.s
+src/collections/renderables/renderables.s: src/collections/renderables/renderables.cpp.s
+.PHONY : src/collections/renderables/renderables.s
 
 # target to generate assembly for a file
-src/collections/renderables.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/renderables.cpp.s
-.PHONY : src/collections/renderables.cpp.s
+src/collections/renderables/renderables.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/renderables/renderables.cpp.s
+.PHONY : src/collections/renderables/renderables.cpp.s
 
-src/collections/smart_colors.o: src/collections/smart_colors.cpp.o
-.PHONY : src/collections/smart_colors.o
+src/collections/smart_colors/smart_colors.o: src/collections/smart_colors/smart_colors.cpp.o
+.PHONY : src/collections/smart_colors/smart_colors.o
 
 # target to build an object file
-src/collections/smart_colors.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors.cpp.o
-.PHONY : src/collections/smart_colors.cpp.o
+src/collections/smart_colors/smart_colors.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors/smart_colors.cpp.o
+.PHONY : src/collections/smart_colors/smart_colors.cpp.o
 
-src/collections/smart_colors.i: src/collections/smart_colors.cpp.i
-.PHONY : src/collections/smart_colors.i
+src/collections/smart_colors/smart_colors.i: src/collections/smart_colors/smart_colors.cpp.i
+.PHONY : src/collections/smart_colors/smart_colors.i
 
 # target to preprocess a source file
-src/collections/smart_colors.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors.cpp.i
-.PHONY : src/collections/smart_colors.cpp.i
+src/collections/smart_colors/smart_colors.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors/smart_colors.cpp.i
+.PHONY : src/collections/smart_colors/smart_colors.cpp.i
 
-src/collections/smart_colors.s: src/collections/smart_colors.cpp.s
-.PHONY : src/collections/smart_colors.s
+src/collections/smart_colors/smart_colors.s: src/collections/smart_colors/smart_colors.cpp.s
+.PHONY : src/collections/smart_colors/smart_colors.s
 
 # target to generate assembly for a file
-src/collections/smart_colors.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors.cpp.s
-.PHONY : src/collections/smart_colors.cpp.s
+src/collections/smart_colors/smart_colors.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors/smart_colors.cpp.s
+.PHONY : src/collections/smart_colors/smart_colors.cpp.s
 
 src/engine/moga_engine.o: src/engine/moga_engine.cpp.o
 .PHONY : src/engine/moga_engine.o
@@ -298,6 +298,30 @@ src/engine/moga_engine.s: src/engine/moga_engine.cpp.s
 src/engine/moga_engine.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/engine/moga_engine.cpp.s
 .PHONY : src/engine/moga_engine.cpp.s
+
+src/engine/object.o: src/engine/object.cpp.o
+.PHONY : src/engine/object.o
+
+# target to build an object file
+src/engine/object.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/engine/object.cpp.o
+.PHONY : src/engine/object.cpp.o
+
+src/engine/object.i: src/engine/object.cpp.i
+.PHONY : src/engine/object.i
+
+# target to preprocess a source file
+src/engine/object.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/engine/object.cpp.i
+.PHONY : src/engine/object.cpp.i
+
+src/engine/object.s: src/engine/object.cpp.s
+.PHONY : src/engine/object.s
+
+# target to generate assembly for a file
+src/engine/object.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/engine/object.cpp.s
+.PHONY : src/engine/object.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -491,6 +515,30 @@ src/utils/vec3d.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/utils/vec3d.cpp.s
 .PHONY : src/utils/vec3d.cpp.s
 
+src/view/view.o: src/view/view.cpp.o
+.PHONY : src/view/view.o
+
+# target to build an object file
+src/view/view.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/view/view.cpp.o
+.PHONY : src/view/view.cpp.o
+
+src/view/view.i: src/view/view.cpp.i
+.PHONY : src/view/view.i
+
+# target to preprocess a source file
+src/view/view.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/view/view.cpp.i
+.PHONY : src/view/view.cpp.i
+
+src/view/view.s: src/view/view.cpp.s
+.PHONY : src/view/view.s
+
+# target to generate assembly for a file
+src/view/view.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/view/view.cpp.s
+.PHONY : src/view/view.cpp.s
+
 src/visual/color/color.o: src/visual/color/color.cpp.o
 .PHONY : src/visual/color/color.o
 
@@ -628,18 +676,21 @@ help:
 	@echo "... src/chemistry/chem_reactions.o"
 	@echo "... src/chemistry/chem_reactions.i"
 	@echo "... src/chemistry/chem_reactions.s"
-	@echo "... src/collections/objects.o"
-	@echo "... src/collections/objects.i"
-	@echo "... src/collections/objects.s"
-	@echo "... src/collections/renderables.o"
-	@echo "... src/collections/renderables.i"
-	@echo "... src/collections/renderables.s"
-	@echo "... src/collections/smart_colors.o"
-	@echo "... src/collections/smart_colors.i"
-	@echo "... src/collections/smart_colors.s"
+	@echo "... src/collections/objects/objects.o"
+	@echo "... src/collections/objects/objects.i"
+	@echo "... src/collections/objects/objects.s"
+	@echo "... src/collections/renderables/renderables.o"
+	@echo "... src/collections/renderables/renderables.i"
+	@echo "... src/collections/renderables/renderables.s"
+	@echo "... src/collections/smart_colors/smart_colors.o"
+	@echo "... src/collections/smart_colors/smart_colors.i"
+	@echo "... src/collections/smart_colors/smart_colors.s"
 	@echo "... src/engine/moga_engine.o"
 	@echo "... src/engine/moga_engine.i"
 	@echo "... src/engine/moga_engine.s"
+	@echo "... src/engine/object.o"
+	@echo "... src/engine/object.i"
+	@echo "... src/engine/object.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
@@ -664,6 +715,9 @@ help:
 	@echo "... src/utils/vec3d.o"
 	@echo "... src/utils/vec3d.i"
 	@echo "... src/utils/vec3d.s"
+	@echo "... src/view/view.o"
+	@echo "... src/view/view.i"
+	@echo "... src/view/view.s"
 	@echo "... src/visual/color/color.o"
 	@echo "... src/visual/color/color.i"
 	@echo "... src/visual/color/color.s"

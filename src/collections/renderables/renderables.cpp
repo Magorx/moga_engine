@@ -19,6 +19,15 @@ void r_Square::render(Renderer *renderer) {
     renderer->draw_square(position, size, color->rgb());
 }
 
+r_Rectangle::r_Rectangle(Vec2d pos, Vec2d size, SmartColor *color) :
+RenderableObject(pos, color),
+size(size)
+{}
+
+void r_Rectangle::render(Renderer *renderer) {
+    renderer->draw_rectangle(position, size, color->rgb());
+}
+
 r_Line::r_Line(Vec3d p1, Vec3d p2, SmartColor *color) :
 RenderableObject(p1, color),
 p1(p1),

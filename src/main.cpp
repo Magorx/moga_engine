@@ -1,5 +1,7 @@
 #include "chemistry/chem_engine.h"
 
+#include "view/view.h"
+
 const int SCR_W  = 800;
 const int SCR_H  = 600;
 
@@ -31,7 +33,7 @@ void create_cage(MogaEngine *eng, SmartColor *color) {
     eng->add_object(line_11);
 }
 
-void generate_balls(MogaEngine *eng, int cnt = 40) {
+void generate_balls(MogaEngine *eng, int cnt = 100) {
     for (int i = 0; i < cnt; ++i) {
         Vec3d col = Vec3d::random_unit() * 250;
         SmartColor *color = nullptr;
@@ -39,6 +41,7 @@ void generate_balls(MogaEngine *eng, int cnt = 40) {
         
         Object *ball = new o_Ball({(double) (rand() % 500) + 150, (double)(rand() % 300) + 120}, 5, color, 1);
         eng->add_object(ball);
+        eng->add_tickable(color);
 
         Vec3d vel = Vec3d::random_unit() * 200;
         vel.set(2, 0);
@@ -55,7 +58,6 @@ void generate_balls(MogaEngine *eng, int cnt = 40) {
 int main() {
     srand(time(NULL));
     ChemEngine moga("MOGA", SCR_W, SCR_H, 1);
-    sf::RenderWindow *window = moga.visual->get_renderer()->get_window();
 
     SmartColor *color = new SmartColorSin(Color{40, 230, 150});
     moga.add_tickable(color);
@@ -63,15 +65,7 @@ int main() {
     create_cage(&moga, color);
     generate_balls(&moga);
 
-    while (window->isOpen()) {
-        sf::Event event;
-        while (window->pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window->close();
-        }
-
-        moga.tick();
-    }
+    moga.everlasting_loop();
 
 	return 0;
 }
