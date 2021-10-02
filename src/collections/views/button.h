@@ -7,12 +7,16 @@
 
 class v_Button : public View {
     char *lable;
+    Vec2d pos_delta;
 
 public:
-    v_Button(const ViewBody &body, SmartColor *color, Lambda *reaction = nullptr, char *lable = nullptr):
-    View(body, new r_Rectangle(body.position, body.size, color)),
-    lable(lable)
-    {}
+    v_Button(const ViewBody &body, SmartColor *color, MouseLambda *on_click = nullptr, char *lable = nullptr);
 
-    void bind(Lambda *reaction);
+    virtual void tick(const double = 0, const double = 0) override;
+
+    void bind(MouseLambda *on_click);
+
+    virtual void clicked(Vec2d click) override;
+    virtual void hovered(Vec2d from, Vec2d to) override;
+    virtual void released(Vec2d click) override;
 };

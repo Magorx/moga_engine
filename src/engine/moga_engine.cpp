@@ -133,42 +133,42 @@ void MogaEngine::logic_tick() {
 }
 
 void MogaEngine::on_mouse_click(Vec2d click) {
-	if (main_view->clicked(click)) {
-		main_view->on_click(click);
+	if (main_view->is_clicked(click)) {
+		main_view->clicked(click);
 	}
 }
 
 void MogaEngine::on_mouse_hover(Vec2d hover) {
-	if (main_view->clicked(hover)) {
-		main_view->on_hover(mouse_pos, hover);
+	if (main_view->is_clicked(hover)) {
+		main_view->hovered(mouse_pos, hover);
 	}
 }
 
 void MogaEngine::on_mouse_release(Vec2d click) {
-	if (main_view->clicked(click)) {
-		main_view->on_release(click);
+	if (main_view->is_clicked(click)) {
+		main_view->released(click);
 	}
 }
 
 void MogaEngine::handle_events(sf::RenderWindow &window) {
 	sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-                window.close();
+	while (window.pollEvent(event)) {
+		if (event.type == sf::Event::Closed)
+			window.close();
 
-			if (event.type == sf::Event::MouseButtonPressed) {
-				on_mouse_click({event.mouseButton.x, event.mouseButton.y});
-			}
+		if (event.type == sf::Event::MouseButtonPressed) {
+			on_mouse_click({(double) event.mouseButton.x, (double) event.mouseButton.y});
+		}
 
-			if (event.type == sf::Event::MouseButtonReleased) {
-				on_mouse_click({event.mouseButton.x, event.mouseButton.y});
-			}
+		if (event.type == sf::Event::MouseButtonReleased) {
+			on_mouse_release({(double) event.mouseButton.x, (double) event.mouseButton.y});
+		}
 
-			if (event.type == sf::Event::MouseMoved) {
-				on_mouse_click({event.mouseMove.x, event.mouseMove.y});
-				mouse_pos = {event.mouseMove.x, event.mouseMove.y, 0};
-			}
-        }
+		if (event.type == sf::Event::MouseMoved) {
+			on_mouse_hover({(double) event.mouseMove.x, (double) event.mouseMove.y});
+			mouse_pos = {(double) event.mouseMove.x, (double) event.mouseMove.y, 0};
+		}
+	}
 }
 
 MogaEngine::MogaEngine(const char  *window_name,
@@ -196,7 +196,7 @@ MogaEngine::MogaEngine(const char  *window_name,
 
 	visual(new VisualEngine(window_name, screen_width, screen_height)),
 	physics(new PhysicsEngine()),
-	main_view(new View(ViewBody{{0, 0}, {screen_width, screen_height}}))
+	main_view(new View(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))
 {
 	init_time            = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count() / 1000000000.0;
 	current_time         = 0;
@@ -241,7 +241,8 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 
 bool MogaEngine::add_view(View *view) {
 	main_view->add_subview(view);
-	add_renderable(view);
+	add_tickable(view);
+	if (view->get_texture()) add_renderable(view->get_texture());
 
 	return true;
 }

@@ -33,19 +33,23 @@ void create_cage(MogaEngine *eng, SmartColor *color) {
     eng->add_object(line_11);
 }
 
+void gen_ball(MogaEngine *eng) {
+    Vec3d col = Vec3d::random_unit() * 250;
+    SmartColor *color = nullptr;
+    color = new SmartColor(col);
+    
+    Object *ball = new o_Ball({(double) (rand() % 500) + 150, (double)(rand() % 300) + 120}, 5, color, 1);
+    eng->add_object(ball);
+    eng->add_tickable(color);
+
+    Vec3d vel = Vec3d::random_unit() * 200;
+    vel.set(2, 0);
+    ball->get_solid_body()->set_velocity(vel);
+}
+
 void generate_balls(MogaEngine *eng, int cnt = 100) {
     for (int i = 0; i < cnt; ++i) {
-        Vec3d col = Vec3d::random_unit() * 250;
-        SmartColor *color = nullptr;
-        color = new SmartColor(col);
-        
-        Object *ball = new o_Ball({(double) (rand() % 500) + 150, (double)(rand() % 300) + 120}, 5, color, 1);
-        eng->add_object(ball);
-        eng->add_tickable(color);
-
-        Vec3d vel = Vec3d::random_unit() * 200;
-        vel.set(2, 0);
-        ball->get_solid_body()->set_velocity(vel);
+        gen_ball(eng);
     }
 
     auto color = new SmartColorSin(Color(255, 255, 255), 2);
@@ -55,6 +59,21 @@ void generate_balls(MogaEngine *eng, int cnt = 100) {
     eng->add_object(ball);
 }
 
+
+class SpawnBallMouseLambda : public MouseLambda {
+    MogaEngine *engine;
+
+public:
+    SpawnBallMouseLambda(MogaEngine *engine):
+    engine(engine)
+    {}
+
+    void operator()(const Vec2d &click) override {
+        gen_ball(engine);
+    }
+};
+
+
 int main() {
     srand(time(NULL));
     ChemEngine moga("MOGA", SCR_W, SCR_H, 1);
@@ -63,7 +82,14 @@ int main() {
     moga.add_tickable(color);
 
     create_cage(&moga, color);
-    generate_balls(&moga);
+    generate_balls(&moga, 5);
+
+    SmartColor *col = new SmartColor({155, 135, 100});
+    v_Button *butt = new v_Button(ViewBody{{100, 50}, {75, 200}}, col);
+    moga.add_tickable(col);
+    moga.add_view(butt);
+
+    butt->bind(new SpawnBallMouseLambda(&moga));
 
     moga.everlasting_loop();
 

@@ -1,15 +1,28 @@
 #include "view.h"
 
 
-View::View(ViewBody body, RenderableObject *texture, Lambda *reaction):
+View::View(ViewBody body, RenderableObject *texture, MouseLambda *on_click, MouseLambda *on_hover, MouseLambda *on_release):
 body(body),
 texture(texture),
-reaction(reaction)
-{}
+on_click(on_click),
+on_hover(on_hover),
+on_release(on_release)
+{
+    set_layer(1);
+    if (texture) {
+        texture->set_layer(1);
+    }
+}
 
 View::~View() {
     for (auto subview : subviews) {
         delete subview;
+    }
+}
+
+void View::tick(const double, const double) {
+    if (texture) {
+        texture->set_position(body.get_position());
     }
 }
 
@@ -24,44 +37,52 @@ void View::subrender(Renderer *renderer) {
     }
 }
 
-void View::on_click(Vec2d click) {
-    if (reaction) (*reaction)();
+void View::clicked(Vec2d click) {
+    // printf("click %d %d\n", (int) click.x(), (int) click.y());
+
+    if (on_click) (*on_click)(click);
 
     subclick(click);
 }
 
 void View::subclick(Vec2d click) {
     for (size_t i = 0; i < subviews.size(); ++i) {
-        if (subviews[i]->clicked(click)) {
-            subviews[i]->on_click(click - subviews[i]->get_body().get_position());
+        Vec2d subpos = subviews[i]->get_body().get_position();
+
+        if (subviews[i]->is_clicked(click - subpos)) {
+            subviews[i]->clicked(click - subpos);
         }
     }
 }
 
-void View::on_hover(Vec2d from, Vec2d to) {
-    if (reaction) (*reaction)();
+void View::hovered(Vec2d from, Vec2d to) {
+    if (on_hover) (*on_hover)(to);
 
     subhover(from, to);
 }
 
 void View::subhover(Vec2d from, Vec2d to) {
     for (size_t i = 0; i < subviews.size(); ++i) {
-        if (subviews[i]->clicked(to) || subviews[i]->clicked(from)) {
-            subviews[i]->on_hover(from - subviews[i]->get_body().get_position(), to - subviews[i]->get_body().get_position());
+        Vec2d subpos = subviews[i]->get_body().get_position();
+
+        if (subviews[i]->is_clicked(to - subpos) || subviews[i]->is_clicked(from - subpos)) {
+            subviews[i]->hovered(from - subpos, to - subpos);
         }
     }
 }
 
-void View::on_release(Vec2d release) {
-    if (reaction) (*reaction)();
+void View::released(Vec2d release) {
+    if (on_release) (*on_release)(release);
 
     subrelease(release);
 }
 
 void View::subrelease(Vec2d release) {
     for (size_t i = 0; i < subviews.size(); ++i) {
-        if (subviews[i]->clicked(release)) {
-            subviews[i]->on_release(release - subviews[i]->get_body().get_position());
+        Vec2d subpos = subviews[i]->get_body().get_position();
+
+        if (subviews[i]->is_clicked(release - subpos)) {
+            subviews[i]->released(release - subpos);
         }
     }
 }

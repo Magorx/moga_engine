@@ -17,6 +17,10 @@ public:
     using Vec3d::y;
     using Vec3d::z;
 
+    Vec2d(content3 newContent) {
+        content = newContent;
+    }
+
     Vec2d(double x, double y) {
         content[0] = x;
         content[1] = y;

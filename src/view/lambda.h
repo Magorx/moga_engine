@@ -1,7 +1,10 @@
 #pragma once
 
 
-class Lambda {
+#include "utils/vec2d.h"
+
+
+class MouseLambda {
 public:
-    virtual void operator()() = 0;
+    virtual void operator()(const Vec2d &pos) = 0;
 };

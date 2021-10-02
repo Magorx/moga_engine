@@ -54,6 +54,8 @@ add_executable(moga
         src/collections/renderables/renderables.cpp
         src/collections/objects/objects.cpp
 
+        src/collections/views/button.cpp
+
         # components
         src/visual/visual_engine.cpp
 

@@ -3,6 +3,7 @@
 
 bool layer_ascending_order(const Renderable *first, const Renderable *second)
 {
+    // printf("%d %d\n", first->layer, second->layer);
     return first->layer < second->layer;
 }
 
@@ -23,7 +24,7 @@ bool VisualEngine::add_renderable(Renderable *object) {
 }
 
 bool VisualEngine::render() {
-//     sort(render_objects.begin(), render_objects.end(), layer_ascending_order);
+    sort(render_objects.begin(), render_objects.end(), layer_ascending_order);
 
     const size_t obj_cnt = render_objects.size();
 

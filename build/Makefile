@@ -275,6 +275,30 @@ src/collections/smart_colors/smart_colors.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/smart_colors/smart_colors.cpp.s
 .PHONY : src/collections/smart_colors/smart_colors.cpp.s
 
+src/collections/views/button.o: src/collections/views/button.cpp.o
+.PHONY : src/collections/views/button.o
+
+# target to build an object file
+src/collections/views/button.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/views/button.cpp.o
+.PHONY : src/collections/views/button.cpp.o
+
+src/collections/views/button.i: src/collections/views/button.cpp.i
+.PHONY : src/collections/views/button.i
+
+# target to preprocess a source file
+src/collections/views/button.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/views/button.cpp.i
+.PHONY : src/collections/views/button.cpp.i
+
+src/collections/views/button.s: src/collections/views/button.cpp.s
+.PHONY : src/collections/views/button.s
+
+# target to generate assembly for a file
+src/collections/views/button.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/views/button.cpp.s
+.PHONY : src/collections/views/button.cpp.s
+
 src/engine/moga_engine.o: src/engine/moga_engine.cpp.o
 .PHONY : src/engine/moga_engine.o
 
@@ -685,6 +709,9 @@ help:
 	@echo "... src/collections/smart_colors/smart_colors.o"
 	@echo "... src/collections/smart_colors/smart_colors.i"
 	@echo "... src/collections/smart_colors/smart_colors.s"
+	@echo "... src/collections/views/button.o"
+	@echo "... src/collections/views/button.i"
+	@echo "... src/collections/views/button.s"
 	@echo "... src/engine/moga_engine.o"
 	@echo "... src/engine/moga_engine.i"
 	@echo "... src/engine/moga_engine.s"
