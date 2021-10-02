@@ -12,7 +12,7 @@ public:
 
 	virtual ~Tickable() {}
 
-	virtual void tick(const double = 0, const double = 0) {};
+	virtual void tick(const double = 0, const double = 0) {}; // double dt, double absolute_time
 
 	inline void del() { del_tickable = true; }
 };

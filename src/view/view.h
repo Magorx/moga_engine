@@ -36,10 +36,11 @@ protected:
     MouseLambda *on_click;
     MouseLambda *on_hover;
     MouseLambda *on_release;
+    MouseLambda *on_tick;
 
 public:
     View(ViewBody body, RenderableObject *texture = nullptr,
-         MouseLambda *on_click = nullptr, MouseLambda *on_hover = nullptr, MouseLambda *on_release = nullptr);
+         MouseLambda *on_click = nullptr, MouseLambda *on_hover = nullptr, MouseLambda *on_release = nullptr, MouseLambda *on_tick = nullptr);
     virtual ~View();
 
     void add_subview(View *subview);
@@ -47,6 +48,7 @@ public:
     void delete_subview(size_t index);
 
     virtual void tick(const double = 0, const double = 0) override;
+    virtual void subtick(const double dt = 0, const double time = 0);
 
     virtual void render   (Renderer *renderer) override;
     virtual void subrender(Renderer *renderer);
@@ -70,6 +72,9 @@ public:
 
     inline MouseLambda *get_on_hover() { return on_hover; };
     inline void set_on_hover(MouseLambda *on_hover_) { on_hover = on_hover_; }
+
+    inline MouseLambda *get_on_tick() { return on_tick; };
+    inline void set_on_tick(MouseLambda *on_tick_) { on_tick = on_tick_; }
 
     inline RenderableObject *get_texture() { return texture; }
 

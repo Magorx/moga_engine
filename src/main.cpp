@@ -68,7 +68,7 @@ public:
     engine(engine)
     {}
 
-    void operator()(const Vec2d &click) override {
+    void operator()(const Vec2d &) override {
         gen_ball(engine);
     }
 };

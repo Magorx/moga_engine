@@ -1,12 +1,13 @@
 #include "view.h"
 
 
-View::View(ViewBody body, RenderableObject *texture, MouseLambda *on_click, MouseLambda *on_hover, MouseLambda *on_release):
+View::View(ViewBody body, RenderableObject *texture, MouseLambda *on_click, MouseLambda *on_hover, MouseLambda *on_release, MouseLambda *on_tick):
 body(body),
 texture(texture),
 on_click(on_click),
 on_hover(on_hover),
-on_release(on_release)
+on_release(on_release),
+on_tick(on_tick)
 {
     set_layer(1);
     if (texture) {
@@ -26,6 +27,12 @@ void View::tick(const double, const double) {
     }
 }
 
+void View::subtick(const double dt, const double time) {
+    for (size_t i = 0; i < subviews.size(); ++i) {
+        subviews[i]->tick(dt, time);
+    }
+}
+
 void View::render(Renderer *renderer) {
     if (texture) texture->render(renderer);
     subrender(renderer);
@@ -33,13 +40,12 @@ void View::render(Renderer *renderer) {
 
 void View::subrender(Renderer *renderer) {
     for (size_t i = 0; i < subviews.size(); ++i) {
-        subviews[i]->subrender(renderer);
+        subviews[i]->render(renderer);
     }
 }
 
 void View::clicked(Vec2d click) {
     // printf("click %d %d\n", (int) click.x(), (int) click.y());
-
     if (on_click) (*on_click)(click);
 
     subclick(click);
