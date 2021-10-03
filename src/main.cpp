@@ -60,16 +60,43 @@ void generate_balls(MogaEngine *eng, int cnt = 100) {
 }
 
 
-class SpawnBallMouseLambda : public MouseLambda {
+class SpawnBallLambda : public Lambda {
     MogaEngine *engine;
 
 public:
-    SpawnBallMouseLambda(MogaEngine *engine):
+    SpawnBallLambda(MogaEngine *engine):
     engine(engine)
     {}
 
-    void operator()(const Vec2d &) override {
+    void operator()() {
         gen_ball(engine);
+    }
+};
+
+
+class SwitchOnChemistryModeLambda : public Lambda {
+    ChemEngine *engine;
+
+public:
+    SwitchOnChemistryModeLambda(ChemEngine *engine):
+    engine(engine)
+    {}
+
+    void operator()() {
+        engine->enable_chemistry();
+    }
+};
+
+class SwitchOffChemistryModeLambda : public Lambda {
+    ChemEngine *engine;
+
+public:
+    SwitchOffChemistryModeLambda(ChemEngine *engine):
+    engine(engine)
+    {}
+
+    void operator()() {
+        engine->disable_chemistry();
     }
 };
 
@@ -84,12 +111,17 @@ int main() {
     create_cage(&moga, color);
     generate_balls(&moga, 5);
 
-    SmartColor *col = new SmartColor({155, 135, 100});
-    v_Button *butt = new v_Button(ViewBody{{100, 50}, {75, 200}}, col);
-    moga.add_tickable(col);
-    moga.add_view(butt);
+    SmartColor *col1 = new SmartColor({100, 100, 100});
+    SmartColor *col2 = new SmartColor({225, 35, 30});
+    v_Toggler *togg = new v_Toggler(ViewBody{{100, 530}, {50, 50}}, col1, col2, new SwitchOnChemistryModeLambda(&moga), new SwitchOffChemistryModeLambda(&moga));
+    moga.add_tickable(col1);
+    moga.add_tickable(col2);
+    moga.add_view(togg);
 
-    butt->bind(new SpawnBallMouseLambda(&moga));
+    SmartColor *col3 = new SmartColor({100, 100, 230});
+    v_Button *butt = new v_Button(ViewBody{{225, 530}, {50, 50}}, col3, new SpawnBallLambda(&moga));
+    moga.add_tickable(col3);
+    moga.add_view(butt);
 
     moga.everlasting_loop();
 

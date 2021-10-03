@@ -5,9 +5,11 @@ class Tickable
 {
 public:
 	bool del_tickable;
+	bool tickable_nonfree;
 
 	Tickable():
-	del_tickable(false)
+	del_tickable(false),
+	tickable_nonfree(false)
 	{}
 
 	virtual ~Tickable() {}

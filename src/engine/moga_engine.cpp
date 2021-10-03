@@ -82,7 +82,7 @@ void MogaEngine::clear_deleted_tickables() {
                 ++next_alive); // find next alive object
 
             if (next_alive < tickables_cnt) {
-                if (tickables[i]) {
+                if (tickables[i] && !tickables[i]->tickable_nonfree) {
                     delete tickables[i];
                 }
 
@@ -241,8 +241,12 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 
 bool MogaEngine::add_view(View *view) {
 	main_view->add_subview(view);
+
+	view->tickable_nonfree = true;
 	add_tickable(view);
+
 	if (view->get_texture()) add_renderable(view->get_texture());
+	add_renderable(view);
 
 	return true;
 }

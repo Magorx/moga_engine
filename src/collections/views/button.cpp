@@ -7,15 +7,16 @@ const Vec2d BUTTON_CLICK_POS_DELTA = {0, 4};
 double BUTTON_CLICKED_SHADING_COEF = 0.8;
 
 
-v_Button::v_Button(const ViewBody &body, SmartColor *color, MouseLambda *on_click, char *lable):
-View(body, new r_Rectangle(body.position, body.size, color), on_click),
+v_Button::v_Button(const ViewBody &body, SmartColor *color, Lambda   *click_response, char *lable):
+View(body, new r_Rectangle(body.position, body.size, color)),
 lable(lable),
 pos_delta(0, 0),
-pressed(false)
+pressed(false),
+click_response(click_response)
 {}
 
-void v_Button::bind(MouseLambda *on_click) {
-    set_on_click(on_click);
+void v_Button::bind(Lambda *click_response_) {
+    click_response = click_response_;
 }
 
 void v_Button::press() {
@@ -57,6 +58,7 @@ void v_Button::clicked(Vec2d click) {
     if (!pressed) {
         press();
         if (on_click) (*on_click)(click);
+        if (click_response) (*click_response)();
     }
 
     subclick(click);

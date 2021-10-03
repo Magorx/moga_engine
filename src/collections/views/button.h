@@ -16,12 +16,14 @@ class v_Button : public View {
 
     bool pressed;
 
+    Lambda *click_response;
+
 public:
-    v_Button(const ViewBody &body, SmartColor *color, MouseLambda *on_click = nullptr, char *lable = nullptr);
+    v_Button(const ViewBody &body, SmartColor *color, Lambda *click_response = nullptr, char *lable = nullptr);
 
     virtual void tick(const double = 0, const double = 0) override;
 
-    void bind(MouseLambda *on_click);
+    void bind(Lambda *click_response_);
 
     virtual void clicked(Vec2d click) override;
     virtual void hovered(Vec2d from, Vec2d to) override;

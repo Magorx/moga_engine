@@ -299,6 +299,30 @@ src/collections/views/button.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/views/button.cpp.s
 .PHONY : src/collections/views/button.cpp.s
 
+src/collections/views/toggler.o: src/collections/views/toggler.cpp.o
+.PHONY : src/collections/views/toggler.o
+
+# target to build an object file
+src/collections/views/toggler.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/views/toggler.cpp.o
+.PHONY : src/collections/views/toggler.cpp.o
+
+src/collections/views/toggler.i: src/collections/views/toggler.cpp.i
+.PHONY : src/collections/views/toggler.i
+
+# target to preprocess a source file
+src/collections/views/toggler.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/views/toggler.cpp.i
+.PHONY : src/collections/views/toggler.cpp.i
+
+src/collections/views/toggler.s: src/collections/views/toggler.cpp.s
+.PHONY : src/collections/views/toggler.s
+
+# target to generate assembly for a file
+src/collections/views/toggler.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/moga.dir/build.make CMakeFiles/moga.dir/src/collections/views/toggler.cpp.s
+.PHONY : src/collections/views/toggler.cpp.s
+
 src/engine/moga_engine.o: src/engine/moga_engine.cpp.o
 .PHONY : src/engine/moga_engine.o
 
@@ -712,6 +736,9 @@ help:
 	@echo "... src/collections/views/button.o"
 	@echo "... src/collections/views/button.i"
 	@echo "... src/collections/views/button.s"
+	@echo "... src/collections/views/toggler.o"
+	@echo "... src/collections/views/toggler.i"
+	@echo "... src/collections/views/toggler.s"
 	@echo "... src/engine/moga_engine.o"
 	@echo "... src/engine/moga_engine.i"
 	@echo "... src/engine/moga_engine.s"

@@ -5,12 +5,22 @@ ChemEngine::ChemEngine( const char  *window_name,
                         const size_t screen_width,
                         const size_t screen_height,
                         const size_t pixel_size):
-MogaEngine(window_name, screen_width, screen_height, pixel_size)
+MogaEngine(window_name, screen_width, screen_height, pixel_size),
+to_compute_chemistry(false)
 {}
+
+void ChemEngine::enable_chemistry() {
+    to_compute_chemistry = true;
+}
+
+void ChemEngine::disable_chemistry() {
+    to_compute_chemistry = false;
+}
 
 void ChemEngine::physics_tick() {
 	physics->tick(PHYSICS_TIME_STEP, physics_current_time);
-    reactions_process();
+    
+    if (to_compute_chemistry) reactions_process();
 
     // printf("objs: %d\n", objects.size());
 }
