@@ -23,7 +23,8 @@ class v_Toggler : public View {
 
 public:
     v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, 
-              Lambda *on = nullptr, Lambda *off = nullptr,  float button_factor = 0.7);
+              Lambda *on = nullptr, Lambda *off = nullptr,
+              bool online = false, float button_factor = 0.7);
 
     // virtual void tick(const double = 0, const double = 0) override;
 
