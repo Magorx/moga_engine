@@ -363,10 +363,24 @@ CMakeFiles/moga.dir/src/collections/views/toggler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/collections/views/toggler.cpp.s"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/collections/views/toggler.cpp -o CMakeFiles/moga.dir/src/collections/views/toggler.cpp.s
 
+CMakeFiles/moga.dir/src/collections/views/text.cpp.o: CMakeFiles/moga.dir/flags.make
+CMakeFiles/moga.dir/src/collections/views/text.cpp.o: ../src/collections/views/text.cpp
+CMakeFiles/moga.dir/src/collections/views/text.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/moga.dir/src/collections/views/text.cpp.o"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/collections/views/text.cpp.o -MF CMakeFiles/moga.dir/src/collections/views/text.cpp.o.d -o CMakeFiles/moga.dir/src/collections/views/text.cpp.o -c /home/kctf/Repositories/moga_engine/src/collections/views/text.cpp
+
+CMakeFiles/moga.dir/src/collections/views/text.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/moga.dir/src/collections/views/text.cpp.i"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kctf/Repositories/moga_engine/src/collections/views/text.cpp > CMakeFiles/moga.dir/src/collections/views/text.cpp.i
+
+CMakeFiles/moga.dir/src/collections/views/text.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/moga.dir/src/collections/views/text.cpp.s"
+	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kctf/Repositories/moga_engine/src/collections/views/text.cpp -o CMakeFiles/moga.dir/src/collections/views/text.cpp.s
+
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: ../src/visual/visual_engine.cpp
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o -MF CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o.d -o CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o -c /home/kctf/Repositories/moga_engine/src/visual/visual_engine.cpp
 
 CMakeFiles/moga.dir/src/visual/visual_engine.cpp.i: cmake_force
@@ -380,7 +394,7 @@ CMakeFiles/moga.dir/src/visual/visual_engine.cpp.s: cmake_force
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: CMakeFiles/moga.dir/flags.make
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: ../src/utils/vec3d.cpp
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.o: CMakeFiles/moga.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
 	clang++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/moga.dir/src/utils/vec3d.cpp.o -MF CMakeFiles/moga.dir/src/utils/vec3d.cpp.o.d -o CMakeFiles/moga.dir/src/utils/vec3d.cpp.o -c /home/kctf/Repositories/moga_engine/src/utils/vec3d.cpp
 
 CMakeFiles/moga.dir/src/utils/vec3d.cpp.i: cmake_force
@@ -414,6 +428,7 @@ moga_OBJECTS = \
 "CMakeFiles/moga.dir/src/collections/objects/objects.cpp.o" \
 "CMakeFiles/moga.dir/src/collections/views/button.cpp.o" \
 "CMakeFiles/moga.dir/src/collections/views/toggler.cpp.o" \
+"CMakeFiles/moga.dir/src/collections/views/text.cpp.o" \
 "CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o" \
 "CMakeFiles/moga.dir/src/utils/vec3d.cpp.o"
 
@@ -441,6 +456,7 @@ moga: CMakeFiles/moga.dir/src/collections/renderables/renderables.cpp.o
 moga: CMakeFiles/moga.dir/src/collections/objects/objects.cpp.o
 moga: CMakeFiles/moga.dir/src/collections/views/button.cpp.o
 moga: CMakeFiles/moga.dir/src/collections/views/toggler.cpp.o
+moga: CMakeFiles/moga.dir/src/collections/views/text.cpp.o
 moga: CMakeFiles/moga.dir/src/visual/visual_engine.cpp.o
 moga: CMakeFiles/moga.dir/src/utils/vec3d.cpp.o
 moga: CMakeFiles/moga.dir/build.make
@@ -448,7 +464,7 @@ moga: /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1
 moga: /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1
 moga: /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1
 moga: CMakeFiles/moga.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Linking CXX executable moga"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/kctf/Repositories/moga_engine/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Linking CXX executable moga"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/moga.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

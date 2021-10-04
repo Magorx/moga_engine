@@ -1,7 +1,7 @@
 #include "view.h"
 
 
-View::View(ViewBody body, RenderableObject *texture, MouseLambda *on_click, MouseLambda *on_hover, MouseLambda *on_release, MouseLambda *on_tick):
+AbstractView::AbstractView(ViewBody body, RenderableObject *texture, MouseLambda *on_click, MouseLambda *on_hover, MouseLambda *on_release, MouseLambda *on_tick):
 body(body),
 texture(texture),
 on_click(on_click),
@@ -15,43 +15,47 @@ on_tick(on_tick)
     }
 }
 
-View::~View() {
+AbstractView::~AbstractView() {
     for (auto subview : subviews) {
         delete subview;
     }
 }
 
-void View::tick(const double, const double) {
+void AbstractView::tick(const double, const double) {
     if (texture) {
         texture->set_position(body.get_position());
     }
 }
 
-void View::subtick(const double dt, const double time) {
+void AbstractView::subtick(const double dt, const double time) {
     for (size_t i = 0; i < subviews.size(); ++i) {
         subviews[i]->tick(dt, time);
     }
 }
 
-void View::render(Renderer *renderer) {
+void AbstractView::render(Renderer *renderer) {
     if (texture) texture->render(renderer);
     subrender(renderer);
 }
 
-void View::subrender(Renderer *renderer) {
+void AbstractView::subrender(Renderer *renderer) {
+    renderer->shift(body.position);
+
     for (size_t i = 0; i < subviews.size(); ++i) {
         subviews[i]->render(renderer);
     }
+
+    renderer->shift(-body.position);
 }
 
-void View::clicked(Vec2d click) {
+void AbstractView::clicked(Vec2d click) {
     // printf("click %d %d\n", (int) click.x(), (int) click.y());
     if (on_click) (*on_click)(click);
 
     subclick(click);
 }
 
-void View::subclick(Vec2d click) {
+void AbstractView::subclick(Vec2d click) {
     for (size_t i = 0; i < subviews.size(); ++i) {
         Vec2d subpos = subviews[i]->get_body().get_position();
 
@@ -61,13 +65,13 @@ void View::subclick(Vec2d click) {
     }
 }
 
-void View::hovered(Vec2d from, Vec2d to) {
+void AbstractView::hovered(Vec2d from, Vec2d to) {
     if (on_hover) (*on_hover)(to);
 
     subhover(from, to);
 }
 
-void View::subhover(Vec2d from, Vec2d to) {
+void AbstractView::subhover(Vec2d from, Vec2d to) {
     for (size_t i = 0; i < subviews.size(); ++i) {
         Vec2d subpos = subviews[i]->get_body().get_position();
 
@@ -77,13 +81,13 @@ void View::subhover(Vec2d from, Vec2d to) {
     }
 }
 
-void View::released(Vec2d release) {
+void AbstractView::released(Vec2d release) {
     if (on_release) (*on_release)(release);
 
     subrelease(release);
 }
 
-void View::subrelease(Vec2d release) {
+void AbstractView::subrelease(Vec2d release) {
     for (size_t i = 0; i < subviews.size(); ++i) {
         Vec2d subpos = subviews[i]->get_body().get_position();
 
@@ -93,13 +97,13 @@ void View::subrelease(Vec2d release) {
     }
 }
 
-void View::add_subview(View *subview) {
+void AbstractView::add_subview(AbstractView *subview) {
     if (!subview) return;
 
     subviews.push_back(subview);
 }
 
-void View::delete_subview(View *view) {
+void AbstractView::delete_subview(AbstractView *view) {
     size_t i = 0;
     size_t views_cnt = subviews.size();
 
@@ -112,13 +116,13 @@ void View::delete_subview(View *view) {
     }
 }
 
-void View::delete_subview(size_t index) {
+void AbstractView::delete_subview(size_t index) {
     if (index < subviews.size()) {
         std::swap(subviews[index], subviews[subviews.size()]);
         subviews.pop_back();
     }
 }
 
-ViewBody &View::get_body() {
+ViewBody &AbstractView::get_body() {
     return body;
 }

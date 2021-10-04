@@ -26,12 +26,12 @@ struct ViewBody {
 };
 
 
-class View : public RenderableObject, public Tickable {
+class AbstractView : public RenderableObject, public Tickable {
 protected:
     ViewBody body;
     RenderableObject *texture;
     
-    std::vector<View*> subviews;
+    std::vector<AbstractView*> subviews;
 
     MouseLambda *on_click;
     MouseLambda *on_hover;
@@ -39,12 +39,15 @@ protected:
     MouseLambda *on_tick;
 
 public:
-    View(ViewBody body, RenderableObject *texture = nullptr,
-         MouseLambda *on_click = nullptr, MouseLambda *on_hover = nullptr, MouseLambda *on_release = nullptr, MouseLambda *on_tick = nullptr);
-    virtual ~View();
+    AbstractView(ViewBody body, RenderableObject *texture = nullptr,
+                 MouseLambda *on_click   = nullptr, 
+                 MouseLambda *on_hover   = nullptr,
+                 MouseLambda *on_release = nullptr,
+                 MouseLambda *on_tick    = nullptr);
+    virtual ~AbstractView();
 
-    void add_subview(View *subview);
-    void delete_subview(View *view);
+    void add_subview(AbstractView *subview);
+    void delete_subview(AbstractView *view);
     void delete_subview(size_t index);
 
     virtual void tick(const double = 0, const double = 0) override;
@@ -56,10 +59,10 @@ public:
     virtual void clicked(Vec2d click);
     virtual void subclick(Vec2d click);
 
-    virtual void hovered(Vec2d from, Vec2d to);
+    virtual void hovered (Vec2d from, Vec2d to);
     virtual void subhover(Vec2d from, Vec2d to);
 
-    virtual void released(Vec2d release);
+    virtual void released  (Vec2d release);
     virtual void subrelease(Vec2d release);
 
     inline bool is_clicked(const Vec2d &click) { return body.is_clicked(click); }

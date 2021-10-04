@@ -25,6 +25,7 @@ struct Screen {
 
 class Renderer {
     Screen scr;
+    Vec3d offset;
 
 public:
     Renderer(const char *window_name, int size_x, int size_y);
@@ -37,10 +38,15 @@ public:
         return scr.window;
     }
 
-    void draw_circle(const Vec3d &pos, const double rad, const Color &color);
-    void draw_line(const Vec3d &p1, const Vec3d &p2, const Color &color);
-    void draw_square(const Vec3d &pos, const double size, const Color &color);
-    void draw_rectangle(const Vec3d &pos, const Vec2d size, const Color &color);
+    inline void shift(const Vec3d &delta) {
+        offset += delta;
+    }
+
+    void draw_circle(Vec3d pos, const double rad, const Color &color);
+    void draw_line(Vec3d p1, Vec3d p2, const Color &color);
+    void draw_square(Vec3d pos, const double size, const Color &color);
+    void draw_rectangle(Vec3d pos, const Vec2d size, const Color &color);
+    void draw_text(const char *lable, int size, Vec2d pos, const Color &back_color, const Color &font_color,  bool to_background, bool to_centrize = false);
 };
 
 #endif // RENDERER_H

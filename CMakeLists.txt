@@ -56,6 +56,7 @@ add_executable(moga
 
         src/collections/views/button.cpp
         src/collections/views/toggler.cpp
+        src/collections/views/text.cpp
 
         # components
         src/visual/visual_engine.cpp

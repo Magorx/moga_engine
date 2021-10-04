@@ -2,7 +2,7 @@
 
 
 template <typename T>
-class v_Slider : public View {
+class v_Slider : public AbstractView {
     SliderRange range;
     T &val;
 

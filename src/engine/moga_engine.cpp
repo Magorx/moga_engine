@@ -196,7 +196,7 @@ MogaEngine::MogaEngine(const char  *window_name,
 
 	visual(new VisualEngine(window_name, screen_width, screen_height)),
 	physics(new PhysicsEngine()),
-	main_view(new View(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))
+	main_view(new AbstractView(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))
 {
 	init_time            = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count() / 1000000000.0;
 	current_time         = 0;
@@ -239,7 +239,7 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 	return true;
 }
 
-bool MogaEngine::add_view(View *view) {
+bool MogaEngine::add_view(AbstractView *view) {
 	main_view->add_subview(view);
 
 	view->tickable_nonfree = true;

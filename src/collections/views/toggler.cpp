@@ -8,7 +8,7 @@ const double TOGGLER_ONLINE_SHADOWER = 0.65;
 v_Toggler::v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, 
               Lambda *on, Lambda *off,
               bool online, float button_factor) :
-View(body, nullptr),
+AbstractView(body, nullptr),
 pressed(false),
 online(online),
 color_border(color_border),

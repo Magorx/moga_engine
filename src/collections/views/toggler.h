@@ -9,7 +9,7 @@ extern const double TOGGLER_PRESS_SHADOWER;
 extern const double TOGGLER_ONLINE_SHADOWER;
 
 
-class v_Toggler : public View {
+class v_Toggler : public AbstractView {
     bool pressed;
     bool online;
 

@@ -48,7 +48,7 @@ protected:
 public:
 	VisualEngine  *visual;
 	PhysicsEngine *physics;
-	View *main_view;
+	AbstractView *main_view;
 
 	MogaEngine(const char  *window_name,
 				const size_t screen_width,
@@ -62,7 +62,7 @@ public:
 	bool add_solid_body(SolidBody *object);
 	bool add_renderable(Renderable *object);
 	bool add_object(Object *object, bool is_collidable = true);
-	bool add_view(View *view);
+	bool add_view(AbstractView *view);
 
 	virtual void frame_init_tick();
 	virtual void visual_render_tick();

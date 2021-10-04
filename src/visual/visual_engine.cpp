@@ -24,7 +24,7 @@ bool VisualEngine::add_renderable(Renderable *object) {
 }
 
 bool VisualEngine::render() {
-    sort(render_objects.begin(), render_objects.end(), layer_ascending_order);
+    // sort(render_objects.begin(), render_objects.end(), layer_ascending_order);
 
     const size_t obj_cnt = render_objects.size();
 
