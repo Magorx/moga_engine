@@ -5,6 +5,10 @@
 #include <functional>
 
 
+#define FRIENDLY_EVENT_ACCEPTOR(AcceptorClass) friend AcceptorClass; AcceptorClass
+#define EVENT_ACCEPTOR(AcceptorClass) AcceptorClass
+
+
 enum class EventAccResult {
     none,
     stop,

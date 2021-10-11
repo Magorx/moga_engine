@@ -45,6 +45,9 @@ class v_Button : public AbstractView {
     ButtonReleaseAcceptor on_release;
     ButtonMoveAcceptor    on_move;
 
+    friend ButtonPressAcceptor;
+    friend ButtonReleaseAcceptor;
+    friend ButtonMoveAcceptor;
 
 public:
     v_Button(const ViewBody &body, SmartColor *color);
@@ -60,8 +63,4 @@ public:
 
     void press();
     void unpress();
-
-    friend ButtonPressAcceptor;
-    friend ButtonReleaseAcceptor;
-    friend ButtonMoveAcceptor;
 };

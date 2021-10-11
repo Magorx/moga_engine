@@ -88,7 +88,6 @@ ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button) : EventAcceptor(button)
 
 EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event) {
     v_Button *button = acceptor;
-    printf("move %g %g\n", event.from.x(), event.from.y());
 
     if (button->is_inside(event.to) && !button->is_inside(event.from)) {
         button->pos_delta += BUTTON_HOVER_POS_DELTA;

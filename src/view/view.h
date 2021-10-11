@@ -39,7 +39,6 @@ public:
 };
 
 
-
 struct ViewBody {
     Vec2d position;
     Vec2d size;
@@ -65,6 +64,10 @@ protected:
     AVReleaseAcceptor on_release;
     AVMoveAcceptor    on_move;
 
+    friend AVPressAcceptor;
+    friend AVMoveAcceptor;
+    friend AVReleaseAcceptor;
+
 public:
     AbstractView(ViewBody body, RenderableObject *texture = nullptr);
     virtual ~AbstractView();
@@ -85,7 +88,4 @@ public:
 
     ViewBody &get_body();
 
-    friend AVPressAcceptor;
-    friend AVMoveAcceptor;
-    friend AVReleaseAcceptor;
 };
