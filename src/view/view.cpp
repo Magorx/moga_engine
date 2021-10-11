@@ -1,18 +1,30 @@
 #include "view.h"
+#include <memory>
+#include <cstdlib>
+#include <cxxabi.h>
+#include <iostream>
 
 
-AbstractView::AbstractView(ViewBody body, RenderableObject *texture, MouseLambda *on_click, MouseLambda *on_hover, MouseLambda *on_release, MouseLambda *on_tick):
+AbstractView::AbstractView(ViewBody body, RenderableObject *texture):
 body(body),
 texture(texture),
-on_click(on_click),
-on_hover(on_hover),
-on_release(on_release),
-on_tick(on_tick)
+on_press(this),
+on_release(this),
+on_move(this)
 {
     set_layer(1);
     if (texture) {
         texture->set_layer(1);
     }
+
+    e_mouse_press.add(&on_press);
+    e_mouse_release.add(&on_release);
+    e_mouse_move.add(&on_move);
+
+    e_mouse_press.set_event_affector([this](const Event::MousePress &event) { return Event::MousePress{event.position - this->body.position}; } );
+    e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease{event.position - this->body.position}; } );
+    e_mouse_move.set_event_affector([this](const Event::MouseMove &event) { return Event::MouseMove{event.from - this->body.position, event.to - this->body.position}; } );
+
 }
 
 AbstractView::~AbstractView() {
@@ -20,6 +32,7 @@ AbstractView::~AbstractView() {
         delete subview;
     }
 }
+
 
 void AbstractView::tick(const double, const double) {
     if (texture) {
@@ -48,59 +61,11 @@ void AbstractView::subrender(Renderer *renderer) {
     renderer->shift(-body.position);
 }
 
-void AbstractView::clicked(Vec2d click) {
-    // printf("click %d %d\n", (int) click.x(), (int) click.y());
-    if (on_click) (*on_click)(click);
-
-    subclick(click);
-}
-
-void AbstractView::subclick(Vec2d click) {
-    for (size_t i = 0; i < subviews.size(); ++i) {
-        Vec2d subpos = subviews[i]->get_body().get_position();
-
-        if (subviews[i]->is_clicked(click - subpos)) {
-            subviews[i]->clicked(click - subpos);
-        }
-    }
-}
-
-void AbstractView::hovered(Vec2d from, Vec2d to) {
-    if (on_hover) (*on_hover)(to);
-
-    subhover(from, to);
-}
-
-void AbstractView::subhover(Vec2d from, Vec2d to) {
-    for (size_t i = 0; i < subviews.size(); ++i) {
-        Vec2d subpos = subviews[i]->get_body().get_position();
-
-        if (subviews[i]->is_clicked(to - subpos) || subviews[i]->is_clicked(from - subpos)) {
-            subviews[i]->hovered(from - subpos, to - subpos);
-        }
-    }
-}
-
-void AbstractView::released(Vec2d release) {
-    if (on_release) (*on_release)(release);
-
-    subrelease(release);
-}
-
-void AbstractView::subrelease(Vec2d release) {
-    for (size_t i = 0; i < subviews.size(); ++i) {
-        Vec2d subpos = subviews[i]->get_body().get_position();
-
-        if (subviews[i]->is_clicked(release - subpos)) {
-            subviews[i]->released(release - subpos);
-        }
-    }
-}
-
 void AbstractView::add_subview(AbstractView *subview) {
     if (!subview) return;
 
     subviews.push_back(subview);
+    add_es(subview);
 }
 
 void AbstractView::delete_subview(AbstractView *view) {
@@ -126,3 +91,36 @@ void AbstractView::delete_subview(size_t index) {
 ViewBody &AbstractView::get_body() {
     return body;
 }
+
+AVPressAcceptor::AVPressAcceptor(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVPressAcceptor::operator()(const Event::MousePress &event) {
+    if (!acceptor->is_inside(event.position)) {
+        return EventAccResult::stop;
+    }
+
+    return EventAccResult::none;
+}
+
+
+AVReleaseAcceptor::AVReleaseAcceptor(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVReleaseAcceptor::operator()(const Event::MouseRelease &event) {
+    if (!acceptor->is_inside(event.position)) {
+        return EventAccResult::stop;
+    }
+
+    return EventAccResult::none;
+}
+
+
+AVMoveAcceptor::AVMoveAcceptor(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVMoveAcceptor::operator()(const Event::MouseMove &event) {
+    if (!acceptor->is_inside(event.from) && !acceptor->is_inside(event.to)) {
+        return EventAccResult::stop;
+    }
+    
+    return EventAccResult::none;
+}
+

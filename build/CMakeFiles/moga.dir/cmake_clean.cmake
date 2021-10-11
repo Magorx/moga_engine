@@ -13,8 +13,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/moga.dir/src/collections/views/button.cpp.o.d"
   "CMakeFiles/moga.dir/src/collections/views/text.cpp.o"
   "CMakeFiles/moga.dir/src/collections/views/text.cpp.o.d"
-  "CMakeFiles/moga.dir/src/collections/views/toggler.cpp.o"
-  "CMakeFiles/moga.dir/src/collections/views/toggler.cpp.o.d"
   "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o"
   "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o.d"
   "CMakeFiles/moga.dir/src/engine/object.cpp.o"

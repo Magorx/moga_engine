@@ -54,9 +54,9 @@ void v_Toggler::clicked(Vec2d click) {
 }
 
 void v_Toggler::hovered(Vec2d from, Vec2d to) {
-    if (is_clicked(to) && !is_clicked(from)) {}
+    if (is_inside(to) && !is_inside(from)) {}
 
-    if (is_clicked(from) && !is_clicked(to)) {
+    if (is_inside(from) && !is_inside(to)) {
         if (pressed) {
             unpress();
         }

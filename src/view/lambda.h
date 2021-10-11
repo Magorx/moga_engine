@@ -3,10 +3,10 @@
 
 #include "utils/vec2d.h"
 
-
+template <typename T>
 class Lambda {
 public:
-    virtual void operator()() = 0;
+    virtual void operator()(const T& event) = 0;
 };
 
 class MouseLambda {

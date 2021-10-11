@@ -7,12 +7,18 @@ const Vec2d BUTTON_CLICK_POS_DELTA = {0, 4};
 double BUTTON_CLICKED_SHADING_COEF = 0.8;
 
 
-v_Button::v_Button(const ViewBody &body, SmartColor *color, Lambda *click_response):
+v_Button::v_Button(const ViewBody &body, SmartColor *color):
 AbstractView(body, new r_Rectangle(body.position, body.size, color)),
 pos_delta(0, 0),
 pressed(false),
-click_response(click_response)
-{}
+on_press(this),
+on_release(this),
+on_move(this)
+{
+    e_mouse_press.add(&on_press);
+    e_mouse_move.add(&on_move);
+    e_mouse_release.add(&on_release);
+}
 
 void v_Button::subrender(Renderer *renderer) {
     renderer->shift(body.position + pos_delta);
@@ -22,10 +28,6 @@ void v_Button::subrender(Renderer *renderer) {
     }
 
     renderer->shift(-body.position - pos_delta);
-}
-
-void v_Button::bind(Lambda *click_response_) {
-    click_response = click_response_;
 }
 
 void v_Button::add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color) {
@@ -53,44 +55,52 @@ void v_Button::unpress() {
     color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
 }
 
-
-void v_Button::hovered(Vec2d from, Vec2d to) {
-    if (is_clicked(to) && !is_clicked(from)) {
-        pos_delta += BUTTON_HOVER_POS_DELTA;
-    }
-
-    if (is_clicked(from) && !is_clicked(to)) {
-        if (pressed) {
-            unpress();
-        }
-
-        pos_delta -= BUTTON_HOVER_POS_DELTA;
-    }
-
-    subhover(from, to);
-}
-
-void v_Button::clicked(Vec2d click) {
-    if (!pressed) {
-        press();
-        if (on_click) (*on_click)(click);
-        if (click_response) (*click_response)();
-    }
-
-    subclick(click);
-}
-
-void v_Button::released(Vec2d release) {
-    if (pressed) {
-        if (on_release) (*on_release)(release);
-        unpress();
-    }
-
-    subrelease(release);
-}
-
 void v_Button::tick(const double, const double) {
     if (texture) {
         texture->set_position(body.get_position() + pos_delta);
     }
+}
+
+
+ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button) : EventAcceptor(button) {}
+
+EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &) {
+    if (!acceptor->pressed) {
+        acceptor->press();
+    }
+
+    return EventAccResult::none;
+}
+
+
+ButtonReleaseAcceptor::ButtonReleaseAcceptor(v_Button *button) : EventAcceptor(button) {}
+
+EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &) {
+    if (acceptor->pressed) {
+        acceptor->unpress();
+    }
+
+    return EventAccResult::none;
+}
+
+
+ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button) : EventAcceptor(button) {}
+
+EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event) {
+    v_Button *button = acceptor;
+    printf("move %g %g\n", event.from.x(), event.from.y());
+
+    if (button->is_inside(event.to) && !button->is_inside(event.from)) {
+        button->pos_delta += BUTTON_HOVER_POS_DELTA;
+    }
+
+    if (button->is_inside(event.from) && !button->is_inside(event.to)) {
+        if (button->pressed) {
+            button->unpress();
+        }
+
+        button->pos_delta -= BUTTON_HOVER_POS_DELTA;
+    }
+    
+    return EventAccResult::none;
 }

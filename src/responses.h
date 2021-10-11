@@ -1,4 +1,4 @@
-class SpawnBallLambda : public Lambda {
+class SpawnBallLambda : public EventReaction<Event::MousePress> {
     MogaEngine *engine;
 
 public:
@@ -6,13 +6,14 @@ public:
     engine(engine)
     {}
 
-    void operator()() {
+    EventAccResult operator()(const Event::MousePress &) override {
         gen_ball(engine);
+        return EventAccResult::done;
     }
 };
 
 
-class SwitchOnChemistryModeLambda : public Lambda {
+class SwitchOnChemistryModeLambda : public EventReaction<Event::MousePress> {
     ChemEngine *engine;
 
 public:
@@ -20,12 +21,13 @@ public:
     engine(engine)
     {}
 
-    void operator()() {
+    EventAccResult operator()(const Event::MousePress &) override {
         engine->enable_chemistry();
+        return EventAccResult::done;
     }
 };
 
-class SwitchOffChemistryModeLambda : public Lambda {
+class SwitchOffChemistryModeLambda : public EventReaction<Event::MousePress> {
     ChemEngine *engine;
 
 public:
@@ -33,7 +35,8 @@ public:
     engine(engine)
     {}
 
-    void operator()() {
+    EventAccResult operator()(const Event::MousePress &) override {
         engine->disable_chemistry();
+        return EventAccResult::done;
     }
 };

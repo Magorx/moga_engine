@@ -133,20 +133,20 @@ void MogaEngine::logic_tick() {
 }
 
 void MogaEngine::on_mouse_click(Vec2d click) {
-	if (main_view->is_clicked(click)) {
-		main_view->clicked(click);
+	if (main_view->is_inside(click)) {
+		main_view->e_mouse_press.emit({click});
 	}
 }
 
 void MogaEngine::on_mouse_hover(Vec2d hover) {
-	if (main_view->is_clicked(hover)) {
-		main_view->hovered(mouse_pos, hover);
+	if (main_view->is_inside(hover)) {
+		main_view->e_mouse_move.emit({mouse_pos, hover});
 	}
 }
 
 void MogaEngine::on_mouse_release(Vec2d click) {
-	if (main_view->is_clicked(click)) {
-		main_view->released(click);
+	if (main_view->is_inside(click)) {
+		main_view->e_mouse_release.emit({click});
 	}
 }
 
