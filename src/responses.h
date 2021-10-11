@@ -8,35 +8,30 @@ public:
 
     EventAccResult operator()(const Event::MousePress &) override {
         gen_ball(engine);
-        return EventAccResult::done;
+        return EventAccResult::none;
     }
 };
 
 
-class SwitchOnChemistryModeLambda : public EventReaction<Event::MousePress> {
+class ToogleChemistryModelLambda : public EventReaction<Event::Toggle> {
     ChemEngine *engine;
 
 public:
-    SwitchOnChemistryModeLambda(ChemEngine *engine):
+    ToogleChemistryModelLambda(ChemEngine *engine):
     engine(engine)
     {}
 
-    EventAccResult operator()(const Event::MousePress &) override {
-        engine->enable_chemistry();
-        return EventAccResult::done;
+    EventAccResult operator()(const Event::Toggle &) override {
+        engine->toggle_chemistry();
+        return EventAccResult::none;
     }
 };
 
-class SwitchOffChemistryModeLambda : public EventReaction<Event::MousePress> {
-    ChemEngine *engine;
 
+template <typename T>
+class EventCatcher : public EventReaction<T> {
 public:
-    SwitchOffChemistryModeLambda(ChemEngine *engine):
-    engine(engine)
-    {}
-
-    EventAccResult operator()(const Event::MousePress &) override {
-        engine->disable_chemistry();
+    EventAccResult operator()(const T &) override {
         return EventAccResult::done;
     }
 };

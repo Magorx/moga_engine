@@ -29,15 +29,16 @@ int main() {
     SmartColor *col1 = new SmartColor({100, 100, 100});
     SmartColor *col2 = new SmartColor({225, 35, 30});
     // v_Toggler *togg = new v_Toggler(ViewBody{{200, 530}, {25, 25}}, 
-    // // v_Toggler *togg = new v_Toggler(ViewBody{{12.5, 12.5}, {25, 25}}, 
-    //                                 col1, col2,
-    //                                 new SwitchOnChemistryModeLambda (&moga), 
-    //                                 new SwitchOffChemistryModeLambda(&moga));
+    v_Toggler *togg = new v_Toggler(ViewBody{{12.5, 12.5}, {25, 25}}, 
+                                    col1, col2);
     moga.add_tickable(col1);
     moga.add_tickable(col2);
     
+    togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
+    togg->e_mouse_press.add(new EventCatcher<Event::MousePress>);
+    togg->e_mouse_release.add(new EventCatcher<Event::MouseRelease>);
     // moga.add_view(togg);
-    // butt->add_subview(togg);
+    butt->add_subview(togg);
 
     SmartColor *col4 = new SmartColor({255, 255, 0});
     SmartColor *col5 = new SmartColor({0, 255, 255});

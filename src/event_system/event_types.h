@@ -29,4 +29,8 @@ struct RenderCall {
     Renderer *renderer;
 };
 
+struct Toggle {
+    
+};
+
 }

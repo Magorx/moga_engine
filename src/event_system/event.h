@@ -40,11 +40,12 @@ class EventDispatcher {
 
     std::vector<EventReaction<EVENT_T>*> observers;
     std::vector<EventDispatcher<EVENT_T>*> chain_events;
+    bool dispatch_order;
 
     EventAffector event_affector;
 
 public:
-    EventDispatcher(const char *id = "noname_event") : id(id), event_affector(nullptr) {}
+    EventDispatcher(const char *id = "noname_event") : id(id), dispatch_order(true), event_affector(nullptr) {}
     EventDispatcher &operator=(const EventDispatcher &other) = delete;
 
     void add(EventReaction<EVENT_T> *observer) {
@@ -92,18 +93,32 @@ public:
     }
 
     EventAccResult dispatch(const EVENT_T &event) {
-        EventAccResult res = dispatch_to_observers(event);
-        if (res != EventAccResult::none) {
-            return res;
-        }
+        if (dispatch_order) {
+            EventAccResult res = dispatch_to_observers(event);
+            if (res != EventAccResult::none) {
+                return res;
+            }
 
-        res = dispatch_to_chain_events(event);
-        if (res != EventAccResult::none) {
-            return res;
+            res = dispatch_to_chain_events(event);
+            if (res == EventAccResult::done) {
+                return res;
+            }
+        } else {
+            EventAccResult res = dispatch_to_chain_events(event);
+            if (res == EventAccResult::done) {
+                return res;
+            }
+
+            res = dispatch_to_observers(event);
+            if (res != EventAccResult::none) {
+                return res;
+            }
         }
 
         return EventAccResult::none;
     }
+
+    void inverse_dispatch_order() { dispatch_order ^= 1; }
 
     const char *get_id() { return id; }
 

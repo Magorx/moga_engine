@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-AbstractView::AbstractView(ViewBody body, RenderableObject *texture):
+AbstractView::AbstractView(ViewBody body, RenderableObject *texture, bool to_reprioritize_clicks):
 body(body),
 texture(texture),
 on_press(this),
@@ -21,10 +21,14 @@ on_move(this)
     e_mouse_release.add(&on_release);
     e_mouse_move.add(&on_move);
 
-    e_mouse_press.set_event_affector([this](const Event::MousePress &event) { return Event::MousePress{event.position - this->body.position}; } );
-    e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease{event.position - this->body.position}; } );
-    e_mouse_move.set_event_affector([this](const Event::MouseMove &event) { return Event::MouseMove{event.from - this->body.position, event.to - this->body.position}; } );
+    e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position}; } );
+    e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease {event.position - this->body.position}; } );
+    e_mouse_move.set_event_affector([this](const Event::MouseMove &event)       { return Event::MouseMove    {event.from - this->body.position, event.to - this->body.position}; } );
 
+    if (to_reprioritize_clicks) {
+        e_mouse_press.inverse_dispatch_order();
+        e_mouse_release.inverse_dispatch_order();
+    }
 }
 
 AbstractView::~AbstractView() {

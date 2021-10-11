@@ -9,6 +9,31 @@ extern const double TOGGLER_PRESS_SHADOWER;
 extern const double TOGGLER_ONLINE_SHADOWER;
 
 
+class v_Toggler;
+
+
+class TogglerPressAcceptor : public EventAcceptor<v_Toggler, Event::MousePress> {
+public:
+    TogglerPressAcceptor(v_Toggler *button);
+
+    EventAccResult operator()(const Event::MousePress &event) override;
+};
+
+class TogglerReleaseAcceptor : public EventAcceptor<v_Toggler, Event::MouseRelease> {
+public:
+    TogglerReleaseAcceptor(v_Toggler *button);
+
+    EventAccResult operator()(const Event::MouseRelease &event) override;
+};
+
+class TogglerMoveAcceptor : public EventAcceptor<v_Toggler, Event::MouseMove> {
+public:
+    TogglerMoveAcceptor(v_Toggler *button);
+
+    EventAccResult operator()(const Event::MouseMove &event) override;
+};
+
+
 class v_Toggler : public AbstractView {
     bool pressed;
     bool online;
@@ -16,25 +41,20 @@ class v_Toggler : public AbstractView {
     SmartColor *color_border;
     SmartColor *color_button;
 
-    Lambda *on;
-    Lambda *off;
-
     float button_factor;
 
+    TogglerPressAcceptor   on_press;
+    TogglerReleaseAcceptor on_release;
+    TogglerMoveAcceptor    on_move;
+
+    friend TogglerPressAcceptor;
+    friend TogglerReleaseAcceptor;
+    friend TogglerMoveAcceptor;
+
 public:
-    v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, 
-              Lambda *on = nullptr, Lambda *off = nullptr,
-              bool online = false, float button_factor = 0.7);
+    v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, bool online = false, float button_factor = 0.7);
 
-    // virtual void tick(const double = 0, const double = 0) override;
-
-    virtual void render   (Renderer *renderer) override;
-
-    void bind(Lambda *on_click);
-
-    virtual void clicked(Vec2d click) override;
-    virtual void hovered(Vec2d from, Vec2d to) override;
-    virtual void released(Vec2d click) override;
+    virtual void render(Renderer *renderer) override;
 
     void press();
     void unpress();

@@ -15,6 +15,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/kctf/Repositories/moga_engine/src/collections/smart_colors/smart_colors.cpp" "CMakeFiles/moga.dir/src/collections/smart_colors/smart_colors.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/smart_colors/smart_colors.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/collections/views/button.cpp" "CMakeFiles/moga.dir/src/collections/views/button.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/views/button.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/collections/views/text.cpp" "CMakeFiles/moga.dir/src/collections/views/text.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/views/text.cpp.o.d"
+  "/home/kctf/Repositories/moga_engine/src/collections/views/toggler.cpp" "CMakeFiles/moga.dir/src/collections/views/toggler.cpp.o" "gcc" "CMakeFiles/moga.dir/src/collections/views/toggler.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/engine/moga_engine.cpp" "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o" "gcc" "CMakeFiles/moga.dir/src/engine/moga_engine.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/engine/object.cpp" "CMakeFiles/moga.dir/src/engine/object.cpp.o" "gcc" "CMakeFiles/moga.dir/src/engine/object.cpp.o.d"
   "/home/kctf/Repositories/moga_engine/src/main.cpp" "CMakeFiles/moga.dir/src/main.cpp.o" "gcc" "CMakeFiles/moga.dir/src/main.cpp.o.d"

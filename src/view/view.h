@@ -69,7 +69,7 @@ protected:
     friend AVReleaseAcceptor;
 
 public:
-    AbstractView(ViewBody body, RenderableObject *texture = nullptr);
+    AbstractView(ViewBody body, RenderableObject *texture = nullptr, bool to_reprioritize_clicks = true);
     virtual ~AbstractView();
 
     void add_subview(AbstractView *subview);
