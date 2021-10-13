@@ -1,5 +1,0 @@
-/home/kctf/Repositories/moga_engine/build/CMakeFiles/rebuild_cache.dir
-/home/kctf/Repositories/moga_engine/build/CMakeFiles/edit_cache.dir
-/home/kctf/Repositories/moga_engine/build/CMakeFiles/moga.dir
-/home/kctf/Repositories/moga_engine/build/CMakeFiles/view.dir
-/home/kctf/Repositories/moga_engine/build/CMakeFiles/convert.dir
