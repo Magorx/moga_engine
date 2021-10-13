@@ -12,11 +12,6 @@ on_press(this),
 on_release(this),
 on_move(this)
 {
-    set_layer(1);
-    if (texture) {
-        texture->set_layer(1);
-    }
-
     e_mouse_press.add(&on_press);
     e_mouse_release.add(&on_release);
     e_mouse_move.add(&on_move);
@@ -69,7 +64,7 @@ void AbstractView::add_subview(AbstractView *subview) {
     if (!subview) return;
 
     subviews.push_back(subview);
-    add_es(subview);
+    add(subview);
 }
 
 void AbstractView::delete_subview(AbstractView *view) {

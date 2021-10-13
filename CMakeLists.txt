@@ -22,6 +22,8 @@ find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
 add_executable(moga
         src/main.cpp
 
+        # event
+
         # interface
         src/view/view.cpp
 

@@ -1,5 +1,4 @@
 #include "chemistry/chem_engine.h"
-#include "view/view.h"
 
 
 const int SCR_W  = 800;

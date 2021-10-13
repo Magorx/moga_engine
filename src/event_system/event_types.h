@@ -2,7 +2,6 @@
 
 
 #include "utils/vec2d.h"
-#include "visual/renderer/renderer.h"
 
 namespace Event {
 
@@ -25,6 +24,7 @@ struct MouseMove {
     Vec2d to;
 };
 
+class Renderer;
 struct RenderCall {
     Renderer *renderer;
 };

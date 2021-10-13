@@ -5,8 +5,7 @@
 #include <functional>
 
 
-#define FRIENDLY_EVENT_ACCEPTOR(AcceptorClass) friend AcceptorClass; AcceptorClass
-#define EVENT_ACCEPTOR(AcceptorClass) AcceptorClass
+#include "event_types.h"
 
 
 enum class EventAccResult {
@@ -32,28 +31,27 @@ public:
 };
 
 
+class EventSystem;
+
+
 template <typename EVENT_T>
 class EventDispatcher {
-    const char *id;
+    EventSystem *es;
+    const char  *id;
 
     typedef std::function<EVENT_T(const EVENT_T &)> EventAffector;
 
     std::vector<EventReaction<EVENT_T>*> observers;
-    std::vector<EventDispatcher<EVENT_T>*> chain_events;
     bool dispatch_order;
 
     EventAffector event_affector;
 
 public:
-    EventDispatcher(const char *id = "noname_event") : id(id), dispatch_order(true), event_affector(nullptr) {}
+    EventDispatcher(EventSystem *es, const char *id = "noname_event") : es(es), id(id), dispatch_order(true), event_affector(nullptr) {}
     EventDispatcher &operator=(const EventDispatcher &other) = delete;
 
     void add(EventReaction<EVENT_T> *observer) {
         observers.push_back(observer);
-    }
-
-    void add(EventDispatcher<EVENT_T> *chained_event) {
-        chain_events.push_back(chained_event);
     }
 
     virtual EventAccResult emit(const EVENT_T &event) {
@@ -77,20 +75,7 @@ public:
         return EventAccResult::none;
     }
 
-    EventAccResult dispatch_to_chain_events(const EVENT_T &event) {
-        if (event_affector) {
-            EVENT_T affected_event = event_affector(event);
-            for (auto chained_event : chain_events) {
-                if (chained_event->emit(affected_event) == EventAccResult::done) return EventAccResult::done;
-            }
-        } else {
-            for (auto chained_event : chain_events) {
-                if (chained_event->emit(event) == EventAccResult::done) return EventAccResult::done;
-            }
-        }
-
-        return EventAccResult::none;
-    }
+    EventAccResult dispatch_to_sub_es(const EVENT_T &event);
 
     EventAccResult dispatch(const EVENT_T &event) {
         if (dispatch_order) {
@@ -99,12 +84,12 @@ public:
                 return res;
             }
 
-            res = dispatch_to_chain_events(event);
+            res = dispatch_to_sub_es(event);
             if (res == EventAccResult::done) {
                 return res;
             }
         } else {
-            EventAccResult res = dispatch_to_chain_events(event);
+            EventAccResult res = dispatch_to_sub_es(event);
             if (res == EventAccResult::done) {
                 return res;
             }
@@ -124,3 +109,77 @@ public:
 
     void set_event_affector(EventAffector affector) { event_affector = affector; }
 };
+
+
+//=====================================================================================================================
+
+
+class EventSystem {
+    std::vector<EventSystem*> sub_es;
+public:
+    EventDispatcher<Event::MousePress>   e_mouse_press;
+    EventDispatcher<Event::MouseRelease> e_mouse_release;
+    EventDispatcher<Event::MouseMove>    e_mouse_move;
+    EventDispatcher<Event::Toggle>       e_toggle;
+
+    EventSystem() :
+    e_mouse_press(this, "mouse_press"),
+    e_mouse_release(this, "mouse_release"),
+    e_mouse_move(this, "mouse_hover"),
+    e_toggle(this, "toggle")
+    {}
+
+    void add(EventSystem *sub_system) {
+        if (!sub_system) return;
+
+        sub_es.push_back(sub_system);
+    }
+
+    const std::vector<EventSystem*> &get_sub_es() {
+        return sub_es;
+    }
+
+    template <typename T>
+    EventDispatcher<T> &get_dispatcher();
+
+};
+
+template <>
+inline EventDispatcher<Event::MousePress> &EventSystem::get_dispatcher() {
+    return e_mouse_press;
+}
+
+template <>
+inline EventDispatcher<Event::MouseRelease> &EventSystem::get_dispatcher() {
+    return e_mouse_release;
+}
+
+template <>
+inline EventDispatcher<Event::MouseMove> &EventSystem::get_dispatcher() {
+    return e_mouse_move;
+}
+
+template <>
+inline EventDispatcher<Event::Toggle> &EventSystem::get_dispatcher() {
+    return e_toggle;
+}
+
+
+//=====================================================================================================================
+
+
+template <typename EVENT_T>
+EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event) {
+    if (event_affector) {
+        EVENT_T affected_event = event_affector(event);
+        for (auto sub_es : es->get_sub_es()) {
+            if (sub_es->get_dispatcher<EVENT_T>().emit(affected_event) == EventAccResult::done) return EventAccResult::done;
+        }
+    } else {
+        for (auto sub_es : es->get_sub_es()) {
+            if (sub_es->get_dispatcher<EVENT_T>().emit(event) == EventAccResult::done) return EventAccResult::done;
+        }
+    }
+
+    return EventAccResult::none;
+}
