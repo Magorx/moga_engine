@@ -27,13 +27,18 @@ int main() {
 
     SmartColor *col1 = new SmartColor({100, 100, 100});
     SmartColor *col2 = new SmartColor({225, 35, 30});
-    v_Toggler *togg = new v_Toggler(ViewBody{{0.1, 0.1}, {0.1, 0.6}},
-                                    col1, col2, butt);
+    v_Toggler *togg  = new v_Toggler(ViewBody{{0.1, 0.1}, {0.1, 0.6}}, col1, col2, butt);
     moga.add_tickable(col1);
     moga.add_tickable(col2);
 
-    v_Highlighter *hl = new v_Highlighter({{750, 50}, {200, 40}}, col1);
-    moga.add_view(hl);
+    SmartColor *colmc = new SmartColor({50, 50, 50});
+    v_MouseCatcher *mc = new v_MouseCatcher({{750, 100}, {200, 40}}, nullptr, colmc);
+    moga.add_view(mc);
+
+    v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, col1);
+    moga.add_view(hl1);
+
+    v_Highlighter *hl2 = new v_Highlighter({{20, 20}, {70, 70}}, col1, mc);
     
     togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
     togg->e_mouse_press.add(new EventCatcher<Event::MousePress>);

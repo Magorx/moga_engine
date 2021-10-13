@@ -8,26 +8,19 @@ double BUTTON_CLICKED_SHADING_COEF = 0.8;
 
 
 v_Button::v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent):
-AbstractView(body, new r_Rectangle(body.position, body.size, color), parent),
+v_Highlighter(body, color, parent),
 pos_delta(0, 0),
-pressed(false),
-on_press(this),
-on_release(this),
-on_move(this)
+pressed(false)
 {
-    e_mouse_press.add(&on_press);
-    e_mouse_move.add(&on_move);
-    e_mouse_release.add(&on_release);
+    e_mouse_press.add(new ButtonPressAcceptor(this));
+    e_mouse_move.add(new ButtonMoveAcceptor(this));
+    e_mouse_release.add(new ButtonReleaseAcceptor(this));
 }
 
-void v_Button::subrender(Renderer *renderer) {
-    renderer->shift(body.position + pos_delta);
-
-    for (size_t i = 0; i < subviews.size(); ++i) {
-        subviews[i]->render(renderer);
-    }
-
-    renderer->shift(-body.position - pos_delta);
+void v_Button::render(Renderer *renderer) {
+    body.position += pos_delta;
+    v_Highlighter::render(renderer);
+    body.position -= pos_delta;
 }
 
 void v_Button::add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color) {
@@ -42,7 +35,10 @@ void v_Button::press() {
 
     pos_delta += BUTTON_CLICK_POS_DELTA;
 
-    SmartColor *color = texture->get_color();
+    if (texture) {
+        SmartColor *color = texture->get_color();
+        color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
+    }
     color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
 }
 
@@ -51,7 +47,10 @@ void v_Button::unpress() {
 
     pos_delta -= BUTTON_CLICK_POS_DELTA;
 
-    SmartColor *color = texture->get_color();
+    if (texture) {
+        SmartColor *color = texture->get_color();
+        color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
+    }
     color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
 }
 

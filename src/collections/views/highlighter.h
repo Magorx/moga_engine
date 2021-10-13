@@ -11,6 +11,13 @@ extern const double HIGHLIGHTER_ON_COEF;
 
 class v_Highlighter;
 
+class HighlighterPressAcceptor : public EventAcceptor<v_Highlighter, Event::MousePress> {
+public:
+    HighlighterPressAcceptor(v_Highlighter *button);
+
+    EventAccResult operator()(const Event::MousePress &event) override;
+};
+
 
 class HighlighterMoveAcceptor : public EventAcceptor<v_Highlighter, Event::MouseMove> {
 public:
@@ -23,13 +30,14 @@ public:
 class v_Highlighter : public AbstractView {
     bool cursor_inside;
 
-    SmartColor *color;
-
     HighlighterMoveAcceptor on_move;
 
+    friend HighlighterPressAcceptor;
     friend HighlighterMoveAcceptor;
 
 public:
+    SmartColor *color;
+
     v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr);
 
     virtual void tick(const double = 0, const double = 0) override;
@@ -37,11 +45,4 @@ public:
     virtual void subrender(Renderer *renderer) override;
 
     void add_label(const char *text, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
-
-    void press(Vec2d click);
-    void move(Vec2d from, Vec2d to);
-    void released(Vec2d click);
-
-    void press();
-    void unpress();
 };

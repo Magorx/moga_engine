@@ -3,7 +3,9 @@
 
 #include "utils/vec3d.h"
 #include "rgba.h"
+
 #include <cstdio>
+// #include <algorithm>
 
 extern const int 	i_MAXRGB;
 extern const double d_MAXRGB;
@@ -19,10 +21,11 @@ public:
     Color(const Vec3d &other) : Color(other.content) {}
 
     operator RGBA() const {
-        return {(unsigned char) x(), 
-                (unsigned char) y(),
-                (unsigned char) z(),
-                (unsigned char) 255};
+        return {(unsigned char) std::min(std::max(content[0], 0.0), 255.0),
+                (unsigned char) std::min(std::max(content[1], 0.0), 255.0),
+                (unsigned char) std::min(std::max(content[2], 0.0), 255.0),
+                255
+        };
     }
 };
 

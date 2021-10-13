@@ -13,9 +13,9 @@ on_press(this),
 on_release(this),
 on_move(this)
 {
-    e_mouse_press.add(&on_press);
-    e_mouse_release.add(&on_release);
-    e_mouse_move.add(&on_move);
+    e_mouse_press.add(new AVPressAcceptor(this));
+    e_mouse_release.add(new AVReleaseAcceptor(this));
+    e_mouse_move.add(new AVMoveAcceptor(this));
 
     e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position}; } );
     e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease {event.position - this->body.position}; } );

@@ -7,18 +7,19 @@ const double HIGHLIGHTER_ON_COEF = 1.2;
 v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent):
 AbstractView(body, nullptr, parent),
 cursor_inside(false),
-color(color),
-on_move(this)
+on_move(this),
+color(color)
 {
-    e_mouse_press.add(&on_press);
-    e_mouse_move.add(&on_move);
-    e_mouse_release.add(&on_release);
+    e_mouse_press.add(new HighlighterPressAcceptor(this));
+    e_mouse_move.add(new HighlighterMoveAcceptor(this));
 }
 
 void v_Highlighter::render(Renderer *renderer) {
     RGBA cur_color = cursor_inside ? (Color) (color->rgb() * HIGHLIGHTER_ON_COEF) : color->rgb();
 
     renderer->draw_rectangle(body.position, body.size, cur_color);
+
+    subrender(renderer);
 }
 
 void v_Highlighter::subrender(Renderer *renderer) {
@@ -44,6 +45,16 @@ void v_Highlighter::tick(const double, const double) {
     }
 }
 
+
+HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *button) : EventAcceptor(button) {}
+
+EventAccResult HighlighterPressAcceptor::operator()(const Event::MousePress &event) {
+    v_Highlighter *hl = acceptor;
+
+    hl->cursor_inside = hl->is_inside(event.position);
+
+    return EventAccResult::none;
+}
 
 HighlighterMoveAcceptor::HighlighterMoveAcceptor(v_Highlighter *button) : EventAcceptor(button) {}
 

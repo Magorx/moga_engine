@@ -2,6 +2,7 @@
 
 
 #include "view/view.h"
+#include "highlighter.h"
 #include "text.h"
 #include "../renderables/renderables.h"
 
@@ -36,14 +37,10 @@ public:
 };
 
 
-class v_Button : public AbstractView {
+class v_Button : public v_Highlighter {
     Vec2d pos_delta;
 
     bool pressed;
-
-    ButtonPressAcceptor   on_press;
-    ButtonReleaseAcceptor on_release;
-    ButtonMoveAcceptor    on_move;
 
     friend ButtonPressAcceptor;
     friend ButtonReleaseAcceptor;
@@ -53,13 +50,10 @@ public:
     v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr);
 
     virtual void tick(const double = 0, const double = 0) override;
-    virtual void subrender(Renderer *renderer) override;
+    virtual void render(Renderer *renderer) override;
+    // virtual void subrender(Renderer *renderer) override;
 
     void add_label(const char *text, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
-
-    void press(Vec2d click);
-    void move(Vec2d from, Vec2d to);
-    void released(Vec2d click);
 
     void press();
     void unpress();
