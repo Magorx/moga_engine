@@ -10,7 +10,21 @@ extern const double d_MAXRGB;
 extern const int 	i_MINRGB;
 extern const double d_MINRGB;
 
-typedef Vec3d Color;
+class Color : public Vec3d {
+public:
+    Color(content3 newContent) : Vec3d(newContent) {}
+
+    Color(double x_=0, double y_=0, double z_=0) : Vec3d(x_, y_, z_) {}
+
+    Color(const Vec3d &other) : Color(other.content) {}
+
+    operator RGBA() const {
+        return {(unsigned char) x(), 
+                (unsigned char) y(),
+                (unsigned char) z(),
+                (unsigned char) 255};
+    }
+};
 
 Color randcolor(const int min = 0, const int max = 255);
 

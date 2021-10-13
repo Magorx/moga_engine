@@ -31,12 +31,15 @@ int main() {
                                     col1, col2, butt);
     moga.add_tickable(col1);
     moga.add_tickable(col2);
+
+    v_Highlighter *hl = new v_Highlighter({{750, 50}, {200, 40}}, col1);
+    moga.add_view(hl);
     
     togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
     togg->e_mouse_press.add(new EventCatcher<Event::MousePress>);
     togg->e_mouse_release.add(new EventCatcher<Event::MouseRelease>);
 
-    SmartColor *col4 = new SmartColor({255, 255, 0});
+    SmartColor *col4 = new SmartColor({120, 120, 100});
     SmartColor *col5 = new SmartColor({0, 255, 255});
     moga.add_tickable(col4);
     moga.add_tickable(col5);

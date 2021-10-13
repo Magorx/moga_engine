@@ -51,6 +51,7 @@ public:
     EventDispatcher(EventSystem *es, const char *id = "noname_event") : es(es), id(id), dispatch_order(true), event_affector(nullptr) {
         assert(es && "can't create an EventDispatcher without parental EventSystem");
     }
+
     EventDispatcher &operator=(const EventDispatcher &other) = delete;
 
     void add(EventReaction<EVENT_T> *observer) {
