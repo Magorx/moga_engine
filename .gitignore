@@ -1,4 +1,7 @@
 # My files
+build
+build/*
+.vscode
 
 # Prerequisites
 *.d
