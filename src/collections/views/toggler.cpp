@@ -5,8 +5,8 @@ const double TOGGLER_PRESS_SHADOWER = 0.45;
 const double TOGGLER_ONLINE_SHADOWER = 0.65;
 
 
-v_Toggler::v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, bool online, float button_factor) :
-AbstractView(body, nullptr),
+v_Toggler::v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, AbstractView *parent, bool online, float button_factor) :
+AbstractView(body, nullptr, parent),
 pressed(false),
 online(online),
 color_border(color_border),

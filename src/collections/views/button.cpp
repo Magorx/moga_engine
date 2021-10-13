@@ -7,8 +7,8 @@ const Vec2d BUTTON_CLICK_POS_DELTA = {0, 4};
 double BUTTON_CLICKED_SHADING_COEF = 0.8;
 
 
-v_Button::v_Button(const ViewBody &body, SmartColor *color):
-AbstractView(body, new r_Rectangle(body.position, body.size, color)),
+v_Button::v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent):
+AbstractView(body, new r_Rectangle(body.position, body.size, color), parent),
 pos_delta(0, 0),
 pressed(false),
 on_press(this),

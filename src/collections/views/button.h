@@ -50,7 +50,7 @@ class v_Button : public AbstractView {
     friend ButtonMoveAcceptor;
 
 public:
-    v_Button(const ViewBody &body, SmartColor *color);
+    v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr);
 
     virtual void tick(const double = 0, const double = 0) override;
     virtual void subrender(Renderer *renderer) override;

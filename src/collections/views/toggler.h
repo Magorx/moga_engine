@@ -52,7 +52,7 @@ class v_Toggler : public AbstractView {
     friend TogglerMoveAcceptor;
 
 public:
-    v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, bool online = false, float button_factor = 0.7);
+    v_Toggler(const ViewBody &body, SmartColor *color_border, SmartColor *color_button, AbstractView *parent, bool online = false, float button_factor = 0.7);
 
     virtual void render(Renderer *renderer) override;
 

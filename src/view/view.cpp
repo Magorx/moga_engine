@@ -5,9 +5,10 @@
 #include <iostream>
 
 
-AbstractView::AbstractView(ViewBody body, RenderableObject *texture, bool to_reprioritize_clicks):
+AbstractView::AbstractView(ViewBody body, RenderableObject *texture, AbstractView *parent, bool to_reprioritize_clicks):
 body(body),
 texture(texture),
+parent(parent),
 on_press(this),
 on_release(this),
 on_move(this)
@@ -23,6 +24,14 @@ on_move(this)
     if (to_reprioritize_clicks) {
         e_mouse_press.inverse_dispatch_order();
         e_mouse_release.inverse_dispatch_order();
+    }
+
+    if (parent) {
+        parent->add_subview(this);
+
+        if (body.position.len_squared() < 1.1 && body.size.len_squared() < 1.1) {
+            fit(body.position, body.size);
+        }
     }
 }
 
@@ -65,6 +74,7 @@ void AbstractView::add_subview(AbstractView *subview) {
 
     subviews.push_back(subview);
     add(subview);
+    subview->set_parent(this);
 }
 
 void AbstractView::delete_subview(AbstractView *view) {
@@ -90,6 +100,38 @@ void AbstractView::delete_subview(size_t index) {
 ViewBody &AbstractView::get_body() {
     return body;
 }
+
+void AbstractView::fit(const Vec2d &left_up, const Vec2d &right_down, bool absolute_fit) {
+    if (absolute_fit) {
+        fit_absolute(left_up, right_down);
+    } else {
+        fit_proportional(left_up, right_down);
+    }
+}
+
+void AbstractView::fit_proportional(const Vec2d &left_up, const Vec2d &right_down) {
+    if (!parent) {
+        return;
+    }
+    
+    ViewBody &p_body = parent->get_body();
+
+    body.position = p_body.get_size() * left_up;
+    body.size     = p_body.get_size() * (Vec2d(1, 1) - right_down) - body.position;
+}
+
+void AbstractView::fit_absolute(const Vec2d &left_up, const Vec2d &right_down) {
+    if (!parent) {
+        return;
+    }
+
+    ViewBody &p_body = parent->get_body();
+
+    body.position = left_up;
+    body.size     = p_body.size - right_down - left_up;
+}
+
+
 
 AVPressAcceptor::AVPressAcceptor(AbstractView *av) : EventAcceptor(av) {}
 

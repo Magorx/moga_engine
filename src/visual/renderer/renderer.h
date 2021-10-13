@@ -42,11 +42,11 @@ public:
         offset += delta;
     }
 
-    void draw_circle(Vec3d pos, const double rad, const Color &color);
-    void draw_line(Vec3d p1, Vec3d p2, const Color &color);
-    void draw_square(Vec3d pos, const double size, const Color &color);
-    void draw_rectangle(Vec3d pos, const Vec2d size, const Color &color);
-    void draw_text(const char *lable, int size, Vec2d pos, const Color &back_color, const Color &font_color,  bool to_background, bool to_centrize = false);
+    void draw_circle(Vec3d pos, const double rad, const Color &color, sf::RenderTarget *texture = nullptr);
+    void draw_line(Vec3d p1, Vec3d p2, const Color &color, sf::RenderTarget *texture = nullptr);
+    void draw_square(Vec3d pos, const double size, const Color &color, sf::RenderTarget *texture = nullptr);
+    void draw_rectangle(Vec3d pos, const Vec2d size, const Color &color, sf::RenderTarget *texture = nullptr);
+    void draw_text(const char *lable, int size, Vec2d pos, const Color &back_color, const Color &font_color,  bool to_background, bool to_centrize = false, sf::RenderTarget *texture = nullptr);
 };
 
 #endif // RENDERER_H

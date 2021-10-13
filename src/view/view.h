@@ -58,6 +58,7 @@ protected:
     ViewBody body;
     RenderableObject *texture;
     
+    AbstractView *parent;
     std::vector<AbstractView*> subviews;
 
     AVPressAcceptor   on_press;
@@ -69,7 +70,7 @@ protected:
     friend AVReleaseAcceptor;
 
 public:
-    AbstractView(ViewBody body, RenderableObject *texture = nullptr, bool to_reprioritize_clicks = true);
+    AbstractView(ViewBody body, RenderableObject *texture = nullptr, AbstractView *parent = nullptr, bool to_reprioritize_clicks = true);
     virtual ~AbstractView();
 
     void add_subview(AbstractView *subview);
@@ -82,9 +83,14 @@ public:
     virtual void render(Renderer *renderer) override;
     virtual void subrender(Renderer *renderer);
 
+    void fit(const Vec2d &left_up, const Vec2d &right_down, bool absolute_fit = false);
+    void fit_proportional(const Vec2d &left_up, const Vec2d &right_down);
+    void fit_absolute(const Vec2d &left_up, const Vec2d &right_down);
+
     inline bool is_inside(const Vec2d &click) { return body.is_inside(click); }
 
     inline RenderableObject *get_texture() { return texture; }
+    inline void set_parent(AbstractView *parent_) { parent = parent_; }
 
     ViewBody &get_body();
 

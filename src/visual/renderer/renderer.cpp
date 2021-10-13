@@ -10,7 +10,7 @@ Renderer::~Renderer() {
     delete get_window();
 }
 
-void Renderer::draw_circle(Vec3d pos, const double rad, const Color &color) {
+void Renderer::draw_circle(Vec3d pos, const double rad, const Color &color, sf::RenderTarget *texture) {
     pos += offset;
 
     sf::CircleShape circle(rad);
@@ -20,10 +20,11 @@ void Renderer::draw_circle(Vec3d pos, const double rad, const Color &color) {
     circle.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
     circle.setOrigin({static_cast<float>(rad), static_cast<float>(rad)});
 
-    scr.window->draw(circle);
+    if (!texture) scr.window->draw(circle);
+    else texture->draw(circle);
 }
 
-void Renderer::draw_line(Vec3d p1, Vec3d p2, const Color &color) {
+void Renderer::draw_line(Vec3d p1, Vec3d p2, const Color &color, sf::RenderTarget *texture) {
     p1 += offset;
     p2 += offset;
 
@@ -35,10 +36,11 @@ void Renderer::draw_line(Vec3d p1, Vec3d p2, const Color &color) {
         sf::Vertex({static_cast<float>(p2.x()), static_cast<float>(p2.y())}, sf_color),
     };
 
-    scr.window->draw(buffer, 2, sf::Lines);
+    if (!texture) scr.window->draw(buffer, 2, sf::Lines);
+    else texture->draw(buffer, 2, sf::Lines);
 }
 
-void Renderer::draw_square(Vec3d pos, const double size, const Color &color) {
+void Renderer::draw_square(Vec3d pos, const double size, const Color &color, sf::RenderTarget *texture) {
     pos += offset;
 
     RGBA rgba = to_rgba(color);
@@ -49,10 +51,11 @@ void Renderer::draw_square(Vec3d pos, const double size, const Color &color) {
     rect.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
     rect.setFillColor(sf_color);
 
-    scr.window->draw(rect);
+    if (!texture) scr.window->draw(rect);
+    else texture->draw(rect);
 }
 
-void Renderer::draw_rectangle(Vec3d pos, const Vec2d size, const Color &color) {
+void Renderer::draw_rectangle(Vec3d pos, const Vec2d size, const Color &color, sf::RenderTarget *texture) {
     pos += offset;
 
     RGBA rgba = to_rgba(color);
@@ -63,10 +66,11 @@ void Renderer::draw_rectangle(Vec3d pos, const Vec2d size, const Color &color) {
     rect.setOrigin({static_cast<float>(-pos.x() - size.x() / 2), static_cast<float>(-pos.y() - size.y() / 2)});
     rect.setFillColor(sf_color);
 
-    scr.window->draw(rect);
+    if (!texture) scr.window->draw(rect);
+    else texture->draw(rect);
 }
 
-void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const Color &font_color, const Color &back_color, bool to_background, bool to_centrize) {
+void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const Color &font_color, const Color &back_color, bool to_background, bool to_centrize, sf::RenderTarget *texture) {
     pos += (Vec2d) offset;
 
     RGBA rgba_back = to_rgba(back_color);
@@ -107,8 +111,10 @@ void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const Colo
         sf::RectangleShape background(bounds);
         background.setFillColor(sf_color_back);
         background.setPosition(text.getPosition());
-        scr.window->draw(background);
+        if (!texture) scr.window->draw(background);
+        else texture->draw(background);
     }
 
-    scr.window->draw(text);
+    if (!texture) scr.window->draw(text);
+    else texture->draw(text);
 }
