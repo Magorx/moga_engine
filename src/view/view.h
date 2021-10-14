@@ -56,7 +56,6 @@ struct ViewBody {
 class AbstractView : public RenderableObject, public Tickable, public EventSystem {
 protected:
     ViewBody body;
-    RenderableObject *texture;
     
     AbstractView *parent;
     std::vector<AbstractView*> subviews;
@@ -66,7 +65,7 @@ protected:
     friend AVMissReleaseBlocker;
 
 public:
-    AbstractView(ViewBody body, RenderableObject *texture = nullptr, AbstractView *parent = nullptr, bool to_reprioritize_clicks = true);
+    AbstractView(ViewBody body, AbstractView *parent = nullptr, bool to_reprioritize_clicks = true);
     virtual ~AbstractView();
 
     void add_subview(AbstractView *subview);
@@ -86,7 +85,6 @@ public:
     inline bool is_inside(const Vec2d &click) { return body.is_inside(click); }
     inline bool is_inside(const Vec2d &from, const Vec2d &to) { return body.is_inside(from) || body.is_inside(to); }
 
-    inline RenderableObject *get_texture() { return texture; }
     inline void set_parent(AbstractView *parent_) { parent = parent_; }
 
     ViewBody &get_body();

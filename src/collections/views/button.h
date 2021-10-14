@@ -46,9 +46,7 @@ class v_Button : public v_Highlighter {
 public:
     v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr);
 
-    virtual void tick(const double = 0, const double = 0) override;
     virtual void render(Renderer *renderer) override;
-    // virtual void subrender(Renderer *renderer) override;
 
     void press();
     void unpress();

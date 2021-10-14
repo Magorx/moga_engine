@@ -3,7 +3,7 @@
 
 
 v_MouseCatcher::v_MouseCatcher(const ViewBody &body, AbstractView *parent, SmartColor *color):
-AbstractView(body, color ? new r_Rectangle(body.position, body.size, color) : nullptr, parent),
+v_Highlighter(body, color, parent, 1),
 pos_delta(0, 0),
 captured(false),
 on_press(this),
@@ -37,10 +37,10 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
 
     if (mc->is_inside(event.position)) {
         mc->capture();
-        EventAccResult res = mc->get_dispatcher<Event::MousePress>().dispatch_to_sub_es(event);
+        mc->get_dispatcher<Event::MousePress>().dispatch_to_sub_es(event);
         return (EventAccResult) (EventAccResult::focus | EventAccResult::done);
     }
-    
+
     mc->captured = false;
     return EventAccResult::stop;
 }

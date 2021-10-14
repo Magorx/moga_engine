@@ -245,7 +245,6 @@ bool MogaEngine::add_view(AbstractView *view) {
 	view->tickable_nonfree = true;
 	add_tickable(view);
 
-	if (view->get_texture()) add_renderable(view->get_texture());
 	add_renderable(view);
 
 	return true;

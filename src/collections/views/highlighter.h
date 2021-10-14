@@ -28,6 +28,7 @@ public:
 
 class v_Highlighter : public AbstractLabledView {
     bool cursor_inside;
+    double highlight_coef;
 
     HighlighterMoveAcceptor on_move;
 
@@ -37,11 +38,10 @@ class v_Highlighter : public AbstractLabledView {
 public:
     SmartColor *color;
 
-    v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr);
+    v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
 
-    virtual void tick(const double = 0, const double = 0) override;
     virtual void render(Renderer *renderer) override;
-    virtual void subrender(Renderer *renderer) override;
+    // virtual void subrender(Renderer *renderer) override;
 
     void add_label(const char *text, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
 };

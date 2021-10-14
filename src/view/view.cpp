@@ -5,9 +5,8 @@
 #include <iostream>
 
 
-AbstractView::AbstractView(ViewBody body, RenderableObject *texture, AbstractView *parent, bool to_reprioritize_clicks):
+AbstractView::AbstractView(ViewBody body, AbstractView *parent, bool to_reprioritize_clicks):
 body(body),
-texture(texture),
 parent(parent)
 {
     // e_mouse_press.add(new AVPressAcceptor(this));
@@ -39,11 +38,7 @@ AbstractView::~AbstractView() {
 }
 
 
-void AbstractView::tick(const double, const double) {
-    if (texture) {
-        texture->set_position(body.get_position());
-    }
-}
+void AbstractView::tick(const double, const double) {}
 
 void AbstractView::subtick(const double dt, const double time) {
     for (size_t i = 0; i < subviews.size(); ++i) {
@@ -52,7 +47,6 @@ void AbstractView::subtick(const double dt, const double time) {
 }
 
 void AbstractView::render(Renderer *renderer) {
-    if (texture) texture->render(renderer);
     subrender(renderer);
 }
 

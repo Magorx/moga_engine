@@ -28,10 +28,6 @@ void v_Button::press() {
 
     pos_delta += BUTTON_CLICK_POS_DELTA;
 
-    if (texture) {
-        SmartColor *color = texture->get_color();
-        color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
-    }
     color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
 }
 
@@ -40,19 +36,8 @@ void v_Button::unpress() {
 
     pos_delta -= BUTTON_CLICK_POS_DELTA;
 
-    if (texture) {
-        SmartColor *color = texture->get_color();
-        color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
-    }
     color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
 }
-
-void v_Button::tick(const double, const double) {
-    if (texture) {
-        texture->set_position(body.get_position() + pos_delta);
-    }
-}
-
 
 ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button) : EventAcceptor(button) {}
 

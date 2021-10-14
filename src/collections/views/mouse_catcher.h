@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "view/view.h"
+#include "highlighter.h"
 
 
 class v_MouseCatcher;
@@ -22,7 +22,7 @@ public:
 };
 
 
-class v_MouseCatcher : public AbstractView {
+class v_MouseCatcher : public v_Highlighter {
     Vec2d pos_delta;
 
     bool captured;

@@ -4,9 +4,10 @@
 const double HIGHLIGHTER_ON_COEF = 1.2;
 
 
-v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent):
-AbstractLabledView(body, nullptr, parent),
+v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef):
+AbstractLabledView(body, parent),
 cursor_inside(false),
+highlight_coef(highlight_coef),
 on_move(this),
 color(color)
 {
@@ -15,21 +16,11 @@ color(color)
 }
 
 void v_Highlighter::render(Renderer *renderer) {
-    RGBA cur_color = cursor_inside ? (Color) (color->rgb() * HIGHLIGHTER_ON_COEF) : color->rgb();
+    RGBA cur_color = cursor_inside ? (Color) (color->rgb() * highlight_coef) : color->rgb();
 
     renderer->draw_rectangle(body.position, body.size, cur_color);
 
     subrender(renderer);
-}
-
-void v_Highlighter::subrender(Renderer *renderer) {
-    renderer->shift(body.position);
-
-    for (size_t i = 0; i < subviews.size(); ++i) {
-        subviews[i]->render(renderer);
-    }
-
-    renderer->shift(-body.position);
 }
 
 void v_Highlighter::add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color) {
@@ -37,12 +28,6 @@ void v_Highlighter::add_label(const char *lable, int char_size, SmartColor *font
 
     text->centrized = true;
     add_subview(text);
-}
-
-void v_Highlighter::tick(const double, const double) {
-    if (texture) {
-        texture->set_position(body.get_position());
-    }
 }
 
 
