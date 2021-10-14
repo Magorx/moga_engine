@@ -9,12 +9,12 @@ captured(false),
 on_press(this),
 on_move(this)
 {
-    e_mouse_press.pop_observer();
-    e_mouse_move.pop_observer();
+    e_mouse_press.add(new MouseCatcherPressAcceptor(this));
+    e_mouse_move.add(new MouseCatcherMoveAcceptor(this));
 
-    e_mouse_press.add(&on_press);
-    e_mouse_move.add(&on_move);
-    e_mouse_release.add(&on_release);
+    e_mouse_press.dispatch_order = true;
+    e_mouse_release.dispatch_order = true;
+    e_mouse_move.dispatch_order = true;
 }
 
 
@@ -26,21 +26,31 @@ void v_MouseCatcher::capture() {
 MouseCatcherPressAcceptor::MouseCatcherPressAcceptor(v_MouseCatcher *button) : EventAcceptor(button) {}
 
 EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &event) {
-    if (acceptor->is_inside(event.position)) {
-        acceptor->capture();
-        return (EventAccResult) (EventAccResult::focus | EventAccResult::done);
-    } else {
-        acceptor->captured = false;
+    v_MouseCatcher *mc = acceptor;
+
+    if (mc->captured) {
+        EventAccResult res = mc->get_dispatcher<Event::MousePress>().dispatch_to_sub_es(event);
+        if (res & EventAccResult::cont) {
+            return res;
+        }
     }
 
-    return EventAccResult::none;
+    if (mc->is_inside(event.position)) {
+        mc->capture();
+        EventAccResult res = mc->get_dispatcher<Event::MousePress>().dispatch_to_sub_es(event);
+        return (EventAccResult) (EventAccResult::focus | EventAccResult::done);
+    }
+    
+    mc->captured = false;
+    return EventAccResult::stop;
 }
 
 MouseCatcherMoveAcceptor::MouseCatcherMoveAcceptor(v_MouseCatcher *button) : EventAcceptor(button) {}
 
-EventAccResult MouseCatcherMoveAcceptor::operator()(const Event::MouseMove &) {
+EventAccResult MouseCatcherMoveAcceptor::operator()(const Event::MouseMove &event) {
     if (acceptor->captured) {
-        return EventAccResult::children_dispatch_only;
+        EventAccResult res = acceptor->get_dispatcher<Event::MouseMove>().dispatch_to_sub_es(event);
+        return (EventAccResult) (res | EventAccResult::done);
     } else {
         return EventAccResult::stop;
     }

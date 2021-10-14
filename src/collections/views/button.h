@@ -1,10 +1,7 @@
 #pragma once
 
 
-#include "view/view.h"
 #include "highlighter.h"
-#include "text.h"
-#include "../renderables/renderables.h"
 
 
 extern const Vec2d BUTTON_HOVER_POS_DELTA;
@@ -52,8 +49,6 @@ public:
     virtual void tick(const double = 0, const double = 0) override;
     virtual void render(Renderer *renderer) override;
     // virtual void subrender(Renderer *renderer) override;
-
-    void add_label(const char *text, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
 
     void press();
     void unpress();

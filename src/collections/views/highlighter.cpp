@@ -5,7 +5,7 @@ const double HIGHLIGHTER_ON_COEF = 1.2;
 
 
 v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent):
-AbstractView(body, nullptr, parent),
+AbstractLabledView(body, nullptr, parent),
 cursor_inside(false),
 on_move(this),
 color(color)
@@ -51,9 +51,13 @@ HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *button) : Even
 EventAccResult HighlighterPressAcceptor::operator()(const Event::MousePress &event) {
     v_Highlighter *hl = acceptor;
 
-    hl->cursor_inside = hl->is_inside(event.position);
-
-    return EventAccResult::none;
+    if (hl->is_inside(event.position)) {
+        hl->cursor_inside = true;
+        return EventAccResult::cont;
+    } else {
+        hl->cursor_inside = false;
+        return EventAccResult::none;
+    }
 }
 
 HighlighterMoveAcceptor::HighlighterMoveAcceptor(v_Highlighter *button) : EventAcceptor(button) {}
@@ -61,7 +65,10 @@ HighlighterMoveAcceptor::HighlighterMoveAcceptor(v_Highlighter *button) : EventA
 EventAccResult HighlighterMoveAcceptor::operator()(const Event::MouseMove &event) {
     v_Highlighter *hl = acceptor;
 
-    hl->cursor_inside = hl->is_inside(event.to);
-
-    return EventAccResult::none;
+    if (hl->is_inside(event.to, event.from)) {
+        hl->cursor_inside = hl->is_inside(event.to);
+        return EventAccResult::cont;
+    } else {
+        return EventAccResult::none;
+    }
 }

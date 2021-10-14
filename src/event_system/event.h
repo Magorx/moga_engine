@@ -12,9 +12,10 @@
 enum EventAccResult {
     none  = 1 << 0,
     stop  = 1 << 1,
-    done  = 1 << 2,
-    focus = 1 << 3,
-    children_dispatch_only = 1 << 4,
+    cont  = 1 << 2,
+    done  = 1 << 3,
+    focus = 1 << 4,
+    children_dispatch_only = 1 << 5,
 };
 
 
@@ -64,24 +65,24 @@ public:
     }
 
     virtual EventAccResult emit(const EVENT_T &event) {
-        return dispatch(event);
+        if (event_affector) {
+            EVENT_T affected_event = event_affector(event);
+            return dispatch(affected_event);
+        } else {
+            return dispatch(event);
+        }
     }
 
     EventAccResult dispatch_to_observers(const EVENT_T &event) {
-        if (event_affector) {
-            EVENT_T affected_event = event_affector(event);
-            for (auto observer : observers) {
-                EventAccResult res = (*observer)(affected_event);
-                if ((res & EventAccResult::none) == 0) return res;
-            }
-        } else {
-            for (auto observer : observers) {
-                EventAccResult res = (*observer)(event);
-                if ((res & EventAccResult::none) == 0) return res;
-            }
+        EventAccResult sub_res = EventAccResult::none;
+    
+        for (auto observer : observers) {
+            EventAccResult res = (*observer)(event);
+            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+            if ((res & EventAccResult::done) || (res & EventAccResult::stop)) { return res; }
         }
 
-        return EventAccResult::none;
+        return sub_res;
     }
 
     EventAccResult dispatch_to_sub_es(const EVENT_T &event);
@@ -89,33 +90,39 @@ public:
     void process_acc_result(EventAccResult &res, const EVENT_T &event);
 
     EventAccResult dispatch(const EVENT_T &event) {
+        EventAccResult sub_res = EventAccResult::none;
+
         if (dispatch_order) {
             EventAccResult res = dispatch_to_observers(event);
+            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
             process_acc_result(res, event);
             if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
                 return res;
             }
 
             res = dispatch_to_sub_es(event);
+            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
             process_acc_result(res, event);
             if (res & EventAccResult::done) {
                 return res;
             }
         } else {
             EventAccResult res = dispatch_to_sub_es(event);
+            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
             process_acc_result(res, event);
             if (res & EventAccResult::done) {
                 return res;
             }
 
             res = dispatch_to_observers(event);
-            process_acc_result(res, event);            
+            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+            process_acc_result(res, event);
             if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
                 return res;
             }
         }
 
-        return EventAccResult::none;
+        return sub_res;
     }
 
     void inverse_dispatch_order() { dispatch_order ^= 1; }
@@ -225,18 +232,14 @@ void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, const EVE
 
 template <typename EVENT_T>
 EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event) {
-    if (event_affector) {
-        EVENT_T affected_event = event_affector(event);
-        for (auto sub_es : es->get_sub_es()) {
-            EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(affected_event);
-            if (res & EventAccResult::done) return res;
-        }
-    } else {
-        for (auto sub_es : es->get_sub_es()) {
-            EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event);
-            if (res & EventAccResult::done) return res;
-        }
+    EventAccResult sub_res = EventAccResult::none;
+   
+    for (auto sub_es : es->get_sub_es()) {
+        EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event);
+
+        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+        if (res & EventAccResult::done) return res;
     }
 
-    return EventAccResult::none;
+    return sub_res;
 }

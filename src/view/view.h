@@ -17,23 +17,23 @@
 class AbstractView;
 
 
-class AVPressAcceptor : public EventAcceptor<AbstractView, Event::MousePress> {
+class AVMissPressBlocker : public EventAcceptor<AbstractView, Event::MousePress> {
 public:
-    AVPressAcceptor(AbstractView *button);
+    AVMissPressBlocker(AbstractView *button);
 
     EventAccResult operator()(const Event::MousePress &event) override;
 };
 
-class AVReleaseAcceptor : public EventAcceptor<AbstractView, Event::MouseRelease> {
+class AVMissReleaseBlocker : public EventAcceptor<AbstractView, Event::MouseRelease> {
 public:
-    AVReleaseAcceptor(AbstractView *button);
+    AVMissReleaseBlocker(AbstractView *button);
 
     EventAccResult operator()(const Event::MouseRelease &event) override;
 };
 
-class AVMoveAcceptor : public EventAcceptor<AbstractView, Event::MouseMove> {
+class AVMissMoveBlocker : public EventAcceptor<AbstractView, Event::MouseMove> {
 public:
-    AVMoveAcceptor(AbstractView *button);
+    AVMissMoveBlocker(AbstractView *button);
 
     EventAccResult operator()(const Event::MouseMove &event) override;
 };
@@ -61,13 +61,9 @@ protected:
     AbstractView *parent;
     std::vector<AbstractView*> subviews;
 
-    AVPressAcceptor   on_press;
-    AVReleaseAcceptor on_release;
-    AVMoveAcceptor    on_move;
-
-    friend AVPressAcceptor;
-    friend AVMoveAcceptor;
-    friend AVReleaseAcceptor;
+    friend AVMissPressBlocker;
+    friend AVMissMoveBlocker;
+    friend AVMissReleaseBlocker;
 
 public:
     AbstractView(ViewBody body, RenderableObject *texture = nullptr, AbstractView *parent = nullptr, bool to_reprioritize_clicks = true);
@@ -88,6 +84,7 @@ public:
     void fit_absolute(const Vec2d &left_up, const Vec2d &right_down);
 
     inline bool is_inside(const Vec2d &click) { return body.is_inside(click); }
+    inline bool is_inside(const Vec2d &from, const Vec2d &to) { return body.is_inside(from) || body.is_inside(to); }
 
     inline RenderableObject *get_texture() { return texture; }
     inline void set_parent(AbstractView *parent_) { parent = parent_; }

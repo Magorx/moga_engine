@@ -8,14 +8,11 @@
 AbstractView::AbstractView(ViewBody body, RenderableObject *texture, AbstractView *parent, bool to_reprioritize_clicks):
 body(body),
 texture(texture),
-parent(parent),
-on_press(this),
-on_release(this),
-on_move(this)
+parent(parent)
 {
-    e_mouse_press.add(new AVPressAcceptor(this));
-    e_mouse_release.add(new AVReleaseAcceptor(this));
-    e_mouse_move.add(new AVMoveAcceptor(this));
+    // e_mouse_press.add(new AVPressAcceptor(this));
+    // e_mouse_release.add(new AVReleaseAcceptor(this));
+    // e_mouse_move.add(new AVMoveAcceptor(this));
 
     e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position}; } );
     e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease {event.position - this->body.position}; } );
@@ -133,9 +130,9 @@ void AbstractView::fit_absolute(const Vec2d &left_up, const Vec2d &right_down) {
 
 
 
-AVPressAcceptor::AVPressAcceptor(AbstractView *av) : EventAcceptor(av) {}
+AVMissPressBlocker::AVMissPressBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVPressAcceptor::operator()(const Event::MousePress &event) {
+EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event) {
     if (!acceptor->is_inside(event.position)) {
         return EventAccResult::stop;
     }
@@ -144,9 +141,9 @@ EventAccResult AVPressAcceptor::operator()(const Event::MousePress &event) {
 }
 
 
-AVReleaseAcceptor::AVReleaseAcceptor(AbstractView *av) : EventAcceptor(av) {}
+AVMissReleaseBlocker::AVMissReleaseBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVReleaseAcceptor::operator()(const Event::MouseRelease &event) {
+EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &event) {
     if (!acceptor->is_inside(event.position)) {
         return EventAccResult::stop;
     }
@@ -155,9 +152,9 @@ EventAccResult AVReleaseAcceptor::operator()(const Event::MouseRelease &event) {
 }
 
 
-AVMoveAcceptor::AVMoveAcceptor(AbstractView *av) : EventAcceptor(av) {}
+AVMissMoveBlocker::AVMissMoveBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVMoveAcceptor::operator()(const Event::MouseMove &event) {
+EventAccResult AVMissMoveBlocker::operator()(const Event::MouseMove &event) {
     if (!acceptor->is_inside(event.from) && !acceptor->is_inside(event.to)) {
         return EventAccResult::stop;
     }

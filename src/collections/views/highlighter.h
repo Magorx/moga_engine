@@ -1,8 +1,7 @@
 #pragma once
 
 
-#include "view/view.h"
-#include "text.h"
+#include "labled_view.h"
 #include "../renderables/renderables.h"
 
 
@@ -27,7 +26,7 @@ public:
 };
 
 
-class v_Highlighter : public AbstractView {
+class v_Highlighter : public AbstractLabledView {
     bool cursor_inside;
 
     HighlighterMoveAcceptor on_move;

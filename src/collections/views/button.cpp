@@ -23,13 +23,6 @@ void v_Button::render(Renderer *renderer) {
     body.position -= pos_delta;
 }
 
-void v_Button::add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color) {
-    v_Text *text = new v_Text(ViewBody{body.size / 2, body.size / 2}, lable, char_size, font_color, back_color);
-
-    text->centrized = true;
-    add_subview(text);
-}
-
 void v_Button::press() {
     pressed = true;
 
@@ -63,23 +56,27 @@ void v_Button::tick(const double, const double) {
 
 ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button) : EventAcceptor(button) {}
 
-EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &) {
+EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event) {
+    if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
+
     if (!acceptor->pressed) {
         acceptor->press();
     }
 
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }
 
 
 ButtonReleaseAcceptor::ButtonReleaseAcceptor(v_Button *button) : EventAcceptor(button) {}
 
-EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &) {
+EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &event) {
+    if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
+
     if (acceptor->pressed) {
         acceptor->unpress();
     }
 
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }
 
 
@@ -87,6 +84,7 @@ ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button) : EventAcceptor(button)
 
 EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event) {
     v_Button *button = acceptor;
+    if (!button->is_inside(event.to, event.from)) return EventAccResult::none;
 
     if (button->is_inside(event.to) && !button->is_inside(event.from)) {
         button->pos_delta += BUTTON_HOVER_POS_DELTA;
@@ -100,5 +98,5 @@ EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event) {
         button->pos_delta -= BUTTON_HOVER_POS_DELTA;
     }
     
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }

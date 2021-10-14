@@ -38,7 +38,7 @@ int main() {
     v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, col1);
     moga.add_view(hl1);
 
-    v_Highlighter *hl2 = new v_Highlighter({{20, 20}, {70, 70}}, col1, mc);
+    v_Highlighter *hl2 = new v_Highlighter({{0.1, 0.1}, {0.5, 0.1}}, colmc, mc);
     
     togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
     togg->e_mouse_press.add(new EventCatcher<Event::MousePress>);
@@ -48,7 +48,9 @@ int main() {
     SmartColor *col5 = new SmartColor({0, 255, 255});
     moga.add_tickable(col4);
     moga.add_tickable(col5);
-    butt->add_label("MORE", 15, col5, col4);
+
+    butt->add_label("MORE", 15, col5);
+    hl2->add_label("Options", 15, col5);
 
     moga.everlasting_loop();
 
