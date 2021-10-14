@@ -17,14 +17,14 @@ int main() {
     moga.add_tickable(color);
 
     create_cage(&moga, color);
-    generate_balls(&moga, 5);
+    generate_balls(&moga, 10);
 
     SmartColor *col_menu = new SmartColor({200, 200, 200});
     v_VerticalLayout *vlayout = new v_VerticalLayout({{750, 150}, {200, 250}}, {{0.1, 0.1}, {0.1, 0.1}}, 5, nullptr, col_menu);
     moga.add_view(vlayout);
 
     SmartColor *col_submenu = new SmartColor({150, 150, 150});
-    v_HorizontalLayout *hlayout = new v_HorizontalLayout({{800, 150}, {100, 300}}, {{0.1, 0.2}, {0.1, 0.2}}, 5, nullptr, col_submenu);
+    v_HorizontalLayout *hlayout = new v_HorizontalLayout({{800, 150}, {100, 300}}, {{0, 0.0}, {0, 0.0}}, 5, nullptr, nullptr);
     vlayout->layout_add(hlayout, 2);
 
     SmartColor *colmc = new SmartColor({50, 50, 50});
@@ -39,7 +39,7 @@ int main() {
     v_Highlighter *hl2 = new v_Highlighter({{0.1, 0.1}, {0.1, 0.1}}, colmc, mc);
     hl2->add_label("Options", 15, neon);
 
-    SmartColor *colbutt = new SmartColor({100, 100, 230});
+    SmartColor *colbutt = new SmartColor({50, 100, 200});
     v_Button *butt = new v_Button({{0, 0}, {0, 0}}, colbutt);
     butt->e_mouse_press.add(new SpawnBallLambda(&moga));
     hlayout->layout_add(butt);

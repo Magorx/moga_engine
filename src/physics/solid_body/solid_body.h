@@ -4,7 +4,7 @@
 #include "physics/phys_tickable.h"
 
 #include "utils/vec3d.h"
-#include "collision/collision.h"
+#include "../collision/collision.h"
 
 enum class SolidBodyType {
     Circle,

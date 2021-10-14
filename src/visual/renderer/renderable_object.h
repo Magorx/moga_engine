@@ -3,7 +3,7 @@
 
 
 #include "renderable.h"
-#include "color/smart_color.h"
+#include "visual/color/smart_color.h"
 #include "utils/vec3d.h"
 
 

@@ -1,7 +1,7 @@
 #ifndef SMART_COLORS_COLLECTION_H
 #define SMART_COLORS_COLLECTION_H
 
-#include "color/smart_color.h"
+#include "visual/color/smart_color.h"
 
 
 class SmartColorSin : public SmartColor

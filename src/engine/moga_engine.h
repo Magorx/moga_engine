@@ -13,9 +13,9 @@
 #include <chrono>
 
 #include "moga_engine_settings.h"
-#include "../physics/physics_engine.h"
+#include "physics/physics_engine.h"
 #include "../visual/visual_engine.h"
-#include "../view/view.h"
+#include "view/view.h"
 
 #include "tickable.h"
 #include "object.h"

@@ -1,7 +1,7 @@
 #ifndef SMART_COLOR
 #define SMART_COLOR
 
-#include "color/color.h"
+#include "color.h"
 #include "engine/tickable.h"
 
 #include <vector>
