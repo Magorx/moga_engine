@@ -19,34 +19,26 @@ int main() {
     create_cage(&moga, color);
     generate_balls(&moga, 5);
 
-    SmartColor *col_menu = new SmartColor({200, 200, 200});
-    v_VerticalLayout *layout = new v_VerticalLayout({{800, 150}, {100, 300}}, {{0.1, 0}, {0.1, 0}}, 20, nullptr, col_menu);
-    moga.add_view(layout);
-
     SmartColor *col3 = new SmartColor({100, 100, 230});
-    v_Button *butt = new v_Button({{0, 0}, {0, 0}}, col3);
+    v_Button *butt = new v_Button(ViewBody{{800, 400}, {100, 100}}, col3);
     butt->e_mouse_press.add(new SpawnBallLambda(&moga));
     moga.add_tickable(col3);
-    // moga.add_view(butt);
-    layout->layout_add(butt, 5);
+    moga.add_view(butt);
 
     SmartColor *col1 = new SmartColor({100, 100, 100});
     SmartColor *col2 = new SmartColor({225, 35, 30});
+    v_Toggler *togg  = new v_Toggler(ViewBody{{0.1, 0.1}, {0.1, 0.6}}, col1, col2, butt);
+    moga.add_tickable(col1);
+    moga.add_tickable(col2);
 
     SmartColor *colmc = new SmartColor({50, 50, 50});
     v_MouseCatcher *mc = new v_MouseCatcher({{750, 100}, {200, 40}}, nullptr, colmc);
-    // moga.add_view(mc);
-    layout->layout_add(mc);
+    moga.add_view(mc);
 
     v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, col1);
-    // moga.add_view(hl1);
-    layout->layout_add(hl1);
+    moga.add_view(hl1);
 
     v_Highlighter *hl2 = new v_Highlighter({{0.1, 0.1}, {0.5, 0.1}}, colmc, mc);
-
-    v_Toggler *togg  = new v_Toggler({{0.1, 0.1}, {0.1, 0.6}}, col1, col2, butt);
-    moga.add_tickable(col1);
-    moga.add_tickable(col2);
     
     togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
     togg->e_mouse_press.add(new EventCatcher<Event::MousePress>);

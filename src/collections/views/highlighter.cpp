@@ -16,9 +16,11 @@ color(color)
 }
 
 void v_Highlighter::render(Renderer *renderer) {
-    RGBA cur_color = cursor_inside ? (Color) (color->rgb() * highlight_coef) : color->rgb();
+    if (color) {
+        RGBA cur_color = cursor_inside ? (Color) (color->rgb() * highlight_coef) : color->rgb();
 
-    renderer->draw_rectangle(body.position, body.size, cur_color);
+        renderer->draw_rectangle(body.position, body.size, cur_color);
+    }
 
     subrender(renderer);
 }

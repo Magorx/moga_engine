@@ -20,16 +20,11 @@ set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native") #-fsaniti
 find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
 
 add_executable(moga
-        src/main.cpp
 
         # event
 
         # interface
         src/view/view.cpp
-
-        # chemistry
-        src/chemistry/chem_engine.cpp
-        src/chemistry/chem_reactions.cpp
 
         # engine
         src/engine/object.cpp
@@ -60,6 +55,7 @@ add_executable(moga
         src/collections/views/toggler.cpp
         src/collections/views/highlighter.cpp
         src/collections/views/mouse_catcher.cpp
+        src/collections/views/vertical_layout.cpp
         src/collections/views/text.cpp
 
         # components
@@ -69,6 +65,12 @@ add_executable(moga
 
         # utils
         src/utils/vec3d.cpp
+
+        # chemistry
+        src/chemistry/chem_engine.cpp
+        src/chemistry/chem_reactions.cpp
+
+        src/main.cpp
         )
 
 target_link_libraries(moga sfml-graphics sfml-window sfml-system)        
