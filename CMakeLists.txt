@@ -56,6 +56,7 @@ add_executable(moga
         src/collections/views/highlighter.cpp
         src/collections/views/mouse_catcher.cpp
         src/collections/views/vertical_layout.cpp
+        src/collections/views/horizontal_layout.cpp
         src/collections/views/text.cpp
 
         # components

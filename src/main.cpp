@@ -20,7 +20,7 @@ int main() {
     generate_balls(&moga, 5);
 
     SmartColor *col_menu = new SmartColor({200, 200, 200});
-    v_VerticalLayout *layout = new v_VerticalLayout({{800, 150}, {100, 300}}, {{0.1, 0}, {0.1, 0}}, 20, nullptr, col_menu);
+    v_HorizontalLayout *layout = new v_HorizontalLayout({{800, 150}, {100, 300}}, {{0.1, 0}, {0.1, 0}}, 20, nullptr, col_menu);
     moga.add_view(layout);
 
     SmartColor *col3 = new SmartColor({100, 100, 230});
