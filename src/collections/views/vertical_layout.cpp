@@ -9,15 +9,15 @@ v_VerticalLayout::v_VerticalLayout(ViewBody body, ViewBody padding_body,
 AbstractLayoutView(body, padding_body, padding_split, parent, color, highlight_coef)
 {}
 
-void v_VerticalLayout::refit() {
+void v_VerticalLayout::layout_refit() {
     int v_cnt = weights.size();
     double overall_weight = sum_weight;
 
-    double cur_min_y = padding_body.position.y();
-    double min_x = padding_body.position.x();
-    double size_x = padding_body.size.x();
+    double cur_min_y = fitting_body.position.y();
+    double min_x = fitting_body.position.x();
+    double size_x = fitting_body.size.x();
 
-    double fit_pixels = padding_body.size.y() - padding_split * (v_cnt - 1);
+    double fit_pixels = fitting_body.size.y() - padding_split * (v_cnt - 1);
 
     for (int i = 0; i < v_cnt; ++i) {
         double w = weights[i];
