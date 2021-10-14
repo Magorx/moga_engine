@@ -15,6 +15,8 @@ color(color)
     e_mouse_move.add(new HighlighterMoveAcceptor(this));
 }
 
+v_Highlighter::~v_Highlighter() {}
+
 void v_Highlighter::render(Renderer *renderer) {
     if (color) {
         RGBA cur_color = cursor_inside ? (Color) (color->rgb() * highlight_coef) : color->rgb();
@@ -26,9 +28,8 @@ void v_Highlighter::render(Renderer *renderer) {
 }
 
 void v_Highlighter::add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color) {
-    v_Text *text = new v_Text(ViewBody{body.size / 2, body.size / 2}, lable, char_size, font_color, back_color);
+    v_Text *text = new v_Text(ViewBody{body.size / 2, body.size / 2}, lable, char_size, font_color, back_color, true, this);
 
-    text->centrized = true;
     add_subview(text);
 }
 

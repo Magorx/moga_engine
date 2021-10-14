@@ -58,6 +58,12 @@ public:
         assert(es && "can't create an EventDispatcher without parental EventSystem");
     }
 
+    ~EventDispatcher() {
+        for (auto observer : observers) {
+            delete observer;
+        }
+    }
+
     EventDispatcher &operator=(const EventDispatcher &other) = delete;
 
     void add(EventReaction<EVENT_T> *observer) {

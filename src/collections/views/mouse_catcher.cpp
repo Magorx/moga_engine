@@ -17,6 +17,7 @@ on_move(this)
     e_mouse_move.dispatch_order = true;
 }
 
+v_MouseCatcher::~v_MouseCatcher() {}
 
 void v_MouseCatcher::capture() {
     captured ^= true;

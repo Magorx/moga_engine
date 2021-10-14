@@ -39,6 +39,7 @@ public:
     SmartColor *color;
 
     v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
+    virtual ~v_Highlighter();
 
     virtual void render(Renderer *renderer) override;
     // virtual void subrender(Renderer *renderer) override;

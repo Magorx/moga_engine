@@ -9,6 +9,10 @@ v_VerticalLayout::v_VerticalLayout(ViewBody body, ViewBody padding_body,
 AbstractLayoutView(body, padding_body, padding_split, parent, color, highlight_coef)
 {}
 
+v_VerticalLayout::~v_VerticalLayout() {
+    
+}
+
 void v_VerticalLayout::layout_refit() {
     int v_cnt = weights.size();
     double overall_weight = sum_weight;
@@ -27,6 +31,8 @@ void v_VerticalLayout::layout_refit() {
         AbstractView *view = subviews[i];
         view->get_body().set_position({min_x, cur_min_y});
         view->get_body().set_size({size_x, static_cast<double>(y_pixels)});
+        view->recalculate_fit_body();
+        view->refit();
 
         cur_min_y += y_pixels + padding_split;
         fit_pixels -= y_pixels;

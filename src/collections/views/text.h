@@ -8,7 +8,7 @@
 
 
 class v_Text : public AbstractView {
-    const char *lable;
+    char *lable;
     int char_size;
     SmartColor *back_color;
     SmartColor *font_color;
@@ -16,7 +16,8 @@ class v_Text : public AbstractView {
 public:
     bool centrized;
 
-    v_Text(const ViewBody &body, const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr, bool centrized = false);
+    v_Text(const ViewBody &body, const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr, bool centrized = false, AbstractView *parent = nullptr);
+    virtual ~v_Text();
 
     virtual void render(Renderer *renderer) override;
 };

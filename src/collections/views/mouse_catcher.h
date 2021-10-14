@@ -35,6 +35,7 @@ class v_MouseCatcher : public v_Highlighter {
 
 public:
     v_MouseCatcher(const ViewBody &body, AbstractView *parent = nullptr, SmartColor *color=nullptr);
+    virtual ~v_MouseCatcher();
 
     void press(Vec2d click);
     void move(Vec2d from, Vec2d to);

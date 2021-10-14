@@ -295,7 +295,7 @@ Vec3d MogaEngine::get_mouse_pos() const {
 MogaEngine::~MogaEngine() {
 	printf("hoya\n");
 	for (auto x : tickables) {
-		delete x;
+		if (!x->tickable_nonfree) delete x;
 	}
 
 	for (auto x : objects) {

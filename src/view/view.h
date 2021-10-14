@@ -56,6 +56,7 @@ struct ViewBody {
 class AbstractView : public RenderableObject, public Tickable, public EventSystem {
 protected:
     ViewBody body;
+    ViewBody fit_body;
     
     AbstractView *parent;
     std::vector<AbstractView*> subviews;
@@ -81,6 +82,10 @@ public:
     void fit(const Vec2d &left_up, const Vec2d &right_down, bool absolute_fit = false);
     void fit_proportional(const Vec2d &left_up, const Vec2d &right_down);
     void fit_absolute(const Vec2d &left_up, const Vec2d &right_down);
+
+    virtual void recalculate_fit_body();
+    virtual void refit();
+    void refit_in_parent();
 
     inline bool is_inside(const Vec2d &click) { return body.is_inside(click); }
     inline bool is_inside(const Vec2d &from, const Vec2d &to) { return body.is_inside(from) || body.is_inside(to); }

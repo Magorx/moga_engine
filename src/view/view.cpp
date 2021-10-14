@@ -7,6 +7,7 @@
 
 AbstractView::AbstractView(ViewBody body, AbstractView *parent, bool to_reprioritize_clicks):
 body(body),
+fit_body(body),
 parent(parent)
 {
     // e_mouse_press.add(new AVPressAcceptor(this));
@@ -26,12 +27,17 @@ parent(parent)
         parent->add_subview(this);
 
         if (body.position.len_squared() < 1.1 && body.size.len_squared() < 1.1) {
-            fit(body.position, body.size);
+            fit(fit_body.position, fit_body.size);
+        } else {
+            Vec2d p_size = parent->get_body().size;
+            fit_body.position = body.position / p_size;
+            fit_body.size = (p_size - (body.position + body.size)) / p_size;
         }
     }
 }
 
 AbstractView::~AbstractView() {
+    // printf("deleting %p\n", this);
     for (auto subview : subviews) {
         delete subview;
     }
@@ -122,6 +128,24 @@ void AbstractView::fit_absolute(const Vec2d &left_up, const Vec2d &right_down) {
     body.size     = p_body.size - right_down - left_up;
 }
 
+void AbstractView::refit() {
+    refit_in_parent();
+    for (auto subview : subviews) {
+        subview->refit();
+    }
+}
+
+void AbstractView::refit_in_parent() {
+    fit_proportional(fit_body.position, fit_body.size);
+}
+
+void AbstractView::recalculate_fit_body() {
+    if (!parent) return;
+
+    Vec2d p_size = parent->get_body().size;
+    fit_body.position = body.position / p_size;
+    fit_body.size = (p_size - (body.position + body.size)) / p_size;
+}
 
 
 AVMissPressBlocker::AVMissPressBlocker(AbstractView *av) : EventAcceptor(av) {}

@@ -18,9 +18,9 @@ pressed(false)
 }
 
 void v_Button::render(Renderer *renderer) {
-    body.position += pos_delta;
+    // body.position += pos_delta;
     v_Highlighter::render(renderer);
-    body.position -= pos_delta;
+    // body.position -= pos_delta;
 }
 
 void v_Button::press() {

@@ -20,11 +20,11 @@ int main() {
     generate_balls(&moga, 5);
 
     SmartColor *col_menu = new SmartColor({200, 200, 200});
-    v_VerticalLayout *vlayout = new v_VerticalLayout({{800, 150}, {100, 300}}, {{0.1, 0.1}, {0.1, 0.1}}, 5, nullptr, col_menu);
+    v_VerticalLayout *vlayout = new v_VerticalLayout({{750, 150}, {200, 250}}, {{0.1, 0.1}, {0.1, 0.1}}, 5, nullptr, col_menu);
     moga.add_view(vlayout);
 
     SmartColor *col_submenu = new SmartColor({150, 150, 150});
-    v_VerticalLayout *hlayout = new v_VerticalLayout({{800, 150}, {100, 300}}, {{0.1, 0}, {0.1, 0}}, 5, nullptr, col_submenu);
+    v_HorizontalLayout *hlayout = new v_HorizontalLayout({{800, 150}, {100, 300}}, {{0.1, 0.2}, {0.1, 0.2}}, 5, nullptr, col_submenu);
     vlayout->layout_add(hlayout, 2);
 
     SmartColor *colmc = new SmartColor({50, 50, 50});
@@ -36,7 +36,7 @@ int main() {
     vlayout->layout_add(hl1);
 
     SmartColor *neon = new SmartColor({30, 235, 235});
-    v_Highlighter *hl2 = new v_Highlighter({{0.1, 0.1}, {0.5, 0.1}}, colmc, mc);
+    v_Highlighter *hl2 = new v_Highlighter({{0.1, 0.1}, {0.1, 0.1}}, colmc, mc);
     hl2->add_label("Options", 15, neon);
 
     SmartColor *colbutt = new SmartColor({100, 100, 230});
@@ -54,6 +54,9 @@ int main() {
     togg->e_mouse_release.add(new EventCatcher<Event::MouseRelease>);
 
     butt->add_label("MORE", 15, neon);
+
+    // v_Highlighter *hl3 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
+    // vlayout->layout_add(hl3);
 
     moga.everlasting_loop();
 
