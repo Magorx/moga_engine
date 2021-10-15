@@ -58,6 +58,7 @@ add_executable(moga
         src/collections/views/vertical_layout.cpp
         src/collections/views/horizontal_layout.cpp
         src/collections/views/text.cpp
+        src/collections/views/hideable.cpp
 
         # components
         src/visual/visual_engine.cpp

@@ -30,6 +30,8 @@ void MogaEngine::visual_render_tick() {
 	printf("[visual_tick] %lg\n", current_time);
 	#endif
 	visual->tick();
+	main_view->get_dispatcher<Event::RenderCall>().emit({visual->get_renderer()});
+	visual->get_renderer()->display();
 }
 
 void MogaEngine::physics_tick() {
@@ -245,7 +247,7 @@ bool MogaEngine::add_view(AbstractView *view) {
 	view->tickable_nonfree = true;
 	add_tickable(view);
 
-	add_renderable(view);
+	// add_renderable(view);
 
 	return true;
 }
@@ -275,6 +277,7 @@ void MogaEngine::tick(const double, const double) {
 	logic_tick();
 
 	visual_render_tick();
+
 	return;
 }
 

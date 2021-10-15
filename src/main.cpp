@@ -10,7 +10,7 @@ const int SCR_H  = 600;
 
 
 int main() {
-    srand(time(NULL));
+    srand(time(nullptr));
     ChemEngine moga("MOGA", SCR_W, SCR_H, 1);
 
     SmartColor *color = new SmartColorSin(Color{40, 230, 150});
@@ -56,7 +56,7 @@ int main() {
     butt->add_label("MORE", 15, neon);
 
     // v_Highlighter *hl3 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
-    // vlayout->layout_add(hl3);
+    // vlayout->layout_add(hl3, 100);
 
     moga.everlasting_loop();
 

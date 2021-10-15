@@ -39,6 +39,14 @@ public:
 };
 
 
+class AVRenderCallAcceptor : public EventAcceptor<AbstractView, Event::RenderCall> {
+public:
+    AVRenderCallAcceptor(AbstractView *view);
+
+    EventAccResult operator()(const Event::RenderCall &event) override;
+};
+
+
 struct ViewBody {
     Vec2d position;
     Vec2d size;

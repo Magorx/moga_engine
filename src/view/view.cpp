@@ -10,6 +10,7 @@ body(body),
 fit_body(body),
 parent(parent)
 {
+    e_render_call.add(new AVRenderCallAcceptor(this));
     // e_mouse_press.add(new AVPressAcceptor(this));
     // e_mouse_release.add(new AVReleaseAcceptor(this));
     // e_mouse_move.add(new AVMoveAcceptor(this));
@@ -59,9 +60,10 @@ void AbstractView::render(Renderer *renderer) {
 void AbstractView::subrender(Renderer *renderer) {
     renderer->shift(body.position);
 
-    for (size_t i = 0; i < subviews.size(); ++i) {
-        subviews[i]->render(renderer);
-    }
+    // for (size_t i = 0; i < subviews.size(); ++i) {
+    //     subviews[i]->render(renderer);
+    // }
+    e_render_call.dispatch_to_sub_es({renderer});
 
     renderer->shift(-body.position);
 }
@@ -178,5 +180,15 @@ EventAccResult AVMissMoveBlocker::operator()(const Event::MouseMove &event) {
     }
     
     return EventAccResult::none;
+}
+
+AVRenderCallAcceptor::AVRenderCallAcceptor(AbstractView *av) : EventAcceptor(av) {
+    printf("bound for %p\n", av);
+}
+
+EventAccResult AVRenderCallAcceptor::operator()(const Event::RenderCall &event) {
+    acceptor->render(event.renderer);
+
+    return EventAccResult::stop;
 }
 

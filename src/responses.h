@@ -13,7 +13,7 @@ public:
 };
 
 
-class ToogleChemistryModelLambda : public EventReaction<Event::Toggle> {
+class ToogleChemistryModelLambda : public EventReaction<Event::Activator> {
     ChemEngine *engine;
 
 public:
@@ -21,7 +21,7 @@ public:
     engine(engine)
     {}
 
-    EventAccResult operator()(const Event::Toggle &) override {
+    EventAccResult operator()(const Event::Activator &) override {
         engine->toggle_chemistry();
         return EventAccResult::none;
     }

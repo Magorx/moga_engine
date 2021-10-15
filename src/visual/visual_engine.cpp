@@ -76,5 +76,5 @@ void VisualEngine::clear_deleted_renderables() {
 void VisualEngine::tick(const double, const double) {
     renderer->clear();
     render();
-    renderer->display();
+    // renderer->display();
 }

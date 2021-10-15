@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "highlighter.h"
+#include "view/view.h"
 
 
 class v_Hideable;
@@ -28,22 +28,31 @@ public:
     EventAccResult operator()(const Event::MouseMove &event) override;
 };
 
+class HideableActivatorAcceptor : public EventAcceptor<v_Hideable, Event::Activator> {
+public:
+    HideableActivatorAcceptor(v_Hideable *button);
+
+    EventAccResult operator()(const Event::Activator &event) override;
+};
 
 
-class v_Hideable : public v_Highlighter {
-    bool is_shown;
-
+class v_Hideable : public AbstractView {
     friend HideablePressAcceptor;
     friend HideableReleaseAcceptor;
     friend HideableMoveAcceptor;
+    friend HideableActivatorAcceptor;
 
 public:
-    v_Hideable(const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, bool is_shown = false, double highlight_coef = HIGHLIGHTER_ON_COEF);
+    bool to_pass_inactive;
+    bool _is_active;
+
+    v_Hideable(const ViewBody &body, AbstractView *parent = nullptr, bool to_pass_inactive = false, bool is_shown = true);
 
     virtual void render(Renderer *renderer) override;
 
-    inline void hide()   { is_shown = false; }
-    inline void reveal() { is_shown = true;  }
+    inline void activate()   { _is_active  = false; }
+    inline void deactivate() { _is_active  = true;  }
+    inline void toggle()     { _is_active ^= true;  }
 
-    inline bool is_active() { return is_shown; }
+    inline bool is_active() { return _is_active; }
 };

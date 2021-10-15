@@ -158,7 +158,8 @@ public:
     EventDispatcher<Event::MousePress>   e_mouse_press;
     EventDispatcher<Event::MouseRelease> e_mouse_release;
     EventDispatcher<Event::MouseMove>    e_mouse_move;
-    EventDispatcher<Event::Toggle>       e_toggle;
+    EventDispatcher<Event::Activator>    e_toggle;
+    EventDispatcher<Event::RenderCall>   e_render_call;
 
     EventSystem() :
     parent(nullptr),
@@ -166,7 +167,8 @@ public:
     e_mouse_press(this, "mouse_press"),
     e_mouse_release(this, "mouse_release"),
     e_mouse_move(this, "mouse_hover"),
-    e_toggle(this, "toggle")
+    e_toggle(this, "toggle"),
+    e_render_call(this, "render_call")
     {}
 
     void add(EventSystem *sub_system) {
@@ -219,10 +221,14 @@ inline EventDispatcher<Event::MouseMove> &EventSystem::get_dispatcher() {
 }
 
 template <>
-inline EventDispatcher<Event::Toggle> &EventSystem::get_dispatcher() {
+inline EventDispatcher<Event::Activator> &EventSystem::get_dispatcher() {
     return e_toggle;
 }
 
+template <>
+inline EventDispatcher<Event::RenderCall> &EventSystem::get_dispatcher() {
+    return e_render_call;
+}
 
 //=====================================================================================================================
 template <typename EVENT_T>
@@ -235,12 +241,14 @@ void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, const EVE
     }
 }
 
+#include <cstring>
 
 template <typename EVENT_T>
 EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event) {
     EventAccResult sub_res = EventAccResult::none;
    
     for (auto sub_es : es->get_sub_es()) {
+        if (strcmp(id, "render_call") == 0) printf("DSP [%s] to %p\n", id, sub_es);
         EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event);
 
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;

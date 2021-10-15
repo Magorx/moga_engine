@@ -1,12 +1,12 @@
 #pragma once
 
 
-#include "view/view.h"
+#include "hideable.h"
 #include "text.h"
 
-class AbstractLabledView : public AbstractView {
+class AbstractLabledView : public v_Hideable {
 public:
-    using AbstractView::AbstractView;
+    using v_Hideable::v_Hideable;
     virtual ~AbstractLabledView() {}
 
     inline void add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr) {

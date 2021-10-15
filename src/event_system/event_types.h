@@ -3,6 +3,8 @@
 
 #include "utils/vec2d.h"
 
+class Renderer;
+
 namespace Event {
 
 struct ControlKeysData {
@@ -24,13 +26,22 @@ struct MouseMove {
     Vec2d to;
 };
 
-class Renderer;
 struct RenderCall {
     Renderer *renderer;
 };
 
-struct Toggle {
-    
+struct Activator {
+    enum State {
+        off,
+        on,
+        toggle,
+    };
+
+
+    State mode = State::toggle;
+    void *target = nullptr;
+
+    inline bool check_target(void *acceptor) const { return !target || target == acceptor; }
 };
 
 }
