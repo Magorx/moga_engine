@@ -145,7 +145,7 @@ void AbstractView::recalculate_fit_body() {
 
 AVMissPressBlocker::AVMissPressBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event) {
+EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.position)) {
         return EventAccResult::stop;
     }
@@ -156,7 +156,7 @@ EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event) {
 
 AVMissReleaseBlocker::AVMissReleaseBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &event) {
+EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.position)) {
         return EventAccResult::stop;
     }
@@ -167,7 +167,7 @@ EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &event
 
 AVMissMoveBlocker::AVMissMoveBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVMissMoveBlocker::operator()(const Event::MouseMove &event) {
+EventAccResult AVMissMoveBlocker::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.from) && !acceptor->is_inside(event.to)) {
         return EventAccResult::stop;
     }
@@ -177,7 +177,7 @@ EventAccResult AVMissMoveBlocker::operator()(const Event::MouseMove &event) {
 
 AVRenderCallAcceptor::AVRenderCallAcceptor(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVRenderCallAcceptor::operator()(const Event::RenderCall &event) {
+EventAccResult AVRenderCallAcceptor::operator()(const Event::RenderCall &event, const EventAccResult *) {
     if (!acceptor->is_active()) return EventAccResult::stop;
 
     acceptor->render(event.renderer);

@@ -14,7 +14,7 @@ class HighlighterPressAcceptor : public EventAcceptor<v_Highlighter, Event::Mous
 public:
     HighlighterPressAcceptor(v_Highlighter *button);
 
-    EventAccResult operator()(const Event::MousePress &event) override;
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 
@@ -22,7 +22,7 @@ class HighlighterMoveAcceptor : public EventAcceptor<v_Highlighter, Event::Mouse
 public:
     HighlighterMoveAcceptor(v_Highlighter *button);
 
-    EventAccResult operator()(const Event::MouseMove &event) override;
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 

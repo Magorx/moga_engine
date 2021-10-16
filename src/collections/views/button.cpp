@@ -41,7 +41,7 @@ void v_Button::unpress() {
 
 ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button) : EventAcceptor(button) {}
 
-EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event) {
+EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
 
     if (!acceptor->pressed) {
@@ -54,7 +54,7 @@ EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event) {
 
 ButtonReleaseAcceptor::ButtonReleaseAcceptor(v_Button *button) : EventAcceptor(button) {}
 
-EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &event) {
+EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
 
     if (acceptor->pressed) {
@@ -67,7 +67,7 @@ EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &even
 
 ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button) : EventAcceptor(button) {}
 
-EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event) {
+EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     v_Button *button = acceptor;
     if (!button->is_inside(event.to, event.from)) return EventAccResult::none;
 

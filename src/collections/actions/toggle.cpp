@@ -9,9 +9,10 @@ target(target),
 toggler(toggler),
 reversed(reversed) {}
 
-EventAccResult a_OnPressToggler::operator()(const Event::MousePress &event) {
+EventAccResult a_OnPressToggler::operator()(const Event::MousePress &event, const EventAccResult *) {
     AbstractView *av = acceptor;
     if (!av->is_inside(event.position)) return EventAccResult::none;
+    printf("hi\n");
 
     if (toggler) target->toggle();
     else target->set_active(true ^ reversed);
@@ -27,7 +28,7 @@ toggler(toggler),
 reversed(reversed)
 {}
 
-EventAccResult a_OnReleaseToggler::operator()(const Event::MouseRelease &event) {
+EventAccResult a_OnReleaseToggler::operator()(const Event::MouseRelease &event, const EventAccResult *) {
     AbstractView *av = acceptor;
     if (!av->is_inside(event.position)) return EventAccResult::none;
 
@@ -40,7 +41,7 @@ EventAccResult a_OnReleaseToggler::operator()(const Event::MouseRelease &event) 
 
 a_OnHoverToggler::a_OnHoverToggler(AbstractView *acceptor, v_Hideable *target, bool reversed) : EventAcceptor(acceptor), target(target), reversed(reversed) {}
 
-EventAccResult a_OnHoverToggler::operator()(const Event::MouseMove &event) {
+EventAccResult a_OnHoverToggler::operator()(const Event::MouseMove &event, const EventAccResult *) {
     AbstractView *av = acceptor;
 
     if (av->is_inside(event.to) && !av->is_inside(event.from)) {

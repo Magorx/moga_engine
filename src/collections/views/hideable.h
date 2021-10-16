@@ -11,28 +11,28 @@ class HideablePressAcceptor : public EventAcceptor<v_Hideable, Event::MousePress
 public:
     HideablePressAcceptor(v_Hideable *button);
 
-    EventAccResult operator()(const Event::MousePress &event) override;
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class HideableReleaseAcceptor : public EventAcceptor<v_Hideable, Event::MouseRelease> {
 public:
     HideableReleaseAcceptor(v_Hideable *button);
 
-    EventAccResult operator()(const Event::MouseRelease &event) override;
+    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class HideableMoveAcceptor : public EventAcceptor<v_Hideable, Event::MouseMove> {
 public:
     HideableMoveAcceptor(v_Hideable *button);
 
-    EventAccResult operator()(const Event::MouseMove &event) override;
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class HideableActivatorAcceptor : public EventAcceptor<v_Hideable, Event::Activator> {
 public:
     HideableActivatorAcceptor(v_Hideable *button);
 
-    EventAccResult operator()(const Event::Activator &event) override;
+    EventAccResult operator()(const Event::Activator &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 

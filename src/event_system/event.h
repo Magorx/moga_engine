@@ -23,7 +23,7 @@ template <typename EVENT_T>
 class EventReaction {
 public:
     virtual ~EventReaction() {}
-    virtual EventAccResult operator()(const EVENT_T &event) = 0;
+    virtual EventAccResult operator()(const EVENT_T &event, const EventAccResult *cur_res = nullptr) = 0;
 };
 
 

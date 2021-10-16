@@ -53,7 +53,7 @@ void v_Toggler::unpress() {
 
 TogglerPressAcceptor::TogglerPressAcceptor(v_Toggler *button) : EventAcceptor(button) {}
 
-EventAccResult TogglerPressAcceptor::operator()(const Event::MousePress &event) {
+EventAccResult TogglerPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
 
     v_Toggler *togg = acceptor;
@@ -69,7 +69,7 @@ EventAccResult TogglerPressAcceptor::operator()(const Event::MousePress &event) 
 
 TogglerReleaseAcceptor::TogglerReleaseAcceptor(v_Toggler *button) : EventAcceptor(button) {}
 
-EventAccResult TogglerReleaseAcceptor::operator()(const Event::MouseRelease &event) {
+EventAccResult TogglerReleaseAcceptor::operator()(const Event::MouseRelease &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
 
     acceptor->unpress();
@@ -80,7 +80,7 @@ EventAccResult TogglerReleaseAcceptor::operator()(const Event::MouseRelease &eve
 
 TogglerMoveAcceptor::TogglerMoveAcceptor(v_Toggler *button) : EventAcceptor(button) {}
 
-EventAccResult TogglerMoveAcceptor::operator()(const Event::MouseMove &event) {
+EventAccResult TogglerMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     v_Toggler *togg = acceptor;
     if (!togg->is_inside(event.to, event.from)) return EventAccResult::none;
 

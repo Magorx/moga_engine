@@ -16,21 +16,21 @@ class ButtonPressAcceptor : public EventAcceptor<v_Button, Event::MousePress> {
 public:
     ButtonPressAcceptor(v_Button *button);
 
-    EventAccResult operator()(const Event::MousePress &event) override;
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class ButtonReleaseAcceptor : public EventAcceptor<v_Button, Event::MouseRelease> {
 public:
     ButtonReleaseAcceptor(v_Button *button);
 
-    EventAccResult operator()(const Event::MouseRelease &event) override;
+    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class ButtonMoveAcceptor : public EventAcceptor<v_Button, Event::MouseMove> {
 public:
     ButtonMoveAcceptor(v_Button *button);
 
-    EventAccResult operator()(const Event::MouseMove &event) override;
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 

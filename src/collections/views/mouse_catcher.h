@@ -11,14 +11,14 @@ class MouseCatcherPressAcceptor : public EventAcceptor<v_MouseCatcher, Event::Mo
 public:
     MouseCatcherPressAcceptor(v_MouseCatcher *mouse_catcher);
 
-    EventAccResult operator()(const Event::MousePress &event) override;
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class MouseCatcherMoveAcceptor : public EventAcceptor<v_MouseCatcher, Event::MouseMove> {
 public:
     MouseCatcherMoveAcceptor(v_MouseCatcher *mouse_catcher);
 
-    EventAccResult operator()(const Event::MouseMove &event) override;
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 

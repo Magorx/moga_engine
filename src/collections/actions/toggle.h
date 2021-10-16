@@ -14,7 +14,7 @@ public:
 
     a_OnPressToggler(AbstractView *acceptor, v_Hideable *target, bool toggler = true, bool reversed = false);
 
-    virtual EventAccResult operator()(const Event::MousePress &event) override;
+    virtual EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 
@@ -27,7 +27,7 @@ public:
 
     a_OnReleaseToggler(AbstractView *acceptor, v_Hideable *target, bool toggler = true,  bool reversed = false);
 
-    virtual EventAccResult operator()(const Event::MouseRelease &event) override;
+    virtual EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 
@@ -38,5 +38,5 @@ public:
     bool reversed;
     a_OnHoverToggler(AbstractView *acceptor, v_Hideable *target, bool reversed = false);
 
-    virtual EventAccResult operator()(const Event::MouseMove &event) override;
+    virtual EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };

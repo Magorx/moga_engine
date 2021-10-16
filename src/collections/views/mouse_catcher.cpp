@@ -22,13 +22,16 @@ void v_MouseCatcher::capture() {
 
 MouseCatcherPressAcceptor::MouseCatcherPressAcceptor(v_MouseCatcher *button) : EventAcceptor(button) {}
 
-EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &event) {
+EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
     v_MouseCatcher *mc = acceptor;
 
     if (mc->captured) {
         EventAccResult res = mc->get_dispatcher<Event::MousePress>().dispatch_to_sub_es(event);
-        if (res & EventAccResult::cont) {
-            return res;
+        if (res & EventAccResult::cont || res & EventAccResult::done) {
+            return (EventAccResult) (res | EventAccResult::done);
+        } else {
+            mc->captured = false;
+            return EventAccResult::none;
         }
     }
 
@@ -44,7 +47,7 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
 
 MouseCatcherMoveAcceptor::MouseCatcherMoveAcceptor(v_MouseCatcher *button) : EventAcceptor(button) {}
 
-EventAccResult MouseCatcherMoveAcceptor::operator()(const Event::MouseMove &event) {
+EventAccResult MouseCatcherMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (acceptor->captured) {
         EventAccResult res = acceptor->get_dispatcher<Event::MouseMove>().dispatch_to_sub_es(event);
         return (EventAccResult) (res | EventAccResult::done);

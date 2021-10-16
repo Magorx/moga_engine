@@ -6,7 +6,7 @@ public:
     engine(engine)
     {}
 
-    EventAccResult operator()(const Event::MousePress &) override {
+    EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
         gen_ball(engine);
         return EventAccResult::none;
     }
@@ -21,7 +21,7 @@ public:
     engine(engine)
     {}
 
-    EventAccResult operator()(const Event::Activator &) override {
+    EventAccResult operator()(const Event::Activator &, const EventAccResult*) override {
         engine->toggle_chemistry();
         return EventAccResult::none;
     }

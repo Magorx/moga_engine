@@ -21,21 +21,21 @@ class AVMissPressBlocker : public EventAcceptor<AbstractView, Event::MousePress>
 public:
     AVMissPressBlocker(AbstractView *button);
 
-    EventAccResult operator()(const Event::MousePress &event) override;
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class AVMissReleaseBlocker : public EventAcceptor<AbstractView, Event::MouseRelease> {
 public:
     AVMissReleaseBlocker(AbstractView *button);
 
-    EventAccResult operator()(const Event::MouseRelease &event) override;
+    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class AVMissMoveBlocker : public EventAcceptor<AbstractView, Event::MouseMove> {
 public:
     AVMissMoveBlocker(AbstractView *button);
 
-    EventAccResult operator()(const Event::MouseMove &event) override;
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 
@@ -43,7 +43,7 @@ class AVRenderCallAcceptor : public EventAcceptor<AbstractView, Event::RenderCal
 public:
     AVRenderCallAcceptor(AbstractView *view);
 
-    EventAccResult operator()(const Event::RenderCall &event) override;
+    EventAccResult operator()(const Event::RenderCall &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 
