@@ -19,6 +19,9 @@ protected:
         AbstractView::recalculate_fit_body();
 
         fitting_body.position = body.size * fitting_body_scale.position;
+        if (fitting_body.position.len_squared() < 1.1) {
+            fitting_body.position = 0;
+        }
         fitting_body.size     = body.size * (Vec2d(1, 1) - fitting_body_scale.size) - fitting_body.position;        
     }
 

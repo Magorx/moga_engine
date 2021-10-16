@@ -33,7 +33,7 @@ int main() {
 
     SmartColor *colhl = new SmartColor({100, 100, 100});
     v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
-    vlayout->layout_add(hl1);
+    // vlayout->layout_add(hl1);
 
     SmartColor *neon = new SmartColor({30, 235, 235});
     v_Highlighter *hl2 = new v_Highlighter({{0.1, 0}, {0.1, 0}}, colmc, mc);
@@ -49,11 +49,28 @@ int main() {
     v_Toggler *togg  = new v_Toggler({{0, 0}, {0, 0}}, coltog1, coltog2);
     hlayout->layout_add(togg);
     
-    togg->deactivate();
-    togg->e_toggle_activity.add(new HideableActivityToggleAcceptor(togg));
+    // togg->deactivate();
+    // togg->e_toggle_activity.add(new HideableActivityToggleAcceptor(togg));
     togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
 
-    hl2->e_mouse_press.add(new a_OnPressToggler(hl2, togg));
+    // hl2->e_mouse_press.add(new a_OnPressToggler(hl2, togg));
+    SmartColor *pale = new SmartColor({200, 255, 200});
+    v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);
+
+    SmartColor *sch1 = new SmartColor({155, 0, 0});
+    SmartColor *sch2 = new SmartColor({0, 155, 0});
+    SmartColor *sch3 = new SmartColor({0, 155, 155});
+    v_Highlighter *shl1 = new v_Highlighter({{0, 0}, {0, 0}}, sch1);
+    v_Highlighter *shl2 = new v_Highlighter({{0, 0}, {0, 0}}, sch2);
+    v_Highlighter *shl3 = new v_Highlighter({{0, 0}, {0, 0}}, sch3);
+    submenu->layout_add(shl1);
+    submenu->layout_add(shl2);
+    submenu->layout_add(shl3);
+
+    shl1->e_mouse_press.add(new PressPosPrint());
+    shl2->e_mouse_press.add(new PressPosPrint());
+    // shl3->e_mouse_press.add(new PressPosPrint());
+
 
     butt->add_label("MORE", 15, neon);
  

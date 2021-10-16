@@ -37,7 +37,7 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
             return (EventAccResult) (res | EventAccResult::done);
         } else {
             mc->uncapture();
-            return EventAccResult::none;
+            return EventAccResult::stop;
         }
     }
 

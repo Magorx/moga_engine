@@ -110,14 +110,14 @@ public:
             return res;
         }
 
-        EventAccResult cur_res = dispatch_to_sub_es(event);
+        res = dispatch_to_sub_es(event);
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
         process_acc_result(res, event);
         if (res & EventAccResult::done) {
             return res;
         }
 
-        res = dispatch_to_observers(event, false, &cur_res);
+        res = dispatch_to_observers(event, false, &res);
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
         process_acc_result(res, event);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
@@ -266,9 +266,9 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
     EventAccResult sub_res = EventAccResult::none;
    
     for (auto sub_es : es->get_sub_es()) {
-        if (strcmp(id, "toggle_activity") == 0) {
-            printf("disp from %p\n", this);
-        }
+        // if (strcmp(id, "toggle_activity") == 0) {
+        //     printf("disp from %p\n", this);
+        // }
         EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event);
 
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;

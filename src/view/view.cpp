@@ -23,8 +23,12 @@ parent(parent)
     if (parent) {
         parent->add_subview(this);
 
-        if (body.position.len_squared() < 1.1 && body.size.len_squared() < 1.1) {
-            fit(fit_body.position, fit_body.size);
+        if (body.position.len_squared() < 1.1) {
+            if (body.size.len_squared() < 1.1) {
+                fit(fit_body.position, fit_body.size);
+            } else {
+                body.position = parent->get_body().get_size() * body.position;
+            }
         } else {
             Vec2d p_size = parent->get_body().size;
             fit_body.position = body.position / p_size;

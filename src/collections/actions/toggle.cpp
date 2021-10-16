@@ -41,13 +41,15 @@ EventAccResult a_OnReleaseToggler::operator()(const Event::MouseRelease &event, 
 
 a_OnHoverToggler::a_OnHoverToggler(AbstractView *acceptor, v_Hideable *target, bool reversed) : EventAcceptor(acceptor), target(target), reversed(reversed) {}
 
-EventAccResult a_OnHoverToggler::operator()(const Event::MouseMove &event, const EventAccResult *) {
+EventAccResult a_OnHoverToggler::operator()(const Event::MouseMove &event, const EventAccResult *res) {
     AbstractView *av = acceptor;
 
     if (av->is_inside(event.to) && !av->is_inside(event.from)) {
         target->set_active(true ^ reversed);
         return EventAccResult::cont;
     } else if (!av->is_inside(event.to) && av->is_inside(event.from)) {
+        if (res && (*res & EventAccResult::none) == 0) return EventAccResult::cont;
+
         target->set_active(false ^ reversed);
         return EventAccResult::cont;
     }
