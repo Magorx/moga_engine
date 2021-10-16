@@ -9,10 +9,6 @@ _is_active(is_shown)
     e_mouse_press.add(new HideablePressAcceptor(this));
     e_mouse_release.add(new HideableReleaseAcceptor(this));
     e_mouse_move.add(new HideableMoveAcceptor(this));
-
-    e_mouse_press.dispatch_order = true;
-    e_mouse_release.dispatch_order = true;
-    e_mouse_move.dispatch_order = true;
 }
 
 void v_Hideable::render(Renderer *renderer) {
@@ -26,7 +22,7 @@ void v_Hideable::render(Renderer *renderer) {
 
 HideablePressAcceptor::HideablePressAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
 
-EventAccResult HideablePressAcceptor::operator()(const Event::MousePress &event) {
+EventAccResult HideablePressAcceptor::operator()(const Event::MousePress &) {
     if (!acceptor->is_active() && !acceptor->to_pass_inactive) return EventAccResult::stop;
 
     return EventAccResult::none;
@@ -34,7 +30,7 @@ EventAccResult HideablePressAcceptor::operator()(const Event::MousePress &event)
 
 HideableReleaseAcceptor::HideableReleaseAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
 
-EventAccResult HideableReleaseAcceptor::operator()(const Event::MouseRelease &event) {
+EventAccResult HideableReleaseAcceptor::operator()(const Event::MouseRelease &) {
     if (!acceptor->is_active() && !acceptor->to_pass_inactive) return EventAccResult::stop;
 
     return EventAccResult::none;
@@ -42,7 +38,7 @@ EventAccResult HideableReleaseAcceptor::operator()(const Event::MouseRelease &ev
 
 HideableMoveAcceptor::HideableMoveAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
 
-EventAccResult HideableMoveAcceptor::operator()(const Event::MouseMove &event) {
+EventAccResult HideableMoveAcceptor::operator()(const Event::MouseMove &) {
     if (!acceptor->is_active() && !acceptor->to_pass_inactive) return EventAccResult::stop;
 
     return EventAccResult::none;

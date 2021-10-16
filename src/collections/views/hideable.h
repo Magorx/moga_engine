@@ -50,9 +50,11 @@ public:
 
     virtual void render(Renderer *renderer) override;
 
-    inline void activate()   { _is_active  = false; }
-    inline void deactivate() { _is_active  = true;  }
+    inline void deactivate() { _is_active  = false; }
+    inline void activate()   { _is_active  = true;  }
     inline void toggle()     { _is_active ^= true;  }
 
-    inline bool is_active() { return _is_active; }
+    inline void set_active(bool flag) { _is_active = flag; }
+
+    virtual bool is_active() const override final { return _is_active; }
 };

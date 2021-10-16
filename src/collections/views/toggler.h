@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "view/view.h"
+#include "hideable.h"
 #include "../renderables/renderables.h"
 
 
@@ -34,7 +34,7 @@ public:
 };
 
 
-class v_Toggler : public AbstractView {
+class v_Toggler : public v_Hideable {
     bool pressed;
     bool online;
 

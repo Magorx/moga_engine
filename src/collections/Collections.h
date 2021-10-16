@@ -5,6 +5,7 @@
 #include "renderables/renderables.h"
 #include "smart_colors/smart_colors.h"
 #include "views/views.h"
+#include "actions/actions.h"
 #include "solid_bodies.h"
 
 #endif // ALL_COLLECTIONS_H

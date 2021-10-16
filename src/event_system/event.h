@@ -47,27 +47,31 @@ class EventDispatcher {
 
     typedef std::function<EVENT_T(const EVENT_T &)> EventAffector;
 
-    std::vector<EventReaction<EVENT_T>*> observers;
+    std::vector<EventReaction<EVENT_T>*> observers_before;
+    std::vector<EventReaction<EVENT_T>*> observers_after;
 
     EventAffector event_affector;
 
 public:
-    bool dispatch_order;
 
-    EventDispatcher(EventSystem *es, const char *id = "noname_event") : es(es), id(id), event_affector(nullptr), dispatch_order(true) {
+    EventDispatcher(EventSystem *es, const char *id = "noname_event") : es(es), id(id), event_affector(nullptr) {
         assert(es && "can't create an EventDispatcher without parental EventSystem");
     }
 
     ~EventDispatcher() {
-        for (auto observer : observers) {
+        for (auto observer : observers_before) {
+            delete observer;
+        }
+        for (auto observer : observers_after) {
             delete observer;
         }
     }
 
     EventDispatcher &operator=(const EventDispatcher &other) = delete;
 
-    void add(EventReaction<EVENT_T> *observer) {
-        observers.push_back(observer);
+    void add(EventReaction<EVENT_T> *observer, bool before_sub_pass = true) {
+        if (before_sub_pass) observers_before.push_back(observer);
+        else observers_after.push_back(observer);
     }
 
     virtual EventAccResult emit(const EVENT_T &event) {
@@ -79,8 +83,9 @@ public:
         }
     }
 
-    EventAccResult dispatch_to_observers(const EVENT_T &event) {
+    EventAccResult dispatch_to_observers(const EVENT_T &event, bool before_sub_pass = true) {
         EventAccResult sub_res = EventAccResult::none;
+        auto &observers = before_sub_pass ? observers_before : observers_after;
     
         for (auto observer : observers) {
             EventAccResult res = (*observer)(event);
@@ -98,46 +103,37 @@ public:
     EventAccResult dispatch(const EVENT_T &event) {
         EventAccResult sub_res = EventAccResult::none;
 
-        if (dispatch_order) {
-            EventAccResult res = dispatch_to_observers(event);
-            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
-            process_acc_result(res, event);
-            if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
-                return res;
-            }
+        EventAccResult res = dispatch_to_observers(event);
+        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+        process_acc_result(res, event);
+        if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
+            return res;
+        }
 
-            res = dispatch_to_sub_es(event);
-            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
-            process_acc_result(res, event);
-            if (res & EventAccResult::done) {
-                return res;
-            }
-        } else {
-            EventAccResult res = dispatch_to_sub_es(event);
-            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
-            process_acc_result(res, event);
-            if (res & EventAccResult::done) {
-                return res;
-            }
+        res = dispatch_to_sub_es(event);
+        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+        process_acc_result(res, event);
+        if (res & EventAccResult::done) {
+            return res;
+        }
 
-            res = dispatch_to_observers(event);
-            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
-            process_acc_result(res, event);
-            if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
-                return res;
-            }
+        res = dispatch_to_observers(event, false);
+        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+        process_acc_result(res, event);
+        if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
+            return res;
         }
 
         return sub_res;
     }
 
-    void inverse_dispatch_order() { dispatch_order ^= 1; }
-
     const char *get_id() { return id; }
 
     void set_event_affector(EventAffector affector) { event_affector = affector; }
 
-    inline void pop_observer() {
+    inline void pop_observer(bool before_sub_pass = true) {
+        auto &observers = before_sub_pass ? observers_before : observers_after;
+
         if (!observers.size()) return;
 
         delete observers[observers.size() - 1];
@@ -248,7 +244,6 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
     EventAccResult sub_res = EventAccResult::none;
    
     for (auto sub_es : es->get_sub_es()) {
-        if (strcmp(id, "render_call") == 0) printf("DSP [%s] to %p\n", id, sub_es);
         EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event);
 
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;

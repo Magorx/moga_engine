@@ -36,7 +36,7 @@ int main() {
     vlayout->layout_add(hl1);
 
     SmartColor *neon = new SmartColor({30, 235, 235});
-    v_Highlighter *hl2 = new v_Highlighter({{0.1, 0.1}, {0.1, 0.1}}, colmc, mc);
+    v_Highlighter *hl2 = new v_Highlighter({{0.1, 0}, {0.1, 0}}, colmc, mc);
     hl2->add_label("Options", 15, neon);
 
     SmartColor *colbutt = new SmartColor({50, 100, 200});
@@ -49,9 +49,10 @@ int main() {
     v_Toggler *togg  = new v_Toggler({{0, 0}, {0, 0}}, coltog1, coltog2);
     hlayout->layout_add(togg);
     
+    togg->deactivate();
     togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
-    togg->e_mouse_press.add(new EventCatcher<Event::MousePress>);
-    togg->e_mouse_release.add(new EventCatcher<Event::MouseRelease>);
+
+    hl2->e_mouse_press.add(new a_OnPressToggler(hl2, togg));
 
     butt->add_label("MORE", 15, neon);
 

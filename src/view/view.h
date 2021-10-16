@@ -74,7 +74,7 @@ protected:
     friend AVMissReleaseBlocker;
 
 public:
-    AbstractView(ViewBody body, AbstractView *parent = nullptr, bool to_reprioritize_clicks = true);
+    AbstractView(ViewBody body, AbstractView *parent = nullptr);
     virtual ~AbstractView();
 
     void add_subview(AbstractView *subview);
@@ -86,6 +86,8 @@ public:
 
     virtual void render(Renderer *renderer) override;
     virtual void subrender(Renderer *renderer);
+
+    virtual bool is_active() const { return true; };
 
     void fit(const Vec2d &left_up, const Vec2d &right_down, bool absolute_fit = false);
     void fit_proportional(const Vec2d &left_up, const Vec2d &right_down);

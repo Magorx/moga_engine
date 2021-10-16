@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-AbstractView::AbstractView(ViewBody body, AbstractView *parent, bool to_reprioritize_clicks):
+AbstractView::AbstractView(ViewBody body, AbstractView *parent):
 body(body),
 fit_body(body),
 parent(parent)
@@ -19,10 +19,6 @@ parent(parent)
     e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease {event.position - this->body.position}; } );
     e_mouse_move.set_event_affector([this](const Event::MouseMove &event)       { return Event::MouseMove    {event.from - this->body.position, event.to - this->body.position}; } );
 
-    if (to_reprioritize_clicks) {
-        e_mouse_press.inverse_dispatch_order();
-        e_mouse_release.inverse_dispatch_order();
-    }
 
     if (parent) {
         parent->add_subview(this);
@@ -60,9 +56,6 @@ void AbstractView::render(Renderer *renderer) {
 void AbstractView::subrender(Renderer *renderer) {
     renderer->shift(body.position);
 
-    // for (size_t i = 0; i < subviews.size(); ++i) {
-    //     subviews[i]->render(renderer);
-    // }
     e_render_call.dispatch_to_sub_es({renderer});
 
     renderer->shift(-body.position);
@@ -182,11 +175,11 @@ EventAccResult AVMissMoveBlocker::operator()(const Event::MouseMove &event) {
     return EventAccResult::none;
 }
 
-AVRenderCallAcceptor::AVRenderCallAcceptor(AbstractView *av) : EventAcceptor(av) {
-    printf("bound for %p\n", av);
-}
+AVRenderCallAcceptor::AVRenderCallAcceptor(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVRenderCallAcceptor::operator()(const Event::RenderCall &event) {
+    if (!acceptor->is_active()) return EventAccResult::stop;
+
     acceptor->render(event.renderer);
 
     return EventAccResult::stop;

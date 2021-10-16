@@ -11,10 +11,6 @@ on_move(this)
 {
     e_mouse_press.add(new MouseCatcherPressAcceptor(this));
     e_mouse_move.add(new MouseCatcherMoveAcceptor(this));
-
-    e_mouse_press.dispatch_order = true;
-    e_mouse_release.dispatch_order = true;
-    e_mouse_move.dispatch_order = true;
 }
 
 v_MouseCatcher::~v_MouseCatcher() {}

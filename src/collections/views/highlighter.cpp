@@ -34,7 +34,7 @@ void v_Highlighter::add_label(const char *lable, int char_size, SmartColor *font
 }
 
 
-HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *button) : EventAcceptor(button) {}
+HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}
 
 EventAccResult HighlighterPressAcceptor::operator()(const Event::MousePress &event) {
     v_Highlighter *hl = acceptor;
@@ -48,7 +48,7 @@ EventAccResult HighlighterPressAcceptor::operator()(const Event::MousePress &eve
     }
 }
 
-HighlighterMoveAcceptor::HighlighterMoveAcceptor(v_Highlighter *button) : EventAcceptor(button) {}
+HighlighterMoveAcceptor::HighlighterMoveAcceptor(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}
 
 EventAccResult HighlighterMoveAcceptor::operator()(const Event::MouseMove &event) {
     v_Highlighter *hl = acceptor;

@@ -60,6 +60,8 @@ add_executable(moga
         src/collections/views/text.cpp
         src/collections/views/hideable.cpp
 
+        src/collections/actions/toggle.cpp
+
         # components
         src/visual/visual_engine.cpp
 
