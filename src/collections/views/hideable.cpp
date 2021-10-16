@@ -3,8 +3,8 @@
 
 v_Hideable::v_Hideable(const ViewBody &body, AbstractView *parent, bool to_pass_inactive, bool is_shown) : 
 AbstractView(body, parent),
-to_pass_inactive(to_pass_inactive),
-_is_active(is_shown)
+_is_active(is_shown),
+to_pass_inactive(to_pass_inactive)
 {
     e_mouse_press.add(new HideablePressAcceptor(this));
     e_mouse_release.add(new HideableReleaseAcceptor(this));
@@ -18,6 +18,15 @@ void v_Hideable::render(Renderer *renderer) {
 
     AbstractView::render(renderer);
 }
+
+// void v_Hideable::become_toggle_reacting() {
+//     e_toggle_reacting = true;
+//     e_toggle_activity.add(new HideableActivityToggleAcceptor(this));
+
+//     for (auto sub_av : subviews) {
+//         sub_av->be
+//     }
+// }
 
 
 HideablePressAcceptor::HideablePressAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
@@ -44,16 +53,18 @@ EventAccResult HideableMoveAcceptor::operator()(const Event::MouseMove &, const 
     return EventAccResult::none;
 }
 
-HideableActivatorAcceptor::HideableActivatorAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
+HideableActivityToggleAcceptor::HideableActivityToggleAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
 
-EventAccResult HideableActivatorAcceptor::operator()(const Event::Activator &event, const EventAccResult *) {
+EventAccResult HideableActivityToggleAcceptor::operator()(const Event::ActivityToggle &event, const EventAccResult *) {
     v_Hideable *hid = acceptor;
+    printf("got active: %s\n", event.mode ? "on" : "off");
     if (!event.check_target(hid)) return EventAccResult::none;
+    printf("yes\n");
 
-    if (event.on == Event::Activator::State::on) {
-        hid->deactivate();
-    } else if (event.on == Event::Activator::State::off) {
+    if (event.mode == Event::Activator::State::on) {
         hid->activate();
+    } else if (event.mode == Event::Activator::State::off) {
+        hid->deactivate();
     } else {
         hid->toggle();
     }

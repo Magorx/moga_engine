@@ -16,7 +16,13 @@ on_move(this)
 v_MouseCatcher::~v_MouseCatcher() {}
 
 void v_MouseCatcher::capture() {
-    captured ^= true;
+    captured = true;
+}
+
+void v_MouseCatcher::uncapture() {
+    captured = false;
+
+    e_toggle_activity.dispatch_to_sub_es({Event::Activator::State::off});
 }
 
 
@@ -30,7 +36,7 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
         if (res & EventAccResult::cont || res & EventAccResult::done) {
             return (EventAccResult) (res | EventAccResult::done);
         } else {
-            mc->captured = false;
+            mc->uncapture();
             return EventAccResult::none;
         }
     }
@@ -41,7 +47,6 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
         return (EventAccResult) (EventAccResult::focus | EventAccResult::done);
     }
 
-    mc->captured = false;
     return EventAccResult::stop;
 }
 

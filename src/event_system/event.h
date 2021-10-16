@@ -10,7 +10,7 @@
 
 
 enum EventAccResult {
-    none  = 1 << 0,
+    none  = 0,
     stop  = 1 << 1,
     cont  = 1 << 2,
     done  = 1 << 3,
@@ -83,12 +83,12 @@ public:
         }
     }
 
-    EventAccResult dispatch_to_observers(const EVENT_T &event, bool before_sub_pass = true) {
+    EventAccResult dispatch_to_observers(const EVENT_T &event, bool before_sub_pass = true, const EventAccResult *cur_res = nullptr) {
         EventAccResult sub_res = EventAccResult::none;
         auto &observers = before_sub_pass ? observers_before : observers_after;
     
         for (auto observer : observers) {
-            EventAccResult res = (*observer)(event);
+            EventAccResult res = (*observer)(event, cur_res);
             if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
             if ((res & EventAccResult::done) || (res & EventAccResult::stop)) { return res; }
         }
@@ -110,14 +110,14 @@ public:
             return res;
         }
 
-        res = dispatch_to_sub_es(event);
+        EventAccResult cur_res = dispatch_to_sub_es(event);
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
         process_acc_result(res, event);
         if (res & EventAccResult::done) {
             return res;
         }
 
-        res = dispatch_to_observers(event, false);
+        res = dispatch_to_observers(event, false, &cur_res);
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
         process_acc_result(res, event);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
@@ -151,11 +151,12 @@ class EventSystem {
     std::vector<EventSystem*> sub_es;
 public:
     int index_in_parent;
-    EventDispatcher<Event::MousePress>   e_mouse_press;
-    EventDispatcher<Event::MouseRelease> e_mouse_release;
-    EventDispatcher<Event::MouseMove>    e_mouse_move;
-    EventDispatcher<Event::Activator>    e_toggle;
-    EventDispatcher<Event::RenderCall>   e_render_call;
+    EventDispatcher<Event::MousePress>      e_mouse_press;
+    EventDispatcher<Event::MouseRelease>    e_mouse_release;
+    EventDispatcher<Event::MouseMove>       e_mouse_move;
+    EventDispatcher<Event::Activator>       e_toggle;
+    EventDispatcher<Event::ActivityToggle> e_toggle_activity;
+    EventDispatcher<Event::RenderCall>      e_render_call;
 
     EventSystem() :
     parent(nullptr),
@@ -164,15 +165,31 @@ public:
     e_mouse_release(this, "mouse_release"),
     e_mouse_move(this, "mouse_hover"),
     e_toggle(this, "toggle"),
+    e_toggle_activity(this, "toggle_activity"),
     e_render_call(this, "render_call")
     {}
 
-    void add(EventSystem *sub_system) {
+    void add_es(EventSystem *sub_system) {
         if (!sub_system) return;
 
+        sub_system->delete_from_parent();
         sub_system->set_es_parent(this);
         sub_system->index_in_parent = sub_es.size();
         sub_es.push_back(sub_system);
+    }
+
+    void delete_from_parent() {
+        if (!parent) return;
+
+        parent->delete_es(index_in_parent);
+    }
+
+    void delete_es(size_t sub_idx) {
+        if (sub_idx >= sub_es.size()) {
+            return;
+        }
+
+        sub_es.erase(sub_es.begin() + sub_idx);
     }
 
     const std::vector<EventSystem*> &get_sub_es() {
@@ -222,6 +239,11 @@ inline EventDispatcher<Event::Activator> &EventSystem::get_dispatcher() {
 }
 
 template <>
+inline EventDispatcher<Event::ActivityToggle> &EventSystem::get_dispatcher() {
+    return e_toggle_activity;
+}
+
+template <>
 inline EventDispatcher<Event::RenderCall> &EventSystem::get_dispatcher() {
     return e_render_call;
 }
@@ -244,6 +266,9 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
     EventAccResult sub_res = EventAccResult::none;
    
     for (auto sub_es : es->get_sub_es()) {
+        if (strcmp(id, "toggle_activity") == 0) {
+            printf("disp from %p\n", this);
+        }
         EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event);
 
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;

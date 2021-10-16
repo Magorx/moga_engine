@@ -23,7 +23,7 @@ int main() {
     v_VerticalLayout *vlayout = new v_VerticalLayout({{750, 150}, {200, 250}}, {{0.1, 0.1}, {0.1, 0.1}}, 5, nullptr, col_menu);
     moga.add_view(vlayout);
 
-    SmartColor *col_submenu = new SmartColor({150, 150, 150});
+    // SmartColor *col_submenu = new SmartColor({150, 150, 150});
     v_HorizontalLayout *hlayout = new v_HorizontalLayout({{800, 150}, {100, 300}}, {{0, 0.0}, {0, 0.0}}, 5, nullptr, nullptr);
     vlayout->layout_add(hlayout, 2);
 
@@ -50,12 +50,13 @@ int main() {
     hlayout->layout_add(togg);
     
     togg->deactivate();
+    togg->e_toggle_activity.add(new HideableActivityToggleAcceptor(togg));
     togg->e_toggle.add(new ToogleChemistryModelLambda(&moga));
 
     hl2->e_mouse_press.add(new a_OnPressToggler(hl2, togg));
 
     butt->add_label("MORE", 15, neon);
-
+ 
     // v_Highlighter *hl3 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
     // vlayout->layout_add(hl3, 100);
 

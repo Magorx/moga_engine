@@ -4,6 +4,7 @@
 #include "hideable.h"
 #include "text.h"
 
+
 class AbstractLabledView : public v_Hideable {
 public:
     using v_Hideable::v_Hideable;

@@ -41,7 +41,13 @@ struct Activator {
     State mode = State::toggle;
     void *target = nullptr;
 
+    Activator(State mode = State::toggle, void *target = nullptr) : mode(mode), target(target) {}
+
     inline bool check_target(void *acceptor) const { return !target || target == acceptor; }
+};
+
+struct ActivityToggle : public Activator {
+    using Activator::Activator;
 };
 
 }

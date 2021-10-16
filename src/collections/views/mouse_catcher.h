@@ -43,4 +43,6 @@ public:
 
     void capture();
     void uncapture();
+
+    inline void toggle() { if (captured) uncapture(); else capture(); }
 };

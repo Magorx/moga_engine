@@ -65,7 +65,7 @@ void AbstractView::add_subview(AbstractView *subview) {
     if (!subview) return;
 
     subviews.push_back(subview);
-    add(subview);
+    add_es(subview);
     subview->set_parent(this);
 }
 
