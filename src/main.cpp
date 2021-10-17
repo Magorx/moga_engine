@@ -57,16 +57,16 @@ int main() {
 
     SmartColor *pale = new SmartColor({255, 255, 200});
     SmartColor *black = new SmartColor({30, 30, 30});
-    // v_Menu *menu = new v_Menu({"Fisrt", "Second", "Third", "FOUTH"}, pale, black);
-    // moga.add_view(menu);
+    v_Menu *menu = new v_Menu({"Fisrt", "Second", "Third", "FOUTH"}, pale, black);
+    moga.add_view(menu);
 
-    // (*menu)[0]->e_mouse_press.add(new PressChemistryModelToggler(&moga, Event::Activator::State::toggle));
+    (*menu)[0]->e_mouse_press.add(new PressChemistryModelToggler(&moga, Event::Activator::State::toggle));
 
-    // menu->deactivate();
-    // menu->e_toggle_activity.add(new HideableActivityToggleAcceptor(menu));
-    // hl2->e_mouse_move.add(new a_OnHoverToggler(hl2, menu), false);
-    // hl2->add_subview(menu);
-    // menu->fit({0, 1}, {1.5, 3});
+    menu->deactivate();
+    menu->e_toggle_activity.add(new HideableActivityToggleAcceptor(menu));
+    hl2->e_mouse_move.add(new a_OnHoverToggler(hl2, menu), false);
+    hl2->add_subview(menu);
+    menu->fit({0, 1}, {1.5, 3});
 
 
     v_HorizontalLayout *sublayout = new v_HorizontalLayout({{800, 150}, {100, 300}}, {{0, 0}, {0, 0}}, 0);
@@ -81,7 +81,7 @@ int main() {
     (*submenu)[2]->e_mouse_press.add(new PressChemistryModelToggler(&moga, Event::Activator::State::toggle));
 
     SmartColor *colsub2 = new SmartColor({177, 77, 177});
-    v_Submenu *submenu2 = v_Submenu::Hover({{0, 0}, {0, 0}}, colsub2, "BAD", {"1", "2", "3", "4"}, black, pale);
+    v_Submenu *submenu2 = v_Submenu::Hover({{0, 0}, {0, 0}}, colsub2, "NICE", {"1", "2", "3", "4"}, neon, black);
     // submenu2->set_align({{-0.5, 1}, {0.5, 2}});
     submenu2->set_min_size({20, 0});
     sublayout->layout_add(submenu2);

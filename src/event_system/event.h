@@ -201,9 +201,13 @@ public:
             return;
         }
 
-        std::swap(sub_es[0], sub_es[sub_idx]);
-        sub_es[0]->index_in_parent = 0;
-        sub_es[sub_idx]->index_in_parent = sub_idx;
+        auto es = sub_es[sub_idx];
+        for (int i = sub_idx; i > 0; --i) {
+            sub_es[i] = sub_es[i - 1];
+            sub_es[i]->index_in_parent = i;
+        }
+        sub_es[0] = es;
+        es->index_in_parent = 0;
     }
 
     void focus() {
@@ -269,7 +273,6 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
     int idx_step = 1;
     int idx_stop = es->get_sub_es().size();
     if (sub_es_reverse) {
-        printf("reversed %s\n", id);
         idx_start = (int) es->get_sub_es().size() - 1;
         idx_step = -1;
         idx_stop = -1;

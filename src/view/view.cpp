@@ -60,7 +60,7 @@ void AbstractView::render(Renderer *renderer) {
 void AbstractView::subrender(Renderer *renderer) {
     renderer->shift(body.position);
 
-    e_render_call.dispatch_to_sub_es({renderer});
+    e_render_call.dispatch_to_sub_es({renderer}, true);
 
     renderer->shift(-body.position);
 }
