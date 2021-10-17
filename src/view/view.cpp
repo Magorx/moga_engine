@@ -23,8 +23,8 @@ parent(parent)
     if (parent) {
         parent->add_subview(this);
 
-        if (body.position.len_squared() < 1.1) {
-            if (body.size.len_squared() < 1.1) {
+        if (body.position.len_squared() < 2) {
+            if (body.size.len_squared() < 2) {
                 fit(fit_body.position, fit_body.size);
             } else {
                 body.position = parent->get_body().get_size() * body.position;
@@ -32,7 +32,7 @@ parent(parent)
         } else {
             Vec2d p_size = parent->get_body().size;
             fit_body.position = body.position / p_size;
-            fit_body.size = (p_size - (body.position + body.size)) / p_size;
+            fit_body.size = (body.position + body.size) / p_size;
         }
     }
 }
@@ -113,7 +113,7 @@ void AbstractView::fit_proportional(const Vec2d &left_up, const Vec2d &right_dow
     ViewBody &p_body = parent->get_body();
 
     body.position = p_body.get_size() * left_up;
-    body.size     = p_body.get_size() * (Vec2d(1, 1) - right_down) - body.position;
+    body.size     = p_body.get_size() * (right_down - left_up);
 }
 
 void AbstractView::fit_absolute(const Vec2d &left_up, const Vec2d &right_down) {
@@ -124,7 +124,9 @@ void AbstractView::fit_absolute(const Vec2d &left_up, const Vec2d &right_down) {
     ViewBody &p_body = parent->get_body();
 
     body.position = left_up;
-    body.size     = p_body.size - right_down - left_up;
+    body.size     = right_down - body.position;
+
+    recalculate_fit_body();
 }
 
 void AbstractView::refit() {
@@ -143,7 +145,7 @@ void AbstractView::recalculate_fit_body() {
 
     Vec2d p_size = parent->get_body().size;
     fit_body.position = body.position / p_size;
-    fit_body.size = (p_size - (body.position + body.size)) / p_size;
+    fit_body.size = (body.position + body.size) / p_size;
 }
 
 

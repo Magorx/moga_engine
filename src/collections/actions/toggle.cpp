@@ -12,7 +12,6 @@ reversed(reversed) {}
 EventAccResult a_OnPressToggler::operator()(const Event::MousePress &event, const EventAccResult *) {
     AbstractView *av = acceptor;
     if (!av->is_inside(event.position)) return EventAccResult::none;
-    printf("hi\n");
 
     if (toggler) target->toggle();
     else target->set_active(true ^ reversed);
@@ -48,7 +47,7 @@ EventAccResult a_OnHoverToggler::operator()(const Event::MouseMove &event, const
         target->set_active(true ^ reversed);
         return EventAccResult::cont;
     } else if (!av->is_inside(event.to) && av->is_inside(event.from)) {
-        if (res && (*res & EventAccResult::none) == 0) return EventAccResult::cont;
+        if (res && ((*res & EventAccResult::cont) || ((*res & EventAccResult::done) || ((*res & EventAccResult::stop))))) return EventAccResult::cont;
 
         target->set_active(false ^ reversed);
         return EventAccResult::cont;

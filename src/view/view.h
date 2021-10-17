@@ -57,7 +57,7 @@ struct ViewBody {
     inline void set_position(Vec2d position_) { position = position_; }
     inline void set_size(Vec2d size_) { size = size_; }
 
-    inline bool is_inside(Vec2d click) { return click.x() >= 0 && click.y() >= 0 && click.x() <= size.x() && click.y() <= size.y(); }
+    inline bool is_inside(Vec2d click) { return click.x() >= 0 && click.y() >= 0 && click.x() < size.x() && click.y() < size.y(); }
 };
 
 

@@ -6,9 +6,9 @@
 
 class PressPosPrint : public EventReaction<Event::MousePress> {
 public:
-    virtual EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) {
+    virtual EventAccResult operator()(const Event::MousePress &event, const EventAccResult * = nullptr) {
         printf("mouse pressed at %g %g\n", event.position.x(), event.position.y());
 
-        return EventAccResult::cont;
+        return EventAccResult::none;
     }
 };

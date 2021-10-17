@@ -14,22 +14,30 @@ v_HorizontalLayout::~v_HorizontalLayout() {
 }
 
 void v_HorizontalLayout::layout_refit() {
+    printf("+++++\n");
     int v_cnt = weights.size();
     double overall_weight = sum_weight;
 
-    double cur_min_x = fitting_body.position.x();
+    int cur_min_x = fitting_body.position.x();
     double min_y = fitting_body.position.y();
+    printf("my y %g their %g\n", body.position.y(), min_y);
     double size_y = fitting_body.size.y();
+    printf("my size x %g their %g\n", body.size.y(), size_y);
 
-    double fit_pixels = fitting_body.size.x() - padding_split * (v_cnt - 1);
+    int fit_pixels = fitting_body.size.x() - padding_split * (v_cnt - 1);
+    printf("total fit pixels: %d for %g weight\n", fit_pixels, overall_weight);
 
     for (int i = 0; i < v_cnt; ++i) {
         double w = weights[i];
         double coef = w / overall_weight;
         int x_pixels = fit_pixels * coef;
 
+        if ((size_t) i >= subviews.size()) {
+            return;
+        }
+
         AbstractView *view = subviews[i];
-        view->get_body().set_position({cur_min_x, min_y});
+        view->get_body().set_position({static_cast<double>(cur_min_x), min_y});
         view->get_body().set_size({static_cast<double>(x_pixels), size_y});
         view->recalculate_fit_body();
         view->refit();
