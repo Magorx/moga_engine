@@ -12,7 +12,7 @@ class v_Highlighter;
 
 class HighlighterPressAcceptor : public EventAcceptor<v_Highlighter, Event::MousePress> {
 public:
-    HighlighterPressAcceptor(v_Highlighter *button);
+    HighlighterPressAcceptor(v_Highlighter *highlighter);
 
     EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
@@ -20,9 +20,17 @@ public:
 
 class HighlighterMoveAcceptor : public EventAcceptor<v_Highlighter, Event::MouseMove> {
 public:
-    HighlighterMoveAcceptor(v_Highlighter *button);
+    HighlighterMoveAcceptor(v_Highlighter *highlighter);
 
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+
+class HighlighterDeactivateVisualy : public EventAcceptor<v_Highlighter, Event::ActivityToggle> {
+public:
+    HighlighterDeactivateVisualy(v_Highlighter *highlighter);
+
+    EventAccResult operator()(const Event::ActivityToggle &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 
@@ -34,6 +42,7 @@ class v_Highlighter : public AbstractLabledView {
 
     friend HighlighterPressAcceptor;
     friend HighlighterMoveAcceptor;
+    friend HighlighterDeactivateVisualy;
 
 public:
     SmartColor *color;

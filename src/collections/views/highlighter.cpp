@@ -13,6 +13,7 @@ color(color)
 {
     e_mouse_press.add(new HighlighterPressAcceptor(this));
     e_mouse_move.add(new HighlighterMoveAcceptor(this));
+    e_toggle_activity.add(new HighlighterDeactivateVisualy(this));
 }
 
 v_Highlighter::~v_Highlighter() {}
@@ -59,4 +60,16 @@ EventAccResult HighlighterMoveAcceptor::operator()(const Event::MouseMove &event
     } else {
         return EventAccResult::none;
     }
+}
+
+HighlighterDeactivateVisualy::HighlighterDeactivateVisualy(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}
+
+EventAccResult HighlighterDeactivateVisualy::operator()(const Event::ActivityToggle &event, const EventAccResult *) {
+    v_Highlighter *hl = acceptor;
+
+    if ((event.mode & Event::ActivityToggle::State::visualy) && (event.mode & Event::ActivityToggle::State::off)) {
+        hl->cursor_inside = false;
+    }
+
+    return EventAccResult::none;
 }

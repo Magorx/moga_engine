@@ -32,9 +32,10 @@ struct RenderCall {
 
 struct Activator {
     enum State {
-        off,
-        on,
-        toggle,
+        off = 1 << 0,
+        on  = 1 << 1,
+        toggle = 1 << 2,
+        visualy = 1 << 3,
     };
 
 

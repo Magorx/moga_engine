@@ -57,9 +57,12 @@ int main() {
 
     SmartColor *pale = new SmartColor({200, 255, 200});
     v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);
-    submenu->fit({0, 1}, {1, 2});
+    submenu->fit({0, 1}, {1.5, 3});
     ((AbstractView*) submenu)->recalculate_fit_body();
     submenu->refit();
+
+    submenu->deactivate();
+    submenu->e_toggle_activity.add(new HideableActivityToggleAcceptor(submenu));
 
     SmartColor *sch1 = new SmartColor({155, 0, 0});
     SmartColor *sch2 = new SmartColor({0, 155, 0});
@@ -70,11 +73,6 @@ int main() {
     submenu->layout_add(shl1);
     submenu->layout_add(shl2);
     submenu->layout_add(shl3);
-
-    submenu->e_mouse_press.add(new PressPosPrint);
-    shl1->e_mouse_press.add(new PressPosPrint);
-    shl2->e_mouse_press.add(new PressPosPrint);
-    // shl3->e_mouse_press.add(new PressPosPrint());
 
     butt->add_label("MORE", 15, neon);
 

@@ -19,15 +19,6 @@ void v_Hideable::render(Renderer *renderer) {
     AbstractView::render(renderer);
 }
 
-// void v_Hideable::become_toggle_reacting() {
-//     e_toggle_reacting = true;
-//     e_toggle_activity.add(new HideableActivityToggleAcceptor(this));
-
-//     for (auto sub_av : subviews) {
-//         sub_av->be
-//     }
-// }
-
 
 HideablePressAcceptor::HideablePressAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
 
@@ -57,15 +48,16 @@ HideableActivityToggleAcceptor::HideableActivityToggleAcceptor(v_Hideable *hidea
 
 EventAccResult HideableActivityToggleAcceptor::operator()(const Event::ActivityToggle &event, const EventAccResult *) {
     v_Hideable *hid = acceptor;
-    printf("got active: %s\n", event.mode ? "on" : "off");
+    printf("got active: %s\n", event.mode == Event::ActivityToggle::State::off ? "off" : "NOT off");
     if (!event.check_target(hid)) return EventAccResult::none;
     printf("yes\n");
 
     if (event.mode == Event::Activator::State::on) {
         hid->activate();
     } else if (event.mode == Event::Activator::State::off) {
+        printf("WELL\n");
         hid->deactivate();
-    } else {
+    } else if (event.mode == Event::Activator::State::toggle) {
         hid->toggle();
     }
 

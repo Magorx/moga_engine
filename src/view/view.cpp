@@ -121,8 +121,6 @@ void AbstractView::fit_absolute(const Vec2d &left_up, const Vec2d &right_down) {
         return;
     }
 
-    ViewBody &p_body = parent->get_body();
-
     body.position = left_up;
     body.size     = right_down - body.position;
 

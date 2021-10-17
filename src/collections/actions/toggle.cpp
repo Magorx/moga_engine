@@ -38,7 +38,9 @@ EventAccResult a_OnReleaseToggler::operator()(const Event::MouseRelease &event, 
 }
 
 
-a_OnHoverToggler::a_OnHoverToggler(AbstractView *acceptor, v_Hideable *target, bool reversed) : EventAcceptor(acceptor), target(target), reversed(reversed) {}
+a_OnHoverToggler::a_OnHoverToggler(AbstractView *acceptor, v_Hideable *target, bool reversed) : EventAcceptor(acceptor), target(target), reversed(reversed) {
+    acceptor->e_mouse_press.add(new a_OnPressToggler(acceptor, target, false, reversed));
+}
 
 EventAccResult a_OnHoverToggler::operator()(const Event::MouseMove &event, const EventAccResult *res) {
     AbstractView *av = acceptor;

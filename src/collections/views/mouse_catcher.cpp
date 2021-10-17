@@ -23,6 +23,7 @@ void v_MouseCatcher::uncapture() {
     captured = false;
 
     e_toggle_activity.dispatch_to_sub_es({Event::Activator::State::off});
+    e_toggle_activity.dispatch_to_sub_es({(Event::Activator::State) (Event::Activator::State::off | Event::Activator::State::visualy)});
 }
 
 
@@ -37,7 +38,7 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
             return (EventAccResult) (res | EventAccResult::done);
         } else {
             mc->uncapture();
-            return EventAccResult::stop;
+            return EventAccResult::done;
         }
     }
 
