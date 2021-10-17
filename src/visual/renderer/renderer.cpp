@@ -66,20 +66,16 @@ void Renderer::draw_rectangle(Vec3d pos, const Vec2d size, const RGBA &color, sf
     else texture->draw(rect);
 }
 
-void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize, sf::RenderTarget *texture) {
+void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize,  const char *font_filename, sf::RenderTarget *texture) {
     pos += (Vec2d) offset;
 
     sf::Color sf_color_back(back_color.r, back_color.g, back_color.b, back_color.a);
     sf::Color sf_color_font(font_color.r, font_color.g, font_color.b, font_color.a);
 
     sf::Text text;
-    sf::Font font;
+    load_font(cur_font, font_filename, &cur_font_filename);
 
-    if (!font.loadFromFile("arial.ttf")) {
-        printf("sad story\n");
-    }
-
-    text.setFont(font);
+    text.setFont(cur_font);
     text.setString(lable);
     text.setCharacterSize(char_size);
 
@@ -111,4 +107,30 @@ void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const RGBA
 
     if (!texture) scr.window->draw(text);
     else texture->draw(text);
+}
+
+void Renderer::load_font(sf::Font &font_holder, const char *font_filename, char **cur_font_filename) {
+    if (cur_font_filename && *cur_font_filename && !strcmp(font_filename, *cur_font_filename)) return;
+
+    if (!font_holder.loadFromFile(font_filename)) {
+        printf("sad story, can't load font [%s]\n", font_filename);
+    } else {
+        if (cur_font_filename) {
+            if (*cur_font_filename) free(*cur_font_filename);
+            *cur_font_filename = strdup(font_filename);
+        }
+    }
+}
+
+Vec2d Renderer::get_text_size(const char *text, int char_size, const char *font_filename) {
+    sf::Text sf_text;
+    sf::Font font;
+    load_font(font, font_filename);
+
+    sf_text.setFont(font);
+    sf_text.setString(text);
+    sf_text.setCharacterSize(char_size);
+
+    sf::Vector2f bounds(sf_text.getLocalBounds().width, sf_text.getLocalBounds().height);
+    return {bounds.x, bounds.y * 2};
 }

@@ -59,6 +59,8 @@ add_executable(moga
         src/collections/views/horizontal_layout.cpp
         src/collections/views/text.cpp
         src/collections/views/hideable.cpp
+        src/collections/views/menu.cpp
+        src/collections/views/labled_view.cpp
 
         src/collections/actions/toggle.cpp
 
@@ -78,12 +80,3 @@ add_executable(moga
         )
 
 target_link_libraries(moga sfml-graphics sfml-window sfml-system)        
-
-add_custom_target(convert
-        COMMAND convert image.ppm image.png
-        )
-
-add_custom_target(view
-        COMMAND eog -f image.png
-        )
-

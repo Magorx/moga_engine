@@ -55,28 +55,38 @@ int main() {
 
     // hl2->e_mouse_press.add(new a_OnPressToggler(hl2, togg));
 
-    SmartColor *pale = new SmartColor({200, 255, 200});
-    v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);
-    submenu->fit({0, 1}, {1.5, 3});
-    ((AbstractView*) submenu)->recalculate_fit_body();
-    submenu->refit();
+    SmartColor *pale = new SmartColor({255, 255, 200});
+    SmartColor *black = new SmartColor({20, 20, 20});
+    v_Menu *menu = new v_Menu({"Fisrt", "Second", "Third", "FOUTH"}, pale, black);
+    moga.add_view(menu);
 
-    submenu->deactivate();
-    submenu->e_toggle_activity.add(new HideableActivityToggleAcceptor(submenu));
+    menu->deactivate();
+    menu->e_toggle_activity.add(new HideableActivityToggleAcceptor(menu));
+    hl2->e_mouse_move.add(new a_OnHoverToggler(hl2, menu), false);
+    hl2->add_subview(menu);
+    menu->fit({0, 1}, {1.5, 3});
 
-    SmartColor *sch1 = new SmartColor({155, 0, 0});
-    SmartColor *sch2 = new SmartColor({0, 155, 0});
-    SmartColor *sch3 = new SmartColor({0, 155, 155});
-    v_Highlighter *shl1 = new v_Highlighter({{0, 0}, {0, 0}}, sch1);
-    v_Highlighter *shl2 = new v_Highlighter({{0, 0}, {0, 0}}, sch2);
-    v_Highlighter *shl3 = new v_Highlighter({{0, 0}, {0, 0}}, sch3);
-    submenu->layout_add(shl1);
-    submenu->layout_add(shl2);
-    submenu->layout_add(shl3);
+    
+
+    // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);
+    // submenu->fit({0, 1}, {1.5, 3});
+
+    // submenu->deactivate();
+    // submenu->e_toggle_activity.add(new HideableActivityToggleAcceptor(submenu));
+
+    // SmartColor *sch1 = new SmartColor({155, 0, 0});
+    // SmartColor *sch2 = new SmartColor({0, 155, 0});
+    // SmartColor *sch3 = new SmartColor({0, 155, 155});
+    // v_Highlighter *shl1 = new v_Highlighter({{0, 0}, {0, 0}}, sch1);
+    // v_Highlighter *shl2 = new v_Highlighter({{0, 0}, {0, 0}}, sch2);
+    // v_Highlighter *shl3 = new v_Highlighter({{0, 0}, {0, 0}}, sch3);
+    // submenu->layout_add(shl1);
+    // submenu->layout_add(shl2);
+    // submenu->layout_add(shl3);
 
     butt->add_label("MORE", 15, neon);
 
-    hl2->e_mouse_move.add(new a_OnHoverToggler(hl2, submenu), false);
+    // hl2->e_mouse_move.add(new a_OnHoverToggler(hl2, submenu), false);
 
 
  

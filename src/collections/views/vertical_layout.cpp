@@ -55,6 +55,8 @@ void v_VerticalLayout::layout_refit() {
         return;
     }
 
+    printf("y: %d | size: %g\n", cur_min_y, fitting_body.size.y() - (double) cur_min_y);
+
     AbstractView *view = subviews[v_cnt - 1];
     view->get_body().set_position({min_x, static_cast<double>(cur_min_y)});
     view->get_body().set_size({size_x, static_cast<double>(fitting_body.size.y() - (double) cur_min_y)});

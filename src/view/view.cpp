@@ -103,6 +103,9 @@ void AbstractView::fit(const Vec2d &left_up, const Vec2d &right_down, bool absol
     } else {
         fit_proportional(left_up, right_down);
     }
+    
+    recalculate_fit_body();
+    refit();
 }
 
 void AbstractView::fit_proportional(const Vec2d &left_up, const Vec2d &right_down) {

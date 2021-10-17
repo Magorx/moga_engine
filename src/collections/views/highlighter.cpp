@@ -28,13 +28,6 @@ void v_Highlighter::render(Renderer *renderer) {
     subrender(renderer);
 }
 
-void v_Highlighter::add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color) {
-    v_Text *text = new v_Text(ViewBody{body.size / 2, body.size / 2}, lable, char_size, font_color, back_color, true, this);
-
-    add_subview(text);
-}
-
-
 HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}
 
 EventAccResult HighlighterPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {

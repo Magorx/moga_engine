@@ -6,14 +6,14 @@
 
 
 class AbstractLabledView : public v_Hideable {
+protected:
+    v_Text *v_lable;
 public:
-    using v_Hideable::v_Hideable;
-    virtual ~AbstractLabledView() {}
+    AbstractLabledView(const ViewBody &body, AbstractView *parent = nullptr, bool to_pass_inactive = false, bool is_shown = true);
 
-    inline void add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr) {
-        v_Text *text = new v_Text(ViewBody{body.size / 2, body.size / 2}, lable, char_size, font_color, back_color);
+    virtual ~AbstractLabledView();
 
-        text->centrized = true;
-        add_subview(text);
-    }
+    void add_label(const char *lable, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
+
+    virtual void refit() override;
 };

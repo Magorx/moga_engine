@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "view/view.h"
+#include "../../view/view.h"
 
 
 class v_Hideable;

@@ -51,7 +51,4 @@ public:
     virtual ~v_Highlighter();
 
     virtual void render(Renderer *renderer) override;
-    // virtual void subrender(Renderer *renderer) override;
-
-    void add_label(const char *text, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
 };
