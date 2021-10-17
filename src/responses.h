@@ -29,15 +29,24 @@ public:
 
 class PressChemistryModelToggler : public EventReaction<Event::MousePress> {
     ChemEngine *engine;
+    Event::Activator::State mode;
 
 public:
-    PressChemistryModelToggler(ChemEngine *engine):
-    engine(engine)
+
+    PressChemistryModelToggler(ChemEngine *engine, Event::Activator::State mode):
+    engine(engine),
+    mode(mode)
     {}
 
     EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
-        engine->toggle_chemistry();
-        return EventAccResult::none;
+        if (mode == Event::Activator::State::off) {
+            engine->chemistry_off();
+        } else if (mode == Event::Activator::State::on) {
+            engine->chemistry_on();
+        } else {
+            engine->toggle_chemistry();
+        }
+        return EventAccResult::done;
     }
 };
 

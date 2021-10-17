@@ -3,7 +3,8 @@
 
 
 v_Submenu::v_Submenu(Type type, const ViewBody &body_, SmartColor *color, const char *lable, std::vector<const char*> button_lables, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color, int char_size, Vec2d button_scale):
-v_Highlighter(body_, color)
+v_Highlighter(body_, color),
+align({{0, 1}, {1, 2}})
 {
     add_label(lable, char_size, text_color);
 
@@ -19,14 +20,14 @@ v_Highlighter(body_, color)
     
     add_subview(menu);
 
-    // refit();
+    refit();
 }
 
 void v_Submenu::refit() {
     v_Highlighter::refit();
     
-    menu->set_min_size({body.size.x(), 0});
-    menu->fit({0, 1}, {1, 2});
+    // menu->set_min_size({body.size.x(), 0});
+    menu->fit(align.position, align.size);
     menu->refit();
 }
 

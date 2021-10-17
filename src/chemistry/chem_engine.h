@@ -15,7 +15,9 @@ public:
 				const size_t screen_height,
 				const size_t pixel_size);
 
-	void toggle_chemistry();
+	inline void toggle_chemistry() { to_compute_chemistry ^= 1; }
+	inline void chemistry_on() { to_compute_chemistry = 1; }
+	inline void chemistry_off() { to_compute_chemistry = 0; }
 };
 
 #endif // CHEM_ENGINE_H

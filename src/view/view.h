@@ -61,6 +61,13 @@ struct ViewBody {
 };
 
 
+namespace Align {
+    const ViewBody LURD ({{-1.0, -1.0}, { 0.0,  0.0}});
+    const ViewBody LUCD ({{-0.5, -1.0}, { 0.5,  1.0}});
+    const ViewBody LULD ({{ 0.0, -1.0}, { 1.0,  0.0}});
+}
+
+
 class AbstractView : public RenderableObject, public Tickable, public EventSystem {
 protected:
     ViewBody body;
