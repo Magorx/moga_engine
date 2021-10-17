@@ -1,5 +1,6 @@
 --- close ---
 BoolRect | safely leaving hover toggle not one chidren
+TextProp {lable, size, color, background}
 
 --- far ---
 SmartColor -> RGBA

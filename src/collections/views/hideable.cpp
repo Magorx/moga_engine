@@ -48,14 +48,11 @@ HideableActivityToggleAcceptor::HideableActivityToggleAcceptor(v_Hideable *hidea
 
 EventAccResult HideableActivityToggleAcceptor::operator()(const Event::ActivityToggle &event, const EventAccResult *) {
     v_Hideable *hid = acceptor;
-    printf("got active: %s\n", event.mode == Event::ActivityToggle::State::off ? "off" : "NOT off");
     if (!event.check_target(hid)) return EventAccResult::none;
-    printf("yes\n");
 
     if (event.mode == Event::Activator::State::on) {
         hid->activate();
     } else if (event.mode == Event::Activator::State::off) {
-        printf("WELL\n");
         hid->deactivate();
     } else if (event.mode == Event::Activator::State::toggle) {
         hid->toggle();

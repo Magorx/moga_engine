@@ -74,12 +74,12 @@ public:
         else observers_after.push_back(observer);
     }
 
-    virtual EventAccResult emit(const EVENT_T &event) {
+    virtual EventAccResult emit(const EVENT_T &event, bool sub_es_reverse = false) {
         if (event_affector) {
             EVENT_T affected_event = event_affector(event);
-            return dispatch(affected_event);
+            return dispatch(affected_event, sub_es_reverse);
         } else {
-            return dispatch(event);
+            return dispatch(event, sub_es_reverse);
         }
     }
 
@@ -96,11 +96,11 @@ public:
         return sub_res;
     }
 
-    EventAccResult dispatch_to_sub_es(const EVENT_T &event);
+    EventAccResult dispatch_to_sub_es(const EVENT_T &event, bool sub_es_reverse = false);
 
     void process_acc_result(EventAccResult &res, const EVENT_T &event);
 
-    EventAccResult dispatch(const EVENT_T &event) {
+    EventAccResult dispatch(const EVENT_T &event, bool sub_es_reverse) {
         EventAccResult sub_res = EventAccResult::none;
 
         EventAccResult res = dispatch_to_observers(event);
@@ -110,7 +110,7 @@ public:
             return res;
         }
 
-        res = dispatch_to_sub_es(event);
+        res = dispatch_to_sub_es(event, sub_es_reverse);
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
         process_acc_result(res, event);
         if (res & EventAccResult::done) {
@@ -262,14 +262,23 @@ void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, const EVE
 #include <cstring>
 
 template <typename EVENT_T>
-EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event) {
+EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event, bool sub_es_reverse) {
     EventAccResult sub_res = EventAccResult::none;
-   
-    for (auto sub_es : es->get_sub_es()) {
-        // if (strcmp(id, "toggle_activity") == 0) {
-        //     printf("disp from %p\n", this);
-        // }
-        EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event);
+
+    int idx_start = 0;
+    int idx_step = 1;
+    int idx_stop = es->get_sub_es().size();
+    if (sub_es_reverse) {
+        printf("reversed %s\n", id);
+        idx_start = (int) es->get_sub_es().size() - 1;
+        idx_step = -1;
+        idx_stop = -1;
+    }
+
+    auto sub_ess = es->get_sub_es();
+    for (int i = idx_start; i != idx_stop; i += idx_step) {
+        auto sub_es = sub_ess[i];
+        EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event, sub_es_reverse);
 
         if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
         if (res & EventAccResult::done) return res;

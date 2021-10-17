@@ -60,6 +60,7 @@ add_executable(moga
         src/collections/views/text.cpp
         src/collections/views/hideable.cpp
         src/collections/views/menu.cpp
+        src/collections/views/submenu.cpp
         src/collections/views/labled_view.cpp
 
         src/collections/actions/toggle.cpp

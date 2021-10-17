@@ -27,6 +27,20 @@ public:
     }
 };
 
+class PressChemistryModelToggler : public EventReaction<Event::MousePress> {
+    ChemEngine *engine;
+
+public:
+    PressChemistryModelToggler(ChemEngine *engine):
+    engine(engine)
+    {}
+
+    EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
+        engine->toggle_chemistry();
+        return EventAccResult::none;
+    }
+};
+
 
 template <typename T>
 class EventCatcher : public EventReaction<T> {

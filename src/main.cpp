@@ -20,7 +20,7 @@ int main() {
     generate_balls(&moga, 10);
 
     SmartColor *col_menu = new SmartColor({200, 200, 200});
-    v_VerticalLayout *vlayout = new v_VerticalLayout({{750, 150}, {200, 250}}, {{0.1, 0.1}, {0.9, 0.9}}, 5, nullptr, col_menu);
+    v_VerticalLayout *vlayout = new v_VerticalLayout({{725, 150}, {250, 250}}, {{0.1, 0.1}, {0.9, 0.9}}, 5, nullptr, col_menu);
     moga.add_view(vlayout);
 
     // SmartColor *col_submenu = new SmartColor({150, 150, 150});
@@ -31,8 +31,8 @@ int main() {
     v_MouseCatcher *mc = new v_MouseCatcher({{750, 100}, {200, 40}}, nullptr, colmc);
     vlayout->layout_add(mc);
 
-    SmartColor *colhl = new SmartColor({100, 100, 100});
-    v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
+    // SmartColor *colhl = new SmartColor({100, 100, 100});
+    // v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
     // vlayout->layout_add(hl1);
 
     SmartColor *neon = new SmartColor({30, 235, 235});
@@ -46,7 +46,7 @@ int main() {
 
     SmartColor *coltog1 = new SmartColor({100, 100, 100});
     SmartColor *coltog2 = new SmartColor({225, 35, 30});
-    v_Toggler *togg  = new v_Toggler({{0, 0}, {0, 0}}, coltog1, coltog2);
+    v_Toggler *togg = new v_Toggler({{0, 0}, {0, 0}}, coltog1, coltog2);
     hlayout->layout_add(togg);
     
     // // togg->deactivate();
@@ -60,11 +60,25 @@ int main() {
     v_Menu *menu = new v_Menu({"Fisrt", "Second", "Third", "FOUTH"}, pale, black);
     moga.add_view(menu);
 
+    (*menu)[0]->e_mouse_press.add(new PressChemistryModelToggler(&moga));
+
     menu->deactivate();
     menu->e_toggle_activity.add(new HideableActivityToggleAcceptor(menu));
     hl2->e_mouse_move.add(new a_OnHoverToggler(hl2, menu), false);
     hl2->add_subview(menu);
     menu->fit({0, 1}, {1.5, 3});
+
+
+    v_HorizontalLayout *sublayout = new v_HorizontalLayout({{800, 150}, {100, 300}}, {{0, 0}, {0, 0}}, 0);
+    vlayout->layout_add(sublayout, 2);
+
+    SmartColor *colsub = new SmartColor({177, 77, 177});
+    v_Submenu *submenu = new v_Submenu(v_Submenu::Type::on_click, {{0, 0}, {0, 0}}, colsub, "COOL", {"Fisrt", "Second", "Third", "Fouth"}, pale, black);
+    sublayout->layout_add(submenu);
+
+    SmartColor *colsub2 = new SmartColor({177, 77, 177});
+    v_Submenu *submenu2 = new v_Submenu(v_Submenu::Type::on_click, {{0, 0}, {0, 0}}, colsub2, "BAD", {"1", "2", "3", "4"}, black, pale);
+    sublayout->layout_add(submenu2);
 
     
 

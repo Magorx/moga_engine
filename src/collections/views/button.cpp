@@ -19,7 +19,15 @@ pressed(false)
 
 void v_Button::render(Renderer *renderer) {
     // body.position += pos_delta;
+    if (pressed) {
+        color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
+    }
+
     v_Highlighter::render(renderer);
+
+    if (pressed) {
+        color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
+    }
     // body.position -= pos_delta;
 }
 
@@ -27,16 +35,12 @@ void v_Button::press() {
     pressed = true;
 
     pos_delta += BUTTON_CLICK_POS_DELTA;
-
-    color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
 }
 
 void v_Button::unpress() {
     pressed = false;
 
     pos_delta -= BUTTON_CLICK_POS_DELTA;
-
-    color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
 }
 
 ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button) : EventAcceptor(button) {}

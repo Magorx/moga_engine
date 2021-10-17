@@ -30,7 +30,7 @@ void MogaEngine::visual_render_tick() {
 	printf("[visual_tick] %lg\n", current_time);
 	#endif
 	visual->tick();
-	main_view->get_dispatcher<Event::RenderCall>().emit({visual->get_renderer()});
+	main_view->e_render_call.emit({visual->get_renderer()}, true);
 	visual->get_renderer()->display();
 }
 

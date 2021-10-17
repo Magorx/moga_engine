@@ -10,6 +10,7 @@
 #include "horizontal_layout.h"
 
 #include "menu.h"
+#include "submenu.h"
 
 #include "text.h"
 #include "canvas.h"

@@ -45,7 +45,7 @@ a_OnHoverToggler::a_OnHoverToggler(AbstractView *acceptor, v_Hideable *target, b
 EventAccResult a_OnHoverToggler::operator()(const Event::MouseMove &event, const EventAccResult *res) {
     AbstractView *av = acceptor;
 
-    if (av->is_inside(event.to) && !av->is_inside(event.from)) {
+    if ((av->is_inside(event.to) && !av->is_inside(event.from)) || (av->is_inside(event.to) && !target->is_active())) {
         target->set_active(true ^ reversed);
         return EventAccResult::cont;
     } else if (!av->is_inside(event.to) && av->is_inside(event.from)) {
