@@ -89,6 +89,26 @@ int main() {
         (*submenu2)[i - 1]->e_mouse_press.add(new SetPhysTimeMultiplier(&moga, (double) i / 2));
     }
 
+
+    std::vector<AbstractView*> vs;
+    vs.push_back(new v_Highlighter({0, {20, 20}}, new SmartColor({40, 70, 100})));
+    vs.push_back(new v_Highlighter({0, {30, 10}}, new SmartColor({100, 70, 100})));
+    vs.push_back(new v_Highlighter({0, {10, 30}}, new SmartColor({40, 170, 100})));
+
+    v_Stretcher *st = v_Stretcher::X(50, new SmartColor({250, 0, 0}));
+    moga.add_view(st);
+
+    st->add_subview(vs[0]);
+    st->add_subview(vs[1]);
+    st->add_subview(vs[2]);
+    st->normal_stretch();
+
+    v_Window *window = new v_Window({200, 200}, 20);
+    window->get_body().position = {50, 50};
+    moga.add_view(window);
+
+    window->add_subview(new v_Highlighter({0, {200, 200}}, new SmartColor({45, 67, 78}), nullptr, 1));
+
     
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);

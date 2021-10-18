@@ -29,8 +29,6 @@ public:
 
         fitting_body.position = body.size * fitting_body_scale.position;
         fitting_body.size     = body.size * fitting_body_scale.size - fitting_body.position;
-
-        printf("fitting_body %g %g %g %g\n", fitting_body.position.x(), fitting_body.position.y(), fitting_body.size.x(), fitting_body.size.y());
     }
 
     virtual ~AbstractLayoutView() {}

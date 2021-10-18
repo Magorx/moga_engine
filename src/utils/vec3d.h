@@ -30,9 +30,13 @@ struct Vec3d {
 
     content3 content;
 
+    Vec3d();
+
     Vec3d(content3 newContent);
 
-    Vec3d(double x_=0, double y_=0, double z_=0);
+    Vec3d(double x_, double y_, double z_);
+    
+    Vec3d(double fill);
 
     inline double x() const {
         return content[0];

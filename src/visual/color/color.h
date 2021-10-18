@@ -3,9 +3,9 @@
 
 #include "utils/vec3d.h"
 #include "rgba.h"
+#include "utils/lable.h"
 
 #include <cstdio>
-// #include <algorithm>
 
 extern const int 	i_MAXRGB;
 extern const double d_MAXRGB;

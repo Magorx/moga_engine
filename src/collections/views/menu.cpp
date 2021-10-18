@@ -59,6 +59,4 @@ void v_Menu::recalculate_size() {
     body.size = Vec2d(max_x_size, sum_y_size) * button_scale;
     body.size.content[0] = fmax(body.size.content[0], min_size.content[0]);
     body.size.content[1] = fmax(body.size.content[1], min_size.content[1]);
-
-    printf("MY SIZE %g %g\n", body.size.x(), body.size.y()); 
 }

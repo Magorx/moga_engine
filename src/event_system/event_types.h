@@ -26,6 +26,17 @@ struct MouseMove {
     Vec2d to;
 };
 
+struct MouseDrag {
+    enum Button {
+        left,
+        right
+    };
+
+    Vec2d from;
+    Vec2d to;
+    Button button;
+};
+
 struct RenderCall {
     Renderer *renderer;
 };
@@ -45,6 +56,10 @@ struct Activator {
     Activator(State mode = State::toggle, void *target = nullptr) : mode(mode), target(target) {}
 
     inline bool check_target(void *acceptor) const { return !target || target == acceptor; }
+};
+
+struct Close {
+    int mode = 0;
 };
 
 struct ActivityToggle : public Activator {

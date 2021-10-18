@@ -8,7 +8,8 @@
 AbstractView::AbstractView(ViewBody body, AbstractView *parent):
 body(body),
 fit_body(body),
-parent(parent)
+parent(parent),
+pressed(false)
 {
     e_render_call.add(new AVRenderCallAcceptor(this));
     // e_mouse_press.add(new AVPressAcceptor(this));
@@ -155,6 +156,8 @@ AVMissPressBlocker::AVMissPressBlocker(AbstractView *av) : EventAcceptor(av) {}
 EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (!acceptor->is_inside(event.position)) {
         return EventAccResult::stop;
+    } else {
+        acceptor->pressed = true; 
     }
 
     return EventAccResult::none;
@@ -163,10 +166,12 @@ EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event, co
 
 AVMissReleaseBlocker::AVMissReleaseBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &event, const EventAccResult *) {
-    if (!acceptor->is_inside(event.position)) {
-        return EventAccResult::stop;
-    }
+EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &, const EventAccResult *) {
+    acceptor->pressed = false;
+ 
+    // if (!acceptor->is_inside(event.position)) {
+    //     return EventAccResult::stop;
+    // }
 
     return EventAccResult::none;
 }
@@ -188,6 +193,28 @@ EventAccResult AVRenderCallAcceptor::operator()(const Event::RenderCall &event, 
     if (!acceptor->is_active()) return EventAccResult::stop;
 
     acceptor->render(event.renderer);
+
+    return EventAccResult::stop;
+}
+
+AVDragAcceptor::AVDragAcceptor(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVDragAcceptor::operator()(const Event::MouseDrag &event, const EventAccResult *) {
+    acceptor->get_body().position += event.to - event.from;
+
+    return EventAccResult::stop;
+}
+
+AVDragEmitter::AVDragEmitter(AbstractView *av) : EventAcceptor(av) {
+    av->e_mouse_press.add(new AVMissPressBlocker(av));
+    av->e_mouse_release.add(new AVMissReleaseBlocker(av));
+}
+
+EventAccResult AVDragEmitter::operator()(const Event::MouseMove &event, const EventAccResult *) {
+    if (acceptor->pressed) {
+        acceptor->e_mouse_drag.emit({event.from, event.to, Event::MouseDrag::left});
+        return EventAccResult::cont;
+    }
 
     return EventAccResult::stop;
 }

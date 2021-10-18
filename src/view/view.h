@@ -46,6 +46,20 @@ public:
     EventAccResult operator()(const Event::RenderCall &event, const EventAccResult *cur_res = nullptr) override;
 };
 
+class AVDragAcceptor : public EventAcceptor<AbstractView, Event::MouseDrag> {
+public:
+    AVDragAcceptor(AbstractView *view);
+
+    EventAccResult operator()(const Event::MouseDrag &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class AVDragEmitter : public EventAcceptor<AbstractView, Event::MouseMove> {
+public:
+    AVDragEmitter(AbstractView *view);
+
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 
 struct ViewBody {
     Vec2d position;
@@ -61,13 +75,6 @@ struct ViewBody {
 };
 
 
-namespace Align {
-    const ViewBody LURD ({{-1.0, -1.0}, { 0.0,  0.0}});
-    const ViewBody LUCD ({{-0.5, -1.0}, { 0.5,  1.0}});
-    const ViewBody LULD ({{ 0.0, -1.0}, { 1.0,  0.0}});
-}
-
-
 class AbstractView : public RenderableObject, public Tickable, public EventSystem {
 protected:
     ViewBody body;
@@ -79,12 +86,16 @@ protected:
     friend AVMissPressBlocker;
     friend AVMissMoveBlocker;
     friend AVMissReleaseBlocker;
+    friend AVDragAcceptor;
+    friend AVDragEmitter;
+
+    bool pressed;
 
 public:
     AbstractView(ViewBody body, AbstractView *parent = nullptr);
     virtual ~AbstractView();
 
-    void add_subview(AbstractView *subview);
+    virtual void add_subview(AbstractView *subview);
     void delete_subview(AbstractView *view);
     void delete_subview(size_t index);
 

@@ -2,7 +2,7 @@
 #define CIRCLE_CIRCLE_COLLISION
 
 #include "collision.h"
-#include "solid_body/sb_circle.h"
+#include "physics/solid_body/sb_circle.h"
 
 class CircleCircleCollision : public Collision {
 public:

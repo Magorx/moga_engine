@@ -154,19 +154,23 @@ public:
     EventDispatcher<Event::MousePress>      e_mouse_press;
     EventDispatcher<Event::MouseRelease>    e_mouse_release;
     EventDispatcher<Event::MouseMove>       e_mouse_move;
+    EventDispatcher<Event::MouseDrag>       e_mouse_drag;
     EventDispatcher<Event::Activator>       e_toggle;
-    EventDispatcher<Event::ActivityToggle> e_toggle_activity;
+    EventDispatcher<Event::ActivityToggle>  e_toggle_activity;
     EventDispatcher<Event::RenderCall>      e_render_call;
+    EventDispatcher<Event::Close>           e_close;
 
     EventSystem() :
     parent(nullptr),
     index_in_parent(0),
     e_mouse_press(this, "mouse_press"),
     e_mouse_release(this, "mouse_release"),
-    e_mouse_move(this, "mouse_hover"),
+    e_mouse_move(this, "mouse_move"),
+    e_mouse_drag(this, "mouse_drag"),
     e_toggle(this, "toggle"),
     e_toggle_activity(this, "toggle_activity"),
-    e_render_call(this, "render_call")
+    e_render_call(this, "render_call"),
+    e_close(this, "close")
     {}
 
     void add_es(EventSystem *sub_system) {
@@ -238,6 +242,11 @@ inline EventDispatcher<Event::MouseMove> &EventSystem::get_dispatcher() {
 }
 
 template <>
+inline EventDispatcher<Event::MouseDrag> &EventSystem::get_dispatcher() {
+    return e_mouse_drag;
+}
+
+template <>
 inline EventDispatcher<Event::Activator> &EventSystem::get_dispatcher() {
     return e_toggle;
 }
@@ -250,6 +259,11 @@ inline EventDispatcher<Event::ActivityToggle> &EventSystem::get_dispatcher() {
 template <>
 inline EventDispatcher<Event::RenderCall> &EventSystem::get_dispatcher() {
     return e_render_call;
+}
+
+template <>
+inline EventDispatcher<Event::Close> &EventSystem::get_dispatcher() {
+    return e_close;
 }
 
 //=====================================================================================================================

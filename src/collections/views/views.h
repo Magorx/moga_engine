@@ -8,9 +8,12 @@
 
 #include "vertical_layout.h"
 #include "horizontal_layout.h"
+#include "stretcher.h"
 
 #include "menu.h"
 #include "submenu.h"
+
+#include "window.h"
 
 #include "text.h"
 #include "canvas.h"

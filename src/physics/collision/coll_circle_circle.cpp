@@ -22,7 +22,7 @@ void CircleCircleCollision::solve() {
     Vec3d axis = c_second->get_position();
     axis -= c_first->get_position();
     axis.normalize();
-    Vec3d axis_norm(-axis.y(), axis.x());
+    Vec3d axis_norm(-axis.y(), axis.x(), 0);
 
     Vec3d vel_mass_center = c_first->get_velocity() * c_first->get_mass();
     vel_mass_center += c_second->get_velocity() * c_second->get_mass();
@@ -31,8 +31,8 @@ void CircleCircleCollision::solve() {
     vel_first -= vel_mass_center;
     vel_second -= vel_mass_center;
 
-    vel_first =  {vel_first.dot(axis_norm) * c_first->get_mass(), vel_first.dot(axis) * c_first->get_mass()};
-    vel_second = {vel_second.dot(axis_norm) * c_second->get_mass(), vel_second.dot(axis) * c_second->get_mass()};
+    vel_first =  {vel_first.dot(axis_norm) * c_first->get_mass(), vel_first.dot(axis) * c_first->get_mass(), 0};
+    vel_second = {vel_second.dot(axis_norm) * c_second->get_mass(), vel_second.dot(axis) * c_second->get_mass(), 0};
 
     if (vel_first.y() < 0 || vel_second.y() > 0) return;
 

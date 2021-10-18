@@ -135,21 +135,15 @@ void MogaEngine::logic_tick() {
 }
 
 void MogaEngine::on_mouse_click(Vec2d click) {
-	if (main_view->is_inside(click)) {
-		main_view->e_mouse_press.emit({click});
-	}
+	main_view->e_mouse_press.emit({click});
 }
 
 void MogaEngine::on_mouse_hover(Vec2d hover) {
-	if (main_view->is_inside(hover)) {
-		main_view->e_mouse_move.emit({mouse_pos, hover});
-	}
+	main_view->e_mouse_move.emit({mouse_pos, hover});
 }
 
 void MogaEngine::on_mouse_release(Vec2d click) {
-	if (main_view->is_inside(click)) {
 		main_view->e_mouse_release.emit({click});
-	}
 }
 
 void MogaEngine::handle_events(sf::RenderWindow &window) {
@@ -167,8 +161,15 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 		}
 
 		if (event.type == sf::Event::MouseMoved) {
-			on_mouse_hover({(double) event.mouseMove.x, (double) event.mouseMove.y});
-			mouse_pos = {(double) event.mouseMove.x, (double) event.mouseMove.y, 0};
+			Vec2d hover = {(double) event.mouseMove.x, (double) event.mouseMove.y};
+			// if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+			// 	main_view->e_mouse_drag.emit({mouse_pos, hover, Event::MouseDrag::left});
+			// } else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
+			// 	main_view->e_mouse_drag.emit({mouse_pos, hover, Event::MouseDrag::right});
+			// } else {
+				on_mouse_hover(hover);
+			// }
+			mouse_pos = {(double) event.mouseMove.x, (double) event.mouseMove.y};
 		}
 	}
 }
@@ -184,6 +185,7 @@ MogaEngine::MogaEngine(const char  *window_name,
 	prev_tick_time(0),
 	physics_current_time(0),
 	dt(0),
+	physics_time_multiplier(1),
 
 	init_time(0),
     fps_second_start(0),
@@ -195,8 +197,6 @@ MogaEngine::MogaEngine(const char  *window_name,
 	fps_seconds_tick(false),
 
     mouse_pos(0, 0),
-
-	physics_time_multiplier(1),
 
 	visual(new VisualEngine(window_name, screen_width, screen_height)),
 	physics(new PhysicsEngine()),

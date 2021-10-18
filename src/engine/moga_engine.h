@@ -16,6 +16,7 @@
 #include "physics/physics_engine.h"
 #include "../visual/visual_engine.h"
 #include "view/view.h"
+#include "utils/vec2d.h"
 
 #include "tickable.h"
 #include "object.h"
@@ -43,7 +44,7 @@ protected:
 
 	bool fps_seconds_tick;
 
-    Vec3d mouse_pos;
+    Vec2d mouse_pos;
 //  =====================
 
 public:
