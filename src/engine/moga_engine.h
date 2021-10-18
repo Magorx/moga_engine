@@ -32,6 +32,7 @@ protected:
 	double prev_tick_time;
 	double physics_current_time;
 	double dt;
+	double physics_time_multiplier;
 
 	time_t init_time;
     double fps_second_start;
@@ -81,6 +82,8 @@ public:
 
 	void clear_deleted_tickables();
 	void clear_deleted_objects();
+
+	inline void set_phys_time_mult(double mult) { physics_time_multiplier = mult; }
 
 //  ===== get / set =====
 

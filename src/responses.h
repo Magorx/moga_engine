@@ -50,6 +50,23 @@ public:
     }
 };
 
+class SetPhysTimeMultiplier : public EventReaction<Event::MousePress> {
+    MogaEngine *engine;
+    double mult;
+
+public:
+
+    SetPhysTimeMultiplier(MogaEngine *engine, double mult):
+    engine(engine),
+    mult(mult)
+    {}
+
+    EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
+        engine->set_phys_time_mult(mult);
+        return EventAccResult::done;
+    }
+};
+
 
 template <typename T>
 class EventCatcher : public EventReaction<T> {

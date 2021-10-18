@@ -39,7 +39,7 @@ void MogaEngine::physics_tick() {
 	printf("[physics_tick] %lg\n", current_physics_time);
 	#endif
 
-	physics->tick(PHYSICS_TIME_STEP, physics_current_time);
+	physics->tick(PHYSICS_TIME_STEP * physics_time_multiplier, physics_current_time);
 }
 
 void MogaEngine::tickable_tick() {
@@ -195,6 +195,8 @@ MogaEngine::MogaEngine(const char  *window_name,
 	fps_seconds_tick(false),
 
     mouse_pos(0, 0),
+
+	physics_time_multiplier(1),
 
 	visual(new VisualEngine(window_name, screen_width, screen_height)),
 	physics(new PhysicsEngine()),

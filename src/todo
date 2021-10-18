@@ -4,6 +4,7 @@ TextProp {lable, size, color, background, font_filename}
 
 --- far ---
 replace vector with list in sub_event_systems
+global bool affector for ES
 SmartColor -> RGBA
 photoshop
 

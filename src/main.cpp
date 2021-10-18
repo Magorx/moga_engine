@@ -31,9 +31,9 @@ int main() {
     v_MouseCatcher *mc = new v_MouseCatcher({{750, 100}, {200, 40}}, nullptr, colmc);
     vlayout->layout_add(mc);
 
-    // SmartColor *colhl = new SmartColor({100, 100, 100});
-    // v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
-    // vlayout->layout_add(hl1);
+    SmartColor *colhl = new SmartColor({150, 150, 150});
+    v_Highlighter *hl1 = new v_Highlighter({{750, 50}, {200, 40}}, colhl);
+    vlayout->layout_add(hl1);
 
     SmartColor *neon = new SmartColor({30, 235, 235});
     v_Highlighter *hl2 = new v_Highlighter({{0.1, 0}, {0.9, 1}}, colmc, mc);
@@ -81,10 +81,13 @@ int main() {
     (*submenu)[2]->e_mouse_press.add(new PressChemistryModelToggler(&moga, Event::Activator::State::toggle));
 
     SmartColor *colsub2 = new SmartColor({177, 77, 177});
-    v_Submenu *submenu2 = v_Submenu::Hover({{0, 0}, {0, 0}}, colsub2, "NICE", {"1", "2", "3", "4"}, neon, black);
-    // submenu2->set_align({{-0.5, 1}, {0.5, 2}});
+    v_Submenu *submenu2 = v_Submenu::Hover({{0, 0}, {0, 0}}, colsub2, "Numbers", {"0.5", "1", "1.5", "2", "2.5", "3"}, neon, black);
     submenu2->set_min_size({20, 0});
     sublayout->layout_add(submenu2);
+
+    for (int i = 1; i <= 6; ++i) {
+        (*submenu2)[i - 1]->e_mouse_press.add(new SetPhysTimeMultiplier(&moga, (double) i / 2));
+    }
 
     
 
