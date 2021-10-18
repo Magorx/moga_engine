@@ -104,21 +104,21 @@ public:
         EventAccResult sub_res = EventAccResult::none;
 
         EventAccResult res = dispatch_to_observers(event);
-        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+        if (res & EventAccResult::cont) sub_res = (EventAccResult) (sub_res | EventAccResult::cont);
         process_acc_result(res, event);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
             return res;
         }
 
         res = dispatch_to_sub_es(event, sub_es_reverse);
-        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+        if (res & EventAccResult::cont) sub_res = (EventAccResult) (sub_res | EventAccResult::cont);
         process_acc_result(res, event);
         if (res & EventAccResult::done) {
             return res;
         }
 
         res = dispatch_to_observers(event, false, &res);
-        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
+        if (res & EventAccResult::cont) sub_res = (EventAccResult) (sub_res | EventAccResult::cont);
         process_acc_result(res, event);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
             return res;
@@ -277,7 +277,6 @@ void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, const EVE
     }
 }
 
-#include <cstring>
 
 template <typename EVENT_T>
 EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event, bool sub_es_reverse) {
