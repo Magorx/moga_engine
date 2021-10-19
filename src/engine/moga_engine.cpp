@@ -309,5 +309,5 @@ MogaEngine::~MogaEngine() {
 
 	delete visual;
 	delete physics;
-	// delete main_view;
+	delete main_view;
 }

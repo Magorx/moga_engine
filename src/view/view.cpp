@@ -40,9 +40,9 @@ pressed(false)
 
 AbstractView::~AbstractView() {
     // printf("deleting %p\n", this);
-    for (auto subview : subviews) {
-        delete subview;
-    }
+    // for (auto subview : subviews) {
+    //     delete subview;
+    // }
 }
 
 

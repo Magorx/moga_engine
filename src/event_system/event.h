@@ -58,7 +58,7 @@ public:
         assert(es && "can't create an EventDispatcher without parental EventSystem");
     }
 
-    ~EventDispatcher() {
+    virtual ~EventDispatcher() {
         for (auto observer : observers_before) {
             delete observer;
         }
@@ -172,6 +172,10 @@ public:
     e_render_call(this, "render_call"),
     e_close(this, "close")
     {}
+
+    virtual ~EventSystem() {
+        delete_from_parent();
+    }
 
     void add_es(EventSystem *sub_system) {
         if (!sub_system) return;
