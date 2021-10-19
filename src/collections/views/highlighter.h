@@ -38,8 +38,6 @@ class v_Highlighter : public AbstractLabledView {
     bool cursor_inside;
     double highlight_coef;
 
-    HighlighterMoveAcceptor on_move;
-
     friend HighlighterPressAcceptor;
     friend HighlighterMoveAcceptor;
     friend HighlighterDeactivateVisualy;

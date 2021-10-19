@@ -43,10 +43,6 @@ class v_Toggler : public v_Hideable {
 
     float button_factor;
 
-    TogglerPressAcceptor   on_press;
-    TogglerReleaseAcceptor on_release;
-    TogglerMoveAcceptor    on_move;
-
     friend TogglerPressAcceptor;
     friend TogglerReleaseAcceptor;
     friend TogglerMoveAcceptor;

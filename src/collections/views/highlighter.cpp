@@ -8,7 +8,6 @@ v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractVi
 AbstractLabledView(body, parent),
 cursor_inside(false),
 highlight_coef(highlight_coef),
-on_move(this),
 color(color)
 {
     e_mouse_press.add(new HighlighterPressAcceptor(this));

@@ -8,6 +8,9 @@ cur_font_filename(nullptr)
 {}
 
 Renderer::~Renderer() {
+    if (cur_font_filename) {
+        free(cur_font_filename);
+    }
     delete get_window();
 }
 

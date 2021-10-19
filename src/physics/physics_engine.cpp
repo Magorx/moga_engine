@@ -137,6 +137,7 @@ void PhysicsEngine::tick(const double dt, const double) {
 }
 
 void PhysicsEngine::update_collisions() {
+    for (auto coll : collisions) delete coll;
     collisions.clear();
     
     for (size_t i = 0; i < solids.size(); ++i) {

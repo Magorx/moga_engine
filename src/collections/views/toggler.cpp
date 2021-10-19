@@ -11,14 +11,11 @@ pressed(false),
 online(online),
 color_border(color_border),
 color_button(color_button),
-button_factor(button_factor),
-on_press(this),
-on_release(this),
-on_move(this)
+button_factor(button_factor)
 {
-    e_mouse_press.add(&on_press);
-    e_mouse_move.add(&on_move);
-    e_mouse_release.add(&on_release);
+    e_mouse_press.add(new TogglerPressAcceptor(this));
+    e_mouse_release.add(new TogglerReleaseAcceptor(this));
+    e_mouse_move.add(new TogglerMoveAcceptor(this));
 }
 
 void v_Toggler::render(Renderer *renderer) {

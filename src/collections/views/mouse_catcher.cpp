@@ -5,9 +5,7 @@
 v_MouseCatcher::v_MouseCatcher(const ViewBody &body, AbstractView *parent, SmartColor *color):
 v_Highlighter(body, color, parent, 1),
 pos_delta(0, 0),
-captured(false),
-on_press(this),
-on_move(this)
+captured(false)
 {
     e_mouse_press.add(new MouseCatcherPressAcceptor(this));
     e_mouse_move.add(new MouseCatcherMoveAcceptor(this));

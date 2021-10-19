@@ -27,9 +27,6 @@ class v_MouseCatcher : public v_Highlighter {
 
     bool captured;
 
-    MouseCatcherPressAcceptor on_press;
-    MouseCatcherMoveAcceptor  on_move;
-
     friend MouseCatcherPressAcceptor;
     friend MouseCatcherMoveAcceptor;
 

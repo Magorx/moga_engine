@@ -22,7 +22,7 @@ enum EventAccResult {
 template <typename EVENT_T>
 class EventReaction {
 public:
-    virtual ~EventReaction() {}
+    virtual ~EventReaction() = default;
     virtual EventAccResult operator()(const EVENT_T &event, const EventAccResult *cur_res = nullptr) = 0;
 };
 
@@ -32,7 +32,7 @@ class EventAcceptor : public EventReaction<EVENT_T> {
 protected:
     ACCEPTOR_T *acceptor;
 public:
-    virtual ~EventAcceptor() {}
+    virtual ~EventAcceptor() = default;
     EventAcceptor(ACCEPTOR_T *acceptor) : acceptor(acceptor) {}
 };
 
@@ -174,7 +174,11 @@ public:
     {}
 
     virtual ~EventSystem() {
-        delete_from_parent();
+        for (size_t i = 0; i < sub_es.size(); ++i) {
+            sub_es[i]->parent = nullptr;
+            delete sub_es[i];
+        }
+        // delete_from_parent();
     }
 
     void add_es(EventSystem *sub_system) {
