@@ -4,7 +4,7 @@ SmartColor::SmartColor() :
 color(0, 0, 0)
 {}
 
-SmartColor::SmartColor(const Color color_) :
+SmartColor::SmartColor(const Color &color_) :
 color(color_)
 {}
 

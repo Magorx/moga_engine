@@ -15,7 +15,7 @@ double vec3d_randdouble(double dmin, double dmax) {
 }
 
 Vec3d::Vec3d() {
-    content = {0, 0, 0};
+    content = {0, 0, 0, 255};
 }
 
 Vec3d::Vec3d(double x_, double y_, double z_) {

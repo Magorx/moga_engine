@@ -15,7 +15,10 @@ renderer(new Renderer(window_name, scr_size_x, scr_size_y))
 {}
 
 VisualEngine::~VisualEngine() {
-
+    delete renderer;
+    for (auto rend : render_objects) {
+        delete rend;
+    }
 }
 
 bool VisualEngine::add_renderable(Renderable *object) {

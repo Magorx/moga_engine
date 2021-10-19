@@ -50,6 +50,10 @@ struct Vec3d {
         return content[2];
     }
 
+    inline double w() const {
+        return content[3];
+    }
+
     inline double len() const {
         return sqrt(len_squared());
     }

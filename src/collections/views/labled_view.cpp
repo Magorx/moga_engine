@@ -19,9 +19,10 @@ void AbstractLabledView::add_label(const char *lable, int char_size, SmartColor 
 
     if (v_lable) {
         delete v_lable;
+        delete_subview(v_lable);
     }
-    v_lable = text;
 
+    v_lable = text;
     add_subview(v_lable);
 }
 

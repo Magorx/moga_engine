@@ -11,7 +11,7 @@ class SmartColor : public Tickable {
 
 public:
 	SmartColor();
-	SmartColor(const Color color_);
+	SmartColor(const Color &color_);
 
 	virtual const Color rgb();
 

@@ -16,7 +16,9 @@ class Color : public Vec3d {
 public:
     Color(content3 newContent) : Vec3d(newContent) {}
 
-    Color(double x_=0, double y_=0, double z_=0) : Vec3d(x_, y_, z_) {}
+    Color(double x_=0, double y_=0, double z_=0, double w_=255) : Vec3d(x_, y_, z_) {
+        content[3] = w_;
+    }
 
     Color(const Vec3d &other) : Color(other.content) {}
 
@@ -24,7 +26,7 @@ public:
         return {(unsigned char) std::min(std::max(content[0], 0.0), 255.0),
                 (unsigned char) std::min(std::max(content[1], 0.0), 255.0),
                 (unsigned char) std::min(std::max(content[2], 0.0), 255.0),
-                255
+                (unsigned char) std::min(std::max(content[3], 0.0), 255.0),
         };
     }
 };
@@ -42,7 +44,7 @@ inline RGBA to_rgba(const Color &color) {
     return {(unsigned char) color.x(), 
             (unsigned char) color.y(),
             (unsigned char) color.z(),
-            (unsigned char) 255};
+            (unsigned char) color.w()};
 }
 
 void print_rgb(Color color, const double gamma_correction = 0.5, FILE *file = stdout);

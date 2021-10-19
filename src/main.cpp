@@ -109,7 +109,7 @@ int main() {
 
     window->add_subview(new v_Highlighter({0, {200, 200}}, new SmartColor({45, 67, 78}), nullptr, 1));
 
-    
+
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);
     // submenu->fit({0, 1}, {1.5, 3});
