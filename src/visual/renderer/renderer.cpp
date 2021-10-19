@@ -3,7 +3,8 @@
 
 Renderer::Renderer(const char *window_name, int size_x, int size_y):
 scr(new sf::RenderWindow(sf::VideoMode(size_x, size_y), window_name), size_x, size_y),
-offset(0, 0, 0)
+offset(0, 0, 0),
+cur_font_filename(nullptr)
 {}
 
 Renderer::~Renderer() {
@@ -110,6 +111,7 @@ void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const RGBA
 }
 
 void Renderer::load_font(sf::Font &font_holder, const char *font_filename, char **cur_font_filename) {
+    if (!font_filename) return;
     if (cur_font_filename && *cur_font_filename && !strcmp(font_filename, *cur_font_filename)) return;
 
     if (!font_holder.loadFromFile(font_filename)) {
@@ -123,8 +125,8 @@ void Renderer::load_font(sf::Font &font_holder, const char *font_filename, char 
 }
 
 Vec2d Renderer::get_text_size(const char *text, int char_size, const char *font_filename) {
-    sf::Text sf_text;
-    sf::Font font;
+    sf::Text sf_text = {};
+    sf::Font font = {};
     load_font(font, font_filename);
 
     sf_text.setFont(font);
