@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "labled_view.h"
+#include "labeled_view.h"
 #include "../renderables/renderables.h"
 
 

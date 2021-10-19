@@ -59,8 +59,8 @@ public:
     }
 
     virtual ~EventDispatcher() {
-        for (auto observer : observers_before) {
-            delete observer;
+        for (size_t i = 0; i < observers_before.size(); ++i) {
+            delete observers_before[i];
         }
         for (auto observer : observers_after) {
             delete observer;
@@ -175,10 +175,10 @@ public:
 
     virtual ~EventSystem() {
         for (size_t i = 0; i < sub_es.size(); ++i) {
-            sub_es[i]->parent = nullptr;
+            sub_es[i]->set_es_parent(nullptr);
             delete sub_es[i];
         }
-        // delete_from_parent();
+        delete_from_parent();
     }
 
     void add_es(EventSystem *sub_system) {

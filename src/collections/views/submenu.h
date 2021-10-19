@@ -14,14 +14,14 @@ public:
         on_hover,
     };
 
-    v_Submenu(Type type, const ViewBody &body, SmartColor *color, const char *lable, std::vector<const char*> button_lables, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color = nullptr, int char_size = 15, Vec2d button_scale = {1.3, 1.3});
+    v_Submenu(Type type, const ViewBody &body, SmartColor *color, const char *label, std::vector<const char*> button_labels, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color = nullptr, int char_size = 15, Vec2d button_scale = {1.3, 1.3});
 
-    static inline v_Submenu *Button(const ViewBody &body, SmartColor *color, const char *lable, std::vector<const char*> button_lables, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color = nullptr, int char_size = 15, Vec2d button_scale = {1.3, 1.3}) {
-        return new v_Submenu(Type::on_click, body, color, lable, button_lables, button_color, text_color, back_color, char_size, button_scale);
+    static inline v_Submenu *Button(const ViewBody &body, SmartColor *color, const char *label, std::vector<const char*> button_labels, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color = nullptr, int char_size = 15, Vec2d button_scale = {1.3, 1.3}) {
+        return new v_Submenu(Type::on_click, body, color, label, button_labels, button_color, text_color, back_color, char_size, button_scale);
     }
 
-    static inline v_Submenu *Hover(const ViewBody &body, SmartColor *color, const char *lable, std::vector<const char*> button_lables, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color = nullptr, int char_size = 15, Vec2d button_scale = {1.3, 1.3}) {
-        return new v_Submenu(Type::on_hover, body, color, lable, button_lables, button_color, text_color, back_color, char_size, button_scale);
+    static inline v_Submenu *Hover(const ViewBody &body, SmartColor *color, const char *label, std::vector<const char*> button_labels, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color = nullptr, int char_size = 15, Vec2d button_scale = {1.3, 1.3}) {
+        return new v_Submenu(Type::on_hover, body, color, label, button_labels, button_color, text_color, back_color, char_size, button_scale);
     }
 
     virtual void refit() override;

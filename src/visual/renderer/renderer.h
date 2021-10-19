@@ -50,7 +50,7 @@ public:
     void draw_line(Vec3d p1, Vec3d p2, const RGBA &color, sf::RenderTarget *texture = nullptr);
     void draw_square(Vec3d pos, const double size, const RGBA &color, sf::RenderTarget *texture = nullptr);
     void draw_rectangle(Vec3d pos, const Vec2d size, const RGBA &color, sf::RenderTarget *texture = nullptr);
-    void draw_text(const char *lable, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const char *font_filename = "arial.ttf", sf::RenderTarget *texture = nullptr);
+    void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const char *font_filename = "arial.ttf", sf::RenderTarget *texture = nullptr);
 
     static void load_font(sf::Font &font_holder, const char *font_filename, char **cur_font_filename = nullptr);
     static Vec2d get_text_size(const char *text, int char_size, const char *font_filename = "arial.ttf");

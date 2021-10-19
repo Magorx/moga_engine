@@ -70,7 +70,7 @@ void Renderer::draw_rectangle(Vec3d pos, const Vec2d size, const RGBA &color, sf
     else texture->draw(rect);
 }
 
-void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize,  const char *font_filename, sf::RenderTarget *texture) {
+void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize,  const char *font_filename, sf::RenderTarget *texture) {
     pos += (Vec2d) offset;
 
     sf::Color sf_color_back(back_color.r, back_color.g, back_color.b, back_color.a);
@@ -80,7 +80,7 @@ void Renderer::draw_text(const char *lable, int char_size, Vec2d pos, const RGBA
     load_font(cur_font, font_filename, &cur_font_filename);
 
     text.setFont(cur_font);
-    text.setString(lable);
+    text.setString(label);
     text.setCharacterSize(char_size);
 
     text.setFillColor(sf_color_font);

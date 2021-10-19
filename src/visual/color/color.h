@@ -3,7 +3,7 @@
 
 #include "utils/vec3d.h"
 #include "rgba.h"
-#include "utils/lable.h"
+#include "utils/label.h"
 
 #include <cstdio>
 

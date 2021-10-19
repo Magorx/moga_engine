@@ -140,9 +140,9 @@ int main() {
 
     moga.everlasting_loop();
 
-    // for (auto res : res_color) {
-    //     delete res;
-    // }
+    for (auto res : res_color) {
+        delete res;
+    }
 
 	return 0;
 }

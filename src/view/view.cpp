@@ -81,7 +81,8 @@ void AbstractView::delete_subview(AbstractView *view) {
     for (; i < views_cnt && subviews[i] != view; ++i);
 
     if (i < views_cnt) {
-        delete subviews[i];
+        printf("CHECK delete_subview IF FAILS\n");
+        // delete subviews[i];
         std::swap(subviews[i], subviews[views_cnt - 1]);
         subviews.pop_back();
     }
