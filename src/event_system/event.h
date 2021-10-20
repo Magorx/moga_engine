@@ -5,7 +5,6 @@
 #include <functional>
 #include <cassert>
 
-
 #include "event_types.h"
 
 
@@ -15,7 +14,7 @@ enum EventAccResult {
     cont  = 1 << 2,
     done  = 1 << 3,
     focus = 1 << 4,
-    children_dispatch_only = 1 << 5,
+    prevent_siblings_dispatch = 1 << 5,
 };
 
 
@@ -89,8 +88,8 @@ public:
     
         for (auto observer : observers) {
             EventAccResult res = (*observer)(event, cur_res);
-            if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
-            if ((res & EventAccResult::done) || (res & EventAccResult::stop)) { return res; }
+            process_acc_result(res, sub_res);
+            if ((res & EventAccResult::done) || (res & EventAccResult::stop)) { return sub_res; }
         }
 
         return sub_res;
@@ -98,30 +97,27 @@ public:
 
     EventAccResult dispatch_to_sub_es(const EVENT_T &event, bool sub_es_reverse = false);
 
-    void process_acc_result(EventAccResult &res, const EVENT_T &event);
+    void process_acc_result(EventAccResult &res, EventAccResult &sub_res);
 
     EventAccResult dispatch(const EVENT_T &event, bool sub_es_reverse) {
         EventAccResult sub_res = EventAccResult::none;
 
         EventAccResult res = dispatch_to_observers(event);
-        if (res & EventAccResult::cont) sub_res = (EventAccResult) (sub_res | EventAccResult::cont);
-        process_acc_result(res, event);
+        process_acc_result(res, sub_res);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
-            return res;
+            return sub_res;
         }
 
         res = dispatch_to_sub_es(event, sub_es_reverse);
-        if (res & EventAccResult::cont) sub_res = (EventAccResult) (sub_res | EventAccResult::cont);
-        process_acc_result(res, event);
+        process_acc_result(res, sub_res);
         if (res & EventAccResult::done) {
-            return res;
+            return sub_res;
         }
 
         res = dispatch_to_observers(event, false, &res);
-        if (res & EventAccResult::cont) sub_res = (EventAccResult) (sub_res | EventAccResult::cont);
-        process_acc_result(res, event);
+        process_acc_result(res, sub_res);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
-            return res;
+            return sub_res;
         }
 
         return sub_res;
@@ -276,12 +272,22 @@ inline EventDispatcher<Event::Close> &EventSystem::get_dispatcher() {
 
 //=====================================================================================================================
 template <typename EVENT_T>
-void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, const EVENT_T &event) {
+void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, EventAccResult &sub_res) {
     if (res & EventAccResult::focus) {
         es->focus();
+        sub_res = (EventAccResult) (sub_res | EventAccResult::focus);
     }
-    if ((res & EventAccResult::children_dispatch_only) && (res & EventAccResult::done) == 0) {
-        res = (EventAccResult) (dispatch_to_sub_es(event) | EventAccResult::done);
+    if (res & EventAccResult::cont) {
+        sub_res = (EventAccResult) (sub_res | EventAccResult::cont);
+    }
+    if (res & EventAccResult::done) {
+        sub_res = (EventAccResult) (sub_res | EventAccResult::done);
+    }
+    if (res & EventAccResult::stop) {
+        sub_res = (EventAccResult) (sub_res | EventAccResult::stop);
+    }
+    if (res & EventAccResult::prevent_siblings_dispatch) {
+        sub_res = (EventAccResult) (sub_res | EventAccResult::prevent_siblings_dispatch);
     }
 }
 
@@ -299,13 +305,13 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
         idx_stop = -1;
     }
 
-    auto sub_ess = es->get_sub_es();
+    auto sub_systems = es->get_sub_es();
     for (int i = idx_start; i != idx_stop; i += idx_step) {
-        auto sub_es = sub_ess[i];
+        auto sub_es = sub_systems[i];
         EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event, sub_es_reverse);
 
-        if (res & EventAccResult::cont) sub_res = EventAccResult::cont;
-        if (res & EventAccResult::done) return res;
+        process_acc_result(res, sub_res);
+        if ((res & EventAccResult::done) || (res & EventAccResult::prevent_siblings_dispatch)) return sub_res;
     }
 
     return sub_res;

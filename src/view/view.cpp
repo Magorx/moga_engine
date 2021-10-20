@@ -12,9 +12,9 @@ parent(parent),
 pressed(false)
 {
     e_render_call.add(new AVRenderCallAcceptor(this));
-    // e_mouse_press.add(new AVPressAcceptor(this));
-    // e_mouse_release.add(new AVReleaseAcceptor(this));
-    // e_mouse_move.add(new AVMoveAcceptor(this));
+    
+    e_mouse_press.add(new AVPressFocuser(this));
+    e_mouse_move.add(new AVCoveredMoveBlocker(this));
 
     e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position}; } );
     e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease {event.position - this->body.position}; } );
@@ -39,10 +39,6 @@ pressed(false)
 }
 
 AbstractView::~AbstractView() {
-    // printf("deleting %p\n", this);
-    // for (auto subview : subviews) {
-    //     delete subview;
-    // }
 }
 
 
@@ -158,7 +154,7 @@ EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event, co
     if (!acceptor->is_inside(event.position)) {
         return EventAccResult::stop;
     } else {
-        acceptor->pressed = true; 
+        acceptor->pressed = true;
     }
 
     return EventAccResult::none;
@@ -214,9 +210,29 @@ AVDragEmitter::AVDragEmitter(AbstractView *av) : EventAcceptor(av) {
 EventAccResult AVDragEmitter::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (acceptor->pressed) {
         acceptor->e_mouse_drag.emit({event.from, event.to, Event::MouseDrag::left});
-        return EventAccResult::cont;
+        return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
     }
 
-    return EventAccResult::stop;
+    return EventAccResult::none;
+}
+
+AVPressFocuser::AVPressFocuser(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVPressFocuser::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (acceptor->is_inside(event.position)) {
+        return (EventAccResult) (EventAccResult::cont | EventAccResult::focus | EventAccResult::prevent_siblings_dispatch);
+    } else {
+        return EventAccResult::none;
+    }
+}
+
+AVCoveredMoveBlocker::AVCoveredMoveBlocker(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, const EventAccResult *) {
+    if (acceptor->is_inside(event.from) && acceptor->is_inside(event.to)) {
+        return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
+    }
+    
+    return EventAccResult::none;
 }
 

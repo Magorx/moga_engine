@@ -60,6 +60,20 @@ public:
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
+class AVPressFocuser : public EventAcceptor<AbstractView, Event::MousePress> {
+public:
+    AVPressFocuser(AbstractView *view);
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class AVCoveredMoveBlocker : public EventAcceptor<AbstractView, Event::MouseMove> {
+public:
+    AVCoveredMoveBlocker(AbstractView *view);
+
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 
 struct ViewBody {
     Vec2d position;

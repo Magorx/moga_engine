@@ -111,6 +111,8 @@ int main() {
     res_color.push_back(win_color);
     window->add_subview(new v_Highlighter({0, {200, 200}}, win_color, nullptr, 1));
 
+    printf("window %p\n", dynamic_cast<EventSystem*>(window));
+
 
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);
