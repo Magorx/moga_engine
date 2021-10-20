@@ -103,7 +103,7 @@ int main() {
         (*submenu2)[i - 1]->e_mouse_press.add(new SetPhysTimeMultiplier(&moga, (double) i / 2));
     }
 
-    v_Window *window = new v_Window("WINDOW", {200, 200}, 20);
+    v_Window *window = new v_Window("aaaaa", {200, 200}, 20);
     window->get_body().position = {50, 50};
     moga.add_view(window);
 

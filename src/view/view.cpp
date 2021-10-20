@@ -9,7 +9,8 @@ AbstractView::AbstractView(ViewBody body, AbstractView *parent):
 body(body),
 fit_body(body),
 parent(parent),
-pressed(false)
+pressed(false),
+focuseable(false)
 {
     e_render_call.add(new AVRenderCallAcceptor(this));
     
@@ -210,7 +211,7 @@ EventAccResult AVDragEmitter::operator()(const Event::MouseMove &event, const Ev
 AVPressFocuser::AVPressFocuser(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVPressFocuser::operator()(const Event::MousePress &event, const EventAccResult *) {
-    if (acceptor->is_inside(event.position)) {
+    if (acceptor->is_inside(event.position) && acceptor->is_focuseable()) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::focus | EventAccResult::prevent_siblings_dispatch);
     } else {
         return EventAccResult::none;

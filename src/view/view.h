@@ -118,6 +118,7 @@ protected:
     friend AVDragEmitter;
 
     bool pressed;
+    bool focuseable;
 
 public:
     AbstractView(ViewBody body, AbstractView *parent = nullptr);
@@ -144,6 +145,9 @@ public:
     inline bool is_inside(const Vec2d &from, const Vec2d &to) { return body.is_inside(from) || body.is_inside(to); }
 
     inline void set_parent(AbstractView *parent_) { parent = parent_; }
+
+    inline bool is_focuseable() { return focuseable; }
+    inline void set_focuseable(bool focuseable_) { focuseable = focuseable_;  }
 
     ViewBody &get_body();
 

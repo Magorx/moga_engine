@@ -93,11 +93,7 @@ void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA
     sf::Vector2f bounds(text.getLocalBounds().width, text.getLocalBounds().height);
 
     if (to_centrize) {
-        bounds.x /= 2;
-        bounds.y /= 2;
-        text.setPosition(text.getPosition() - bounds);
-        bounds.x *= 2;
-        bounds.y *= 2;
+        text.setPosition(text.getPosition() - sf::Vector2f{bounds.x / 2, bounds.y / 2 + 3});
     }
 
     if (to_background) {

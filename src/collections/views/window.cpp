@@ -13,6 +13,8 @@ text_color({255, 10, 10})
     header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
     
     header->add_label(name, 15, &text_color);
+    
+    set_focuseable(true);
 }
 
 void v_Window::add_subview(AbstractView *subview) {
