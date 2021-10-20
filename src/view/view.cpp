@@ -148,7 +148,7 @@ EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event, co
         acceptor->pressed = true;
     }
 
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }
 
 
@@ -172,7 +172,7 @@ EventAccResult AVMissMoveBlocker::operator()(const Event::MouseMove &event, cons
         return EventAccResult::stop;
     }
     
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }
 
 AVRenderCallAcceptor::AVRenderCallAcceptor(AbstractView *av) : EventAcceptor(av) {}

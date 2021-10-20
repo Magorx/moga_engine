@@ -40,6 +40,8 @@ public:
 class EventSystem;
 
 
+#include <cstring>
+
 template <typename EVENT_T>
 class EventDispatcher {
     EventSystem *es;
@@ -109,13 +111,13 @@ public:
             return sub_res;
         }
 
-        res = dispatch_to_sub_es(event, sub_es_reverse);
-        process_acc_result(res, sub_res);
-        if (res & EventAccResult::done) {
+        EventAccResult sub_sys_res = dispatch_to_sub_es(event, sub_es_reverse);
+        process_acc_result(sub_sys_res, sub_res);
+        if (sub_res & EventAccResult::done) {
             return sub_res;
         }
 
-        res = dispatch_to_observers(event, false, &res);
+        res = dispatch_to_observers(event, false, &sub_sys_res);
         process_acc_result(res, sub_res);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
             return sub_res;
@@ -322,6 +324,7 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
         }
 
         EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event, sub_es_reverse);
+        process_acc_result(res, sub_res);
         if ((res & EventAccResult::done) || (res & EventAccResult::prevent_siblings_dispatch)) return sub_res;
     }
 

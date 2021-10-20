@@ -86,6 +86,6 @@ EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event, con
 
         button->pos_delta -= BUTTON_HOVER_POS_DELTA;
     }
-    
+
     return EventAccResult::cont;
 }
