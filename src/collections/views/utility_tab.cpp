@@ -13,8 +13,6 @@ b_hide(new v_Button({0, 0}, new SmartColor(hide_button_color))),
 v_drag_pod(new v_DragPad({0, {size.x() - 2 * size.y(), size.y()}}, main_color)),
 v_options(v_Stretcher::X(size.y()))
 {
-    b_close->e_close.emit({});
-    b_hide->e_toggle_activity.emit({Event::Activator::off});
     buttons_layout->layout_add(b_hide);
     buttons_layout->layout_add(b_close);
 

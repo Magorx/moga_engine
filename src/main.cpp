@@ -86,7 +86,7 @@ int main() {
 
     SmartColor *colsub = new SmartColor({177, 77, 177});
     res_color.push_back(colsub);
-    v_Submenu *submenu = v_Submenu::Button({{0, 0}, {0, 0}}, colsub, "Engine", {"On", "Off", "Toggle"}, pale, black);
+    v_Submenu *submenu = v_Submenu::Button({{0, 0}, {0, 0}}, colsub, "EnGine", {"On", "Off", "Toggle"}, pale, black);
     sublayout->layout_add(submenu);
 
     (*submenu)[0]->e_mouse_press.add(new PressChemistryModelToggler(&moga, Event::Activator::State::on));
@@ -103,16 +103,13 @@ int main() {
         (*submenu2)[i - 1]->e_mouse_press.add(new SetPhysTimeMultiplier(&moga, (double) i / 2));
     }
 
-    v_Window *window = new v_Window({200, 200}, 20);
+    v_Window *window = new v_Window("WINDOW", {200, 200}, 20);
     window->get_body().position = {50, 50};
     moga.add_view(window);
 
     SmartColor *win_color = new SmartColor({45, 67, 78});
     res_color.push_back(win_color);
     window->add_subview(new v_Highlighter({0, {200, 200}}, win_color, nullptr, 1));
-
-    printf("window %p\n", dynamic_cast<EventSystem*>(window));
-
 
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);

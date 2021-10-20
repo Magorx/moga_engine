@@ -25,6 +25,7 @@ void v_Highlighter::render(Renderer *renderer) {
     }
 
     subrender(renderer);
+    AbstractLabledView::render(renderer);
 }
 
 HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}

@@ -13,6 +13,8 @@ public:
 
     virtual ~AbstractLabledView();
 
+    virtual void render(Renderer *renderer) override;
+
     void add_label(const char *label, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
 
     virtual void refit() override;
