@@ -74,6 +74,20 @@ public:
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
+class AVCloseAcceptor : public EventAcceptor<AbstractView, Event::Close> {
+public:
+    AVCloseAcceptor(AbstractView *view);
+
+    EventAccResult operator()(const Event::Close &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class AVCloseGenerator : public EventAcceptor<AbstractView, Event::MousePress> {
+public:
+    AVCloseGenerator(AbstractView *view);
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 
 struct ViewBody {
     Vec2d position;
@@ -89,7 +103,7 @@ struct ViewBody {
 };
 
 
-class AbstractView : public RenderableObject, public Tickable, public EventSystem {
+class AbstractView : public RenderableObject, public EventSystem {
 protected:
     ViewBody body;
     ViewBody fit_body;
@@ -112,9 +126,6 @@ public:
     virtual void add_subview(AbstractView *subview);
     void delete_subview(AbstractView *view);
     void delete_subview(size_t index);
-
-    virtual void tick(const double = 0, const double = 0) override;
-    virtual void subtick(const double dt = 0, const double time = 0);
 
     virtual void render(Renderer *renderer) override;
     virtual void subrender(Renderer *renderer);

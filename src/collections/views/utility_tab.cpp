@@ -21,5 +21,7 @@ v_options(v_Stretcher::X(size.y()))
     add_subview(buttons_layout);
     add_subview(v_drag_pod);
 
+    b_close->e_mouse_press.add(new AVCloseGenerator(b_close));
+
     // v_drag_pod->e_mouse_drag.add(new AVDragAcceptor(this));
 }

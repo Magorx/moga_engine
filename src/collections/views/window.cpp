@@ -8,6 +8,8 @@ header(new v_UtilityTab({body.size.x(), header_size}, header_color))
     header->get_body().position.content[1] -= header_size;
     add_subview(header);
     header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this));
+
+    header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
 }
 
 void v_Window::add_subview(AbstractView *subview) {

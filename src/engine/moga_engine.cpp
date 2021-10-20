@@ -50,6 +50,7 @@ void MogaEngine::tickable_tick() {
 			continue;
 		}
 
+		// printf("tick %s\n", typeid(tickables[i]).name());
     	tickables[i]->tick(dt, current_time);
     }	
 
@@ -246,8 +247,8 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 bool MogaEngine::add_view(AbstractView *view) {
 	main_view->add_subview(view);
 
-	view->tickable_nonfree = true;
-	add_tickable(view);
+	// view->tickable_nonfree = true;
+	// add_tickable(view);
 
 	// add_renderable(view);
 

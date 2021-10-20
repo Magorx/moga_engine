@@ -15,6 +15,7 @@ enum EventAccResult {
     done  = 1 << 3,
     focus = 1 << 4,
     prevent_siblings_dispatch = 1 << 5,
+    to_delete = 1 << 6,
 };
 
 
@@ -147,6 +148,7 @@ class EventSystem {
     std::vector<EventSystem*> sub_es;
 public:
     int index_in_parent;
+    bool to_delete;
     EventDispatcher<Event::MousePress>      e_mouse_press;
     EventDispatcher<Event::MouseRelease>    e_mouse_release;
     EventDispatcher<Event::MouseMove>       e_mouse_move;
@@ -159,6 +161,7 @@ public:
     EventSystem() :
     parent(nullptr),
     index_in_parent(0),
+    to_delete(false),
     e_mouse_press(this, "mouse_press"),
     e_mouse_release(this, "mouse_release"),
     e_mouse_move(this, "mouse_move"),
@@ -289,6 +292,9 @@ void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, EventAccR
     if (res & EventAccResult::prevent_siblings_dispatch) {
         sub_res = (EventAccResult) (sub_res | EventAccResult::prevent_siblings_dispatch);
     }
+    if (res & EventAccResult::to_delete) {
+        sub_res = (EventAccResult) (sub_res | EventAccResult::to_delete);
+    }
 }
 
 
@@ -305,13 +311,22 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
         idx_stop = -1;
     }
 
+    std::vector<EventSystem*> deleted_sub_es;
+
     auto sub_systems = es->get_sub_es();
     for (int i = idx_start; i != idx_stop; i += idx_step) {
         auto sub_es = sub_systems[i];
-        EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event, sub_es_reverse);
+        if (sub_es->to_delete) {
+            deleted_sub_es.push_back(sub_es);
+            continue;
+        }
 
-        process_acc_result(res, sub_res);
+        EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event, sub_es_reverse);
         if ((res & EventAccResult::done) || (res & EventAccResult::prevent_siblings_dispatch)) return sub_res;
+    }
+
+    for (auto sub_es : deleted_sub_es) {
+        delete sub_es;
     }
 
     return sub_res;

@@ -41,15 +41,6 @@ pressed(false)
 AbstractView::~AbstractView() {
 }
 
-
-void AbstractView::tick(const double, const double) {}
-
-void AbstractView::subtick(const double dt, const double time) {
-    for (size_t i = 0; i < subviews.size(); ++i) {
-        subviews[i]->tick(dt, time);
-    }
-}
-
 void AbstractView::render(Renderer *renderer) {
     subrender(renderer);
 }
@@ -233,6 +224,21 @@ EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, c
         return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
     }
     
+    return EventAccResult::none;
+}
+
+AVCloseGenerator::AVCloseGenerator(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVCloseGenerator::operator()(const Event::MousePress &, const EventAccResult *) {
+    acceptor->e_close.emit({});
+    return EventAccResult::cont;
+}
+
+
+AVCloseAcceptor::AVCloseAcceptor(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVCloseAcceptor::operator()(const Event::Close &, const EventAccResult *) {  
+    acceptor->to_delete = true;
     return EventAccResult::none;
 }
 
