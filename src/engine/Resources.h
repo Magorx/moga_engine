@@ -4,6 +4,11 @@
 #include "visual/renderer/appearence.h"
 
 
+struct AnimationResourse {
+    std::vector<RTexture*> frames;
+}
+
+
 struct ButtonResources {
     RTexture *idle;
     RTexture *hovered;
@@ -50,6 +55,10 @@ struct ResourcesHolder {
             res_WindowResources basic;
         } window;
     } texture;
+
+    struct {
+        
+    } anumation;
 
     struct {
         RFont *arial;

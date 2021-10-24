@@ -6,6 +6,8 @@
 #include "horizontal_layout.h"
 #include "stretcher.h"
 #include "drag_tab.h"
+#include "toggler.h"
+
 
 class v_UtilityTab : public v_Highlighter {
     v_HorizontalLayout *buttons_layout;
@@ -14,6 +16,8 @@ class v_UtilityTab : public v_Highlighter {
     v_Button *b_hide;
     v_DragPad *v_drag_pod;
     v_Stretcher *v_options;
+
+    v_Button *v_accessory;
 
 public:
 
