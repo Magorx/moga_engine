@@ -2,6 +2,10 @@
 build
 build/*
 .vscode
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+CMakeFiles
 
 # Prerequisites
 *.d

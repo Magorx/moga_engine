@@ -34,6 +34,10 @@ b_hide(new v_Button({0, 0}, res ? res->hide_button : nullptr)),
 v_drag_pod(new v_DragPad({0, {size.x() - 2 * size.y(), size.y()}})),
 v_options(v_Stretcher::X(size.y()))
 {
+    appearenced = true;
+
+    set_appearence(new AppearenceTexture(res->bar));
+
     buttons_layout->layout_add(b_hide);
     buttons_layout->layout_add(b_close);
 

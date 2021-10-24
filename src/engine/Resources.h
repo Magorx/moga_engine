@@ -18,6 +18,8 @@ struct ToolResources {
 };
 
 struct res_UtilityBarResources {
+    RTexture *bar;
+
     ButtonResources *close_button;
     ButtonResources *hide_button;
 };

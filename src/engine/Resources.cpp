@@ -49,6 +49,8 @@ void ResourcesHolder::init() {
     texture.util_bar.basic.close_button = &texture.button.close;
     texture.util_bar.basic.hide_button = &texture.button.hide;
 
+    texture.util_bar.basic.bar = load_texture(IMG("util_bar/basic.png"));
+
     texture.window.basic.util_bar = &texture.util_bar.basic;
 }
 
