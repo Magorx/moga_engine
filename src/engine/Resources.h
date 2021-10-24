@@ -1,13 +1,12 @@
 #pragma once
 
 
-#include "visual/renderer/appearence.h"
+#include "visual/renderer/gate_type_aliases.h"
 
 
 struct AnimationResourse {
     std::vector<RTexture*> frames;
-}
-
+};
 
 struct ButtonResources {
     RTexture *idle;

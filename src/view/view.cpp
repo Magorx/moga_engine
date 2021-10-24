@@ -6,6 +6,7 @@
 
 
 AbstractView::AbstractView(ViewBody body, AbstractView *parent):
+view_id(nullptr),
 body(body),
 fit_body(body),
 parent(parent),

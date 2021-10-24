@@ -106,6 +106,8 @@ struct ViewBody {
 
 class AbstractView : public RenderableObject, public EventSystem {
 protected:
+    const char *view_id;
+
     ViewBody body;
     ViewBody fit_body;
     
@@ -155,6 +157,8 @@ public:
     inline void set_focuseable(bool focuseable_) { focuseable = focuseable_;  }
 
     inline void set_appearence(Appearence *appearence_) { appearence = appearence_; }
+
+    inline void set_view_id(const char *view_id_) { view_id = view_id_; }
 
     ViewBody &get_body();
 

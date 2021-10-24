@@ -19,7 +19,7 @@ text_color({255, 10, 10})
 }
 
 v_Window::v_Window(const char *name, const ViewBody &body, double header_size, res_WindowResources &res, bool draggable, AbstractView *parent) :
-v_Highlighter(body, nullptr, parent, 0),
+v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0),
 header(new v_UtilityTab({body.size.x(), header_size}, res.util_bar)),
 text_color({255, 10, 10})
 {

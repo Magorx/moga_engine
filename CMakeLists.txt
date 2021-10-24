@@ -35,6 +35,7 @@ add_executable(moga
         src/visual/color/rgba.cpp
         src/visual/color/smart_color.cpp
         src/visual/renderer/renderer.cpp
+        src/visual/animation/animation.cpp
 
         # physics
         src/physics/physics_engine.cpp
@@ -74,6 +75,7 @@ add_executable(moga
 
         # utils
         src/utils/vec3d.cpp
+        src/utils/timer.cpp
 
         # resources
         src/engine/Resources.cpp

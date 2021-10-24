@@ -131,7 +131,7 @@ EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event, con
     }
 
     if (button->is_inside(event.to)) {
-        if (appr_hovered) {
+        if (appr_hovered && !button->pressed) {
             button->set_appearence(appr_hovered);
         }
     } else {

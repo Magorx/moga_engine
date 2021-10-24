@@ -9,7 +9,7 @@
 #include "utils/vec2d.h"
 #include "visual/color/color.h"
 
-#include "appearence.h"
+#include "appearence/appearence.h"
 
 #include "engine/Resources.h"
 
