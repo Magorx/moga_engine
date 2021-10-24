@@ -114,6 +114,11 @@ int main() {
 
     v_Button *bb = new v_Button({10, 60}, &Resources.texture.button.close);
     moga.add_view(bb);
+    auto anima = new AppearenceAnimation(&Resources.animation.lightning.frames, 0.25);
+    anima->tickable_nonfree = true;
+    moga.add_tickable(anima);
+    anima->start();
+    bb->set_appearence(anima);
 
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);

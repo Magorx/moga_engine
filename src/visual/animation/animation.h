@@ -31,9 +31,17 @@ public:
 
     virtual void tick(const double = 0, const double absolute_time = 0) override { cur_time = absolute_time; update(); };
 
-    virtual void run()  { running = true; start_time = cur_time; end_time = start_time + overall_duration; }
+    virtual void start()  { running = true; start_time = cur_time; end_time = start_time + overall_duration; }
     virtual void stop() { running = false; }
-    virtual void update() { if (cur_time > end_time) stop(); }
+    virtual void update() {
+        if (cur_time > end_time) {
+            if (looped) {
+                start();
+            } else {
+                stop();
+            }
+        }
+    }
 
     inline double elapsed() const { return cur_time - start_time; }
 

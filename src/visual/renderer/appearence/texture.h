@@ -15,5 +15,5 @@ public:
 
     inline void set_texture(RTexture *texture) { rmode.texture = texture; }
 
-    virtual void fit_for_size(const Vec2d &size) override { set_scale({rmode.texture->getSize().x / size.x(), rmode.texture->getSize().y / size.y()}); }
+    virtual void fit_for_size(const Vec2d &size) override { if (rmode.texture) set_scale({rmode.texture->getSize().x / size.x(), rmode.texture->getSize().y / size.y()}); }
 };

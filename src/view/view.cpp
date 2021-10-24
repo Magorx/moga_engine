@@ -20,6 +20,7 @@ appearenced(false)
     e_mouse_press.add(new AVPressFocuser(this));
 
     e_mouse_press.add(new AVCoveredPressBlocker(this));
+    e_mouse_release.add(new AVCoveredReleaseBlocker(this));
     e_mouse_move.add(new AVCoveredMoveBlocker(this));
 
     e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position}; } );

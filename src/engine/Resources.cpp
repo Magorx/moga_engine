@@ -25,9 +25,18 @@ sf::Font *load_font(const char *filename) {
     return font;
 }
 
+void load_animation(AnimationResourse &res, const std::vector<const char*> &frame_names) {
+    for (size_t i = 0; i < frame_names.size(); ++i) {
+        res.frames.push_back(new RTexture);
+        res.frames[i]->loadFromFile(frame_names[i]);
+    }
+}
+
 #define RES(path) "resources/" path
 #define IMG(path) RES("image/" path)
 #define BUTTON_IMG(name, path) IMG("button/" name "/" path)
+
+#define ANM(path) RES("animation/") path "/"
 
 
 void ResourcesHolder::init() {
@@ -44,6 +53,37 @@ void ResourcesHolder::init() {
     texture.button.hide.pressed = load_texture(BUTTON_IMG("hide", "pressed.png"));
 
     font.arial = load_font("resources/font/arial.ttf");
+
+    load_animation(animation.fan, {
+        ANM("fan") "1.png",
+        ANM("fan") "2.png",
+        ANM("fan") "3.png",
+        ANM("fan") "4.png",
+        ANM("fan") "5.png",
+        ANM("fan") "6.png",
+        ANM("fan") "7.png",
+        ANM("fan") "8.png",
+    });
+
+    load_animation(animation.lightning, {
+        ANM("lightning") "1.png",
+        ANM("lightning") "2.png",
+        ANM("lightning") "3.png",
+        ANM("lightning") "4.png",
+        ANM("lightning") "5.png",
+        ANM("lightning") "6.png",
+        ANM("lightning") "7.png",
+        ANM("lightning") "8.png",
+        ANM("lightning") "9.png",
+        ANM("lightning") "10.png",
+        ANM("lightning") "11.png",
+        ANM("lightning") "12.png",
+        ANM("lightning") "13.png",
+        ANM("lightning") "14.png",
+        ANM("lightning") "15.png",
+        ANM("lightning") "16.png",
+
+    });
 
 
     texture.util_bar.basic.close_button = &texture.button.close;

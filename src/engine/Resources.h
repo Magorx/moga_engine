@@ -6,6 +6,12 @@
 
 struct AnimationResourse {
     std::vector<RTexture*> frames;
+
+    ~AnimationResourse() {
+        for (auto frame : frames) {
+            delete frame;
+        }
+    }
 };
 
 struct ButtonResources {
@@ -56,8 +62,9 @@ struct ResourcesHolder {
     } texture;
 
     struct {
-        
-    } anumation;
+        AnimationResourse fan;
+        AnimationResourse lightning;
+    } animation;
 
     struct {
         RFont *arial;
