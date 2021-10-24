@@ -104,6 +104,37 @@ public:
 };
 
 
+class AVAnimatorPress : public EventAcceptor<AbstractView, Event::MousePress> {
+    Appearence *appr_pressed;
+public:
+    AVAnimatorPress(AbstractView *view, Appearence *appr);
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class AVAnimatorMove : public EventAcceptor<AbstractView, Event::MouseMove> {
+    Appearence *appr_hovered;
+    Appearence *appr_idle;
+public:
+    AVAnimatorMove(AbstractView *view, Appearence *appr_hovered, Appearence *appr_idle);
+
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
+
+    inline Appearence *get_idle_appr() { return appr_idle; }
+};
+
+class AVAnimatorRelease : public EventAcceptor<AbstractView, Event::MouseRelease> {
+    Appearence *appr_hovered;
+    Appearence *appr_idle;
+public:
+    AVAnimatorRelease(AbstractView *view, Appearence *appr_hovered, Appearence *appr_idle);
+
+    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
+
+    inline Appearence *get_idle_appr() { return appr_idle; }
+};
+
+
 struct ViewBody {
     Vec2d position;
     Vec2d size;
@@ -166,6 +197,8 @@ public:
     inline bool is_inside(const Vec2d &from, const Vec2d &to) { return body.is_inside(from) || body.is_inside(to); }
 
     inline void set_parent(AbstractView *parent_) { parent = parent_; }
+
+    inline bool is_pressed() const { return pressed; }
 
     inline bool is_focuseable() { return focuseable; }
     inline void set_focuseable(bool focuseable_) { focuseable = focuseable_;  }

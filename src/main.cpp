@@ -114,10 +114,14 @@ int main() {
     auto accessory = window->get_accessory();
 
     auto anima = new AppearenceAnimation(&Resources.animation.lightning_idle.frames, 0.13);
-    anima->tickable_nonfree = true;
     moga.add_tickable(anima);
     anima->start();
     accessory->set_appearence(anima);
+
+    // auto anima = new AppearenceAnimation(&Resources.animation.lightning_idle.frames, 0.13);
+    // moga.add_tickable(anima);
+    // anima->start();
+    // accessory->set_appearence(anima);
 
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);

@@ -50,8 +50,6 @@ public:
 class v_Button : public v_Highlighter {
     Vec2d pos_delta;
 
-    bool pressed;
-
     friend ButtonPressAcceptor;
     friend ButtonReleaseAcceptor;
     friend ButtonMoveAcceptor;

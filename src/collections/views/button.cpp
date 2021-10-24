@@ -9,8 +9,7 @@ double BUTTON_CLICKED_SHADING_COEF = 0.8;
 
 v_Button::v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent):
 v_Highlighter(body, color, parent),
-pos_delta(0, 0),
-pressed(false)
+pos_delta(0, 0)
 {
     e_mouse_press.add(new ButtonPressAcceptor(this));
     e_mouse_move.add(new ButtonMoveAcceptor(this));
@@ -19,18 +18,25 @@ pressed(false)
 
 v_Button::v_Button(const ViewBody &body, AVMouseReactionResources *res, AbstractView *parent) :
 v_Highlighter(body, parent),
-pos_delta(0, 0),
-pressed(false)
+pos_delta(0, 0)
 {
     appearenced = true;
 
-    ButtonMoveAcceptor *move_acceptor = new ButtonMoveAcceptor(this, res);
+    if (res) {
+        auto av_animator_press   = new AVAnimatorPress(this, new AppearenceTexture(res->pressed));
+        auto av_animator_release = new AVAnimatorRelease(this, new AppearenceTexture(res->hovered), new AppearenceTexture(res->idle));
+        auto av_animator_move    = new AVAnimatorMove(this, new AppearenceTexture(res->hovered), new AppearenceTexture(res->idle));
+
+        e_mouse_press.add(av_animator_press);
+        e_mouse_release.add(av_animator_release);
+        e_mouse_move.add(av_animator_move);
+
+        set_appearence(av_animator_move->get_idle_appr());
+    }
 
     e_mouse_press.add(new ButtonPressAcceptor(this, res));
     e_mouse_release.add(new ButtonReleaseAcceptor(this, res));
-    e_mouse_move.add(move_acceptor);
-
-    set_appearence(move_acceptor->appr_idle);
+    e_mouse_move.add(new ButtonMoveAcceptor(this, res));
 }
 
 void v_Button::render(Renderer *renderer) {
@@ -75,10 +81,6 @@ EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event, c
 
     if (!button->pressed) {
         button->press();
-
-        if (appr_presed) {
-            button->set_appearence(appr_presed);
-        }
     }
 
     return EventAccResult::cont;
@@ -97,10 +99,6 @@ EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &even
 
     if (button->pressed) {
         button->unpress();
-
-        if (appr_hovered) {
-            button->set_appearence(appr_hovered);
-        }
     }
 
     return EventAccResult::cont;
@@ -128,16 +126,6 @@ EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event, con
         }
 
         button->pos_delta -= BUTTON_HOVER_POS_DELTA;
-    }
-
-    if (button->is_inside(event.to)) {
-        if (appr_hovered && !button->pressed) {
-            button->set_appearence(appr_hovered);
-        }
-    } else {
-        if (appr_idle) {
-            button->set_appearence(appr_idle);
-        }
     }
 
     return EventAccResult::cont;
