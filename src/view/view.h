@@ -75,6 +75,20 @@ public:
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
+class AVCoveredPressBlocker : public EventAcceptor<AbstractView, Event::MousePress> {
+public:
+    AVCoveredPressBlocker(AbstractView *view);
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class AVCoveredReleaseBlocker : public EventAcceptor<AbstractView, Event::MouseRelease> {
+public:
+    AVCoveredReleaseBlocker(AbstractView *view);
+
+    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 class AVCloseAcceptor : public EventAcceptor<AbstractView, Event::Close> {
 public:
     AVCloseAcceptor(AbstractView *view);

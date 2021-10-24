@@ -18,6 +18,8 @@ appearenced(false)
     e_render_call.add(new AVRenderCallAcceptor(this));
     
     e_mouse_press.add(new AVPressFocuser(this));
+
+    e_mouse_press.add(new AVCoveredPressBlocker(this));
     e_mouse_move.add(new AVCoveredMoveBlocker(this));
 
     e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position}; } );
@@ -243,6 +245,26 @@ AVCloseAcceptor::AVCloseAcceptor(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCloseAcceptor::operator()(const Event::Close &, const EventAccResult *) {  
     acceptor->to_delete = true;
+    return EventAccResult::none;
+}
+
+AVCoveredPressBlocker::AVCoveredPressBlocker(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVCoveredPressBlocker::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (acceptor->is_inside(event.position)) {
+        return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
+    }
+
+    return EventAccResult::none;
+}
+
+AVCoveredReleaseBlocker::AVCoveredReleaseBlocker(AbstractView *av) : EventAcceptor(av) {}
+
+EventAccResult AVCoveredReleaseBlocker::operator()(const Event::MouseRelease &event, const EventAccResult *) {
+    if (acceptor->is_inside(event.position)) {
+        return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
+    }
+
     return EventAccResult::none;
 }
 
