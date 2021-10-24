@@ -9,6 +9,7 @@ AbstractView::AbstractView(ViewBody body, AbstractView *parent):
 body(body),
 fit_body(body),
 parent(parent),
+appearence(nullptr),
 pressed(false),
 focuseable(false)
 {

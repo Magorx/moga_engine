@@ -1,7 +1,7 @@
 #include "highlighter.h"
 
 
-const double HIGHLIGHTER_ON_COEF = 1.2;
+const double HIGHLIGHTER_ON_COEF = 0.3;
 
 
 v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef):
@@ -18,14 +18,26 @@ color(color)
 v_Highlighter::~v_Highlighter() {}
 
 void v_Highlighter::render(Renderer *renderer) {
-    if (color) {
-        RGBA cur_color = cursor_inside ? (Color) (color->rgb() * highlight_coef) : color->rgb();
+    if (appearence) {
+        appearence->fit_for_size(body.size);
+        renderer->set_appearence(appearence);
+        renderer->apr_draw_rectangle(body.position, body.size);
+    } else if (color) {
+        RGBA cur_color = color->rgb();
 
         renderer->draw_rectangle(body.position, body.size, cur_color);
     }
 
     subrender(renderer);
     AbstractLabledView::render(renderer);
+
+    if (cursor_inside) {
+        if (highlight_coef > 0) {
+            renderer->draw_rectangle(body.position, body.size, {CLRMAX, CLRMAX, CLRMAX, (unsigned char) ((highlight_coef) * CLRMAX)});
+        } else {
+            renderer->draw_rectangle(body.position, body.size, {0, 0, 0, (unsigned char) ((highlight_coef) * CLRMAX)});
+        }
+    }
 }
 
 HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}

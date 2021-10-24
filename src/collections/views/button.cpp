@@ -15,10 +15,16 @@ pressed(false)
     e_mouse_press.add(new ButtonPressAcceptor(this));
     e_mouse_move.add(new ButtonMoveAcceptor(this));
     e_mouse_release.add(new ButtonReleaseAcceptor(this));
+
+    sf::Texture *texture = new sf::Texture;
+    texture->loadFromFile("button.png");
+    AppearenceTexture *appr = new AppearenceTexture(texture);
+    set_appearence(appr);
 }
 
 void v_Button::render(Renderer *renderer) {
     // body.position += pos_delta;
+
     if (pressed) {
         color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
     }
@@ -28,17 +34,24 @@ void v_Button::render(Renderer *renderer) {
     if (pressed) {
         color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
     }
+
     // body.position -= pos_delta;
+
+    subrender(renderer);
 }
 
 void v_Button::press() {
     pressed = true;
+
+    highlight_coef = -0.2;
 
     pos_delta += BUTTON_CLICK_POS_DELTA;
 }
 
 void v_Button::unpress() {
     pressed = false;
+
+    highlight_coef = 0.2;
 
     pos_delta -= BUTTON_CLICK_POS_DELTA;
 }

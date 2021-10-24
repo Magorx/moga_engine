@@ -13,16 +13,16 @@ public:
         y,
     };
 
-    v_Stretcher(Coord coord_idx, double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 1.0) :
+    v_Stretcher(Coord coord_idx, double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) :
     v_Highlighter({0, norm_size}, color, parent, highlight_coef),
     coord_idx(coord_idx)
     {}
 
-    static v_Stretcher *X(double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 1.0) {
+    static v_Stretcher *X(double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) {
         return new v_Stretcher(Coord::x, norm_size, color, parent, highlight_coef);
     }
 
-    static v_Stretcher *Y(double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 1.0) {
+    static v_Stretcher *Y(double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) {
         return new v_Stretcher(Coord::y, norm_size, color, parent, highlight_coef);
     }
 

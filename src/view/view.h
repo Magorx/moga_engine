@@ -3,6 +3,7 @@
 
 #include "engine/tickable.h"
 #include "visual/renderer/renderable_object.h"
+#include "visual/renderer/appearence.h"
 
 #include "utils/vec3d.h"
 #include "utils/vec2d.h"
@@ -111,6 +112,8 @@ protected:
     AbstractView *parent;
     std::vector<AbstractView*> subviews;
 
+    Appearence *appearence;
+
     friend AVMissPressBlocker;
     friend AVMissMoveBlocker;
     friend AVMissReleaseBlocker;
@@ -148,6 +151,8 @@ public:
 
     inline bool is_focuseable() { return focuseable; }
     inline void set_focuseable(bool focuseable_) { focuseable = focuseable_;  }
+
+    inline void set_appearence(Appearence *appearence_) { appearence = appearence_; }
 
     ViewBody &get_body();
 

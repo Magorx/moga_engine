@@ -3,7 +3,7 @@
 
 Renderer::Renderer(const char *window_name, int size_x, int size_y):
 scr(new sf::RenderWindow(sf::VideoMode(size_x, size_y), window_name), size_x, size_y),
-offset(0, 0, 0),
+offset(0, 0),
 cur_font_filename(nullptr)
 {}
 
@@ -14,7 +14,7 @@ Renderer::~Renderer() {
     delete get_window();
 }
 
-void Renderer::draw_circle(Vec3d pos, const double rad, const RGBA &color, sf::RenderTarget *texture) {
+void Renderer::draw_circle(Vec2d pos, const double rad, const RGBA &color) {
     pos += offset;
 
     sf::CircleShape circle(rad);
@@ -23,11 +23,10 @@ void Renderer::draw_circle(Vec3d pos, const double rad, const RGBA &color, sf::R
     circle.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
     circle.setOrigin({static_cast<float>(rad), static_cast<float>(rad)});
 
-    if (!texture) scr.window->draw(circle);
-    else texture->draw(circle);
+    scr.window->draw(circle);
 }
 
-void Renderer::draw_line(Vec3d p1, Vec3d p2, const RGBA &color, sf::RenderTarget *texture) {
+void Renderer::draw_line(Vec2d p1, Vec2d p2, const RGBA &color) {
     p1 += offset;
     p2 += offset;
 
@@ -38,11 +37,10 @@ void Renderer::draw_line(Vec3d p1, Vec3d p2, const RGBA &color, sf::RenderTarget
         sf::Vertex({static_cast<float>(p2.x()), static_cast<float>(p2.y())}, sf_color),
     };
 
-    if (!texture) scr.window->draw(buffer, 2, sf::Lines);
-    else texture->draw(buffer, 2, sf::Lines);
+    scr.window->draw(buffer, 2, sf::Lines);
 }
 
-void Renderer::draw_square(Vec3d pos, const double size, const RGBA &color, sf::RenderTarget *texture) {
+void Renderer::draw_square(Vec2d pos, const double size, const RGBA &color) {
     pos += offset;
 
     sf::Color sf_color(color.r, color.g, color.b, color.a);
@@ -52,11 +50,10 @@ void Renderer::draw_square(Vec3d pos, const double size, const RGBA &color, sf::
     rect.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
     rect.setFillColor(sf_color);
 
-    if (!texture) scr.window->draw(rect);
-    else texture->draw(rect);
+    scr.window->draw(rect);
 }
 
-void Renderer::draw_rectangle(Vec3d pos, const Vec2d size, const RGBA &color, sf::RenderTarget *texture) {
+void Renderer::draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color) {
     pos += offset;
 
     sf::Color sf_color(color.r, color.g, color.b, color.a);
@@ -66,11 +63,10 @@ void Renderer::draw_rectangle(Vec3d pos, const Vec2d size, const RGBA &color, sf
     rect.setOrigin({static_cast<float>(-pos.x() - size.x() / 2), static_cast<float>(-pos.y() - size.y() / 2)});
     rect.setFillColor(sf_color);
 
-    if (!texture) scr.window->draw(rect);
-    else texture->draw(rect);
+    scr.window->draw(rect);
 }
 
-void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize,  const char *font_filename, sf::RenderTarget *texture) {
+void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize,  const char *font_filename) {
     pos += (Vec2d) offset;
 
     sf::Color sf_color_back(back_color.r, back_color.g, back_color.b, back_color.a);
@@ -101,12 +97,11 @@ void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA
         sf::RectangleShape background(bounds);
         background.setFillColor(sf_color_back);
         background.setPosition(text.getPosition());
-        if (!texture) scr.window->draw(background);
-        else texture->draw(background);
+        scr.window->draw(background);
+
     }
 
-    if (!texture) scr.window->draw(text);
-    else texture->draw(text);
+    scr.window->draw(text);
 }
 
 void Renderer::load_font(sf::Font &font_holder, const char *font_filename, char **cur_font_filename) {
@@ -134,4 +129,47 @@ Vec2d Renderer::get_text_size(const char *text, int char_size, const char *font_
 
     sf::Vector2f bounds(sf_text.getLocalBounds().width, sf_text.getLocalBounds().height);
     return {bounds.x, bounds.y * 2};
+}
+
+void Renderer::apr_draw_circle(Vec2d pos, double rad, int granularity) {
+    if (!appearence) return;
+    pos += offset;
+    cur_verticies.clear();
+
+    double angle_granularity = M_PI * 2 / (double) granularity;
+
+    for (int i = 0; i < granularity; ++i) {
+        double ang = angle_granularity * i;
+
+        Vec2d p_offset(sin(ang) * rad, cos(ang) * rad);
+        Vec2d scr_pos = pos + p_offset;
+    
+        cur_verticies.push_back(appearence->vertex(scr_pos, pos));
+    }
+
+    RMode *rmode = appearence->get_render_mode();
+    if (rmode) {
+        scr.window->draw(&cur_verticies[0], cur_verticies.size(), sf::TriangleFan, *rmode);
+    } else {
+        scr.window->draw(&cur_verticies[0], cur_verticies.size(), sf::TriangleFan);
+    }
+}
+
+void Renderer::apr_draw_rectangle(Vec2d pos, const Vec2d size) {
+    if (!appearence) return;
+    pos += offset;
+    cur_verticies.clear();
+
+    cur_verticies.push_back(appearence->vertex({pos.x()           , pos.y()           }, {0, 0}));
+    cur_verticies.push_back(appearence->vertex({pos.x() + size.x(), pos.y()           }, {size.x(), 0}));
+    cur_verticies.push_back(appearence->vertex({pos.x() + size.x(), pos.y() + size.y()}, {size.x(), size.y()}));
+    cur_verticies.push_back(appearence->vertex({pos.x()           , pos.y() + size.y()}, {0, size.y()}));
+
+
+    RMode *rmode = appearence->get_render_mode();
+    if (rmode) {
+        scr.window->draw(&cur_verticies[0], cur_verticies.size(), sf::Quads, *rmode);
+    } else {
+        scr.window->draw(&cur_verticies[0], cur_verticies.size(), sf::Quads);
+    }
 }

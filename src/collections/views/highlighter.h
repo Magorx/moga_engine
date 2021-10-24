@@ -35,6 +35,7 @@ public:
 
 
 class v_Highlighter : public AbstractLabledView {
+protected:
     bool cursor_inside;
     double highlight_coef;
 

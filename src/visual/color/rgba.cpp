@@ -36,4 +36,4 @@ RGBA RGBA::operator*(const float &coef) const {
             (unsigned char) (a * coef)};
 }
 
-
+const unsigned char CLRMAX = 255;

@@ -1,16 +1,15 @@
 #pragma once
 
 
+#include <SFML/Graphics.hpp>
+
 #include "color/color.h"
 
+struct OutputRenderType {
+    RGBA background;
+    
+};
 
-struct Style {
-    RGBA color_back;
-    RGBA color_front;
-
-    RGBA color_font;
-    int char_size;
-
-    RGBA color_outline;
-    const char *font_filename;
+class Style {
+    virtual OutputRenderType
 };

@@ -109,7 +109,7 @@ int main() {
 
     SmartColor *win_color = new SmartColor({45, 67, 78});
     res_color.push_back(win_color);
-    window->add_subview(new v_Highlighter({0, {200, 200}}, win_color, nullptr, 1));
+    window->add_subview(new v_Highlighter({0, {200, 200}}, win_color, nullptr, 0));
 
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);

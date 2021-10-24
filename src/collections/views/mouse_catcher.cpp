@@ -3,7 +3,7 @@
 
 
 v_MouseCatcher::v_MouseCatcher(const ViewBody &body, AbstractView *parent, SmartColor *color):
-v_Highlighter(body, color, parent, 1),
+v_Highlighter(body, color, parent, 0),
 pos_delta(0, 0),
 captured(false)
 {

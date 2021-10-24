@@ -24,5 +24,7 @@ union RGBA {
 	RGBA operator*(const float &coef) const;
 };
 
+extern const unsigned char CLRMAX;
+
 
 #endif // RGBA_H

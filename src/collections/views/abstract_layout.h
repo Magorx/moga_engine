@@ -16,7 +16,7 @@ protected:
     virtual void layout_refit() {}
 
 public:
-    AbstractLayoutView(ViewBody body, ViewBody fitting_body_scale_ = {{0, 0}, {0, 0}}, double padding_split = 0, AbstractView *parent = nullptr, SmartColor *color = nullptr, double highlight_coef = 1):
+    AbstractLayoutView(ViewBody body, ViewBody fitting_body_scale_ = {{0, 0}, {0, 0}}, double padding_split = 0, AbstractView *parent = nullptr, SmartColor *color = nullptr, double highlight_coef = 0):
     v_Highlighter(body, color, parent, highlight_coef),
     sum_weight(0),
     fitting_body_scale(fitting_body_scale_),
