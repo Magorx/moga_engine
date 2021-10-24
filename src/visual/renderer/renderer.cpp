@@ -66,16 +66,15 @@ void Renderer::draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color) {
     scr.window->draw(rect);
 }
 
-void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize,  const char *font_filename) {
+void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize, const RFont *font) {
     pos += (Vec2d) offset;
 
     sf::Color sf_color_back(back_color.r, back_color.g, back_color.b, back_color.a);
     sf::Color sf_color_font(font_color.r, font_color.g, font_color.b, font_color.a);
 
     sf::Text text;
-    load_font(cur_font, font_filename, &cur_font_filename);
 
-    text.setFont(cur_font);
+    text.setFont(*font);
     text.setString(label);
     text.setCharacterSize(char_size);
 
@@ -118,12 +117,9 @@ void Renderer::load_font(sf::Font &font_holder, const char *font_filename, char 
     }
 }
 
-Vec2d Renderer::get_text_size(const char *text, int char_size, const char *font_filename) {
+Vec2d Renderer::get_text_size(const char *text, int char_size, const RFont *font) {
     sf::Text sf_text = {};
-    sf::Font font = {};
-    load_font(font, font_filename);
-
-    sf_text.setFont(font);
+    sf_text.setFont(*font);
     sf_text.setString(text);
     sf_text.setCharacterSize(char_size);
 

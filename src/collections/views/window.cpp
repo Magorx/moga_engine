@@ -1,14 +1,15 @@
 #include "window.h"
 
 
-v_Window::v_Window(const char *name, const ViewBody &body, double header_size, SmartColor *header_color, AbstractView *parent, double highlight_coef) :
+v_Window::v_Window(const char *name, const ViewBody &body, double header_size, SmartColor *header_color, bool draggable, AbstractView *parent, double highlight_coef) :
 v_Highlighter(body, nullptr, parent, highlight_coef),
 header(new v_UtilityTab({body.size.x(), header_size}, header_color)),
 text_color({255, 10, 10})
 {
     header->get_body().position.content[1] -= header_size;
     add_subview(header);
-    header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this));
+    
+    if (draggable) header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this));
 
     header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
     

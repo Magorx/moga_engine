@@ -10,6 +10,8 @@ const int SCR_H  = 600;
 
 
 int main() {
+    Resources.init();
+
     srand(time(nullptr));
     ChemEngine moga("MOGA", SCR_W, SCR_H, 1);
 
@@ -101,13 +103,17 @@ int main() {
         (*submenu2)[i - 1]->e_mouse_press.add(new SetPhysTimeMultiplier(&moga, (double) i / 2));
     }
 
-    v_Window *window = new v_Window("window", {200, 200}, 20);
+    v_Window *window = new v_Window("window", {200, 200}, 30);
     window->get_body().position = {50, 50};
     moga.add_view(window);
 
     SmartColor *win_color = new SmartColor({45, 67, 78});
     moga.resman.add(win_color);
     window->add_subview(new v_Highlighter({0, {200, 200}}, win_color, nullptr, 0));
+
+
+    v_Button *bb = new v_Button({10, 60}, &Resources.texture.button.close);
+    moga.add_view(bb);
 
 
     // v_VerticalLayout *submenu = new v_VerticalLayout({{0, 50}, {100, 100}}, {{0, 0}, {0, 0}}, 0, hl2, pale);

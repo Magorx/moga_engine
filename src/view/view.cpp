@@ -11,7 +11,8 @@ fit_body(body),
 parent(parent),
 appearence(nullptr),
 pressed(false),
-focuseable(false)
+focuseable(false),
+appearenced(false)
 {
     e_render_call.add(new AVRenderCallAcceptor(this));
     

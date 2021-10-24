@@ -15,23 +15,34 @@ pressed(false)
     e_mouse_press.add(new ButtonPressAcceptor(this));
     e_mouse_move.add(new ButtonMoveAcceptor(this));
     e_mouse_release.add(new ButtonReleaseAcceptor(this));
+}
 
-    sf::Texture *texture = new sf::Texture;
-    texture->loadFromFile("button.png");
-    AppearenceTexture *appr = new AppearenceTexture(texture);
-    set_appearence(appr);
+v_Button::v_Button(const ViewBody &body, ButtonResources *res, AbstractView *parent) :
+v_Highlighter(body, parent),
+pos_delta(0, 0),
+pressed(false)
+{
+    appearenced = true;
+
+    ButtonMoveAcceptor *move_acceptor = new ButtonMoveAcceptor(this, res);
+
+    e_mouse_press.add(new ButtonPressAcceptor(this, res));
+    e_mouse_release.add(new ButtonReleaseAcceptor(this, res));
+    e_mouse_move.add(move_acceptor);
+
+    set_appearence(move_acceptor->appr_idle);
 }
 
 void v_Button::render(Renderer *renderer) {
     // body.position += pos_delta;
 
-    if (pressed) {
+    if (pressed && color) {
         color->set_rgb(color->rgb() * BUTTON_CLICKED_SHADING_COEF);
     }
 
     v_Highlighter::render(renderer);
 
-    if (pressed) {
+    if (pressed && color) {
         color->set_rgb(color->rgb() / BUTTON_CLICKED_SHADING_COEF);
     }
 
@@ -43,46 +54,65 @@ void v_Button::render(Renderer *renderer) {
 void v_Button::press() {
     pressed = true;
 
-    highlight_coef = -0.2;
-
     pos_delta += BUTTON_CLICK_POS_DELTA;
 }
 
 void v_Button::unpress() {
     pressed = false;
 
-    highlight_coef = 0.2;
-
     pos_delta -= BUTTON_CLICK_POS_DELTA;
 }
 
-ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button) : EventAcceptor(button) {}
+ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button, ButtonResources *res) : EventAcceptor(button), appr_presed(nullptr) {
+    if (res) {
+        appr_presed = new AppearenceTexture(res->pressed);
+    }
+}
 
 EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
-    if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
+    v_Button *button = acceptor;
+    if (!button->is_inside(event.position)) return EventAccResult::stop;
 
-    if (!acceptor->pressed) {
-        acceptor->press();
+    if (!button->pressed) {
+        button->press();
+
+        if (appr_presed) {
+            button->set_appearence(appr_presed);
+        }
     }
 
     return EventAccResult::cont;
 }
 
 
-ButtonReleaseAcceptor::ButtonReleaseAcceptor(v_Button *button) : EventAcceptor(button) {}
+ButtonReleaseAcceptor::ButtonReleaseAcceptor(v_Button *button, ButtonResources *res) : EventAcceptor(button), appr_hovered(nullptr) {
+    if (res) {
+        appr_hovered = new AppearenceTexture(res->hovered);
+    }
+}
 
 EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &event, const EventAccResult *) {
-    if (!acceptor->is_inside(event.position)) return EventAccResult::stop;
+    v_Button *button = acceptor;
+    if (!button->is_inside(event.position)) return EventAccResult::stop;
 
-    if (acceptor->pressed) {
-        acceptor->unpress();
+    if (button->pressed) {
+        button->unpress();
+
+        if (appr_hovered) {
+            button->set_appearence(appr_hovered);
+        }
     }
 
     return EventAccResult::cont;
 }
 
 
-ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button) : EventAcceptor(button) {}
+ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button, ButtonResources *res) : EventAcceptor(button), appr_hovered(nullptr), appr_idle(nullptr) {
+    if (res) {
+        appr_hovered = new AppearenceTexture(res->hovered);
+        appr_idle = new AppearenceTexture(res->idle);
+    }
+}
 
 EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     v_Button *button = acceptor;
@@ -98,6 +128,16 @@ EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event, con
         }
 
         button->pos_delta -= BUTTON_HOVER_POS_DELTA;
+    }
+
+    if (button->is_inside(event.to)) {
+        if (appr_hovered) {
+            button->set_appearence(appr_hovered);
+        }
+    } else {
+        if (appr_idle) {
+            button->set_appearence(appr_idle);
+        }
     }
 
     return EventAccResult::cont;

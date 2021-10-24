@@ -75,6 +75,9 @@ add_executable(moga
         # utils
         src/utils/vec3d.cpp
 
+        # resources
+        src/engine/Resources.cpp
+
         # chemistry
         src/chemistry/chem_engine.cpp
         src/chemistry/chem_reactions.cpp

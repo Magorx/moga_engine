@@ -11,6 +11,7 @@ using RMode = sf::RenderStates;
 using RVertex = sf::Vertex;
 using RColor = RGBA;
 using RTexture = sf::Texture;
+using RFont = sf::Font;
 
 
 inline sf::Color to_sf_color(const RColor &color) {
@@ -25,6 +26,7 @@ protected:
 
 public:
     Appearence() : rmode() {}
+    virtual ~Appearence() {}
 
     virtual const sf::RenderStates *get_render_mode() const { return &rmode; };
     virtual       sf::RenderStates *get_render_mode()       { return &rmode; };

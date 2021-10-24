@@ -13,22 +13,35 @@ class v_Button;
 
 
 class ButtonPressAcceptor : public EventAcceptor<v_Button, Event::MousePress> {
+    friend v_Button;
+
+    AppearenceTexture *appr_presed;
 public:
-    ButtonPressAcceptor(v_Button *button);
+    ButtonPressAcceptor(v_Button *button, ButtonResources *res = nullptr);
+    virtual ~ButtonPressAcceptor() { delete appr_presed; }
 
     EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class ButtonReleaseAcceptor : public EventAcceptor<v_Button, Event::MouseRelease> {
+    friend v_Button;
+
+    AppearenceTexture *appr_hovered;
 public:
-    ButtonReleaseAcceptor(v_Button *button);
+    ButtonReleaseAcceptor(v_Button *button, ButtonResources *res = nullptr);
+    virtual ~ButtonReleaseAcceptor() { delete appr_hovered; }
 
     EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class ButtonMoveAcceptor : public EventAcceptor<v_Button, Event::MouseMove> {
+    friend v_Button;
+
+    AppearenceTexture *appr_hovered;
+    AppearenceTexture *appr_idle;
 public:
-    ButtonMoveAcceptor(v_Button *button);
+    ButtonMoveAcceptor(v_Button *button, ButtonResources *res = nullptr);
+    virtual ~ButtonMoveAcceptor() { delete appr_hovered; delete appr_idle; }
 
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
@@ -45,6 +58,7 @@ class v_Button : public v_Highlighter {
 
 public:
     v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr);
+    v_Button(const ViewBody &body, ButtonResources *res, AbstractView *parent = nullptr);
 
     virtual void render(Renderer *renderer) override;
 

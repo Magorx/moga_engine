@@ -22,6 +22,9 @@
 #include "object.h"
 
 #include "resource_manager.h"
+#include "Resources.h"
+
+#include "collections/Collections.h"
 
 #include <vector>
 

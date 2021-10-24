@@ -15,6 +15,17 @@ color(color)
     e_toggle_activity.add(new HighlighterDeactivateVisualy(this));
 }
 
+v_Highlighter::v_Highlighter(const ViewBody &body, AbstractView *parent):
+AbstractLabledView(body, parent),
+cursor_inside(false),
+highlight_coef(0),
+color(nullptr)
+{
+    e_mouse_press.add(new HighlighterPressAcceptor(this));
+    e_mouse_move.add(new HighlighterMoveAcceptor(this));
+    e_toggle_activity.add(new HighlighterDeactivateVisualy(this));
+}
+
 v_Highlighter::~v_Highlighter() {}
 
 void v_Highlighter::render(Renderer *renderer) {

@@ -122,6 +122,8 @@ protected:
 
     bool pressed;
     bool focuseable;
+    
+    bool appearenced;
 
 public:
     AbstractView(ViewBody body, AbstractView *parent = nullptr);

@@ -11,6 +11,8 @@
 
 #include "appearence.h"
 
+#include "engine/Resources.h"
+
 
 struct Screen {
     sf::RenderWindow *window;
@@ -55,7 +57,7 @@ public:
     void draw_line(Vec2d p1, Vec2d p2, const RGBA &color);
     void draw_square(Vec2d pos, const double size, const RGBA &color);
     void draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color);
-    void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const char *font_filename = "arial.ttf");
+    void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const RFont *font = Resources.font.arial);
 
     void apr_draw_circle(Vec2d pos, double rad, int granularity);
     void apr_draw_rectangle(Vec2d pos, const Vec2d size);
@@ -63,7 +65,7 @@ public:
     inline void set_appearence(Appearence *appearence_) { appearence = appearence_; }
 
     static void load_font(sf::Font &font_holder, const char *font_filename, char **cur_font_filename = nullptr);
-    static Vec2d get_text_size(const char *text, int char_size, const char *font_filename = "arial.ttf");
+    static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.arial);
 
 };
 
