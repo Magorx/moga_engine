@@ -40,6 +40,8 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 
 
 void ResourcesHolder::init() {
+    texture.frame = load_texture(IMG("frame.png"));
+
     texture.button.basic.idle    = load_texture("resources/image/button.png");
     texture.button.basic.hovered = load_texture("resources/image/button.png");
     texture.button.basic.pressed = load_texture("resources/image/button.png");
@@ -110,9 +112,12 @@ void ResourcesHolder::init() {
     texture.util_bar.basic.bar = load_texture(IMG("util_bar/basic.png"));
 
     texture.window.basic.util_bar = &texture.util_bar.basic;
+    texture.window.basic.frame = texture.frame;
 }
 
 ResourcesHolder::~ResourcesHolder() {
+    delete texture.frame;
+
     delete texture.button.basic.idle   ;
     delete texture.button.basic.hovered;
     delete texture.button.basic.pressed;

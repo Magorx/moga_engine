@@ -9,7 +9,7 @@ text_color({255, 10, 10})
     header->get_body().position.content[1] -= header_size;
     add_subview(header);
     
-    if (draggable) header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this));
+    if (draggable) header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this, false));
 
     header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
     
@@ -26,13 +26,19 @@ text_color({255, 10, 10})
     header->get_body().position.content[1] -= header_size;
     add_subview(header);
     
-    if (draggable) header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this));
+    if (draggable) header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this, false));
 
     header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
     
     header->add_label(name, 15, &text_color);
     
     set_focuseable(true);
+
+    if (res.frame) {
+        auto content = new v_Highlighter({0, {400, 400}}, nullptr, nullptr, 0);
+        content->set_appearence(new AppearenceTexture(res.frame));
+        add_subview(content);
+    }
 }
 
 void v_Window::add_subview(AbstractView *subview) {

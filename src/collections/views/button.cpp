@@ -7,8 +7,8 @@ const Vec2d BUTTON_CLICK_POS_DELTA = {0, 4};
 double BUTTON_CLICKED_SHADING_COEF = 0.8;
 
 
-v_Button::v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent):
-v_Highlighter(body, color, parent),
+v_Button::v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef) :
+v_Highlighter(body, color, parent, highlight_coef),
 pos_delta(0, 0)
 {
     e_mouse_press.add(new ButtonPressAcceptor(this));
@@ -17,7 +17,7 @@ pos_delta(0, 0)
 }
 
 v_Button::v_Button(const ViewBody &body, AVMouseReactionResources *res, AbstractView *parent) :
-v_Highlighter(body, parent),
+v_Highlighter(body, nullptr, parent, 0),
 pos_delta(0, 0)
 {
     appearenced = true;

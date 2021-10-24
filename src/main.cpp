@@ -103,20 +103,22 @@ int main() {
         (*submenu2)[i - 1]->e_mouse_press.add(new SetPhysTimeMultiplier(&moga, (double) i / 2));
     }
 
-    v_Window *window = new v_Window("window", {200, 200}, 30, Resources.texture.window.basic);
+    v_Window *window = new v_Window("window", {400, 400}, 50, Resources.texture.window.basic);
     window->get_body().position = {50, 50};
     moga.add_view(window);
 
-    SmartColor *win_color = new SmartColor({45, 67, 78});
-    moga.resman.add(win_color);
-    window->add_subview(new v_Highlighter({0, {200, 200}}, win_color, nullptr, 0));
-
     auto accessory = window->get_accessory();
 
-    auto anima = new AppearenceAnimation(&Resources.animation.lightning_idle.frames, 0.13);
-    moga.add_tickable(anima);
-    anima->start();
-    accessory->set_appearence(anima);
+    auto anima_idle = new AppearenceAnimation(&Resources.animation.lightning_idle.frames, 0.13);
+    auto anima_hover = new AppearenceAnimation(&Resources.animation.lightning_hover.frames, 0.09);
+    moga.add_tickable(anima_idle);
+    moga.add_tickable(anima_hover);
+    anima_idle->start();
+    anima_hover->start();
+    
+    accessory->set_appearence(anima_idle);
+
+    accessory->e_mouse_move.add(new AVAnimatorMove(accessory, anima_hover, anima_idle));
 
     // auto anima = new AppearenceAnimation(&Resources.animation.lightning_idle.frames, 0.13);
     // moga.add_tickable(anima);

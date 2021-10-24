@@ -192,10 +192,14 @@ EventAccResult AVRenderCallAcceptor::operator()(const Event::RenderCall &event, 
     return EventAccResult::stop;
 }
 
-AVDragAcceptor::AVDragAcceptor(AbstractView *av) : EventAcceptor(av) {}
+AVDragAcceptor::AVDragAcceptor(AbstractView *av, bool allow_out_of_bounds) : EventAcceptor(av), allow_out_of_bounds(allow_out_of_bounds) {}
 
 EventAccResult AVDragAcceptor::operator()(const Event::MouseDrag &event, const EventAccResult *) {
     acceptor->get_body().position += event.to - event.from;
+
+    if (!allow_out_of_bounds) {
+        acceptor->get_body().position.content[1] = fmax(0, acceptor->get_body().position.content[1]);
+    }
 
     return EventAccResult::stop;
 }

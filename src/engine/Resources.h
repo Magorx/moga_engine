@@ -36,6 +36,7 @@ struct res_UtilityBarResources {
 
 struct res_WindowResources {
     res_UtilityBarResources *util_bar;
+    RTexture *frame;
 };
 
 struct ResourcesHolder {
@@ -59,6 +60,8 @@ struct ResourcesHolder {
         struct {
             res_WindowResources basic;
         } window;
+
+        RTexture *frame;
     } texture;
 
     struct {

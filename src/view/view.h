@@ -48,8 +48,9 @@ public:
 };
 
 class AVDragAcceptor : public EventAcceptor<AbstractView, Event::MouseDrag> {
+    bool allow_out_of_bounds;
 public:
-    AVDragAcceptor(AbstractView *view);
+    AVDragAcceptor(AbstractView *view, bool allow_out_of_bounds = true);
 
     EventAccResult operator()(const Event::MouseDrag &event, const EventAccResult *cur_res = nullptr) override;
 };
