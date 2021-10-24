@@ -21,6 +21,8 @@
 #include "tickable.h"
 #include "object.h"
 
+#include "resource_manager.h"
+
 #include <vector>
 
 class MogaEngine : Tickable
@@ -51,6 +53,7 @@ public:
 	VisualEngine  *visual;
 	PhysicsEngine *physics;
 	AbstractView *main_view;
+	MogaResourceManager resman;
 
 	MogaEngine(const char  *window_name,
 				const size_t screen_width,
