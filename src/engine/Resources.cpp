@@ -65,7 +65,7 @@ void ResourcesHolder::init() {
         ANM("fan") "8.png",
     });
 
-    load_animation(animation.lightning, {
+    load_animation(animation.lightning_idle, {
         ANM("lightning") "1.png",
         ANM("lightning") "2.png",
         ANM("lightning") "3.png",
@@ -85,6 +85,24 @@ void ResourcesHolder::init() {
 
     });
 
+    load_animation(animation.lightning_hover, {
+        ANM("lightning_hover") "1.png",
+        ANM("lightning_hover") "2.png",
+        ANM("lightning_hover") "3.png",
+        ANM("lightning_hover") "4.png",
+        ANM("lightning_hover") "5.png",
+        ANM("lightning_hover") "6.png",
+        ANM("lightning_hover") "7.png",
+        ANM("lightning_hover") "8.png",
+        ANM("lightning_hover") "9.png",
+        ANM("lightning_hover") "10.png",
+        ANM("lightning_hover") "11.png",
+        ANM("lightning_hover") "12.png",
+        ANM("lightning_hover") "13.png",
+        ANM("lightning_hover") "14.png",
+        ANM("lightning_hover") "15.png",
+        ANM("lightning_hover") "16.png",
+    });
 
     texture.util_bar.basic.close_button = &texture.button.close;
     texture.util_bar.basic.hide_button = &texture.button.hide;

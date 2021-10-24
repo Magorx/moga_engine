@@ -17,7 +17,7 @@ pressed(false)
     e_mouse_release.add(new ButtonReleaseAcceptor(this));
 }
 
-v_Button::v_Button(const ViewBody &body, ButtonResources *res, AbstractView *parent) :
+v_Button::v_Button(const ViewBody &body, AVMouseReactionResources *res, AbstractView *parent) :
 v_Highlighter(body, parent),
 pos_delta(0, 0),
 pressed(false)
@@ -63,7 +63,7 @@ void v_Button::unpress() {
     pos_delta -= BUTTON_CLICK_POS_DELTA;
 }
 
-ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button, ButtonResources *res) : EventAcceptor(button), appr_presed(nullptr) {
+ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button, AVMouseReactionResources *res) : EventAcceptor(button), appr_presed(nullptr) {
     if (res) {
         appr_presed = new AppearenceTexture(res->pressed);
     }
@@ -85,7 +85,7 @@ EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event, c
 }
 
 
-ButtonReleaseAcceptor::ButtonReleaseAcceptor(v_Button *button, ButtonResources *res) : EventAcceptor(button), appr_hovered(nullptr) {
+ButtonReleaseAcceptor::ButtonReleaseAcceptor(v_Button *button, AVMouseReactionResources *res) : EventAcceptor(button), appr_hovered(nullptr) {
     if (res) {
         appr_hovered = new AppearenceTexture(res->hovered);
     }
@@ -107,7 +107,7 @@ EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &even
 }
 
 
-ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button, ButtonResources *res) : EventAcceptor(button), appr_hovered(nullptr), appr_idle(nullptr) {
+ButtonMoveAcceptor::ButtonMoveAcceptor(v_Button *button, AVMouseReactionResources *res) : EventAcceptor(button), appr_hovered(nullptr), appr_idle(nullptr) {
     if (res) {
         appr_hovered = new AppearenceTexture(res->hovered);
         appr_idle = new AppearenceTexture(res->idle);

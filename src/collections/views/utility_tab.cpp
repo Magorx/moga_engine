@@ -34,7 +34,7 @@ b_hide(new v_Button({0, 0}, res ? res->hide_button : nullptr)),
 v_drag_pod(new v_DragPad({0, {size.x() - 2 * size.y(), size.y()}})),
 v_options(v_Stretcher::X(size.y())),
 
-v_accessory(new v_Button({0, size.y()}, res->hide_button))
+v_accessory(new v_Button({0, size.y()}, (SmartColor*) nullptr))
 {
     appearenced = true;
 

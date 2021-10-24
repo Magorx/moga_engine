@@ -31,5 +31,6 @@ public:
     inline v_DragPad *get_drag_pod()    { return v_drag_pod; }
     inline v_Button *get_button_close() { return b_close; }
     inline v_Button *get_button_hide()  { return b_hide; }
+    inline AbstractView *get_accessory() { return v_accessory; }
 
 };

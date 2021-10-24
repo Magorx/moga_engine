@@ -14,4 +14,6 @@ public:
     v_Window(const char *name, const ViewBody &body, double header_size, res_WindowResources &res, bool draggable = true, AbstractView *parent = nullptr);
 
     virtual void add_subview(AbstractView *subview) override;
+
+    inline AbstractView *get_accessory() {return header ? header->get_accessory() : nullptr;   }
 };

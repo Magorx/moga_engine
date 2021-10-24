@@ -14,7 +14,7 @@ struct AnimationResourse {
     }
 };
 
-struct ButtonResources {
+struct AVMouseReactionResources {
     RTexture *idle;
     RTexture *hovered;
     RTexture *pressed;
@@ -30,8 +30,8 @@ struct ToolResources {
 struct res_UtilityBarResources {
     RTexture *bar;
 
-    ButtonResources *close_button;
-    ButtonResources *hide_button;
+    AVMouseReactionResources *close_button;
+    AVMouseReactionResources *hide_button;
 };
 
 struct res_WindowResources {
@@ -41,10 +41,10 @@ struct res_WindowResources {
 struct ResourcesHolder {
     struct {
         struct {
-            ButtonResources close;
-            ButtonResources hide;
+            AVMouseReactionResources close;
+            AVMouseReactionResources hide;
 
-            ButtonResources basic;
+            AVMouseReactionResources basic;
         } button;
 
         struct {
@@ -63,7 +63,8 @@ struct ResourcesHolder {
 
     struct {
         AnimationResourse fan;
-        AnimationResourse lightning;
+        AnimationResourse lightning_idle;
+        AnimationResourse lightning_hover;
     } animation;
 
     struct {
