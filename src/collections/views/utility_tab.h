@@ -22,6 +22,7 @@ public:
     static const Color drag_tab_color;
 
     v_UtilityTab(Vec2d size, SmartColor *main_color);
+    v_UtilityTab(Vec2d size, res_UtilityBarResources *res);
 
     inline v_DragPad *get_drag_pod()    { return v_drag_pod; }
     inline v_Button *get_button_close() { return b_close; }

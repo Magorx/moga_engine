@@ -25,19 +25,23 @@ sf::Font *load_font(const char *filename) {
     return font;
 }
 
+#define RES(path) "resources/" path
+#define IMG(path) RES("image/" path)
+#define BUTTON_IMG(name, path) IMG("button/" name "/" path)
+
 
 void ResourcesHolder::init() {
     texture.button.basic.idle    = load_texture("resources/image/button.png");
     texture.button.basic.hovered = load_texture("resources/image/button.png");
     texture.button.basic.pressed = load_texture("resources/image/button.png");
 
-    texture.button.close.idle    = load_texture("resources/image/button_idle.png");
-    texture.button.close.hovered = load_texture("resources/image/button_hovered.png");
-    texture.button.close.pressed = load_texture("resources/image/button_pressed.png");
+    texture.button.close.idle    = load_texture(BUTTON_IMG("close", "idle.png"));
+    texture.button.close.hovered = load_texture(BUTTON_IMG("close", "hovered.png"));
+    texture.button.close.pressed = load_texture(BUTTON_IMG("close", "pressed.png"));
 
-    texture.button.hide.idle    = load_texture("resources/image/button.png");
-    texture.button.hide.hovered = load_texture("resources/image/button.png");
-    texture.button.hide.pressed = load_texture("resources/image/button.png");
+    texture.button.hide.idle    = load_texture(BUTTON_IMG("hide", "idle.png"));
+    texture.button.hide.hovered = load_texture(BUTTON_IMG("hide", "hovered.png"));
+    texture.button.hide.pressed = load_texture(BUTTON_IMG("hide", "pressed.png"));
 
     font.arial = load_font("resources/font/arial.ttf");
 
