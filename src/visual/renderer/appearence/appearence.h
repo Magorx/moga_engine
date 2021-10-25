@@ -26,4 +26,6 @@ public:
 
     inline void set_scale(const Vec2d &scale_) { scale = scale_; }
     virtual void fit_for_size(const Vec2d &) {}
+
+    virtual void activate() {}
 };

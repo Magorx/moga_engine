@@ -292,12 +292,16 @@ EventAcceptor(view), appr_hovered(appr_hovered), appr_idle(appr_idle) {}
 
 EventAccResult AVAnimatorMove::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (acceptor->is_inside(event.to)) {
-        if (appr_hovered && !acceptor->is_pressed()) {
-            acceptor->set_appearence(appr_hovered);
-        }
+        if (!acceptor->is_inside(event.from))
+            if (appr_hovered && !acceptor->is_pressed()) {
+                acceptor->set_appearence(appr_hovered);
+                printf("le go\n");
+                appr_hovered->activate();
+            }
     } else {
         if (appr_idle) {
             acceptor->set_appearence(appr_idle);
+            appr_hovered->activate();
         }
     }
 

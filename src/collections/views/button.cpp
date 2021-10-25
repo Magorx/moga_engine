@@ -39,6 +39,32 @@ pos_delta(0, 0)
     e_mouse_move.add(new ButtonMoveAcceptor(this, res));
 }
 
+v_Button::v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent) :
+v_Highlighter(body, nullptr, parent, 0),
+pos_delta(0, 0)
+{
+    appearenced = true;
+
+    if (style) {
+        if (style->press) {
+            auto av_animator_press = new AVAnimatorPress(this, style->press);
+            e_mouse_press.add(av_animator_press);
+        }
+        if (style->move && style->idle) {
+            auto av_animator_release = new AVAnimatorRelease(this, style->move, style->idle);
+            auto av_animator_move    = new AVAnimatorMove(this, style->move, style->idle);
+            e_mouse_release.add(av_animator_release);
+            e_mouse_move.add(av_animator_move);
+        }
+
+        if (style->idle) set_appearence(style->idle);
+    }
+
+    e_mouse_press.add(new ButtonPressAcceptor(this));
+    e_mouse_release.add(new ButtonReleaseAcceptor(this));
+    e_mouse_move.add(new ButtonMoveAcceptor(this));
+}
+
 void v_Button::render(Renderer *renderer) {
     // body.position += pos_delta;
 

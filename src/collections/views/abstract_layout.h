@@ -65,5 +65,7 @@ public:
         add_subview(new AbstractView({{0, 0}, {0, 0}}, this));
         sum_weight += weight;
         weights.push_back(weight);
+
+        layout_refit();
     }
 };

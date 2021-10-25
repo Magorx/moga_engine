@@ -12,6 +12,8 @@
 
 #include "event_system/event_system.h"
 
+#include "visual/style/mouse_reaction_style.h"
+
 #include <vector>
 
 

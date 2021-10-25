@@ -43,9 +43,9 @@ void ResourcesHolder::init() {
     texture.frame      = load_texture(IMG("frame.png"));
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
 
-    texture.button.basic.idle    = load_texture("resources/image/button.png");
-    texture.button.basic.hovered = load_texture("resources/image/button.png");
-    texture.button.basic.pressed = load_texture("resources/image/button.png");
+    texture.button.basic.idle    = load_texture(BUTTON_IMG("basic", "idle.png"));
+    texture.button.basic.hovered = load_texture(BUTTON_IMG("basic", "hovered.png"));
+    texture.button.basic.pressed = load_texture(BUTTON_IMG("basic", "pressed.png"));
 
     texture.button.close.idle    = load_texture(BUTTON_IMG("close", "idle.png"));
     texture.button.close.hovered = load_texture(BUTTON_IMG("close", "hovered.png"));

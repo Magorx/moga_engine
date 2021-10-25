@@ -55,8 +55,9 @@ class v_Button : public v_Highlighter {
     friend ButtonMoveAcceptor;
 
 public:
-    v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
+    v_Button(const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
     v_Button(const ViewBody &body, AVMouseReactionResources *res, AbstractView *parent = nullptr);
+    v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent = nullptr);
 
     virtual void render(Renderer *renderer) override;
 

@@ -1,10 +1,6 @@
 #include "chemistry/chem_engine.h"
 
 
-const int SCR_W  = 1000;
-const int SCR_H  = 600;
-
-
 #include "app_initialization.h"
 
 

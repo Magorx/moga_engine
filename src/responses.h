@@ -68,10 +68,32 @@ public:
 };
 
 
-template <typename T>
-class EventCatcher : public EventReaction<T> {
+class AddNewCanvasReaction : public EventReaction<Event::MouseRelease> {
+    MogaEngine *engine;
+
 public:
-    EventAccResult operator()(const T &) override {
-        return EventAccResult::done;
+    AddNewCanvasReaction(MogaEngine *engine):
+    engine(engine)
+    {}
+
+    EventAccResult operator()(const Event::MouseRelease &, const EventAccResult*) override {
+        v_Window *window = new v_Window("window", {400, 400}, 35, Resources.texture.window.basic);
+        window->get_body().position = {50, 50};
+        engine->add_view(window);
+
+        auto accessory = window->get_accessory();
+
+        auto anima_idle = new AppearenceAnimation(&Resources.animation.lightning_idle.frames, 0.13, true);
+        auto anima_hover = new AppearenceAnimation(&Resources.animation.lightning_hover.frames, 0.09);
+        engine->add_tickable(anima_idle);
+        engine->add_tickable(anima_hover);
+        anima_idle->start();
+        anima_hover->start();
+        
+        accessory->set_appearence(anima_idle);
+
+        accessory->e_mouse_move.add(new AVAnimatorMove(accessory, anima_hover, anima_idle));
+
+        return EventAccResult::none;
     }
 };
