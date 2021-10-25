@@ -6,7 +6,6 @@ const double HIGHLIGHTER_ON_COEF = 0.3;
 
 v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef):
 AbstractLabledView(body, parent),
-cursor_inside(false),
 highlight_coef(highlight_coef),
 color(color)
 {
@@ -17,7 +16,6 @@ color(color)
 
 v_Highlighter::v_Highlighter(const ViewBody &body, AbstractView *parent):
 AbstractLabledView(body, parent),
-cursor_inside(false),
 highlight_coef(0),
 color(nullptr)
 {
@@ -42,13 +40,13 @@ void v_Highlighter::render(Renderer *renderer) {
     subrender(renderer);
     AbstractLabledView::render(renderer);
 
-    if (cursor_inside) {
-        if (highlight_coef > 0) {
-            renderer->draw_rectangle(body.position, body.size, {CLRMAX, CLRMAX, CLRMAX, (unsigned char) ((highlight_coef) * CLRMAX)});
-        } else {
-            renderer->draw_rectangle(body.position, body.size, {0, 0, 0, (unsigned char) ((highlight_coef) * CLRMAX)});
-        }
-    }
+    // if (cursor_inside) {
+    //     if (highlight_coef > 0) {
+    //         renderer->draw_rectangle(body.position, body.size, {CLRMAX, CLRMAX, CLRMAX, (unsigned char) ((highlight_coef) * CLRMAX)});
+    //     } else {
+    //         renderer->draw_rectangle(body.position, body.size, {0, 0, 0, (unsigned char) ((highlight_coef) * CLRMAX)});
+    //     }
+    // }
 }
 
 HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}

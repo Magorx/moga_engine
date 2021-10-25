@@ -23,28 +23,25 @@ void initialize_photoshop(ChemEngine &moga) {
 
     // ==================================================================================
 
-    auto vec1 = new std::vector<RTexture*>;
-    vec1->push_back(Resources.texture.button.basic.idle);
-    vec1->push_back(Resources.texture.button.basic.hovered);
-
-    auto vec2 = new std::vector<RTexture*>;
-    vec2->push_back(Resources.texture.button.basic.idle);
-    vec2->push_back(Resources.texture.button.basic.hovered);
-
-    auto anima1 = new AppearenceAnimation(vec1, 0.5, false);
-    auto anima2 = new AppearenceAnimation(vec2, 0.5, false);
-
-    auto style = new MouseReactionStyle{
-        anima2,
+    auto new_canvas_button_style = new MouseReactionStyle {
+        new AppearenceTexture(Resources.texture.button.basic.idle),
         new AppearenceTexture(Resources.texture.button.basic.pressed),
-        anima1,
-        anima2
+        Resources.create_animation({
+            Resources.texture.button.basic.pressed,
+            Resources.texture.button.basic.hovered,
+        }, 0.1),
+        Resources.create_animation({
+            Resources.texture.button.basic.idle,
+            Resources.texture.button.basic.hovered,
+        }, 0.25),
+        Resources.create_animation({
+            Resources.texture.button.basic.hovered,
+            Resources.texture.button.basic.idle,
+        }, 0.25),
+        nullptr
     };
 
-    moga.add_tickable(anima1);
-    moga.add_tickable(anima2);
-
-    auto new_canvas_button = new v_Button({0, 0}, style);
+    auto new_canvas_button = new v_Button({0, 0}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
 
     auto font_color = new SmartColor({47, 47, 47});
@@ -52,16 +49,48 @@ void initialize_photoshop(ChemEngine &moga) {
 
     new_canvas_button->add_label("NEW", 15, font_color);
 
+    opt_panel->add_spaceholder(2);
+
     opt_panel->layout_add(new_canvas_button);
     
     // ==================================================================================
 
-    // ==================================================================================
+    new_canvas_button_style = new MouseReactionStyle {
+        new AppearenceTexture(Resources.texture.button.basic.idle),
+        new AppearenceTexture(Resources.texture.button.basic.pressed),
+        Resources.create_animation({
+            Resources.texture.button.basic.pressed,
+            Resources.texture.button.basic.hovered,
+        }, 0.1),
+        Resources.create_animation({
+            Resources.texture.button.basic.idle,
+            Resources.texture.button.basic.hovered,
+        }, 0.35),
+        Resources.create_animation({
+            Resources.texture.button.basic.hovered,
+            Resources.texture.button.basic.idle,
+        }, 0.35),
+        nullptr
+    };
+
+    new_canvas_button = new v_Button({50, 50}, new_canvas_button_style);
+    new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
+
+    font_color = new SmartColor({47, 47, 47});
+    moga.resman.add(font_color);
+
+    new_canvas_button->add_label("NEW", 15, font_color);
+
+    opt_panel->add_spaceholder(2);
+
+    moga.add_view(new_canvas_button);
 
     // ==================================================================================
 
     // ==================================================================================
 
-    opt_panel->add_spaceholder(10);
+    // ==================================================================================
+
+    opt_panel->add_spaceholder(2);
 
 }

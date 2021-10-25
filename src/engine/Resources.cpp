@@ -1,4 +1,5 @@
 #include "Resources.h"
+#include "engine/moga_engine.h"
 
 
 sf::Texture *load_texture(const char *filename) {
@@ -39,7 +40,9 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 #define ANM(path) RES("animation/") path "/"
 
 
-void ResourcesHolder::init() {
+void ResourcesHolder::init(MogaEngine *engine_) {
+    engine = engine_;
+
     texture.frame      = load_texture(IMG("frame.png"));
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
 
@@ -142,7 +145,28 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.button.b3d.pressed;
 
     delete font.arial;
+
+    for (auto anim : created_animations) {
+        delete anim;
+    }
+}
+
+AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped, double time_coef) {
+    std::vector<RTexture*> *anim_frames = new std::vector<RTexture*>;
+    anim_frames->reserve(frames.size());
+    for (auto frame : frames) {
+        anim_frames->push_back(frame);
+    }
+
+    AppearenceAnimation *animation = new AppearenceAnimation(anim_frames, frame_duration, looped, time_coef);
+    created_animations.push_back(animation);
+
+    if (engine) {
+        engine->add_tickable(animation);
+    }
+
+    return animation;
 }
 
 
-ResourcesHolder Resources {};
+ResourcesHolder Resources {nullptr, {}, {}, {}, {}};

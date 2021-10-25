@@ -18,9 +18,9 @@ text_color({230, 230, 210})
     set_focuseable(true);
 }
 
-v_Window::v_Window(const char *name, const ViewBody &body, double header_size, res_WindowResources &res, bool draggable, AbstractView *parent) :
+v_Window::v_Window(const char *name, const ViewBody &body, double header_size, WindowStyle *style, bool draggable, AbstractView *parent) :
 v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0),
-header(new v_UtilityTab({body.size.x(), header_size}, res.util_bar)),
+header(new v_UtilityTab({body.size.x(), header_size}, style ? style->header : nullptr)),
 text_color({255, 255, 255})
 {
     header->get_body().position.content[1] -= header_size;
@@ -34,9 +34,9 @@ text_color({255, 255, 255})
     
     set_focuseable(true);
 
-    if (res.frame) {
+    if (style->body) {
         auto content = new v_Highlighter({0, {400, 400}}, nullptr, nullptr, 0);
-        content->set_appearence(new AppearenceTexture(res.frame));
+        content->set_appearence(style->body);
         add_subview(content);
     }
 }

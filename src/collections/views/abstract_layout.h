@@ -62,7 +62,7 @@ public:
     inline void add_spaceholder(double weight = 1) {
         if (weight < 0) return;
 
-        add_subview(new AbstractView({{0, 0}, {0, 0}}, this));
+        add_subview(new AbstractView({{0, 0}, {0, 0}}));
         sum_weight += weight;
         weights.push_back(weight);
 

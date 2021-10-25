@@ -16,29 +16,6 @@ pos_delta(0, 0)
     e_mouse_release.add(new ButtonReleaseAcceptor(this));
 }
 
-v_Button::v_Button(const ViewBody &body, AVMouseReactionResources *res, AbstractView *parent) :
-v_Highlighter(body, nullptr, parent, 0),
-pos_delta(0, 0)
-{
-    appearenced = true;
-
-    if (res) {
-        auto av_animator_press   = new AVAnimatorPress(this, new AppearenceTexture(res->pressed));
-        auto av_animator_release = new AVAnimatorRelease(this, new AppearenceTexture(res->hovered), new AppearenceTexture(res->idle));
-        auto av_animator_move    = new AVAnimatorMove(this, new AppearenceTexture(res->hovered), new AppearenceTexture(res->idle));
-
-        e_mouse_press.add(av_animator_press);
-        e_mouse_release.add(av_animator_release);
-        e_mouse_move.add(av_animator_move);
-
-        set_appearence(av_animator_move->get_idle_appr());
-    }
-
-    e_mouse_press.add(new ButtonPressAcceptor(this, res));
-    e_mouse_release.add(new ButtonReleaseAcceptor(this, res));
-    e_mouse_move.add(new ButtonMoveAcceptor(this, res));
-}
-
 v_Button::v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent) :
 v_Highlighter(body, nullptr, parent, 0),
 pos_delta(0, 0)
@@ -46,16 +23,13 @@ pos_delta(0, 0)
     appearenced = true;
 
     if (style) {
-        if (style->press) {
-            auto av_animator_press = new AVAnimatorPress(this, style->press);
-            e_mouse_press.add(av_animator_press);
-        }
-        if (style->move && style->idle) {
-            auto av_animator_release = new AVAnimatorRelease(this, style->move, style->idle);
-            auto av_animator_move    = new AVAnimatorMove(this, style->move, style->idle);
-            e_mouse_release.add(av_animator_release);
-            e_mouse_move.add(av_animator_move);
-        }
+        auto av_animator_press = new AVAnimatorPress(this, style);
+        auto av_animator_release = new AVAnimatorRelease(this, style);
+        auto av_animator_move    = new AVAnimatorMove(this, style);
+        
+        e_mouse_press.add(av_animator_press);
+        e_mouse_release.add(av_animator_release);
+        e_mouse_move.add(av_animator_move);
 
         if (style->idle) set_appearence(style->idle);
     }

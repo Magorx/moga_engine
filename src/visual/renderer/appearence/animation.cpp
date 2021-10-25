@@ -30,8 +30,6 @@ void AppearenceAnimation::tick(const double dt, const double absolute_time) {
 
         double frac = (elapsed() - frame_duration * ((int) (elapsed() / frame_duration))) / frame_duration;
 
-        // printf("elap %g cur %zu next %zu frac %g\n", elapsed(), cur_idx, next_idx, frac);
-
         cur_sprite.setTexture(*(*frames)[cur_idx]);
         cur_sprite.setColor(sf::Color(255, 255, 255, (unsigned char) (255 * (1))));
         cur_frame.draw(cur_sprite);
@@ -41,6 +39,14 @@ void AppearenceAnimation::tick(const double dt, const double absolute_time) {
         cur_frame.draw(cur_sprite);
 
         set_texture(&cur_frame.getTexture());
+    } else {
+        if (!frames->size()) return;
+
+        if (start_time) {
+            set_texture((*frames)[frames->size() - 1]);
+        } else {
+            set_texture((*frames)[0]);
+        }
     }
 };
 

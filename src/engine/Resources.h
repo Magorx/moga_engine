@@ -2,6 +2,10 @@
 
 
 #include "visual/renderer/gate_type_aliases.h"
+#include "visual/renderer/appearence.h"
+
+
+class MogaEngine;
 
 
 struct AnimationResourse {
@@ -40,6 +44,9 @@ struct res_WindowResources {
 };
 
 struct ResourcesHolder {
+    MogaEngine *engine;
+    std::vector<AppearenceAnimation*> created_animations;
+
     struct {
         struct {
             AVMouseReactionResources close;
@@ -78,7 +85,9 @@ struct ResourcesHolder {
 
     ~ResourcesHolder();
 
-    void init();
+    void init(MogaEngine *engine_);
+
+    AppearenceAnimation *create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped = false, double time_coef = 1);
 };
 
 extern ResourcesHolder Resources;

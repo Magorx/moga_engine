@@ -97,7 +97,6 @@ void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA
         background.setFillColor(sf_color_back);
         background.setPosition(text.getPosition());
         scr.window->draw(background);
-
     }
 
     scr.window->draw(text);

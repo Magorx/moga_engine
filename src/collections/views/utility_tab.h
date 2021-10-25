@@ -8,6 +8,8 @@
 #include "drag_tab.h"
 #include "toggler.h"
 
+#include "visual/style/utility_bar_style.h"
+
 
 class v_UtilityTab : public v_Highlighter {
     v_HorizontalLayout *buttons_layout;
@@ -26,7 +28,7 @@ public:
     static const Color drag_tab_color;
 
     v_UtilityTab(Vec2d size, SmartColor *main_color);
-    v_UtilityTab(Vec2d size, res_UtilityBarResources *res);
+    v_UtilityTab(Vec2d size, UtilityBarStyle *style);
 
     inline v_DragPad *get_drag_pod()    { return v_drag_pod; }
     inline v_Button *get_button_close() { return b_close; }

@@ -289,6 +289,7 @@ void MogaEngine::everlasting_loop() {
 
 	while (window->isOpen()) {
 		tick();
+		// printf("arial %p\n", Resources.font.arial);
 	}
 }
 

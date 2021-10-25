@@ -13,7 +13,8 @@ parent(parent),
 appearence(nullptr),
 pressed(false),
 focuseable(false),
-appearenced(false)
+appearenced(false),
+cursor_inside(false)
 {
     e_render_call.add(new AVRenderCallAcceptor(this));
     
@@ -231,6 +232,12 @@ EventAccResult AVPressFocuser::operator()(const Event::MousePress &event, const 
 AVCoveredMoveBlocker::AVCoveredMoveBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, const EventAccResult *) {
+    if (acceptor->is_inside(event.to)) {
+        acceptor->cursor_inside = true;
+    } else {
+        acceptor->cursor_inside = false;
+    }
+
     if (acceptor->is_inside(event.from) && acceptor->is_inside(event.to)) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
     }
@@ -274,50 +281,40 @@ EventAccResult AVCoveredReleaseBlocker::operator()(const Event::MouseRelease &ev
 }
 
 
-AVAnimatorPress::AVAnimatorPress(AbstractView *view, Appearence *appr) : EventAcceptor(view), appr_pressed(appr) {}
+AVAnimatorPress::AVAnimatorPress(AbstractView *view, MouseReactionStyle *style) : EventAcceptor(view), style(style) {}
 
 EventAccResult AVAnimatorPress::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (acceptor->get_view_id() && strcmp(acceptor->get_view_id(), "aaa")) printf("hi\n");
     if (acceptor->is_inside(event.position) && !acceptor->is_pressed()) {
-        if (appr_pressed) {
-            acceptor->set_appearence(appr_pressed);
-        }
+        acceptor->set_appearence(style->press);
     }
 
     return EventAccResult::none;
 }
 
-AVAnimatorMove::AVAnimatorMove(AbstractView *view, Appearence *appr_hovered, Appearence *appr_idle) :
-EventAcceptor(view), appr_hovered(appr_hovered), appr_idle(appr_idle) {}
+AVAnimatorMove::AVAnimatorMove(AbstractView *view, MouseReactionStyle *style) :
+EventAcceptor(view), style(style) {}
 
 EventAccResult AVAnimatorMove::operator()(const Event::MouseMove &event, const EventAccResult *) {
-    if (acceptor->is_inside(event.to)) {
-        if (!acceptor->is_inside(event.from))
-            if (appr_hovered && !acceptor->is_pressed()) {
-                acceptor->set_appearence(appr_hovered);
-                printf("le go\n");
-                appr_hovered->activate();
-            }
+    if (acceptor->is_cursor_inside()) {
+        if (!acceptor->is_inside(event.from)) {
+            acceptor->set_appearence(style->hover);
+        }
     } else {
-        if (appr_idle) {
-            acceptor->set_appearence(appr_idle);
-            appr_hovered->activate();
+        if (acceptor->is_inside(event.from)) {
+            acceptor->set_appearence(style->unhover);
         }
     }
 
     return EventAccResult::none;
 }
 
-AVAnimatorRelease::AVAnimatorRelease(AbstractView *view, Appearence *appr_hovered,  Appearence *appr_idle) :
-EventAcceptor(view), appr_hovered(appr_hovered), appr_idle(appr_idle) {}
+AVAnimatorRelease::AVAnimatorRelease(AbstractView *view, MouseReactionStyle *style) :
+EventAcceptor(view), style(style) {}
 
 EventAccResult AVAnimatorRelease::operator()(const Event::MouseRelease &, const EventAccResult *) {
-    if (acceptor->is_pressed() && appr_hovered) {
-        if (appr_hovered) {
-            acceptor->set_appearence(appr_hovered);
-        } else if (appr_idle) {
-            acceptor->set_appearence(appr_idle);
-        }
+    if (acceptor->is_pressed()) {
+        acceptor->set_appearence(style->release);
     }
 
     return EventAccResult::none;

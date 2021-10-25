@@ -108,33 +108,31 @@ public:
 
 
 class AVAnimatorPress : public EventAcceptor<AbstractView, Event::MousePress> {
-    Appearence *appr_pressed;
+    MouseReactionStyle *style;
 public:
-    AVAnimatorPress(AbstractView *view, Appearence *appr);
+    AVAnimatorPress(AbstractView *view, MouseReactionStyle *style);
 
     EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class AVAnimatorMove : public EventAcceptor<AbstractView, Event::MouseMove> {
-    Appearence *appr_hovered;
-    Appearence *appr_idle;
+    MouseReactionStyle *style;
 public:
-    AVAnimatorMove(AbstractView *view, Appearence *appr_hovered, Appearence *appr_idle);
+    AVAnimatorMove(AbstractView *view, MouseReactionStyle *style);
 
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 
-    inline Appearence *get_idle_appr() { return appr_idle; }
+    inline MouseReactionStyle *get_style() { return style; }
 };
 
 class AVAnimatorRelease : public EventAcceptor<AbstractView, Event::MouseRelease> {
-    Appearence *appr_hovered;
-    Appearence *appr_idle;
+    MouseReactionStyle *style;
 public:
-    AVAnimatorRelease(AbstractView *view, Appearence *appr_hovered, Appearence *appr_idle);
+    AVAnimatorRelease(AbstractView *view, MouseReactionStyle *style);
 
     EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
 
-    inline Appearence *get_idle_appr() { return appr_idle; }
+    inline MouseReactionStyle *get_style() { return style; }
 };
 
 
@@ -167,6 +165,9 @@ protected:
     friend AVMissPressBlocker;
     friend AVMissMoveBlocker;
     friend AVMissReleaseBlocker;
+    friend AVCoveredPressBlocker;
+    friend AVCoveredMoveBlocker;
+    friend AVCoveredReleaseBlocker;
     friend AVDragAcceptor;
     friend AVDragEmitter;
 
@@ -174,6 +175,7 @@ protected:
     bool focuseable;
     
     bool appearenced;
+    bool cursor_inside;
 
 public:
     AbstractView(ViewBody body, AbstractView *parent = nullptr);
@@ -202,11 +204,12 @@ public:
     inline void set_parent(AbstractView *parent_) { parent = parent_; }
 
     inline bool is_pressed() const { return pressed; }
+    inline bool is_cursor_inside() const { return cursor_inside; }
 
     inline bool is_focuseable() { return focuseable; }
     inline void set_focuseable(bool focuseable_) { focuseable = focuseable_;  }
 
-    inline void set_appearence(Appearence *appearence_) { appearence = appearence_; }
+    inline void set_appearence(Appearence *appearence_, bool activate = true) { appearence = appearence_; if (appearence && activate) appearence->activate(); }
 
     inline void set_view_id(const char *view_id_) { view_id = view_id_; }
     inline const char *get_view_id() { return view_id; }

@@ -5,10 +5,10 @@
 
 
 int main() {
-    Resources.init();
-
     srand(time(nullptr));
     ChemEngine moga("MOGA", SCR_W, SCR_H, 1);
+
+    Resources.init(&moga);
 
     initialize_photoshop(moga);
 
