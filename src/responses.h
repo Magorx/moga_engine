@@ -78,7 +78,14 @@ public:
 
     EventAccResult operator()(const Event::MouseRelease &, const EventAccResult*) override {
 
-        // WindowStyle *
+
+
+        // WindowStyle *style = new WindowStyle {
+        //     new UtilityBarStyle {
+
+        //     },
+
+        // };
 
         // v_Window *window = new v_Window("window", {400, 400}, 35, Resources.texture.window.basic);
         // window->get_body().position = {50, 50};

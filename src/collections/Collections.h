@@ -7,5 +7,6 @@
 #include "views/views.h"
 #include "actions/actions.h"
 #include "solid_bodies.h"
+#include "styles/styles.h"
 
 #endif // ALL_COLLECTIONS_H

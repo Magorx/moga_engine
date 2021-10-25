@@ -23,23 +23,7 @@ void initialize_photoshop(ChemEngine &moga) {
 
     // ==================================================================================
 
-    auto new_canvas_button_style = new MouseReactionStyle {
-        new AppearenceTexture(Resources.texture.button.basic.idle),
-        new AppearenceTexture(Resources.texture.button.basic.pressed),
-        Resources.create_animation({
-            Resources.texture.button.basic.pressed,
-            Resources.texture.button.basic.hovered,
-        }, 0.1),
-        Resources.create_animation({
-            Resources.texture.button.basic.idle,
-            Resources.texture.button.basic.hovered,
-        }, 0.25),
-        Resources.create_animation({
-            Resources.texture.button.basic.hovered,
-            Resources.texture.button.basic.idle,
-        }, 0.25),
-        nullptr
-    };
+    auto new_canvas_button_style = StdStyle::Button::basic();
 
     auto new_canvas_button = new v_Button({0, 0}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
@@ -55,23 +39,7 @@ void initialize_photoshop(ChemEngine &moga) {
     
     // ==================================================================================
 
-    new_canvas_button_style = new MouseReactionStyle {
-        new AppearenceTexture(Resources.texture.button.basic.idle),
-        new AppearenceTexture(Resources.texture.button.basic.pressed),
-        Resources.create_animation({
-            Resources.texture.button.basic.pressed,
-            Resources.texture.button.basic.hovered,
-        }, 0.1),
-        Resources.create_animation({
-            Resources.texture.button.basic.idle,
-            Resources.texture.button.basic.hovered,
-        }, 0.35),
-        Resources.create_animation({
-            Resources.texture.button.basic.hovered,
-            Resources.texture.button.basic.idle,
-        }, 0.35),
-        nullptr
-    };
+    new_canvas_button_style = StdStyle::Button::close();
 
     new_canvas_button = new v_Button({50, 50}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
