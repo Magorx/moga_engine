@@ -31,7 +31,7 @@ void initialize_photoshop(ChemEngine &moga) {
     auto font_color = new SmartColor({47, 47, 47});
     moga.resman.add(font_color);
 
-    new_canvas_button->add_label("NEW", 15, font_color);
+    new_canvas_button->add_label("New CANVAS", 25, font_color);
 
     opt_panel->add_spaceholder(2);
 
@@ -39,7 +39,7 @@ void initialize_photoshop(ChemEngine &moga) {
     
     // ==================================================================================
 
-    new_canvas_button_style = StdStyle::Button::close();
+    new_canvas_button_style = StdStyle::Button::hide();
 
     new_canvas_button = new v_Button({50, 50}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
@@ -49,13 +49,25 @@ void initialize_photoshop(ChemEngine &moga) {
     font_color = new SmartColor({47, 47, 47});
     moga.resman.add(font_color);
 
-    new_canvas_button->add_label("NEW", 15, font_color);
-
     opt_panel->add_spaceholder(2);
 
     moga.add_view(new_canvas_button);
 
     // ==================================================================================
+
+    new_canvas_button_style = StdStyle::Button::close();
+
+    new_canvas_button = new v_Button({{110, 50}, 50}, new_canvas_button_style);
+    new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
+
+    moga.resman.add(new_canvas_button_style);
+
+    font_color = new SmartColor({47, 47, 47});
+    moga.resman.add(font_color);
+
+    opt_panel->add_spaceholder(2);
+
+    moga.add_view(new_canvas_button);
 
     // ==================================================================================
 

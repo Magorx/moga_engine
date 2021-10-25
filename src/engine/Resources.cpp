@@ -65,6 +65,7 @@ void ResourcesHolder::init(MogaEngine *engine_) {
 
     font.arial = load_font("resources/font/arial.ttf");
     font.montserrat = load_font("resources/font/Montserrat.ttf");
+    font.aseprite = load_font("resources/font/AsepriteFont.ttf");
 
     load_animation(animation.fan, {
         ANM("fan") "1.png",
