@@ -159,9 +159,10 @@ AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTextur
     }
 
     AppearenceAnimation *animation = new AppearenceAnimation(anim_frames, frame_duration, looped, time_coef);
-    created_animations.push_back(animation);
+    // created_animations.push_back(animation);
 
     if (engine) {
+        animation->tickable_nonfree = true;
         engine->add_tickable(animation);
     }
 

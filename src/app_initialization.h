@@ -76,6 +76,8 @@ void initialize_photoshop(ChemEngine &moga) {
     new_canvas_button = new v_Button({50, 50}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
 
+    moga.resman.add(new_canvas_button_style);
+
     font_color = new SmartColor({47, 47, 47});
     moga.resman.add(font_color);
 
