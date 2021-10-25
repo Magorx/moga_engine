@@ -44,6 +44,7 @@ struct ResourcesHolder {
         struct {
             AVMouseReactionResources close;
             AVMouseReactionResources hide;
+            AVMouseReactionResources b3d;
 
             AVMouseReactionResources basic;
         } button;
@@ -62,6 +63,7 @@ struct ResourcesHolder {
         } window;
 
         RTexture *frame;
+        RTexture *frame_gray;
     } texture;
 
     struct {

@@ -274,10 +274,10 @@ EventAccResult AVCoveredReleaseBlocker::operator()(const Event::MouseRelease &ev
 }
 
 
-
 AVAnimatorPress::AVAnimatorPress(AbstractView *view, Appearence *appr) : EventAcceptor(view), appr_pressed(appr) {}
 
 EventAccResult AVAnimatorPress::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (acceptor->get_view_id() && strcmp(acceptor->get_view_id(), "aaa")) printf("hi\n");
     if (acceptor->is_inside(event.position) && !acceptor->is_pressed()) {
         if (appr_pressed) {
             acceptor->set_appearence(appr_pressed);
@@ -309,7 +309,11 @@ EventAcceptor(view), appr_hovered(appr_hovered), appr_idle(appr_idle) {}
 
 EventAccResult AVAnimatorRelease::operator()(const Event::MouseRelease &, const EventAccResult *) {
     if (acceptor->is_pressed() && appr_hovered) {
-        acceptor->set_appearence(appr_hovered);
+        if (appr_hovered) {
+            acceptor->set_appearence(appr_hovered);
+        } else if (appr_idle) {
+            acceptor->set_appearence(appr_idle);
+        }
     }
 
     return EventAccResult::none;

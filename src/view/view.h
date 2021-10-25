@@ -207,6 +207,7 @@ public:
     inline void set_appearence(Appearence *appearence_) { appearence = appearence_; }
 
     inline void set_view_id(const char *view_id_) { view_id = view_id_; }
+    inline const char *get_view_id() { return view_id; }
 
     ViewBody &get_body();
 

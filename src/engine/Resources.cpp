@@ -40,7 +40,8 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 
 
 void ResourcesHolder::init() {
-    texture.frame = load_texture(IMG("frame.png"));
+    texture.frame      = load_texture(IMG("frame.png"));
+    texture.frame_gray = load_texture(IMG("frame_gray.png"));
 
     texture.button.basic.idle    = load_texture("resources/image/button.png");
     texture.button.basic.hovered = load_texture("resources/image/button.png");
@@ -53,6 +54,11 @@ void ResourcesHolder::init() {
     texture.button.hide.idle    = load_texture(BUTTON_IMG("hide", "idle.png"));
     texture.button.hide.hovered = load_texture(BUTTON_IMG("hide", "hovered.png"));
     texture.button.hide.pressed = load_texture(BUTTON_IMG("hide", "pressed.png"));
+
+    texture.button.b3d.idle    = load_texture(BUTTON_IMG("3d", "idle.png"));
+    // texture.button.b3d.hovered = load_texture(BUTTON_IMG("3d", "hovered.png"));
+    texture.button.b3d.pressed = load_texture(BUTTON_IMG("3d", "pressed.png"));
+
 
     font.arial = load_font("resources/font/arial.ttf");
 
@@ -117,6 +123,7 @@ void ResourcesHolder::init() {
 
 ResourcesHolder::~ResourcesHolder() {
     delete texture.frame;
+    delete texture.frame_gray;
 
     delete texture.button.basic.idle   ;
     delete texture.button.basic.hovered;
@@ -129,6 +136,10 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.button.hide.idle   ;
     delete texture.button.hide.hovered;
     delete texture.button.hide.pressed;
+
+    delete texture.button.b3d.idle   ;
+    // delete texture.button.b3d.hovered;
+    delete texture.button.b3d.pressed;
 
     delete font.arial;
 }
