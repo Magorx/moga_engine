@@ -26,7 +26,9 @@ void AppearenceAnimation::tick(const double dt, const double absolute_time) {
         size_t next_idx = (size_t) (elapsed() / frame_duration) + 1;
         next_idx = next_idx >= frames->size() ? cur_idx : next_idx;
 
-        cur_frame.clear();
+        cur_frame.clear({0, 0, 0, 0});
+
+        sf::RenderStates state;
 
         double frac = (elapsed() - frame_duration * ((int) (elapsed() / frame_duration))) / frame_duration;
 

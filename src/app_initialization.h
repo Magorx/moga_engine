@@ -41,7 +41,7 @@ void initialize_photoshop(ChemEngine &moga) {
 
     new_canvas_button_style = StdStyle::Button::hide();
 
-    new_canvas_button = new v_Button({50, 50}, new_canvas_button_style);
+    new_canvas_button = new v_Button({50, 25}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
 
     moga.resman.add(new_canvas_button_style);
@@ -57,7 +57,7 @@ void initialize_photoshop(ChemEngine &moga) {
 
     new_canvas_button_style = StdStyle::Button::close();
 
-    new_canvas_button = new v_Button({{110, 50}, 50}, new_canvas_button_style);
+    new_canvas_button = new v_Button({{110, 15}, 64}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
 
     moga.resman.add(new_canvas_button_style);
