@@ -1,7 +1,7 @@
 #include "highlighter.h"
 
 
-const double HIGHLIGHTER_ON_COEF = 0.3;
+const double HIGHLIGHTER_ON_COEF = 0.0;
 
 
 v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef):

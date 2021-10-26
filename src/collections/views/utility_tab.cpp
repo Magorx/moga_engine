@@ -34,11 +34,13 @@ b_hide(new v_Button({0, 0}, style ? style->hide_button : nullptr)),
 v_drag_pod(new v_DragPad({0, {size.x() - 2 * size.y(), size.y()}})),
 v_options(v_Stretcher::X(size.y())),
 
-v_accessory(new v_Button({0, size.y()}, (SmartColor*) nullptr, nullptr, 0))
+v_accessory(new v_Button({0, size.y()}, (SmartColor*) nullptr, nullptr, 0)),
+
+v_l_corner(new v_Highlighter({0, size.y()}, nullptr, nullptr, 0)),
+v_r_corner(new v_Highlighter({{size.x() - size.y(), 0}, size.y()}, nullptr, nullptr, 0)),
+v_middle  (new v_Highlighter({{size.y(), 0}, {size.x() - 2 * size.y(), size.y()}}, nullptr, nullptr, 0))
 {
     appearenced = true;
-
-    set_appearence(style->bar);
 
     buttons_layout->layout_add(b_hide);
     buttons_layout->layout_add(b_close);
@@ -46,6 +48,17 @@ v_accessory(new v_Button({0, size.y()}, (SmartColor*) nullptr, nullptr, 0))
     add_subview(buttons_layout);
     add_subview(v_accessory);
     add_subview(v_drag_pod);
+
+    add_subview(v_l_corner);
+    add_subview(v_r_corner);
+    add_subview(v_middle);
+
+    if (style) {
+        v_l_corner->set_appearence(style->l_corner);
+        v_r_corner->set_appearence(style->r_corner);
+        v_middle->set_appearence(style->bar);
+    }
+
 
     b_close->e_mouse_press.add(new AVCloseGenerator(b_close));
 }

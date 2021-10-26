@@ -12,7 +12,10 @@ namespace UtilBar {
             StdStyle::Button::hide(),
             StdStyle::Button::basic(),
 
-            new AppearenceTexture(Resources.texture.util_bar.basic.bar)
+            new AppearenceTexture(Resources.texture.util_bar.basic.bar),
+
+            new AppearenceTexture(Resources.texture.util_bar.basic.l_corner),
+            new AppearenceTexture(Resources.texture.util_bar.basic.r_corner, {-1, 1})
         };
     }
 

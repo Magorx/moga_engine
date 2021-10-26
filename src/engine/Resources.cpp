@@ -11,6 +11,8 @@ sf::Texture *load_texture(const char *filename) {
         printf("can't load texture [%s]\n", filename);
     }
 
+    texture->setRepeated(true);
+
     return texture;
 }
 
@@ -121,7 +123,9 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     texture.util_bar.basic.close_button = &texture.button.close;
     texture.util_bar.basic.hide_button  = &texture.button.hide;
 
-    texture.util_bar.basic.bar = load_texture(IMG("util_bar/basic.png"));
+    texture.util_bar.basic.bar      = load_texture(IMG("util_bar/basic/middle.png"));
+    texture.util_bar.basic.l_corner = load_texture(IMG("util_bar/basic/corner.png"));
+    texture.util_bar.basic.r_corner = load_texture(IMG("util_bar/basic/corner.png"));
 
     texture.window.basic.util_bar = &texture.util_bar.basic;
     texture.window.basic.frame = color.alpha_blue;

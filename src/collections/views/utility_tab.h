@@ -21,6 +21,10 @@ class v_UtilityTab : public v_Highlighter {
 
     v_Button *v_accessory;
 
+    v_Highlighter *v_l_corner;
+    v_Highlighter *v_r_corner;
+    v_Highlighter *v_middle;
+
 public:
 
     static const Color close_button_color;

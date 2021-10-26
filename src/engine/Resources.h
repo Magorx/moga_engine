@@ -33,6 +33,8 @@ struct ToolResources {
 
 struct res_UtilityBarResources {
     RTexture *bar;
+    RTexture *l_corner;
+    RTexture *r_corner;
 
     AVMouseReactionResources *close_button;
     AVMouseReactionResources *hide_button;

@@ -11,12 +11,17 @@ struct UtilityBarStyle : public Style {
 
     MouseReactionStyle *accessory;
 
+    Appearence *l_corner;
+    Appearence *r_corner;
+
     Appearence *bar;
 
-    UtilityBarStyle(MouseReactionStyle *close_button, MouseReactionStyle *hide_button, MouseReactionStyle *accessory, Appearence *bar) :
+    UtilityBarStyle(MouseReactionStyle *close_button, MouseReactionStyle *hide_button, MouseReactionStyle *accessory, Appearence *bar, Appearence *l_corner, Appearence *r_corner) :
     close_button(close_button),
     hide_button(hide_button),
     accessory(accessory),
+    l_corner(l_corner),
+    r_corner(r_corner),
     bar(bar)
     {}
 
