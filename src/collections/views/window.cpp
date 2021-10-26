@@ -20,7 +20,7 @@ text_color({230, 230, 210})
 
 v_Window::v_Window(const char *name, const ViewBody &body, double header_size, WindowStyle *style, bool draggable, AbstractView *parent) :
 v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0),
-header(new v_UtilityTab({body.size.x(), header_size}, style ? style->header : nullptr)),
+header(new v_UtilityTab({body.size.x() + PX_WINDOW_PADDING * 2, header_size}, style ? style->header : nullptr)),
 text_color({255, 255, 255})
 {
     header->get_body().position.content[1] -= header_size;
@@ -35,7 +35,11 @@ text_color({255, 255, 255})
     set_focuseable(true);
 
     if (style->body) {
-        auto content = new v_Highlighter({0, {400, 400}}, nullptr, nullptr, 0);
+        auto content = new v_Highlighter({0, body.size + Vec2d{PX_WINDOW_PADDING * 2, PX_WINDOW_PADDING}}, nullptr, nullptr, 0);
+        content->set_appearence(style->body);
+        add_subview(content);
+
+        content = new v_Highlighter({{PX_WINDOW_PADDING, 0}, body.size}, nullptr, nullptr, 0);
         content->set_appearence(style->body);
         add_subview(content);
     }

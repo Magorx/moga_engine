@@ -7,6 +7,9 @@
 #include "visual/style/window_style.h"
 
 
+const int PX_WINDOW_PADDING = 5;
+
+
 class v_Window : public v_Highlighter {
     v_UtilityTab *header;
 

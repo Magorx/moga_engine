@@ -67,11 +67,17 @@ struct ResourcesHolder {
 
         struct {
             res_WindowResources basic;
+
+
         } window;
 
-        RTexture *frame;
+        RTexture *alpha_blue;
         RTexture *frame_gray;
     } texture;
+
+    struct {
+        RTexture *alpha_blue;
+    } color;
 
     struct {
         AnimationResourse fan;

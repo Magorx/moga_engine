@@ -53,7 +53,11 @@ add_executable(moga
         src/collections/renderables/renderables.cpp
         src/collections/objects/objects.cpp
 
+        # styles
+
         src/collections/styles/button.cpp
+        src/collections/styles/util_bar.cpp
+        src/collections/styles/window.cpp
 
         src/collections/views/button.cpp
         src/collections/views/toggler.cpp

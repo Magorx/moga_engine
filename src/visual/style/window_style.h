@@ -9,4 +9,10 @@
 struct WindowStyle : public Style {
     UtilityBarStyle *header;
     Appearence *body;
+
+    WindowStyle(UtilityBarStyle *header, Appearence *body) :
+    header(header),
+    body(body)
+    {}
+
 };

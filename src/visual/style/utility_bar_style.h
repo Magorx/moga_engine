@@ -13,6 +13,13 @@ struct UtilityBarStyle : public Style {
 
     Appearence *bar;
 
+    UtilityBarStyle(MouseReactionStyle *close_button, MouseReactionStyle *hide_button, MouseReactionStyle *accessory, Appearence *bar) :
+    close_button(close_button),
+    hide_button(hide_button),
+    accessory(accessory),
+    bar(bar)
+    {}
+
     virtual ~UtilityBarStyle() {
         delete close_button;
         delete hide_button;

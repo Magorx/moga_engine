@@ -43,7 +43,8 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 void ResourcesHolder::init(MogaEngine *engine_) {
     engine = engine_;
 
-    texture.frame      = load_texture(IMG("frame.png"));
+    color.alpha_blue = load_texture(IMG("color/alpha_blue.png"));
+
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
 
     texture.button.basic.idle    = load_texture(BUTTON_IMG("basic", "idle.png"));
@@ -118,16 +119,16 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     });
 
     texture.util_bar.basic.close_button = &texture.button.close;
-    texture.util_bar.basic.hide_button = &texture.button.hide;
+    texture.util_bar.basic.hide_button  = &texture.button.hide;
 
     texture.util_bar.basic.bar = load_texture(IMG("util_bar/basic.png"));
 
     texture.window.basic.util_bar = &texture.util_bar.basic;
-    texture.window.basic.frame = texture.frame;
+    texture.window.basic.frame = color.alpha_blue;
 }
 
 ResourcesHolder::~ResourcesHolder() {
-    delete texture.frame;
+    delete texture.alpha_blue;
     delete texture.frame_gray;
 
     delete texture.button.basic.idle   ;
@@ -172,4 +173,4 @@ AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTextur
 }
 
 
-ResourcesHolder Resources {nullptr, {}, {}, {}, {}};
+ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}};
