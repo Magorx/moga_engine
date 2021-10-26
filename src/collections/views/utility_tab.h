@@ -11,6 +11,11 @@
 #include "visual/style/utility_bar_style.h"
 
 
+const int PX_UTIL_HEADER_SIZE = 38;
+const int PX_UTIL_BUTTON_SIZE = 32;
+const int PX_UTIL_PADDING = (PX_UTIL_HEADER_SIZE - PX_UTIL_BUTTON_SIZE) / 2;
+
+
 class v_UtilityTab : public v_Highlighter {
     v_HorizontalLayout *buttons_layout;
 

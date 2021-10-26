@@ -47,7 +47,9 @@ struct res_WindowResources {
 
 struct ResourcesHolder {
     MogaEngine *engine;
-    std::vector<AppearenceAnimation*> created_animations;
+
+    std::vector<sf::Texture*> created_textures;
+    std::vector<Appearence*> created_apprs;
 
     struct {
         struct {
@@ -78,10 +80,6 @@ struct ResourcesHolder {
     } texture;
 
     struct {
-        RTexture *alpha_blue;
-    } color;
-
-    struct {
         AnimationResourse fan;
         AnimationResourse lightning_idle;
         AnimationResourse lightning_hover;
@@ -98,6 +96,7 @@ struct ResourcesHolder {
     void init(MogaEngine *engine_);
 
     AppearenceAnimation *create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped = false, double time_coef = 1);
+    RTexture *create_color(RGBA color);
 };
 
 extern ResourcesHolder Resources;

@@ -1,6 +1,8 @@
 #include "Resources.h"
 #include "engine/moga_engine.h"
 
+#include <cstring>
+
 
 sf::Texture *load_texture(const char *filename) {
     sf::Texture *texture = new sf::Texture();
@@ -12,6 +14,25 @@ sf::Texture *load_texture(const char *filename) {
     }
 
     texture->setRepeated(true);
+
+    return texture;
+}
+
+sf::Texture *generate_color_texture(const RGBA color, int w = 32, int h = 32) {
+    sf::Texture *texture = new sf::Texture();
+    if (!texture) {
+        printf("can't alloc memory for color (%d, %d, %d, %d)\n", color.r, color.g, color.b, color.a);
+    }
+    texture->create(w, h);
+
+    RGBA *buffer = new RGBA[w * h];
+    for (int i = 0; i < w * h; ++i) {
+        buffer[i] = color;
+    }
+
+    texture->update((sf::Uint8*) buffer);
+
+    delete[] buffer;
 
     return texture;
 }
@@ -44,8 +65,6 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 
 void ResourcesHolder::init(MogaEngine *engine_) {
     engine = engine_;
-
-    color.alpha_blue = load_texture(IMG("color/alpha_blue.png"));
 
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
 
@@ -128,7 +147,7 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     texture.util_bar.basic.r_corner = load_texture(IMG("util_bar/basic/corner.png"));
 
     texture.window.basic.util_bar = &texture.util_bar.basic;
-    texture.window.basic.frame = color.alpha_blue;
+    texture.window.basic.frame = generate_color_texture({203, 219, 252, 200});
 }
 
 ResourcesHolder::~ResourcesHolder() {
@@ -151,10 +170,18 @@ ResourcesHolder::~ResourcesHolder() {
     // delete texture.button.b3d.hovered;
     delete texture.button.b3d.pressed;
 
-    delete font.arial;
+    delete texture.window.basic.frame;
 
-    for (auto anim : created_animations) {
-        delete anim;
+    delete font.arial;
+    delete font.aseprite;
+    delete font.montserrat;
+
+    for (auto appr : created_apprs) {
+        delete appr;
+    }
+
+    for (auto txt : created_textures) {
+        delete txt;
     }
 }
 
@@ -174,6 +201,12 @@ AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTextur
     }
 
     return animation;
+}
+
+RTexture *ResourcesHolder::create_color(RGBA color) {
+    auto color_texture = generate_color_texture(color);
+    created_textures.push_back(color_texture);
+    return color_texture;
 }
 
 

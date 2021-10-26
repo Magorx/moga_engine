@@ -73,7 +73,7 @@ void initialize_photoshop(ChemEngine &moga) {
 
     auto window_style = StdStyle::Window::basic();
 
-    auto window = new v_Window("Aboba", {200, 200}, 32, window_style);
+    auto window = new v_Window("Aboba", {200, 200}, window_style);
 
     moga.add_view(window);
 

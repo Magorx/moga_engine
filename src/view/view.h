@@ -99,11 +99,11 @@ public:
     EventAccResult operator()(const Event::Close &event, const EventAccResult *cur_res = nullptr) override;
 };
 
-class AVCloseGenerator : public EventAcceptor<AbstractView, Event::MousePress> {
+class AVCloseGenerator : public EventAcceptor<AbstractView, Event::MouseRelease> {
 public:
     AVCloseGenerator(AbstractView *view);
 
-    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
+    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 

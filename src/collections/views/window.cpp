@@ -1,7 +1,7 @@
 #include "window.h"
 
 
-v_Window::v_Window(const char *name, const ViewBody &body, double header_size, SmartColor *header_color, bool draggable, AbstractView *parent, double highlight_coef) :
+v_Window::v_Window(const char *name, const ViewBody &body, SmartColor *header_color, bool draggable, double header_size, AbstractView *parent, double highlight_coef) :
 v_Highlighter(body, nullptr, parent, highlight_coef),
 header(new v_UtilityTab({body.size.x(), header_size}, header_color)),
 text_color({230, 230, 210})
@@ -18,7 +18,7 @@ text_color({230, 230, 210})
     set_focuseable(true);
 }
 
-v_Window::v_Window(const char *name, const ViewBody &body, double header_size, WindowStyle *style, bool draggable, AbstractView *parent) :
+v_Window::v_Window(const char *name, const ViewBody &body, WindowStyle *style, bool draggable, double header_size, AbstractView *parent) :
 v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0),
 header(new v_UtilityTab({body.size.x() + PX_WINDOW_PADDING * 2, header_size}, style ? style->header : nullptr)),
 text_color({255, 255, 255})

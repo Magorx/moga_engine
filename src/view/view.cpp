@@ -247,7 +247,7 @@ EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, c
 
 AVCloseGenerator::AVCloseGenerator(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVCloseGenerator::operator()(const Event::MousePress &, const EventAccResult *) {
+EventAccResult AVCloseGenerator::operator()(const Event::MouseRelease &, const EventAccResult *) {
     acceptor->e_close.emit({});
     return EventAccResult::cont;
 }
