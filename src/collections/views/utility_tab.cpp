@@ -40,7 +40,7 @@ v_accessory(new v_Button({0, size.y()}, (SmartColor*) nullptr, nullptr, 0)),
 
 v_l_corner(new v_Highlighter({0, size.y()}, nullptr, nullptr, 0)),
 v_r_corner(new v_Highlighter({{size.x() - size.y(), 0}, size.y()}, nullptr, nullptr, 0)),
-v_middle  (new v_Highlighter({{size.y(), 0}, {size.x() - 2 * size.y(), size.y()}}, nullptr, nullptr, 0))
+v_middle  (new v_Repeater({{size.y(), 0}, {size.x() - 2 * size.y(), size.y()}}, style ? style->bar : nullptr, 32))
 {
     appearenced = true;
 

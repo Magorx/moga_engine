@@ -20,5 +20,5 @@ public:
 
     virtual void add_subview(AbstractView *subview) override;
 
-    inline AbstractView *get_accessory() {return header ? header->get_accessory() : nullptr;   }
+    inline AbstractView *get_accessory() { return header ? header->get_accessory() : nullptr; }
 };

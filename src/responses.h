@@ -78,31 +78,11 @@ public:
 
     EventAccResult operator()(const Event::MouseRelease &, const EventAccResult*) override {
 
+        auto window_style = StdStyle::Window::basic();
 
+        auto window = new v_Window("Aboba", {200, 200}, window_style);
 
-        // WindowStyle *style = new WindowStyle {
-        //     new UtilityBarStyle {
-
-        //     },
-
-        // };
-
-        // v_Window *window = new v_Window("window", {400, 400}, 35, Resources.texture.window.basic);
-        // window->get_body().position = {50, 50};
-        // engine->add_view(window);
-
-        // auto accessory = window->get_accessory();
-
-        // auto anima_idle = new AppearenceAnimation(&Resources.animation.lightning_idle.frames, 0.13, true);
-        // auto anima_hover = new AppearenceAnimation(&Resources.animation.lightning_hover.frames, 0.09);
-        // engine->add_tickable(anima_idle);
-        // engine->add_tickable(anima_hover);
-        // anima_idle->start();
-        // anima_hover->start();
-        
-        // accessory->set_appearence(anima_idle);
-
-        // accessory->e_mouse_move.add(new AVAnimatorMove(accessory, anima_hover, anima_idle));
+        engine->add_view(window);
 
         return EventAccResult::none;
     }

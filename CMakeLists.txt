@@ -70,6 +70,7 @@ add_executable(moga
         src/collections/views/menu.cpp
         src/collections/views/submenu.cpp
         src/collections/views/labeled_view.cpp
+        src/collections/views/repeater.cpp
         src/collections/views/utility_tab.cpp
         src/collections/views/window.cpp
 

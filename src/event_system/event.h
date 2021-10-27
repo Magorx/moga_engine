@@ -203,6 +203,9 @@ public:
         }
 
         sub_es.erase(sub_es.begin() + sub_idx);
+        for (size_t i = sub_idx; i < sub_es.size(); ++i) {
+            sub_es[i]->index_in_parent = i;
+        }
     }
 
     const std::vector<EventSystem*> &get_sub_es() {
@@ -329,6 +332,7 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
     }
 
     for (auto sub_es : deleted_sub_es) {
+        printf("deleting %p disp %s from %p\n", sub_es, id, this);
         delete sub_es;
     }
 
