@@ -7,7 +7,7 @@ const int SCR_H  = 600;
 #include "scene_generation.h"
 #include "responses.h"
 
-void initialize_photoshop(ChemEngine &moga) {
+void initialize_photoshop(MogaEngine &moga) {
     SmartColor *color = new SmartColorSin(Color{40, 230, 150});
     moga.add_tickable(color);
     create_cage(&moga, color);
@@ -32,8 +32,6 @@ void initialize_photoshop(ChemEngine &moga) {
     moga.resman.add(font_color);
 
     new_canvas_button->add_label("New CANVAS", 25, font_color);
-
-    opt_panel->add_spaceholder(2);
 
     opt_panel->layout_add(new_canvas_button);
     
@@ -63,6 +61,6 @@ void initialize_photoshop(ChemEngine &moga) {
 
     // ==================================================================================
 
-    opt_panel->add_spaceholder(2);
+    opt_panel->add_spaceholder(6);
 
 }

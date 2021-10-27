@@ -6,7 +6,7 @@
 
 int main() {
     srand(time(nullptr));
-    ChemEngine moga("MOGA", SCR_W, SCR_H, 1);
+    MogaEngine moga("MOGA", SCR_W, SCR_H, 1);
 
     Resources.init(&moga);
 

@@ -42,7 +42,7 @@ public:
     Renderer(const char *window_name, int size_x, int size_y);
     ~Renderer();
 
-    inline void clear()   { scr.window->clear(); }
+    inline void clear(sf::Color color = sf::Color(0, 0, 0, 255)) { scr.window->clear(color); }
     inline void display() { scr.window->display(); }
 
     inline sf::RenderWindow *get_window() const {

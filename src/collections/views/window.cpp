@@ -35,11 +35,11 @@ text_color({255, 255, 255})
     set_focuseable(true);
 
     if (style->body) {
-        auto content = new v_Highlighter({0, body.size + Vec2d{PX_WINDOW_PADDING * 2, PX_WINDOW_PADDING}}, nullptr, nullptr, 0);
-        content->set_appearence(style->body);
+        auto content = new v_Highlighter({{PX_WINDOW_PADDING, 0}, body.size}, nullptr, nullptr, 0);
+        content->set_appearence(new AppearenceColor({255, 255, 255, 255}));
         add_subview(content);
 
-        content = new v_Highlighter({{PX_WINDOW_PADDING, 0}, body.size}, nullptr, nullptr, 0);
+        content = new v_Highlighter({0, body.size + Vec2d{PX_WINDOW_PADDING * 2, PX_WINDOW_PADDING}}, nullptr, nullptr, 0);
         content->set_appearence(style->body);
         add_subview(content);
     }
