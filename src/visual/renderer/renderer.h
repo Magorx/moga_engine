@@ -38,6 +38,9 @@ class Renderer {
     Appearence *appearence;
     std::vector<RVertex> cur_verticies;
 
+    std::vector<sf::RenderTarget*> targets;
+    sf::RenderTarget *cur_target;
+
 public:
     Renderer(const char *window_name, int size_x, int size_y);
     ~Renderer();
@@ -57,16 +60,31 @@ public:
     void draw_line(Vec2d p1, Vec2d p2, const RGBA &color);
     void draw_square(Vec2d pos, const double size, const RGBA &color);
     void draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color);
-    void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const RFont *font = Resources.font.aseprite);
+    void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const RFont *font = Resources.font.basic);
 
     void apr_draw_circle(Vec2d pos, double rad, int granularity);
     void apr_draw_rectangle(Vec2d pos, const Vec2d size);
 
+    void draw_texture(Vec2d pos, RTexture *texture);
+
     inline void set_appearence(Appearence *appearence_) { appearence = appearence_; }
 
     static void load_font(sf::Font &font_holder, const char *font_filename, char **cur_font_filename = nullptr);
-    static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.aseprite);
+    static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.basic);
 
+    void push_target(sf::RenderTarget *target) {
+        targets.push_back(target);
+        cur_target = target;
+    }
+
+    void pop_target() {
+        if (targets.size() <= 1) {
+            return;
+        }
+
+        targets.pop_back();
+        cur_target = targets[targets.size() - 1];
+    }
 };
 
 #endif // RENDERER_H

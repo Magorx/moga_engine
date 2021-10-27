@@ -12,7 +12,7 @@ protected:
     Renderer *renderer;
 
     Layer *draw_layer;
-    RGBA draw_color;
+    RGBA   draw_color;
 
     bool mouse_down = false;
     Vec2d cur_pos = {0, 0};
@@ -40,7 +40,7 @@ public:
         cur_pos = pos;
     }
 
-    virtual void on_mouse_move(const Vec2d &from, const Vec2d &to) {
+    virtual void on_mouse_move(const Vec2d &, const Vec2d &to) {
         cur_pos = to;
     }
     

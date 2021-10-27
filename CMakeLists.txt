@@ -88,6 +88,11 @@ add_executable(moga
         # resources
         src/engine/Resources.cpp
 
+        # redactor
+
+        src/redactor/tools/brush.cpp
+        src/redactor/tools/tool_manager.cpp
+
         # chemistry
         src/chemistry/chem_engine.cpp
         src/chemistry/chem_reactions.cpp

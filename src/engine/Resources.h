@@ -89,6 +89,8 @@ struct ResourcesHolder {
         RFont *arial;
         RFont *montserrat;
         RFont *aseprite;
+
+        RFont *basic;
     } font;
 
     ~ResourcesHolder();

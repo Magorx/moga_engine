@@ -11,8 +11,9 @@
 class v_Menu : public v_VerticalLayout {
     std::vector<char*> labels;
 
-    SmartColor *button_color;
-    SmartColor *text_color;
+    // SmartColor *button_color;
+    // SmartColor *text_color;
+    
     int char_size;
     Vec2d button_scale;
 

@@ -1,5 +1,6 @@
 #include "chemistry/chem_engine.h"
 
+#include "redactor/canvas.h"
 
 #include "app_initialization.h"
 
