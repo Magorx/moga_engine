@@ -332,7 +332,6 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
     }
 
     for (auto sub_es : deleted_sub_es) {
-        printf("deleting %p disp %s from %p\n", sub_es, id, this);
         delete sub_es;
     }
 
