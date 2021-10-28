@@ -24,6 +24,10 @@ public:
     tool_manager(tool_manager),
     size(size)
     {
+        if (!renderer || !tool_manager) {
+            printf("Canvas was created without renderer or tool_manager, luckily to crush now\n");
+        }
+
         active_layer = new Layer(renderer, size);
         layers.push_back(active_layer);
 
@@ -56,6 +60,25 @@ public:
     void new_layer() {
         active_layer = new Layer(renderer, size);
         layers.push_back(active_layer);
+    }
+
+    void on_mouse_down(const Vec2d &pos) {
+        tool_manager->on_mouse_down(pos);
+    }
+
+    void on_mouse_up(const Vec2d &pos) {
+        tool_manager->on_mouse_up(pos);
+    }
+
+    void on_mouse_move(const Vec2d &from, const Vec2d &to) {
+        tool_manager->on_mouse_move(from, to);
+    }
+    
+    void on_activate() {
+        tool_manager->on_activate();
+    }
+    void on_deactivate() {
+        tool_manager->on_deactivate();
     }
 
 };

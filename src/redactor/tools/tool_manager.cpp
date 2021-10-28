@@ -3,7 +3,7 @@
 
 
 ToolManager::ToolManager(Renderer *renderer):
-renderer(renderer),
+Tool(renderer),
 active_canvas(nullptr),
 draw_color({0, 0, 0, 255}),
 tools()
@@ -48,4 +48,43 @@ void ToolManager::update_active_tool() {
     active_tool->set_draw_layer(active_canvas->get_active_layer());
     active_tool->set_draw_color(draw_color);
     active_tool->set_draw_layer(active_canvas->get_draw_layer());
+}
+
+void ToolManager::on_mouse_down(const Vec2d &pos) {
+    if (!active_tool) {
+        return;
+    } else {
+        active_tool->on_mouse_down(pos);
+    }
+}
+
+void ToolManager::on_mouse_up(const Vec2d &pos) {
+    if (!active_tool) {
+        return;
+    } else {
+        active_tool->on_mouse_up(pos);
+    }
+}
+
+void ToolManager::on_mouse_move(const Vec2d &from, const Vec2d &to) {
+    if (!active_tool) {
+        return;
+    } else {
+        active_tool->on_mouse_move(from, to);
+    }
+}
+
+void ToolManager::on_activate() {
+    if (!active_tool) {
+        return;
+    } else {
+        active_tool->on_activate();
+    }
+}
+void ToolManager::on_deactivate() {
+    if (!active_tool) {
+        return;
+    } else {
+        active_tool->on_deactivate();
+    }
 }
