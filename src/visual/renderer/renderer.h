@@ -28,18 +28,20 @@ struct Screen {
 };
 
 
+struct RendererState {
+    Vec2d offset;
+    Appearence *appearence;
+    sf::RenderTarget *target;
+};
+
+
 class Renderer {
     Screen scr;
-    Vec2d offset;
 
-    sf::Font cur_font;
-    char *cur_font_filename;
-
-    Appearence *appearence;
     std::vector<RVertex> cur_verticies;
 
-    std::vector<sf::RenderTarget*> targets;
-    sf::RenderTarget *cur_target;
+    std::vector<RendererState> states;
+    RendererState *state;
 
 public:
     Renderer(const char *window_name, int size_x, int size_y);
@@ -53,7 +55,7 @@ public:
     }
 
     inline void shift(const Vec2d &delta) {
-        offset += delta;
+        state->offset += delta;
     }
 
     void draw_circle(Vec2d pos, const double rad, const RGBA &color);
@@ -67,23 +69,27 @@ public:
 
     void draw_texture(Vec2d pos, RTexture *texture);
 
-    inline void set_appearence(Appearence *appearence_) { appearence = appearence_; }
+    inline void set_appearence(Appearence *appearence_) { state->appearence = appearence_; }
 
-    static void load_font(sf::Font &font_holder, const char *font_filename, char **cur_font_filename = nullptr);
     static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.basic);
 
     void push_target(sf::RenderTarget *target) {
-        targets.push_back(target);
-        cur_target = target;
+        if (state) {
+            states.push_back({{0, 0}, state->appearence, target});
+        } else {
+            states.push_back({{0, 0}, nullptr, target});
+        }
+
+        state = &states[states.size() - 1];
     }
 
     void pop_target() {
-        if (targets.size() <= 1) {
+        if (states.size() <= 1) {
             return;
         }
 
-        targets.pop_back();
-        cur_target = targets[targets.size() - 1];
+        states.pop_back();
+        state = &states[states.size() - 1];
     }
 };
 

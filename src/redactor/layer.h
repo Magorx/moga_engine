@@ -33,6 +33,10 @@ struct Layer {
         return target;
     }
 
+    const RTexture *get_texture() {
+        return &target->getTexture();
+    }
+
     void clear(const sf::Color &color) { target->clear(color); }
 
     void flush_to(Layer *layer) {

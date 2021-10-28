@@ -73,6 +73,7 @@ add_executable(moga
         src/collections/views/repeater.cpp
         src/collections/views/utility_tab.cpp
         src/collections/views/window.cpp
+        src/collections/views/canvas.cpp
 
         src/collections/actions/toggle.cpp
 
@@ -92,6 +93,7 @@ add_executable(moga
 
         src/redactor/tools/brush.cpp
         src/redactor/tools/tool_manager.cpp
+        src/redactor/canvas.cpp
 
         # chemistry
         src/chemistry/chem_engine.cpp

@@ -1,11 +1,11 @@
 #pragma once
 
 
-#include "redactor/canvas.h"
 #include "tool.h"
 
 #include "visual/renderer/renderer.h"
 
+class Canvas;
 
 class ToolManager {
     Renderer *renderer;

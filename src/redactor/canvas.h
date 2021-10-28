@@ -4,10 +4,13 @@
 #include <vector>
 
 #include "layer.h"
+#include "tools/tool_manager.h"
 
 
 class Canvas {
     Renderer *renderer;
+    ToolManager *tool_manager;
+    Vec2d size;
 
     std::vector<Layer*> layers;
     Layer *active_layer;
@@ -16,8 +19,10 @@ class Canvas {
     Layer *final_layer;
 
 public:
-    Canvas(Renderer *renderer, Vec2d size):
-    renderer(renderer)
+    Canvas(Renderer *renderer, ToolManager *tool_manager, Vec2d size):
+    renderer(renderer),
+    tool_manager(tool_manager),
+    size(size)
     {
         active_layer = new Layer(renderer, size);
         layers.push_back(active_layer);
@@ -46,6 +51,11 @@ public:
         for (auto layer : layers) {
             layer->flush_to(final_layer);
         }
+    }
+
+    void new_layer() {
+        active_layer = new Layer(renderer, size);
+        layers.push_back(active_layer);
     }
 
 };
