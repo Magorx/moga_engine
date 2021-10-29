@@ -31,6 +31,8 @@ void t_Brush::on_mouse_up(const Vec2d &pos) {
 void t_Brush::on_mouse_move(const Vec2d &from, const Vec2d &to) {
     Tool::on_mouse_move(from, to);
 
+    if (!mouse_down) return;
+
     draw_point(from);
     draw_point(to);
 }

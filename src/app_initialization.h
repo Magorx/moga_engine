@@ -47,7 +47,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto canvas = new v_Canvas({0, 200}, moga.visual->get_renderer(), moga.get_tool_manager());
 
-    window->add_subview(canvas);
+    window->get_content()->add_subview(canvas);
 
     moga.get_tool_manager()->set_active_canvas(canvas->get_canvas());
     moga.get_tool_manager()->update_active_tool();

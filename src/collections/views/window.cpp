@@ -22,10 +22,17 @@ text_color({230, 230, 210})
 v_Window::v_Window(const char *name, const ViewBody &body, WindowStyle *style, bool draggable, double header_size, AbstractView *parent) :
 v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0),
 header(new v_UtilityTab({body.size.x() + PX_WINDOW_PADDING * 2, header_size}, style ? style->header : nullptr)),
-content(new v_Highlighter({{PX_WINDOW_PADDING, 0}, body.size}, nullptr, nullptr, 0)),
+content(new v_Highlighter({{0, 0}, body.size}, nullptr, nullptr, 0)),
 text_color({255, 255, 255})
 {
+    if (style->body) {
+        auto frame = new v_Highlighter({-padding, body.size + Vec2d{padding * 2, 2 * padding}}, nullptr, nullptr, 0);
+        frame->set_appearence(style->body);
+        add_subview(frame);
+    }
+
     header->get_body().position.content[1] -= header_size;
+    header->get_body().position.content[0] -= padding;
     add_subview(header);
     
     if (draggable) header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this, false));
@@ -36,19 +43,16 @@ text_color({255, 255, 255})
     
     set_focuseable(true);
 
-    if (style->body) {
-        auto frame = new v_Highlighter({0, body.size + Vec2d{PX_WINDOW_PADDING * 2, PX_WINDOW_PADDING}}, nullptr, nullptr, 0);
-        frame->set_appearence(style->body);
-        add_subview(frame);
-    }
-
     content->set_appearence(new AppearenceColor({255, 255, 255, 255}));
     add_subview(content);
+
+    header->focus();
 }
 
 void v_Window::add_subview(AbstractView *subview) {
     if (!subview) return;
 
     subview->get_body().position.content[1] += header->get_body().size.content[1];
+    subview->get_body().position.content[0] += padding;
     v_Highlighter::add_subview(subview);
 }

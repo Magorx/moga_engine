@@ -5,8 +5,9 @@ v_Canvas::v_Canvas(const ViewBody &body, Renderer *renderer, ToolManager *tool_m
 v_Highlighter(body)
 {
     canvas = new Canvas(renderer, tool_manager, body.size);
+    canvas->get_final_layer()->get_target()->setRepeated(true);
 
-    set_appearence(new AppearenceTexture(canvas->get_final_layer()->get_texture(), {1, 1}));
+    set_appearence(new AppearenceTexture(canvas->get_final_layer()->get_texture(), {1, -1}));
     // set_appearence(new AppearenceTexture(Resources.texture.button.hide.idle));
 
     e_mouse_press.add(new AVMissPressBlocker(this));

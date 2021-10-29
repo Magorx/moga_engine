@@ -12,8 +12,9 @@ const int PX_WINDOW_PADDING = 5;
 
 class v_Window : public v_Highlighter {
     v_UtilityTab *header;
-
     AbstractView *content;
+
+    double padding = PX_WINDOW_PADDING;
 
     SmartColor text_color;
 public:
@@ -23,4 +24,5 @@ public:
     virtual void add_subview(AbstractView *subview) override;
 
     inline AbstractView *get_accessory() { return header ? header->get_accessory() : nullptr; }
+    inline AbstractView *get_content() { return content; }
 };
