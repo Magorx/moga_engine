@@ -165,12 +165,12 @@ EventAccResult AVMissPressBlocker::operator()(const Event::MousePress &event, co
 
 AVMissReleaseBlocker::AVMissReleaseBlocker(AbstractView *av) : EventAcceptor(av) {}
 
-EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &, const EventAccResult *) {
+EventAccResult AVMissReleaseBlocker::operator()(const Event::MouseRelease &event, const EventAccResult *) {
     acceptor->pressed = false;
  
-    // if (!acceptor->is_inside(event.position)) {
-    //     return EventAccResult::stop;
-    // }
+    if (!acceptor->is_inside(event.position)) {
+        return EventAccResult::stop;
+    }
 
     return EventAccResult::none;
 }

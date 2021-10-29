@@ -5,7 +5,7 @@
 #include "visual/animation/animation.h"
 
 
-inline sf::Color to_sf_color(const RColor &color) {
+inline sf::Color to_glib_color(const RColor &color) {
     return sf::Color(sf::Uint32(color.ui32));
 }
 

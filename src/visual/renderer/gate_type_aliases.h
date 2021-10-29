@@ -9,3 +9,4 @@ using RColor = RGBA;
 using RTexture = sf::Texture;
 using RRendTexture = sf::RenderTexture;
 using RFont = sf::Font;
+using RState = sf::RenderStates;

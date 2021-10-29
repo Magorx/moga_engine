@@ -7,8 +7,7 @@ v_Highlighter(body)
     canvas = new Canvas(renderer, tool_manager, body.size);
     canvas->get_final_layer()->get_target()->setRepeated(true);
 
-    set_appearence(new AppearenceTexture(canvas->get_final_layer()->get_texture(), {1, -1}));
-    // set_appearence(new AppearenceTexture(Resources.texture.button.hide.idle));
+    set_appearence(new AppearenceTexture(canvas->get_final_layer()->get_texture(), {1, 1}));
 
     e_mouse_press.add(new AVMissPressBlocker(this));
     e_mouse_release.add(new AVMissReleaseBlocker(this));
@@ -23,10 +22,18 @@ v_Canvas::~v_Canvas() {
     delete appearence;
 }
 
+void v_Canvas::render(Renderer *renderer)  {
+    v_Highlighter::render(renderer);
+
+    // renderer->draw_texture(body.position, canvas->get_active_layer()->get_texture(), false);
+}
+
 CanvasPressAcceptor::CanvasPressAcceptor(v_Canvas *canvas) : EventAcceptor(canvas) {}
 CanvasPressAcceptor::~CanvasPressAcceptor() {}
 
 EventAccResult CanvasPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
+    acceptor->canvas->grab_tool_manager_activity();
+
     acceptor->canvas->on_mouse_down(event.position);
 
     acceptor->canvas->flush_to_final();
@@ -49,6 +56,8 @@ CanvasMoveAcceptor::CanvasMoveAcceptor(v_Canvas *canvas) : EventAcceptor(canvas)
 CanvasMoveAcceptor::~CanvasMoveAcceptor() {}
 
 EventAccResult CanvasMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
+    if (!acceptor->is_pressed()) return EventAccResult::none;
+
     acceptor->canvas->on_mouse_move(event.from, event.to);
 
     acceptor->canvas->flush_to_final();

@@ -49,9 +49,6 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     window->get_content()->add_subview(canvas);
 
-    moga.get_tool_manager()->set_active_canvas(canvas->get_canvas());
-    moga.get_tool_manager()->update_active_tool();
-
     // ==================================================================================
 
     opt_panel->add_spaceholder(6);

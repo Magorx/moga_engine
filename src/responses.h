@@ -69,10 +69,10 @@ public:
 
 
 class AddNewCanvasReaction : public EventReaction<Event::MouseRelease> {
-    MogaEngine *engine;
+    RedactorEngine *engine;
 
 public:
-    AddNewCanvasReaction(MogaEngine *engine):
+    AddNewCanvasReaction(RedactorEngine *engine):
     engine(engine)
     {}
 
@@ -83,6 +83,10 @@ public:
         auto window = new v_Window("Aboba", {200, 200}, window_style);
 
         engine->add_view(window);
+
+        auto canvas = new v_Canvas({0, 200}, engine->visual->get_renderer(), engine->get_tool_manager());
+
+        window->get_content()->add_subview(canvas);
 
         return EventAccResult::none;
     }

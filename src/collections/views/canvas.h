@@ -21,6 +21,8 @@ public:
     v_Canvas(const ViewBody &body, Renderer *renderer, ToolManager *tool_manager);
     virtual ~v_Canvas();
 
+    virtual void render(Renderer *renderer) override;
+
     inline Canvas *get_canvas() { return canvas; }
 };
 

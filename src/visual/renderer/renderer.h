@@ -30,8 +30,17 @@ struct Screen {
 
 struct RendererState {
     Vec2d offset;
-    Appearence *appearence;
     sf::RenderTarget *target;
+
+    Appearence *appearence;
+    RState rmode;
+
+    // RendererState(Vec2d offset, sf::RenderTarget *target, Appearence *appearence, sf::RenderStates sf_state) :
+    // offset(offset),
+    // target(target),
+    // appearence(appearence),
+    // sf_state(sf_state)
+    // {}
 };
 
 
@@ -67,17 +76,18 @@ public:
     void apr_draw_circle(Vec2d pos, double rad, int granularity);
     void apr_draw_rectangle(Vec2d pos, const Vec2d size);
 
-    void draw_texture(Vec2d pos, RTexture *texture);
+    void draw_texture(Vec2d pos, const RTexture *texture, bool to_flip = true);
 
     inline void set_appearence(Appearence *appearence_) { state->appearence = appearence_; }
+    inline void set_render_state(RState rstate) { state->rmode = rstate; }
 
     static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.basic);
 
     void push_target(sf::RenderTarget *target) {
         if (state) {
-            states.push_back({{0, 0}, state->appearence, target});
+            states.push_back({{0, 0}, target, state->appearence, state->rmode});
         } else {
-            states.push_back({{0, 0}, nullptr, target});
+            states.push_back({{0, 0}, target, nullptr, {}});
         }
 
         state = &states[states.size() - 1];

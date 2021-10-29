@@ -45,6 +45,7 @@ void ToolManager::set_active_tool(size_t idx) {
 
 void ToolManager::set_active_canvas(Canvas *canvas) {
     active_canvas = canvas;
+    update_active_tool();
 }
 
 void ToolManager::update_active_tool() {
@@ -55,7 +56,6 @@ void ToolManager::update_active_tool() {
     active_tool->set_draw_color(draw_color);
 
     if (active_canvas) {
-        printf("setting layers\n");
         active_tool->set_draw_layer(active_canvas->get_active_layer());
         active_tool->set_draw_layer(active_canvas->get_draw_layer());
     }

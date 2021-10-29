@@ -21,7 +21,7 @@ void Renderer::draw_circle(Vec2d pos, const double rad, const RGBA &color) {
     circle.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
     circle.setOrigin({static_cast<float>(rad), static_cast<float>(rad)});
 
-    state->target->draw(circle);
+    state->target->draw(circle, state->rmode);
 }
 
 void Renderer::draw_line(Vec2d p1, Vec2d p2, const RGBA &color) {
@@ -35,7 +35,7 @@ void Renderer::draw_line(Vec2d p1, Vec2d p2, const RGBA &color) {
         sf::Vertex({static_cast<float>(p2.x()), static_cast<float>(p2.y())}, sf_color),
     };
 
-    state->target->draw(buffer, 2, sf::Lines);
+    state->target->draw(buffer, 2, sf::Lines, state->rmode);
 }
 
 void Renderer::draw_square(Vec2d pos, const double size, const RGBA &color) {
@@ -48,7 +48,7 @@ void Renderer::draw_square(Vec2d pos, const double size, const RGBA &color) {
     rect.setPosition({static_cast<float>(pos.x()), static_cast<float>(pos.y())});
     rect.setFillColor(sf_color);
 
-    state->target->draw(rect);
+    state->target->draw(rect, state->rmode);
 }
 
 void Renderer::draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color) {
@@ -61,7 +61,7 @@ void Renderer::draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color) {
     rect.setOrigin({static_cast<float>(-pos.x() - size.x() / 2), static_cast<float>(-pos.y() - size.y() / 2)});
     rect.setFillColor(sf_color);
 
-    state->target->draw(rect);
+    state->target->draw(rect, state->rmode);
 }
 
 void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA &font_color, const RGBA &back_color, bool to_background, bool to_centrize, const RFont *font) {
@@ -94,22 +94,30 @@ void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA
         sf::RectangleShape background(bounds);
         background.setFillColor(sf_color_back);
         background.setPosition(text.getPosition());
-        state->target->draw(background);
+        state->target->draw(background, state->rmode);
     }
 
-    state->target->draw(text);
+    state->target->draw(text, state->rmode);
 }
 
-void Renderer::draw_texture(Vec2d pos, RTexture *texture) {
+void Renderer::draw_texture(Vec2d pos, const RTexture *texture, bool to_flip) {
     if (!texture) return;
 
     pos += state->offset;
 
+    // texture->setRepeated(true);
+
     sf::Sprite sprite(*texture);
     sprite.setPosition({(float) pos.x(), (float) pos.y()});
-    // sprite.setScale(1, -1);
 
-    state->target->draw(sprite);
+    if (to_flip) {
+        auto size = sprite.getLocalBounds();
+
+        sprite.setOrigin(0, size.height);
+        sprite.setScale(1, -1);
+    } 
+
+    state->target->draw(sprite, state->rmode);
 }
 
 Vec2d Renderer::get_text_size(const char *text, int char_size, const RFont *font) {
@@ -142,7 +150,7 @@ void Renderer::apr_draw_circle(Vec2d pos, double rad, int granularity) {
     if (rmode) {
         state->target->draw(&cur_verticies[0], cur_verticies.size(), sf::TriangleFan, *rmode);
     } else {
-        state->target->draw(&cur_verticies[0], cur_verticies.size(), sf::TriangleFan);
+        state->target->draw(&cur_verticies[0], cur_verticies.size(), sf::TriangleFan, state->rmode);
     }
 }
 
@@ -161,6 +169,6 @@ void Renderer::apr_draw_rectangle(Vec2d pos, const Vec2d size) {
     if (rmode) {
         state->target->draw(&cur_verticies[0], cur_verticies.size(), sf::Quads, *rmode);
     } else {
-        state->target->draw(&cur_verticies[0], cur_verticies.size(), sf::Quads);
+        state->target->draw(&cur_verticies[0], cur_verticies.size(), sf::Quads, state->rmode);
     }
 }

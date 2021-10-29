@@ -7,11 +7,11 @@
 class AppearenceColor : public Appearence {
     sf::Color color;
 public:
-    AppearenceColor(const RGBA &color): Appearence(), color(to_sf_color(color)) {}
+    AppearenceColor(const RColor &color): Appearence(), color(to_glib_color(color)) {}
 
     virtual RVertex vertex(Vec2d on_screen_position, Vec2d) const override {
         return {{(float) on_screen_position[0], (float) on_screen_position[1]}, color};
     };
 
-    void set_color(const RGBA &color_) { color = to_sf_color(color_); }
+    void set_color(const RColor &color_) { color = to_glib_color(color_); }
 };

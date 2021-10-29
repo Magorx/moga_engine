@@ -8,7 +8,13 @@
     }
 
     renderer->push_target(draw_layer->get_target());
+
+    RState rmode;
+    rmode.blendMode = sf::BlendMode(sf::BlendMode::Factor::One, sf::BlendMode::Factor::Zero);
+    renderer->set_render_state(rmode);
+
     renderer->draw_circle(pos, size, draw_color);
+
     renderer->pop_target();
 }
 

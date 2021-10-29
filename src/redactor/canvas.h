@@ -16,62 +16,31 @@ class Canvas {
     Layer *active_layer;
 
     Layer *draw_layer;
+    Layer *inter_action_layer;
     Layer *final_layer;
 
 public:
-    Canvas(Renderer *renderer, ToolManager *tool_manager, Vec2d size):
-    renderer(renderer),
-    tool_manager(tool_manager),
-    size(size)
-    {
-        if (!renderer || !tool_manager) {
-            printf("Canvas was created without renderer or tool_manager, luckily to crush now\n");
-        }
+    Canvas(Renderer *renderer, ToolManager *tool_manager, Vec2d size);
 
-        active_layer = new Layer(renderer, size);
-        layers.push_back(active_layer);
-
-        draw_layer = new Layer(renderer, size);
-        final_layer = new Layer(renderer, size);
-    }
-
-    ~Canvas() {
-        for (auto layer : layers) {
-            delete layer;
-        }
-
-        delete draw_layer;
-    }
+    ~Canvas();
 
     Layer *get_active_layer() { return active_layer; }
     Layer *get_final_layer() { return final_layer; }
     Layer *get_draw_layer() { return draw_layer; }
 
     void flush_draw_to_active() {
+        // draw_layer->flush_to(inter_action_layer);
+        // inter_action_layer->flush_to(active_layer);
         draw_layer->flush_to(active_layer);
     }
 
-    void flush_to_final() {
-        flush_draw_to_active();
-        for (auto layer : layers) {
-            layer->flush_to(final_layer);
-        }
-    }
+    void flush_to_final();
 
-    void new_layer() {
-        active_layer = new Layer(renderer, size);
-        layers.push_back(active_layer);
-    }
+    void new_layer();
 
-    void on_mouse_down(const Vec2d &pos) {
-        tool_manager->on_mouse_down(pos);
-    }
+    void grab_tool_manager_activity();
 
-    void on_mouse_up(const Vec2d &pos) {
-        tool_manager->on_mouse_up(pos);
-    }
-
-    void on_mouse_move(const Vec2d &from, const Vec2d &to) {
-        tool_manager->on_mouse_move(from, to);
-    }
+    void on_mouse_down(const Vec2d &pos);
+    void on_mouse_up(const Vec2d &pos);
+    void on_mouse_move(const Vec2d &from, const Vec2d &to);
 };
