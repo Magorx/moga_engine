@@ -31,7 +31,7 @@ void Canvas::flush_to_final() {
     final_layer->clear();
     for (auto layer : layers) {
         if (layer == active_layer) {
-            inter_action_layer->clear({0, 0, 0, 0});
+            inter_action_layer->clear();
             active_layer->flush_to(inter_action_layer);
             draw_layer->flush_to(inter_action_layer, true);
             inter_action_layer->flush_to(final_layer);

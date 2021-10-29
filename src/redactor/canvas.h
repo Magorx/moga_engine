@@ -31,7 +31,7 @@ public:
     void flush_draw_to_active() {
         // draw_layer->flush_to(inter_action_layer);
         // inter_action_layer->flush_to(active_layer);
-        draw_layer->flush_to(active_layer);
+        draw_layer->flush_to(active_layer, false);
     }
 
     void flush_to_final();

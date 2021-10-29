@@ -87,7 +87,7 @@ public:
         if (state) {
             states.push_back({{0, 0}, target, state->appearence, state->rmode});
         } else {
-            states.push_back({{0, 0}, target, nullptr, {}});
+            states.push_back({{0, 0}, target, nullptr, {sf::BlendAlpha}});
         }
 
         state = &states[states.size() - 1];

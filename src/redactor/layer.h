@@ -40,10 +40,11 @@ struct Layer {
 
     void clear(const RColor &color = {0, 0, 0, 0}) { target->clear(to_glib_color(color)); }
 
-    void flush_to(Layer *layer, bool to_flip = false) {
+    void flush_to(Layer *layer, bool to_flip = false, RMode rmode = {}) {
         if (!layer || !renderer) return;
 
         renderer->push_target(layer->get_target());
+        renderer->set_render_state(rmode);
         renderer->draw_texture({0, 0}, (RTexture*) &target->getTexture(), to_flip);
         renderer->pop_target();
     }

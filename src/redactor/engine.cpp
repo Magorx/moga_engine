@@ -11,7 +11,7 @@ tool_manager(new ToolManager(visual->get_renderer()))
     t_Brush *t_brush = new t_Brush(tool_manager);
     t_brush->set_size(10);
     
-    tool_manager->set_draw_color({0, 200, 0, 125});
+    tool_manager->set_draw_color({0, 255, 0, 255 / 2});
 
     tool_manager->add_tool(t_brush);
     tool_manager->set_active_tool(0);
