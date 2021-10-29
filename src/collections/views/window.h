@@ -13,6 +13,8 @@ const int PX_WINDOW_PADDING = 5;
 class v_Window : public v_Highlighter {
     v_UtilityTab *header;
 
+    AbstractView *content;
+
     SmartColor text_color;
 public:
     v_Window(const char *name, const ViewBody &body, SmartColor *header_color, bool draggable = true, double header_size = PX_UTIL_HEADER_SIZE, AbstractView *parent = nullptr, double highlight_coef = 0);

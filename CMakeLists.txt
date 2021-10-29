@@ -95,9 +95,11 @@ add_executable(moga
         src/redactor/tools/tool_manager.cpp
         src/redactor/canvas.cpp
 
+        src/redactor/engine.cpp
+
         # chemistry
-        src/chemistry/chem_engine.cpp
-        src/chemistry/chem_reactions.cpp
+        # src/chemistry/chem_engine.cpp
+        # src/chemistry/chem_reactions.cpp
 
         src/main.cpp
         )

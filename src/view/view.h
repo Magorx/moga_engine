@@ -181,7 +181,7 @@ public:
     AbstractView(ViewBody body, AbstractView *parent = nullptr);
     virtual ~AbstractView();
 
-    virtual void add_subview(AbstractView *subview);
+    virtual void add_subview(AbstractView *subview, bool to_focus = true);
     void delete_subview(AbstractView *view);
     void delete_subview(size_t index);
 

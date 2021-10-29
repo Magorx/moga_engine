@@ -1,13 +1,11 @@
-#include "chemistry/chem_engine.h"
-
-#include "redactor/canvas.h"
+#include "redactor/engine.h"
 
 #include "app_initialization.h"
 
 
 int main() {
     srand(time(nullptr));
-    MogaEngine moga("MOGA", SCR_W, SCR_H, 1);
+    RedactorEngine moga("MOGA", SCR_W, SCR_H, 1);
 
     Resources.init(&moga);
 

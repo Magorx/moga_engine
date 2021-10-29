@@ -13,59 +13,59 @@ public:
 };
 
 
-class ToogleChemistryModelLambda : public EventReaction<Event::Activator> {
-    ChemEngine *engine;
+// class ToogleChemistryModelLambda : public EventReaction<Event::Activator> {
+//     ChemEngine *engine;
 
-public:
-    ToogleChemistryModelLambda(ChemEngine *engine):
-    engine(engine)
-    {}
+// public:
+//     ToogleChemistryModelLambda(ChemEngine *engine):
+//     engine(engine)
+//     {}
 
-    EventAccResult operator()(const Event::Activator &, const EventAccResult*) override {
-        engine->toggle_chemistry();
-        return EventAccResult::none;
-    }
-};
+//     EventAccResult operator()(const Event::Activator &, const EventAccResult*) override {
+//         engine->toggle_chemistry();
+//         return EventAccResult::none;
+//     }
+// };
 
-class PressChemistryModelToggler : public EventReaction<Event::MousePress> {
-    ChemEngine *engine;
-    Event::Activator::State mode;
+// class PressChemistryModelToggler : public EventReaction<Event::MousePress> {
+//     ChemEngine *engine;
+//     Event::Activator::State mode;
 
-public:
+// public:
 
-    PressChemistryModelToggler(ChemEngine *engine, Event::Activator::State mode):
-    engine(engine),
-    mode(mode)
-    {}
+//     PressChemistryModelToggler(ChemEngine *engine, Event::Activator::State mode):
+//     engine(engine),
+//     mode(mode)
+//     {}
 
-    EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
-        if (mode == Event::Activator::State::off) {
-            engine->chemistry_off();
-        } else if (mode == Event::Activator::State::on) {
-            engine->chemistry_on();
-        } else {
-            engine->toggle_chemistry();
-        }
-        return EventAccResult::done;
-    }
-};
+//     EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
+//         if (mode == Event::Activator::State::off) {
+//             engine->chemistry_off();
+//         } else if (mode == Event::Activator::State::on) {
+//             engine->chemistry_on();
+//         } else {
+//             engine->toggle_chemistry();
+//         }
+//         return EventAccResult::done;
+//     }
+// };
 
-class SetPhysTimeMultiplier : public EventReaction<Event::MousePress> {
-    MogaEngine *engine;
-    double mult;
+// class SetPhysTimeMultiplier : public EventReaction<Event::MousePress> {
+//     MogaEngine *engine;
+//     double mult;
 
-public:
+// public:
 
-    SetPhysTimeMultiplier(MogaEngine *engine, double mult):
-    engine(engine),
-    mult(mult)
-    {}
+//     SetPhysTimeMultiplier(MogaEngine *engine, double mult):
+//     engine(engine),
+//     mult(mult)
+//     {}
 
-    EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
-        engine->set_phys_time_mult(mult);
-        return EventAccResult::done;
-    }
-};
+//     EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
+//         engine->set_phys_time_mult(mult);
+//         return EventAccResult::done;
+//     }
+// };
 
 
 class AddNewCanvasReaction : public EventReaction<Event::MouseRelease> {

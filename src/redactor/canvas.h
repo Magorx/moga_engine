@@ -73,12 +73,4 @@ public:
     void on_mouse_move(const Vec2d &from, const Vec2d &to) {
         tool_manager->on_mouse_move(from, to);
     }
-    
-    void on_activate() {
-        tool_manager->on_activate();
-    }
-    void on_deactivate() {
-        tool_manager->on_deactivate();
-    }
-
 };

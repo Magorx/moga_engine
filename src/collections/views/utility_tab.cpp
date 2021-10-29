@@ -47,13 +47,13 @@ v_middle  (new v_Repeater({{size.y(), 0}, {size.x() - 2 * size.y(), size.y()}}, 
     buttons_layout->layout_add(b_hide);
     buttons_layout->layout_add(b_close);
 
-    add_subview(buttons_layout);
-    add_subview(v_drag_pod);
-    add_subview(v_accessory);
-
     add_subview(v_l_corner);
     add_subview(v_r_corner);
     add_subview(v_middle);
+
+    add_subview(v_drag_pod);
+    add_subview(v_accessory);
+    add_subview(buttons_layout);
 
     if (style) {
         v_l_corner->set_appearence(style->l_corner);

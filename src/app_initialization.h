@@ -3,11 +3,11 @@
 const int SCR_W  = 1000;
 const int SCR_H  = 600;
 
-#include "chemistry/chem_engine.h"
+#include "redactor/engine.h"
 #include "scene_generation.h"
 #include "responses.h"
 
-void initialize_photoshop(MogaEngine &moga) {
+void initialize_photoshop(RedactorEngine &moga) {
     SmartColor *color = new SmartColorSin(Color{40, 230, 150});
     moga.add_tickable(color);
     create_cage(&moga, color);
@@ -37,20 +37,6 @@ void initialize_photoshop(MogaEngine &moga) {
     
     // ==================================================================================
 
-    // new_canvas_button_style = StdStyle::Button::hide();
-
-    // new_canvas_button = new v_Button({50, 32}, new_canvas_button_style);
-    // new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
-
-    // moga.resman.add(new_canvas_button_style);
-
-    // font_color = new SmartColor({47, 47, 47});
-    // moga.resman.add(font_color);
-
-    // opt_panel->add_spaceholder(2);
-
-    // moga.add_view(new_canvas_button);
-
     // ==================================================================================
 
     auto window_style = StdStyle::Window::basic();
@@ -58,6 +44,10 @@ void initialize_photoshop(MogaEngine &moga) {
     auto window = new v_Window("Aboba", {200, 200}, window_style);
 
     moga.add_view(window);
+
+    auto canvas = new v_Canvas({0, 200}, moga.visual->get_renderer(), moga.get_tool_manager());
+
+    window->add_subview(canvas);
 
     // ==================================================================================
 
