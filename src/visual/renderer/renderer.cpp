@@ -107,6 +107,7 @@ void Renderer::draw_texture(Vec2d pos, RTexture *texture) {
 
     sf::Sprite sprite(*texture);
     sprite.setPosition({(float) pos.x(), (float) pos.y()});
+    // sprite.setScale(1, -1);
 
     state->target->draw(sprite);
 }

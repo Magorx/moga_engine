@@ -20,6 +20,12 @@ protected:
     double size = 1;
 
 public:
+    Tool(Tool *manager) :
+    renderer(manager ? manager->get_renderer() : nullptr),
+    draw_layer(nullptr),
+    draw_color(0, 0, 0, 255)
+    {}
+
     Tool(Renderer *renderer) :
     renderer(renderer),
     draw_layer(nullptr),
@@ -46,4 +52,6 @@ public:
     
     virtual void on_activate() {}
     virtual void on_deactivate() {}
+
+    inline Renderer *get_renderer() { return renderer; }
 };

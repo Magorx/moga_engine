@@ -52,6 +52,7 @@ public:
     }
 
     void flush_to_final() {
+        flush_draw_to_active();
         for (auto layer : layers) {
             layer->flush_to(final_layer);
         }

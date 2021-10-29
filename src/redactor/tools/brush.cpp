@@ -12,8 +12,8 @@
     renderer->pop_target();
 }
 
-t_Brush::t_Brush(Renderer *renderer) :
-Tool(renderer)
+t_Brush::t_Brush(Tool *manager) :
+Tool(manager)
 {
 
 }

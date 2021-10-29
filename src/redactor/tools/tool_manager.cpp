@@ -6,7 +6,8 @@ ToolManager::ToolManager(Renderer *renderer):
 Tool(renderer),
 active_canvas(nullptr),
 draw_color({0, 0, 0, 255}),
-tools()
+tools(),
+active_tool(nullptr)
 {
     
 }
@@ -24,12 +25,18 @@ void ToolManager::set_active_tool(size_t idx) {
         return;
     }
 
+    if (active_tool) active_tool->on_deactivate();
+
     Tool *tool = tools[idx];
     if (active_tool == tool) {
         return;
     }
+    active_tool = nullptr;
 
-    active_tool->on_deactivate();
+    if (tool == nullptr) {
+        return;
+    }
+
     tool->on_activate();
 
     active_tool = tool;
@@ -45,9 +52,13 @@ void ToolManager::update_active_tool() {
         return;
     }
 
-    active_tool->set_draw_layer(active_canvas->get_active_layer());
     active_tool->set_draw_color(draw_color);
-    active_tool->set_draw_layer(active_canvas->get_draw_layer());
+
+    if (active_canvas) {
+        printf("setting layers\n");
+        active_tool->set_draw_layer(active_canvas->get_active_layer());
+        active_tool->set_draw_layer(active_canvas->get_draw_layer());
+    }
 }
 
 void ToolManager::on_mouse_down(const Vec2d &pos) {

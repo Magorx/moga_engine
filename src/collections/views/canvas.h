@@ -20,6 +20,8 @@ class v_Canvas : public v_Highlighter {
 public:
     v_Canvas(const ViewBody &body, Renderer *renderer, ToolManager *tool_manager);
     virtual ~v_Canvas();
+
+    inline Canvas *get_canvas() { return canvas; }
 };
 
 

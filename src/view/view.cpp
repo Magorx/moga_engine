@@ -61,13 +61,14 @@ void AbstractView::subrender(Renderer *renderer) {
     renderer->shift(-body.position);
 }
 
-void AbstractView::add_subview(AbstractView *subview, bool to_focus) {
+void AbstractView::add_subview(AbstractView *subview) {
     if (!subview) return;
 
     subviews.push_back(subview);
     add_es(subview);
     subview->set_parent(this);
 
+    const bool to_focus = true;
     if (to_focus) subview->focus();
 }
 
