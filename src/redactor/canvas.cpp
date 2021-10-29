@@ -27,18 +27,32 @@ Canvas::~Canvas() {
     delete inter_action_layer;
 }
 
+void Canvas::flush_draw_to_active() {
+    auto img = draw_layer->get_texture()->copyToImage();
+    img.saveToFile("draw.png");
+
+    draw_layer->flush_to(active_layer, false);
+
+    img = active_layer->get_texture()->copyToImage();
+    img.saveToFile("active.png");
+}
+
 void Canvas::flush_to_final() {
     final_layer->clear();
     for (auto layer : layers) {
         if (layer == active_layer) {
             inter_action_layer->clear();
-            active_layer->flush_to(inter_action_layer);
+            active_layer->flush_to(inter_action_layer, false, sf::BlendNone);
             draw_layer->flush_to(inter_action_layer, true);
             inter_action_layer->flush_to(final_layer);
         } else {
             layer->flush_to(final_layer);
         }
     }
+
+    // draw_layer->flush_to(final_layer);
+    auto img = final_layer->get_texture()->copyToImage();
+    img.saveToFile("final.png");
 }
 
 void Canvas::new_layer() {
@@ -54,7 +68,10 @@ void Canvas::on_mouse_down(const Vec2d &pos) {
 
 void Canvas::on_mouse_up(const Vec2d &pos) {
     tool_manager->on_mouse_up(pos);
-    flush_draw_to_active();
+
+    // flush_draw_to_active();
+
+    inter_action_layer->flush_to(active_layer, false, sf::BlendNone);
     draw_layer->clear({0, 0, 0, 0});
     flush_to_final();
 }

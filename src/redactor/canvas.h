@@ -28,12 +28,7 @@ public:
     Layer *get_final_layer() { return final_layer; }
     Layer *get_draw_layer() { return draw_layer; }
 
-    void flush_draw_to_active() {
-        // draw_layer->flush_to(inter_action_layer);
-        // inter_action_layer->flush_to(active_layer);
-        draw_layer->flush_to(active_layer, false);
-    }
-
+    void flush_draw_to_active();
     void flush_to_final();
 
     void new_layer();

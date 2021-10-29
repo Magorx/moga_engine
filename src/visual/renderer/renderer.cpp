@@ -109,6 +109,7 @@ void Renderer::draw_texture(Vec2d pos, const RTexture *texture, bool to_flip) {
 
     sf::Sprite sprite(*texture);
     sprite.setPosition({(float) pos.x(), (float) pos.y()});
+    sprite.setColor({255, 255, 255, 255});
 
     if (to_flip) {
         auto size = sprite.getLocalBounds();
