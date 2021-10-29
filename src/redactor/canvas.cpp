@@ -32,9 +32,6 @@ void Canvas::flush_draw_to_active() {
     img.saveToFile("draw.png");
 
     draw_layer->flush_to(active_layer, false);
-
-    img = active_layer->get_texture()->copyToImage();
-    img.saveToFile("active.png");
 }
 
 void Canvas::flush_to_final() {
@@ -72,6 +69,10 @@ void Canvas::on_mouse_up(const Vec2d &pos) {
     // flush_draw_to_active();
 
     inter_action_layer->flush_to(active_layer, false, sf::BlendNone);
+
+    auto img = active_layer->get_texture()->copyToImage();
+    img.saveToFile("active.png");
+
     draw_layer->clear({0, 0, 0, 0});
     flush_to_final();
 }

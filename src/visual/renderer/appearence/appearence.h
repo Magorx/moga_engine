@@ -6,7 +6,7 @@
 
 
 inline sf::Color to_glib_color(const RColor &color) {
-    return sf::Color(sf::Uint32(color.ui32));
+    return sf::Color(color.r, color.g, color.b, color.a);
 }
 
 
