@@ -28,16 +28,7 @@ Canvas::~Canvas() {
 }
 
 void Canvas::flush_draw_to_active() {
-    // auto img = active_layer->get_texture()->copyToImage();
-    // img.saveToFile("active_1.png");
-
-    // img = draw_layer->get_texture()->copyToImage();
-    // img.saveToFile("draw.png");
-
     draw_layer->flush_to(active_layer, false, sf::BlendAlpha);
-
-    // img = active_layer->get_texture()->copyToImage();
-    // img.saveToFile("active_2.png");
 }
 
 void Canvas::flush_to_final() {
@@ -52,13 +43,48 @@ void Canvas::flush_to_final() {
             layer->flush_to(final_layer);
         }
     }
-
-    // draw_layer->flush_to(final_layer);
 }
 
 void Canvas::new_layer() {
     active_layer = new Layer(renderer, size);
     layers.push_back(active_layer);
+}
+
+void Canvas::next_layer(int delta) {
+    if (!layers.size()) return;
+    if (!active_layer) {
+        active_layer = layers[0];
+        return;
+    }
+    
+    int cur_idx = idx_by_layer(active_layer);
+    if (cur_idx == -1) {
+        cur_idx = 0;
+    }
+
+    if (cur_idx + delta < 0 || cur_idx + delta >= (int) layers.size()) {
+        return;
+    }
+
+    active_layer = layers[cur_idx + delta];
+}
+
+void Canvas::next_layer() {
+    next_layer(+1);
+}
+
+void Canvas::prev_layer() {
+    next_layer(-1);
+}
+
+int Canvas::idx_by_layer(Layer *layer) {
+    for (size_t i = 0; i < layers.size(); ++i) {
+        if (layer == layers[i]) {
+            return i;
+        }
+    }
+
+    return -1;
 }
 
 void Canvas::grab_tool_manager_activity() { tool_manager->set_active_canvas(this); }

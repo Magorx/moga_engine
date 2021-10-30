@@ -32,6 +32,11 @@ public:
     void flush_to_final();
 
     void new_layer();
+    void next_layer(int delta);
+    void next_layer();
+    void prev_layer();
+
+    int idx_by_layer(Layer *layer);
 
     void grab_tool_manager_activity();
 

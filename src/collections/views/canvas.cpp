@@ -20,6 +20,7 @@ v_Highlighter(body)
 
 v_Canvas::~v_Canvas() {
     delete appearence;
+    delete canvas;
 }
 
 void v_Canvas::render(Renderer *renderer)  {

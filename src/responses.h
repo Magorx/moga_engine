@@ -13,59 +13,17 @@ public:
 };
 
 
-// class ToogleChemistryModelLambda : public EventReaction<Event::Activator> {
-//     ChemEngine *engine;
+void spawn_canvas_window(RedactorEngine *engine, double size_x, double size_y) {
+    auto window_style = StdStyle::Window::basic();
 
-// public:
-//     ToogleChemistryModelLambda(ChemEngine *engine):
-//     engine(engine)
-//     {}
+    auto window = new v_Window("Aboba", {{200, 200}, {size_x, size_y}}, window_style);
 
-//     EventAccResult operator()(const Event::Activator &, const EventAccResult*) override {
-//         engine->toggle_chemistry();
-//         return EventAccResult::none;
-//     }
-// };
+    engine->add_view(window);
 
-// class PressChemistryModelToggler : public EventReaction<Event::MousePress> {
-//     ChemEngine *engine;
-//     Event::Activator::State mode;
+    auto canvas = new v_Canvas({0, {size_x, size_y}}, engine->visual->get_renderer(), engine->get_tool_manager());
 
-// public:
-
-//     PressChemistryModelToggler(ChemEngine *engine, Event::Activator::State mode):
-//     engine(engine),
-//     mode(mode)
-//     {}
-
-//     EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
-//         if (mode == Event::Activator::State::off) {
-//             engine->chemistry_off();
-//         } else if (mode == Event::Activator::State::on) {
-//             engine->chemistry_on();
-//         } else {
-//             engine->toggle_chemistry();
-//         }
-//         return EventAccResult::done;
-//     }
-// };
-
-// class SetPhysTimeMultiplier : public EventReaction<Event::MousePress> {
-//     MogaEngine *engine;
-//     double mult;
-
-// public:
-
-//     SetPhysTimeMultiplier(MogaEngine *engine, double mult):
-//     engine(engine),
-//     mult(mult)
-//     {}
-
-//     EventAccResult operator()(const Event::MousePress &, const EventAccResult*) override {
-//         engine->set_phys_time_mult(mult);
-//         return EventAccResult::done;
-//     }
-// };
+    window->get_content()->add_subview(canvas);
+}
 
 
 class AddNewCanvasReaction : public EventReaction<Event::MouseRelease> {
@@ -78,15 +36,7 @@ public:
 
     EventAccResult operator()(const Event::MouseRelease &, const EventAccResult*) override {
 
-        auto window_style = StdStyle::Window::basic();
-
-        auto window = new v_Window("Aboba", {200, 200}, window_style);
-
-        engine->add_view(window);
-
-        auto canvas = new v_Canvas({0, 200}, engine->visual->get_renderer(), engine->get_tool_manager());
-
-        window->get_content()->add_subview(canvas);
+        spawn_canvas_window(engine, 300, 200);
 
         return EventAccResult::none;
     }
