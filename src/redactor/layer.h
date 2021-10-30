@@ -45,7 +45,7 @@ struct Layer {
 
         renderer->push_target(layer->get_target());
         renderer->set_render_state(rmode);
-        renderer->draw_texture({0, 0}, (RTexture*) &target->getTexture(), to_flip);
+        renderer->draw_texture({0, 0}, &target->getTexture(), to_flip);
         renderer->pop_target();
     }
 

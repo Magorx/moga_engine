@@ -28,10 +28,16 @@ Canvas::~Canvas() {
 }
 
 void Canvas::flush_draw_to_active() {
-    auto img = draw_layer->get_texture()->copyToImage();
-    img.saveToFile("draw.png");
+    // auto img = active_layer->get_texture()->copyToImage();
+    // img.saveToFile("active_1.png");
 
-    draw_layer->flush_to(active_layer, false);
+    // img = draw_layer->get_texture()->copyToImage();
+    // img.saveToFile("draw.png");
+
+    draw_layer->flush_to(active_layer, false, sf::BlendAlpha);
+
+    // img = active_layer->get_texture()->copyToImage();
+    // img.saveToFile("active_2.png");
 }
 
 void Canvas::flush_to_final() {
@@ -48,8 +54,6 @@ void Canvas::flush_to_final() {
     }
 
     // draw_layer->flush_to(final_layer);
-    auto img = final_layer->get_texture()->copyToImage();
-    img.saveToFile("final.png");
 }
 
 void Canvas::new_layer() {
