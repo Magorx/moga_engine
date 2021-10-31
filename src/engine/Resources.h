@@ -60,6 +60,7 @@ struct ResourcesHolder {
             AVMouseReactionResources b3d;
 
             AVMouseReactionResources plus;
+            AVMouseReactionResources save;
 
             struct {
                 AVMouseReactionResources right;

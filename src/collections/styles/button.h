@@ -16,10 +16,14 @@ namespace Button {
 
     MouseReactionStyle *plus();
 
+    MouseReactionStyle *save();
+
     namespace Arrow {
         MouseReactionStyle *right();
         MouseReactionStyle *left();
     }
+
+
 
 }
 

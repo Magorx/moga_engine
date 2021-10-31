@@ -1,6 +1,17 @@
 #include <string>
 
 
+std::string randstr(int len) {
+    std::string ret;
+
+    for (int i = 0; i < len; ++i) {
+        ret += 'a' + rand() % ('z' - 'a' + 1);
+    }
+
+    return ret;
+}
+
+
 class SpawnBallLambda : public EventReaction<Event::MousePress> {
     MogaEngine *engine;
 
@@ -59,10 +70,32 @@ public:
 };
 
 
+class SaveCanvasReaction : public EventReaction<Event::Clicked> {
+    v_Window *window;
+    Canvas *canvas;
+
+public:
+    SaveCanvasReaction(v_Window *window, Canvas *canvas):
+    window(window),
+    canvas(canvas)
+    {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+
+        auto filename = window->get_header()->get_label_text();
+        canvas->save_to_file(filename);
+
+        return EventAccResult::none;
+    }
+};
+
+
 v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
     auto window_style = StdStyle::Window::basic();
 
-    auto window = new v_Window("Aboba - 0", body, window_style);
+    auto name = randstr(10) + " - 0";
+
+    auto window = new v_Window(name.c_str(), body, window_style);
 
     engine->add_view(window);
 
@@ -88,6 +121,12 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
     auto button_next = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::Arrow::right());
     options->add_subview(button_next);
     button_next->e_clicked.add(new CanvasNextPrevReaction(window, canvas->get_canvas(), +1));
+
+    options->add_placehodler(5);
+
+    auto button_save = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::save());
+    options->add_subview(button_save);
+    button_save->e_clicked.add(new SaveCanvasReaction(window, canvas->get_canvas()));
 
     options->normal_stretch();
 

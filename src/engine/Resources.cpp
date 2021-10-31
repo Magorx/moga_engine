@@ -89,6 +89,10 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     texture.button.plus.hovered = load_texture(BUTTON_IMG("plus", "hovered.png"));
     texture.button.plus.pressed = load_texture(BUTTON_IMG("plus", "pressed.png"));
 
+    texture.button.save.idle    = load_texture(BUTTON_IMG("save", "idle.png"));
+    texture.button.save.hovered = load_texture(BUTTON_IMG("save", "hovered.png"));
+    texture.button.save.pressed = load_texture(BUTTON_IMG("save", "pressed.png"));
+
     font.arial = load_font("resources/font/arial.ttf");
     font.montserrat = load_font("resources/font/Montserrat.ttf");
     font.aseprite = load_font("resources/font/AsepriteFont.ttf");
@@ -186,6 +190,10 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.button.plus.idle   ;
     delete texture.button.plus.hovered;
     delete texture.button.plus.pressed;
+
+    delete texture.button.save.idle   ;
+    delete texture.button.save.hovered;
+    delete texture.button.save.pressed;
 
     delete texture.button.arrow.right.idle   ;
     delete texture.button.arrow.right.hovered;

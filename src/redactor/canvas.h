@@ -43,4 +43,6 @@ public:
     void on_mouse_down(const Vec2d &pos);
     void on_mouse_up(const Vec2d &pos);
     void on_mouse_move(const Vec2d &from, const Vec2d &to);
+
+    void save_to_file(const char *filename);
 };

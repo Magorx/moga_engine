@@ -63,6 +63,14 @@ namespace Button {
         );
     }
 
+    MouseReactionStyle *save() {
+        return basic_mouse_reaction_style(
+            Resources.texture.button.save.idle,
+            Resources.texture.button.save.hovered,
+            Resources.texture.button.save.pressed
+        );
+    }
+
     namespace Arrow {
         MouseReactionStyle *right() {
             return basic_mouse_reaction_style(

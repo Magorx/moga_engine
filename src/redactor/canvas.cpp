@@ -99,12 +99,7 @@ void Canvas::on_mouse_down(const Vec2d &pos) {
 void Canvas::on_mouse_up(const Vec2d &pos) {
     tool_manager->on_mouse_up(pos);
 
-    // flush_draw_to_active();
-
     inter_action_layer->flush_to(active_layer, false, sf::BlendNone);
-
-    auto img = active_layer->get_texture()->copyToImage();
-    img.saveToFile("active.png");
 
     draw_layer->clear({0, 0, 0, 0});
     flush_to_final();
@@ -112,4 +107,23 @@ void Canvas::on_mouse_up(const Vec2d &pos) {
 
 void Canvas::on_mouse_move(const Vec2d &from, const Vec2d &to) {
     tool_manager->on_mouse_move(from, to);
+}
+
+void Canvas::save_to_file(const char *filename) {
+    if (!filename) {
+        return;
+    }
+
+    int len = strlen(filename);
+    char *name = (char*) calloc(len + 4, sizeof(char));
+    strcpy(name, filename);
+    name[len + 0] = '.';
+    name[len + 1] = 'p';
+    name[len + 2] = 'n';
+    name[len + 3] = 'g';
+
+    flush_to_final();
+    final_layer->get_texture()->copyToImage().saveToFile(name);
+
+    free(name);
 }
