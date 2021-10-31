@@ -160,7 +160,7 @@ public:
     EventDispatcher<Event::RenderCall>      e_render_call;
     EventDispatcher<Event::Close>           e_close;
     EventDispatcher<Event::Clicked>         e_clicked;
-    EventDispatcher<Event::Changed>         e_changed;
+    EventDispatcher<Event::FractionChanged> e_fraction_changed;
 
     EventSystem() :
     parent(nullptr),
@@ -175,7 +175,7 @@ public:
     e_render_call(this, "render_call"),
     e_close(this, "close"),
     e_clicked(this, "clie_clicked"),
-    e_changed(this, "chane_changed")
+    e_fraction_changed(this, "chane_changed")
     {}
 
     virtual ~EventSystem() {
@@ -288,8 +288,8 @@ inline EventDispatcher<Event::Clicked> &EventSystem::get_dispatcher() {
 }
 
 template <>
-inline EventDispatcher<Event::Changed> &EventSystem::get_dispatcher() {
-    return e_changed;
+inline EventDispatcher<Event::FractionChanged> &EventSystem::get_dispatcher() {
+    return e_fraction_changed;
 }
 
 //=====================================================================================================================

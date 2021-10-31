@@ -21,7 +21,6 @@ cursor_inside(false)
     e_mouse_press.add(new AVPressFocuser(this));
 
     if (to_block_covered) {
-        printf("OK\n");
         e_mouse_press.add(new AVCoveredPressBlocker(this));
         e_mouse_release.add(new AVCoveredReleaseBlocker(this));
         e_mouse_move.add(new AVCoveredMoveBlocker(this));

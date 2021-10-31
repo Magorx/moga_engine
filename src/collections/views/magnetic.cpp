@@ -27,6 +27,11 @@ void v_Magnetic::magnetize_to(const Vec2d &pos) {
 
     get_body().position = allowed_pos;
     bounds_offset = bounds.position - get_body().position;
+
+    e_fraction_changed.emit({{body.position.x() / bounds.size.x(),
+                              body.position.y() / bounds.size.y()}});
+    printf("frac %g %g\n", body.position.x() / bounds.size.x(),
+                              body.position.y() / bounds.size.y());
 }
 
 

@@ -40,8 +40,6 @@ v_ColorPicker::v_ColorPicker(const ViewBody &body, ToolManager *tool_manager):
 
         v_field->add_subview(v_dot_field);
         v_spectrum->add_subview(v_dot_spectrum);
-
-        printf("size %g x %g\n", v_spectrum->get_body().size.x(), v_spectrum->get_body().size.y());
     }
 
 v_ColorPicker::~v_ColorPicker() {

@@ -70,8 +70,8 @@ struct Clicked {
     
 };
 
-struct Changed {
-    double fraction;
+struct FractionChanged {
+    Vec2d fraction;
 };
 
 }
