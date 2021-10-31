@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "highlighter.h"
+#include "utils.h"
 #include "redactor/canvas.h"
 #include "visual/renderer/renderer.h"
 

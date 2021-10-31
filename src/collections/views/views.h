@@ -16,4 +16,3 @@
 #include "window.h"
 
 #include "text.h"
-#include "canvas.h"

@@ -9,4 +9,6 @@
 #include "solid_bodies.h"
 #include "styles/styles.h"
 
+#include "redactor_views/redactor_views.h"
+
 #endif // ALL_COLLECTIONS_H

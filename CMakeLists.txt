@@ -73,7 +73,10 @@ add_executable(moga
         src/collections/views/repeater.cpp
         src/collections/views/utility_tab.cpp
         src/collections/views/window.cpp
-        src/collections/views/canvas.cpp
+
+        src/collections/redactor_views/canvas.cpp
+        src/collections/redactor_views/color_picker.cpp
+
 
         src/collections/actions/toggle.cpp
 
