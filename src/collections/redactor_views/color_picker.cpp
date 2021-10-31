@@ -23,7 +23,7 @@ v_ColorPicker::v_ColorPicker(const ViewBody &body, ToolManager *tool_manager):
         add_subview(v_vert_layout);
 
         v_vert_layout->layout_add(v_field   , 5);
-        v_vert_layout->layout_add(v_spectrum, 5);
+        v_vert_layout->layout_add(v_spectrum, 1);
 
         v_field->set_appearence(appr_field);
         v_spectrum->set_appearence(appr_spectrum);
@@ -31,7 +31,7 @@ v_ColorPicker::v_ColorPicker(const ViewBody &body, ToolManager *tool_manager):
         v_dot_field->set_appearence(appr_dot_field);
         v_dot_field->update_bounds(v_field->get_body());
         v_dot_spectrum->set_appearence(appr_dot_spectrum);
-        v_dot_spectrum->update_bounds(v_spectrum->get_body());
+        v_dot_spectrum->update_bounds({0, {v_spectrum->get_body().size.x(), 0}});
 
         v_field->e_mouse_press.add(new AVMissPressBlocker(v_field));
         // v_field->e_mouse_move.add(new AVMissMoveBlocker(v_field));

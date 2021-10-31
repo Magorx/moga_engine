@@ -41,7 +41,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     spawn_canvas_window(&moga, {200, {200, 300}});
 
-    spawn_color_picker_window(&moga, {50, {100, 200}});
+    spawn_color_picker_window(&moga, {50, {100, 100}});
 
     // ==================================================================================
 
