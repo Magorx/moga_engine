@@ -8,6 +8,10 @@ SmartColor::SmartColor(const Color &color_) :
 color(color_)
 {}
 
+SmartColor::SmartColor(const RGBA  &rgba):
+color(rgba.r, rgba.g, rgba.b, rgba.a)
+{}
+
 void SmartColor::set_rgb(const Color color_) {
     color = color_;
 }

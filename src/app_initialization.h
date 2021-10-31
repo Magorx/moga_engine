@@ -28,7 +28,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     auto new_canvas_button = new v_Button({0, 0}, new_canvas_button_style);
     new_canvas_button->e_mouse_release.add(new AddNewCanvasReaction(&moga));
 
-    auto font_color = new SmartColor({47, 47, 47});
+    auto font_color = new SmartColor(Resources.font.color.basic_menu);
     moga.resman.add(font_color);
 
     new_canvas_button->add_label("New CANVAS", 25, font_color);
@@ -39,15 +39,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    auto window_style = StdStyle::Window::basic();
-
-    auto window = new v_Window("Aboba", {200, 200}, window_style);
-
-    moga.add_view(window);
-
-    auto canvas = new v_Canvas({0, 200}, moga.visual->get_renderer(), moga.get_tool_manager());
-
-    window->get_content()->add_subview(canvas);
+    spawn_canvas_window(&moga, 300, 200);
 
     // ==================================================================================
 

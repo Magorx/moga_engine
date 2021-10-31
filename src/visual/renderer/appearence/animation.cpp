@@ -8,6 +8,8 @@ cur_frame(),
 cur_sprite(),
 frame_duration(frame_duration)
 {
+    cur_frame.setRepeated(true);
+
     if (frames && frames->size()) {
         auto size = (*frames)[0]->getSize();
         cur_frame.create(size.x, size.y);

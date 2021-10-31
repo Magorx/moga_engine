@@ -66,4 +66,12 @@ struct ActivityToggle : public Activator {
     using Activator::Activator;
 };
 
+struct Clicked {
+    
+};
+
+struct Changed {
+    double fraction;
+};
+
 }

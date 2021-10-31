@@ -33,6 +33,7 @@ struct ToolResources {
 
 struct res_UtilityBarResources {
     RTexture *bar;
+    RTexture *underbar;
     RTexture *l_corner;
     RTexture *r_corner;
 
@@ -56,6 +57,12 @@ struct ResourcesHolder {
             AVMouseReactionResources close;
             AVMouseReactionResources hide;
             AVMouseReactionResources b3d;
+
+            AVMouseReactionResources plus;
+
+            struct {
+                AVMouseReactionResources right;
+            } arrow;
 
             AVMouseReactionResources basic;
         } button;
@@ -91,13 +98,23 @@ struct ResourcesHolder {
         RFont *aseprite;
 
         RFont *basic;
+
+        struct {
+            RColor basic_header;
+            RColor basic_menu;
+        } color;
+
+        struct {
+            int basic_header = 20;
+            int basic_menu = 25;
+        } size;
     } font;
 
     ~ResourcesHolder();
 
     void init(MogaEngine *engine_);
 
-    AppearenceAnimation *create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped = false, double time_coef = 1);
+    AppearenceAnimation *create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped = false, Vec2d transform = {1, 1}, double time_coef = 1);
     RTexture *create_color(RGBA color);
 };
 

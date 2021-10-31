@@ -99,14 +99,6 @@ public:
     EventAccResult operator()(const Event::Close &event, const EventAccResult *cur_res = nullptr) override;
 };
 
-class AVCloseGenerator : public EventAcceptor<AbstractView, Event::MouseRelease> {
-public:
-    AVCloseGenerator(AbstractView *view);
-
-    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
-};
-
-
 class AVAnimatorPress : public EventAcceptor<AbstractView, Event::MousePress> {
     MouseReactionStyle *style;
 public:
@@ -214,6 +206,20 @@ public:
     inline void set_view_id(const char *view_id_) { view_id = view_id_; }
     inline const char *get_view_id() { return view_id; }
 
+    inline Appearence *get_appearence() { return appearence; }
+
     ViewBody &get_body();
 
 };
+
+
+class AVCloseGenerator : public EventAcceptor<AbstractView, Event::Clicked> {
+public:
+    AVCloseGenerator(AbstractView *acceptor) : EventAcceptor(acceptor) {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult *) { 
+        acceptor->e_close.emit({});
+        return EventAccResult::cont;
+    }
+};
+

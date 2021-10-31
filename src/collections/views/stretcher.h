@@ -13,17 +13,17 @@ public:
         y,
     };
 
-    v_Stretcher(Coord coord_idx, double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) :
-    v_Highlighter({0, norm_size}, color, parent, highlight_coef),
+    v_Stretcher(Coord coord_idx, const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) :
+    v_Highlighter(body, color, parent, highlight_coef),
     coord_idx(coord_idx)
     {}
 
-    static v_Stretcher *X(double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) {
-        return new v_Stretcher(Coord::x, norm_size, color, parent, highlight_coef);
+    static v_Stretcher *X(const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) {
+        return new v_Stretcher(Coord::x, body, color, parent, highlight_coef);
     }
 
-    static v_Stretcher *Y(double norm_size, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) {
-        return new v_Stretcher(Coord::y, norm_size, color, parent, highlight_coef);
+    static v_Stretcher *Y(const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = 0.0) {
+        return new v_Stretcher(Coord::y, body, color, parent, highlight_coef);
     }
 
     void pre_add_subview(AbstractView *subview) {
@@ -41,6 +41,8 @@ public:
         pre_add_subview(subview);
 
         v_Highlighter::add_subview(subview);
+
+        update();
     }
 
     void update() {
@@ -49,6 +51,11 @@ public:
             sum_size += subv->get_body().size.content[coord_idx];
         }
         body.size.content[coord_idx] = sum_size;
+    }
+    
+    void add_placehodler(const double size) {
+        AbstractView *av = new AbstractView({0, size});
+        add_subview(av);
     }
 
     void normal_stretch(bool fit_max_size = false) {

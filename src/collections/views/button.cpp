@@ -99,6 +99,7 @@ EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &even
 
     if (button->pressed) {
         button->unpress();
+        button->e_clicked.emit({});
     }
 
     return EventAccResult::cont;

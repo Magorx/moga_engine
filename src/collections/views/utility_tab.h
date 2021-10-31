@@ -31,6 +31,7 @@ class v_UtilityTab : public v_Highlighter {
     v_Highlighter *v_l_corner;
     v_Highlighter *v_r_corner;
     v_Repeater    *v_middle;
+    v_Repeater    *v_under;
 
 public:
 
@@ -38,12 +39,13 @@ public:
     static const Color hide_button_color;
     static const Color drag_tab_color;
 
-    v_UtilityTab(Vec2d size, SmartColor *main_color);
+    // v_UtilityTab(Vec2d size, SmartColor *main_color);
     v_UtilityTab(Vec2d size, UtilityBarStyle *style);
 
     inline v_DragPad *get_drag_pod()    { return v_drag_pod; }
     inline v_Button *get_button_close() { return b_close; }
     inline v_Button *get_button_hide()  { return b_hide; }
     inline AbstractView *get_accessory() { return v_accessory; }
+    v_Stretcher *get_options() { return v_options; }
 
 };

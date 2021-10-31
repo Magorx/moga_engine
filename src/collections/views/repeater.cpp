@@ -23,7 +23,8 @@ void v_Repeater::render(Renderer *renderer) {
     double x = body.position.x() + stub_size * full_fits;
     double y = body.position.y();
 
-    double x_size = body.size.x() - x + stub_size;
+    double x_size = body.size.x() - x;
+    x_size += x_size < 0 ? stub_size : 0;
     
     renderer->set_appearence(appearence);
     renderer->apr_draw_rectangle({x, y}, {x_size, body.size.y()});

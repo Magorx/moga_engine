@@ -80,10 +80,13 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     texture.button.hide.hovered = load_texture(BUTTON_IMG("hide", "hovered.png"));
     texture.button.hide.pressed = load_texture(BUTTON_IMG("hide", "pressed.png"));
 
-    texture.button.b3d.idle    = load_texture(BUTTON_IMG("3d", "idle.png"));
-    // texture.button.b3d.hovered = load_texture(BUTTON_IMG("3d", "hovered.png"));
-    texture.button.b3d.pressed = load_texture(BUTTON_IMG("3d", "pressed.png"));
+    texture.button.arrow.right.idle    = load_texture(BUTTON_IMG("arrow/right", "idle.png"));
+    texture.button.arrow.right.hovered = load_texture(BUTTON_IMG("arrow/right", "hovered.png"));
+    texture.button.arrow.right.pressed = load_texture(BUTTON_IMG("arrow/right", "pressed.png"));
 
+    texture.button.plus.idle    = load_texture(BUTTON_IMG("plus", "idle.png"));
+    texture.button.plus.hovered = load_texture(BUTTON_IMG("plus", "hovered.png"));
+    texture.button.plus.pressed = load_texture(BUTTON_IMG("plus", "pressed.png"));
 
     font.arial = load_font("resources/font/arial.ttf");
     font.montserrat = load_font("resources/font/Montserrat.ttf");
@@ -145,11 +148,15 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     texture.util_bar.basic.hide_button  = &texture.button.hide;
 
     texture.util_bar.basic.bar      = load_texture(IMG("util_bar/basic/middle.png"));
+    texture.util_bar.basic.underbar = load_texture(IMG("util_bar/basic/under.png"));
     texture.util_bar.basic.l_corner = load_texture(IMG("util_bar/basic/corner.png"));
     texture.util_bar.basic.r_corner = load_texture(IMG("util_bar/basic/corner.png"));
 
     texture.window.basic.util_bar = &texture.util_bar.basic;
     texture.window.basic.frame = generate_color_texture({203, 219, 252, 200});
+
+    font.color.basic_header = {255, 255, 255, 255};
+    font.color.basic_menu   = {15, 15, 15, 255};
 }
 
 ResourcesHolder::~ResourcesHolder() {
@@ -168,9 +175,13 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.button.hide.hovered;
     delete texture.button.hide.pressed;
 
-    delete texture.button.b3d.idle   ;
-    // delete texture.button.b3d.hovered;
-    delete texture.button.b3d.pressed;
+    delete texture.button.plus.idle   ;
+    delete texture.button.plus.hovered;
+    delete texture.button.plus.pressed;
+
+    delete texture.button.arrow.right.idle   ;
+    delete texture.button.arrow.right.hovered;
+    delete texture.button.arrow.right.pressed;
 
     delete texture.window.basic.frame;
 
@@ -187,7 +198,7 @@ ResourcesHolder::~ResourcesHolder() {
     }
 }
 
-AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped, double time_coef) {
+AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped, Vec2d transform, double time_coef) {
     std::vector<RTexture*> *anim_frames = new std::vector<RTexture*>;
     anim_frames->reserve(frames.size());
     for (auto frame : frames) {
@@ -195,7 +206,7 @@ AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTextur
     }
 
     AppearenceAnimation *animation = new AppearenceAnimation(anim_frames, frame_duration, looped, time_coef);
-    // created_animations.push_back(animation);
+    animation->set_transform(transform);
 
     if (engine) {
         animation->tickable_nonfree = true;

@@ -14,6 +14,13 @@ namespace Button {
 
     MouseReactionStyle *basic();
 
+    MouseReactionStyle *plus();
+
+    namespace Arrow {
+        MouseReactionStyle *right();
+        MouseReactionStyle *left();
+    }
+
 }
 
 }
