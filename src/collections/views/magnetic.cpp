@@ -30,8 +30,6 @@ void v_Magnetic::magnetize_to(const Vec2d &pos) {
 
     e_fraction_changed.emit({{bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
                               bounds.size.y() ? body.position.y() / bounds.size.y() : 0}});
-    printf("frac %g %g\n", bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
-                              bounds.size.y() ? body.position.y() / bounds.size.y() : 0);
 }
 
 void v_Magnetic::shift_with_bounds(const Vec2d &shift) {
@@ -66,7 +64,7 @@ EventAccResult AVMagneticPressAcceptor::operator()(const Event::MousePress &even
 
 AVMagneticReleaseAcceptor::AVMagneticReleaseAcceptor(v_Magnetic *magnetic) : EventAcceptor(magnetic) {}
 
-EventAccResult AVMagneticReleaseAcceptor::operator()(const Event::MouseRelease &event, const EventAccResult *) {
+EventAccResult AVMagneticReleaseAcceptor::operator()(const Event::MouseRelease &, const EventAccResult *) {
     acceptor->pressed = false;
 
     return EventAccResult::cont;

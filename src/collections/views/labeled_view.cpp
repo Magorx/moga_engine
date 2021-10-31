@@ -40,3 +40,9 @@ void AbstractLabledView::refit() {
         v_label->get_body().set_size({body.size / 2});
     }
 }
+
+char *AbstractLabledView::get_label_text() {
+    if (!v_label) return nullptr;
+
+    return v_label->get_label();
+}

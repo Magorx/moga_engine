@@ -17,5 +17,7 @@ public:
 
     void add_label(const char *label, int char_size, SmartColor *font_color, SmartColor *back_color = nullptr);
 
+    char *get_label_text();
+
     virtual void refit() override;
 };

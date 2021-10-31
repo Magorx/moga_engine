@@ -20,4 +20,6 @@ public:
     virtual ~v_Text();
 
     virtual void render(Renderer *renderer) override;
+
+    char *get_label() { return label; }
 };

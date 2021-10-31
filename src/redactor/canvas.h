@@ -31,10 +31,10 @@ public:
     void flush_draw_to_active();
     void flush_to_final();
 
-    void new_layer();
-    void next_layer(int delta);
-    void next_layer();
-    void prev_layer();
+    int new_layer();
+    int next_layer(int delta);
+    int next_layer();
+    int prev_layer();
 
     int idx_by_layer(Layer *layer);
 

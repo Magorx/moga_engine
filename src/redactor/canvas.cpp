@@ -40,41 +40,44 @@ void Canvas::flush_to_final() {
             draw_layer->flush_to(inter_action_layer, true);
             inter_action_layer->flush_to(final_layer);
         } else {
-            layer->flush_to(final_layer);
+            layer->flush_to(final_layer, true);
         }
     }
 }
 
-void Canvas::new_layer() {
+int Canvas::new_layer() {
     active_layer = new Layer(renderer, size);
     layers.push_back(active_layer);
+
+    return layers.size() - 1;
 }
 
-void Canvas::next_layer(int delta) {
-    if (!layers.size()) return;
+int Canvas::next_layer(int delta) {
+    if (!layers.size()) return -1;
     if (!active_layer) {
         active_layer = layers[0];
-        return;
+        return 0;
     }
     
     int cur_idx = idx_by_layer(active_layer);
     if (cur_idx == -1) {
-        cur_idx = 0;
+        return -1;
     }
 
     if (cur_idx + delta < 0 || cur_idx + delta >= (int) layers.size()) {
-        return;
+        return cur_idx;
     }
 
     active_layer = layers[cur_idx + delta];
+    return cur_idx + delta;
 }
 
-void Canvas::next_layer() {
-    next_layer(+1);
+int Canvas::next_layer() {
+    return next_layer(+1);
 }
 
-void Canvas::prev_layer() {
-    next_layer(-1);
+int Canvas::prev_layer() {
+    return next_layer(-1);
 }
 
 int Canvas::idx_by_layer(Layer *layer) {

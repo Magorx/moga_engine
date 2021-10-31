@@ -5,6 +5,7 @@
 
 
 extern const double PX_COLOR_PICKER_PADDING;
+extern const double PX_COLOR_PICKER_CIRCLE_SIZE;
 
 
 class ColorPickerSpectrumChangeAcceptor;
@@ -35,7 +36,10 @@ class v_ColorPicker : public v_Highlighter {
     Vec2d &field_size;
     RColor *field;
 
+    RTexture *field_texture;
+
     void update_field();
+    void update_tool_manager_color();
 
 public:
     v_ColorPicker(const ViewBody &body, ToolManager *tool_manager);
