@@ -21,17 +21,36 @@ void v_Magnetic::magnetize_to(const Vec2d &pos) {
     Vec2d bound_pos = shift - bounds_offset;
 
     Vec2d allowed_pos = {
-        fmin(fmax(bound_pos.content[0], 0), bounds.size.content[0]),
-        fmin(fmax(bound_pos.content[1], 0), bounds.size.content[1])
+        fmin(fmax(bound_pos.content[0], bounds.position.content[0]), bounds.position.content[0] + bounds.size.content[0]),
+        fmin(fmax(bound_pos.content[1], bounds.position.content[1]), bounds.position.content[1] + bounds.size.content[1])
     };
 
-    get_body().position = allowed_pos;
-    bounds_offset = bounds.position - get_body().position;
+    body.position = allowed_pos;
+    bounds_offset = bounds.position - body.position;
 
     e_fraction_changed.emit({{bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
                               bounds.size.y() ? body.position.y() / bounds.size.y() : 0}});
     printf("frac %g %g\n", bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
                               bounds.size.y() ? body.position.y() / bounds.size.y() : 0);
+}
+
+void v_Magnetic::shift_with_bounds(const Vec2d &shift) {
+    body.position   += shift;
+    bounds.position += shift;
+}
+
+Vec2d v_Magnetic::get_fraction() const { 
+    return {bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
+            bounds.size.y() ? body.position.y() / bounds.size.y() : 0};
+}
+
+void v_Magnetic::set_fraction(Vec2d fraction) {
+    fraction.content[0] = fmin(fmax(fraction.content[0], 0), 1);
+    fraction.content[1] = fmin(fmax(fraction.content[1], 0), 1);
+
+    body.position = bounds.position + bounds.size * fraction;
+
+    bounds_offset = bounds.position - body.position;
 }
 
 

@@ -77,11 +77,7 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
 v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window_style = StdStyle::Window::basic();
 
-    auto window = new v_Window("", {{200, 200}, {body.size.x(), body.size.y()}}, window_style);
-
-    v_Highlighter *lb = new v_Highlighter({0, window->get_header()->get_options()->get_body().size});
-    window->get_header()->get_options()->add_subview(lb);
-    lb->add_label("Color Puker", Resources.font.size.basic_header, Resources.font.smart_color.basic_header);
+    auto window = new v_Window("ColorPuker", {{200, 200}, {body.size.x(), body.size.y()}}, window_style);
 
     engine->add_view(window);
 

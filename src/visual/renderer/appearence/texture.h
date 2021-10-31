@@ -5,6 +5,7 @@
 
 
 class AppearenceTexture : public Appearence {
+    sf::Image saved_image;
 public:
     Vec2d transform = {1, 1};
 
@@ -14,6 +15,16 @@ public:
     virtual RVertex vertex(Vec2d on_screen_position, Vec2d shape_position) const override {
         return {{(float) (on_screen_position[0]), (float) (on_screen_position[1])}, {(float) (shape_position[0] * scale[0] * transform[0]), (float) (shape_position[1] * scale[1] * transform[1])}};
     };
+
+    virtual RColor get_px_color(Vec2d shape_position) const override {
+        if (!rmode.texture) return {0, 0, 0, 0};
+        shape_position *= scale * transform;
+
+        auto sf_color = saved_image.getPixel(shape_position.x(), shape_position.y());
+        return {sf_color.r, sf_color.g, sf_color.b, sf_color.a};
+    }
+
+    inline void update_image() { if (rmode.texture) saved_image = rmode.texture->copyToImage(); }
 
     inline void set_texture(const RTexture *texture) { rmode.texture = texture; }
     inline void set_transform(const Vec2d &transform_) { transform = transform_; }

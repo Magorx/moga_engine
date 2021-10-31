@@ -30,6 +30,8 @@ public:
     void set_draw_color(RGBA color) { draw_color = color; }
     void set_renderer(Renderer *renderer_) { renderer = renderer_; }
 
+    RGBA get_draw_color() const { return draw_color; }
+
     virtual void on_mouse_down(const Vec2d &pos) override;
 
     virtual void on_mouse_up(const Vec2d &pos) override;

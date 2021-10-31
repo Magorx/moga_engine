@@ -47,4 +47,9 @@ public:
     void magnetize_to(const Vec2d &pos);
 
     void update_bounds(const ViewBody &bounds_);
+
+    void shift_with_bounds(const Vec2d &shift);
+
+    Vec2d get_fraction() const;
+    void set_fraction(Vec2d fraction);
 };

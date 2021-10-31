@@ -13,5 +13,7 @@ public:
         return {{(float) on_screen_position[0], (float) on_screen_position[1]}, color};
     };
 
+    virtual RColor get_px_color(Vec2d) const override { return {color.r, color.g, color.b, color.a}; }
+
     void set_color(const RColor &color_) { color = to_glib_color(color_); }
 };

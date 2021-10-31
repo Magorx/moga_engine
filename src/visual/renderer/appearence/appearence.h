@@ -23,6 +23,7 @@ public:
     virtual       sf::RenderStates *get_render_mode()       { return &rmode; };
 
     virtual RVertex vertex(Vec2d on_screen_position, Vec2d shape_position) const = 0;
+    virtual RColor get_px_color(Vec2d) const { return {0, 0, 0, 0}; }
 
     inline void set_scale(const Vec2d &scale_) { scale = scale_; }
     virtual void fit_for_size(const Vec2d &) {}
