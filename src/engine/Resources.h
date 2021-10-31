@@ -3,6 +3,7 @@
 
 #include "visual/renderer/gate_type_aliases.h"
 #include "visual/renderer/appearence.h"
+#include "visual/color/smart_color.h"
 
 
 class MogaEngine;
@@ -114,6 +115,11 @@ struct ResourcesHolder {
             int basic_header = 20;
             int basic_menu = 25;
         } size;
+
+        struct {
+            SmartColor *basic_header;
+            SmartColor *basic_menu;
+        } smart_color;
     } font;
 
     ~ResourcesHolder();

@@ -42,14 +42,14 @@ public:
 };
 
 
-v_Window *spawn_canvas_window(RedactorEngine *engine, double size_x, double size_y) {
+v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
     auto window_style = StdStyle::Window::basic();
 
-    auto window = new v_Window("Aboba", {{200, 200}, {size_x, size_y}}, window_style);
+    auto window = new v_Window("Aboba", body, window_style);
 
     engine->add_view(window);
 
-    auto canvas = new v_Canvas({0, {size_x, size_y}}, engine->visual->get_renderer(), engine->get_tool_manager());
+    auto canvas = new v_Canvas({0, {body.size.x(), body.size.y()}}, engine->visual->get_renderer(), engine->get_tool_manager());
 
     window->get_content()->add_subview(canvas);
 
@@ -74,6 +74,24 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, double size_x, double size
     return window;
 }
 
+v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body) {
+    auto window_style = StdStyle::Window::basic();
+
+    auto window = new v_Window("", {{200, 200}, {body.size.x(), body.size.y()}}, window_style);
+
+    v_Highlighter *lb = new v_Highlighter({0, window->get_header()->get_options()->get_body().size});
+    window->get_header()->get_options()->add_subview(lb);
+    lb->add_label("Color Puker", Resources.font.size.basic_header, Resources.font.smart_color.basic_header);
+
+    engine->add_view(window);
+
+    auto picker = new v_ColorPicker({0, {body.size.x(), body.size.y()}}, engine->get_tool_manager());
+
+    window->add_subview(picker);
+
+    return window;
+}
+
 
 class AddNewCanvasReaction : public EventReaction<Event::MouseRelease> {
     RedactorEngine *engine;
@@ -85,7 +103,7 @@ public:
 
     EventAccResult operator()(const Event::MouseRelease &, const EventAccResult*) override {
 
-        spawn_canvas_window(engine, 300, 200);
+        spawn_canvas_window(engine, {200, {300, 200}});
 
         return EventAccResult::none;
     }

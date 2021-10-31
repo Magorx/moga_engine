@@ -7,7 +7,7 @@ const double PX_COLOR_PICKER_PADDING = 5;
 v_ColorPicker::v_ColorPicker(const ViewBody &body, ToolManager *tool_manager):
     v_Highlighter(body),
     v_vert_layout(new v_VerticalLayout(
-        {PX_COLOR_PICKER_PADDING, body.size - PX_COLOR_PICKER_PADDING},
+        {PX_COLOR_PICKER_PADDING, body.size - 2 * PX_COLOR_PICKER_PADDING},
         {0, 1}, 
         PX_UTIL_PADDING)
     ),

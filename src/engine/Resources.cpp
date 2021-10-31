@@ -160,6 +160,9 @@ void ResourcesHolder::init(MogaEngine *engine_) {
 
     font.color.basic_header = {255, 255, 255, 255};
     font.color.basic_menu   = {15, 15, 15, 255};
+
+    font.smart_color.basic_header = new SmartColor(font.color.basic_header);
+    font.smart_color.basic_menu = new SmartColor(font.color.basic_menu);
 }
 
 ResourcesHolder::~ResourcesHolder() {
@@ -195,6 +198,9 @@ ResourcesHolder::~ResourcesHolder() {
     delete font.montserrat;
 
     delete color.spectrum;
+
+    delete font.smart_color.basic_header;
+    delete font.smart_color.basic_menu;
 
     for (auto appr : created_apprs) {
         delete appr;
