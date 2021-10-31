@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-AbstractView::AbstractView(ViewBody body, AbstractView *parent):
+AbstractView::AbstractView(ViewBody body, AbstractView *parent, bool to_block_covered):
 view_id(nullptr),
 body(body),
 fit_body(body),
@@ -20,9 +20,12 @@ cursor_inside(false)
     
     e_mouse_press.add(new AVPressFocuser(this));
 
-    e_mouse_press.add(new AVCoveredPressBlocker(this));
-    e_mouse_release.add(new AVCoveredReleaseBlocker(this));
-    e_mouse_move.add(new AVCoveredMoveBlocker(this));
+    if (to_block_covered) {
+        printf("OK\n");
+        e_mouse_press.add(new AVCoveredPressBlocker(this));
+        e_mouse_release.add(new AVCoveredReleaseBlocker(this));
+        e_mouse_move.add(new AVCoveredMoveBlocker(this));
+    }
 
     e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position}; } );
     e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease {event.position - this->body.position}; } );

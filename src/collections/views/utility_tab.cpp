@@ -28,7 +28,7 @@ const Color v_UtilityTab::drag_tab_color     = {240, 30, 30};
 
 
 v_UtilityTab::v_UtilityTab(Vec2d size, UtilityBarStyle *style) :
-v_Highlighter({{0, 0}, size}, nullptr, nullptr, 0),
+v_Highlighter({{0, 0}, size}, nullptr, nullptr, 0, true),
 buttons_layout(new v_HorizontalLayout(ViewBody{{size.x() - 2 * PX_UTIL_BUTTON_SIZE - PX_UTIL_PADDING, PX_UTIL_PADDING}, {2 * PX_UTIL_BUTTON_SIZE, size.y() - 2 * PX_UTIL_PADDING}})),
 
 b_close(new v_Button({PX_UTIL_PADDING, 0}, style ? style->close_button : nullptr)),
@@ -44,6 +44,8 @@ v_r_corner(new v_Highlighter({{size.x() - size.y(), 0}, size.y()}, nullptr, null
 v_middle  (new v_Repeater({{size.y(), 0}, {size.x() - 2 * size.y(), size.y()}}, style ? style->bar : nullptr, 32)),
 v_under   (new v_Repeater({{0, size.y()}, {size.x(), PX_UTIL_BUTTON_SIZE}}, style ? style->underbar : nullptr, 32))
 {
+    focuseable = true;
+
     appearenced = true;
 
     buttons_layout->layout_add(b_hide);

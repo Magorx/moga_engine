@@ -170,7 +170,7 @@ protected:
     bool cursor_inside;
 
 public:
-    AbstractView(ViewBody body, AbstractView *parent = nullptr);
+    AbstractView(ViewBody body, AbstractView *parent = nullptr, bool to_block_covered = false);
     virtual ~AbstractView();
 
     virtual void add_subview(AbstractView *subview);

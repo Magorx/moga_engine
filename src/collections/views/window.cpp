@@ -20,7 +20,7 @@
 // }
 
 v_Window::v_Window(const char *name, const ViewBody &body, WindowStyle *style, bool draggable, double header_size, AbstractView *parent) :
-v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0),
+v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0, true),
 header(new v_UtilityTab({body.size.x() + PX_WINDOW_PADDING * 2, header_size}, style ? style->header : nullptr)),
 content(new v_Highlighter({{0, 0}, body.size}, nullptr, nullptr, 0)),
 text_color(RColor{255, 255, 255})

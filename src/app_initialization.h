@@ -39,7 +39,11 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    spawn_canvas_window(&moga, 300, 200);
+    auto win = spawn_canvas_window(&moga, 300, 200);
+
+    auto picker = new v_ColorPicker({10, {100, 100}},  moga.get_tool_manager());
+
+    win->add_subview(picker);
 
     // ==================================================================================
 

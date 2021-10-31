@@ -1,8 +1,8 @@
 #include "labeled_view.h"
 
 
-AbstractLabledView::AbstractLabledView(const ViewBody &body, AbstractView *parent, bool to_pass_inactive, bool is_shown) :
-v_Hideable(body, parent, to_pass_inactive, is_shown),
+AbstractLabledView::AbstractLabledView(const ViewBody &body, AbstractView *parent, bool to_block_covered, bool to_pass_inactive, bool is_shown) :
+v_Hideable(body, parent, to_pass_inactive, is_shown, to_block_covered),
 v_label(nullptr)
 {}
 

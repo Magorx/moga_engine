@@ -1,8 +1,8 @@
 #include "hideable.h"
 
 
-v_Hideable::v_Hideable(const ViewBody &body, AbstractView *parent, bool to_pass_inactive, bool is_shown) : 
-AbstractView(body, parent),
+v_Hideable::v_Hideable(const ViewBody &body, AbstractView *parent, bool to_pass_inactive, bool is_shown, bool to_block_covered) : 
+AbstractView(body, parent, to_block_covered),
 _is_active(is_shown),
 to_pass_inactive(to_pass_inactive)
 {

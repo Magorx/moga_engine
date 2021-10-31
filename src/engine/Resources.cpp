@@ -67,6 +67,7 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     engine = engine_;
 
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
+    texture.dot = load_texture(IMG("dot.png"));
 
     texture.button.basic.idle    = load_texture(BUTTON_IMG("basic", "idle.png"));
     texture.button.basic.hovered = load_texture(BUTTON_IMG("basic", "hovered.png"));
@@ -93,6 +94,8 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     font.aseprite = load_font("resources/font/AsepriteFont.ttf");
 
     font.basic = font.aseprite;
+
+    color.spectrum = load_texture("resources/image/color/spectrum.png");
 
     load_animation(animation.fan, {
         ANM("fan") "1.png",
@@ -163,6 +166,8 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.alpha_blue;
     delete texture.frame_gray;
 
+    delete texture.dot;
+
     delete texture.button.basic.idle   ;
     delete texture.button.basic.hovered;
     delete texture.button.basic.pressed;
@@ -188,6 +193,8 @@ ResourcesHolder::~ResourcesHolder() {
     delete font.arial;
     delete font.aseprite;
     delete font.montserrat;
+
+    delete color.spectrum;
 
     for (auto appr : created_apprs) {
         delete appr;
@@ -223,4 +230,4 @@ RTexture *ResourcesHolder::create_color(RGBA color) {
 }
 
 
-ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}};
+ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}, {}};

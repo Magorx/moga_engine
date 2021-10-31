@@ -46,8 +46,8 @@ protected:
 public:
     SmartColor *color;
 
-    v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
-    v_Highlighter(const ViewBody &body, AbstractView *parent = nullptr);
+    v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF, bool to_block_covered = false);
+    v_Highlighter(const ViewBody &body, AbstractView *parent = nullptr, bool to_block_covered = false);
 
     virtual ~v_Highlighter();
 

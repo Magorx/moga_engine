@@ -84,7 +84,13 @@ struct ResourcesHolder {
 
         RTexture *alpha_blue;
         RTexture *frame_gray;
+
+        RTexture *dot;
     } texture;
+
+    struct {
+        RTexture *spectrum;
+    } color;
 
     struct {
         AnimationResourse fan;

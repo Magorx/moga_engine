@@ -42,7 +42,7 @@ public:
 };
 
 
-void spawn_canvas_window(RedactorEngine *engine, double size_x, double size_y) {
+v_Window *spawn_canvas_window(RedactorEngine *engine, double size_x, double size_y) {
     auto window_style = StdStyle::Window::basic();
 
     auto window = new v_Window("Aboba", {{200, 200}, {size_x, size_y}}, window_style);
@@ -70,6 +70,8 @@ void spawn_canvas_window(RedactorEngine *engine, double size_x, double size_y) {
     options->add_subview(button_next);
 
     options->normal_stretch();
+
+    return window;
 }
 
 

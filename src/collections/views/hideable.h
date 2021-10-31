@@ -47,7 +47,7 @@ class v_Hideable : public AbstractView {
 public:
     bool to_pass_inactive;
 
-    v_Hideable(const ViewBody &body, AbstractView *parent = nullptr, bool to_pass_inactive = false, bool is_shown = true);
+    v_Hideable(const ViewBody &body, AbstractView *parent = nullptr, bool to_pass_inactive = false, bool is_shown = true, bool to_block_covered = false);
 
     virtual void render(Renderer *renderer) override;
 

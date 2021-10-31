@@ -4,8 +4,8 @@
 const double HIGHLIGHTER_ON_COEF = 0.0;
 
 
-v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef):
-AbstractLabledView(body, parent),
+v_Highlighter::v_Highlighter(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef, bool to_block_covered):
+AbstractLabledView(body, parent, to_block_covered),
 highlight_coef(highlight_coef),
 color(color)
 {
@@ -14,8 +14,8 @@ color(color)
     e_toggle_activity.add(new HighlighterDeactivateVisualy(this));
 }
 
-v_Highlighter::v_Highlighter(const ViewBody &body, AbstractView *parent):
-AbstractLabledView(body, parent),
+v_Highlighter::v_Highlighter(const ViewBody &body, AbstractView *parent, bool to_block_covered):
+AbstractLabledView(body, parent, to_block_covered),
 highlight_coef(0),
 color(nullptr)
 {
