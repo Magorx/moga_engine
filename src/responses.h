@@ -158,7 +158,7 @@ public:
 
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
-        spawn_canvas_window(engine, {engine->random_screen_pos(), {300, 200}});
+        spawn_canvas_window(engine, {engine->random_screen_pos(), {400, 300}});
 
         return EventAccResult::none;
     }

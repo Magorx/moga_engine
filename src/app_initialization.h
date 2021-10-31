@@ -1,7 +1,7 @@
 #pragma once
 
-const int SCR_W  = 1000;
-const int SCR_H  = 600;
+const int SCR_W  = 1200;
+const int SCR_H  = 800;
 
 #include "redactor/engine.h"
 #include "scene_generation.h"

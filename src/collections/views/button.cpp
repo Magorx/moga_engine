@@ -42,7 +42,7 @@ style(style)
 }
 
 v_Button::~v_Button() {
-    delete style;
+    // delete style;
 }
 
 void v_Button::render(Renderer *renderer) {
