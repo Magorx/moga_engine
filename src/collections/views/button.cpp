@@ -9,7 +9,8 @@ double BUTTON_CLICKED_SHADING_COEF = 0.8;
 
 v_Button::v_Button(const ViewBody &body, SmartColor *color, AbstractView *parent, double highlight_coef) :
 v_Highlighter(body, color, parent, highlight_coef, true),
-pos_delta(0, 0)
+pos_delta(0, 0),
+style(nullptr)
 {
     e_mouse_press.add(new ButtonPressAcceptor(this));
     e_mouse_move.add(new ButtonMoveAcceptor(this));
@@ -18,7 +19,8 @@ pos_delta(0, 0)
 
 v_Button::v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent) :
 v_Highlighter(body, nullptr, parent, 0, true),
-pos_delta(0, 0)
+pos_delta(0, 0),
+style(style)
 {
     appearenced = true;
 
@@ -37,6 +39,10 @@ pos_delta(0, 0)
     e_mouse_press.add(new ButtonPressAcceptor(this));
     e_mouse_release.add(new ButtonReleaseAcceptor(this));
     e_mouse_move.add(new ButtonMoveAcceptor(this));
+}
+
+v_Button::~v_Button() {
+    delete style;
 }
 
 void v_Button::render(Renderer *renderer) {

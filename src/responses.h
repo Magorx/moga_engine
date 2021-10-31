@@ -97,7 +97,7 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
 v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window_style = StdStyle::Window::basic();
 
-    auto window = new v_Window("ColorPuker", {{200, 200}, {body.size.x(), body.size.y()}}, window_style);
+    auto window = new v_Window("ColorPuker", {body.position, {body.size.x(), body.size.y()}}, window_style);
 
     engine->add_view(window);
 
@@ -109,7 +109,7 @@ v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body
 }
 
 
-class AddNewCanvasReaction : public EventReaction<Event::MouseRelease> {
+class AddNewCanvasReaction : public EventReaction<Event::Clicked> {
     RedactorEngine *engine;
 
 public:
@@ -117,9 +117,25 @@ public:
     engine(engine)
     {}
 
-    EventAccResult operator()(const Event::MouseRelease &, const EventAccResult*) override {
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
-        spawn_canvas_window(engine, {200, {300, 200}});
+        spawn_canvas_window(engine, {engine->random_screen_pos(), {300, 200}});
+
+        return EventAccResult::none;
+    }
+};
+
+class AddNewColorPickerReaction : public EventReaction<Event::Clicked> {
+    RedactorEngine *engine;
+
+public:
+    AddNewColorPickerReaction(RedactorEngine *engine):
+    engine(engine)
+    {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+
+        spawn_color_picker_window(engine, {engine->random_screen_pos(), {200, 200}});
 
         return EventAccResult::none;
     }

@@ -200,6 +200,9 @@ MogaEngine::MogaEngine(const char  *window_name,
 
     mouse_pos(0, 0),
 
+	screen_width(screen_width),
+	screen_height(screen_height),
+
 	visual(new VisualEngine(window_name, screen_width, screen_height)),
 	physics(new PhysicsEngine()),
 	main_view(new AbstractView(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))

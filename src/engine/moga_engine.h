@@ -52,6 +52,9 @@ protected:
     Vec2d mouse_pos;
 //  =====================
 
+	const size_t screen_width;
+	const size_t screen_height;
+
 public:
 	VisualEngine  *visual;
 	PhysicsEngine *physics;
