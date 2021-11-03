@@ -38,13 +38,34 @@ v_Spline::~v_Spline() {
 }
 
 void v_Spline::recalculate_output() {
+    // Interpolator2d inter;
+    // for (size_t i = 0; i < dots.size(); ++i) {
+    //     auto dot = dots[i];
+    //     Vec2d pos = dot->get_body().position;
+    //     pos.content[1] = body.size.y() - pos.y();
+    //     pos *= 255;
+    //     pos /= body.size;
+    //     inter.add(pos);
+    // }
+
+    // inter.add({inter.data[0].x() - 1, inter.data[0].y() - 1});
+    // auto data_size = inter.data.size();
+    // inter.add({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
+
+    // output[0] = inter.data[0].y();
+    // output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
+
+    // for (int i = 1; i < (int) output.size() - 1; ++i) {
+    //     auto ret = inter[i];
+    //     output[i] = ret.y();
+    //     // printf("%d) %d\n", i, output[i]);
+    // }
+
     Interpolator2d inter;
     for (size_t i = 0; i < dots.size(); ++i) {
         auto dot = dots[i];
         Vec2d pos = dot->get_body().position;
         pos.content[1] = body.size.y() - pos.y();
-        pos *= 255;
-        pos /= body.size;
         inter.add(pos);
     }
 
@@ -55,11 +76,26 @@ void v_Spline::recalculate_output() {
     output[0] = inter.data[0].y();
     output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
 
-    for (int i = 1; i < (int) output.size() - 1; ++i) {
+    std::vector<Vec2d> points;
+
+    for (int i = 1; i < body.size.x(); ++i) {
         auto ret = inter[i];
-        output[i] = ret.y();
-        // printf("%d) %d\n", i, output[i]);
+
+        ret = Vec2d{ret.x(), body.size.y() - ret.y()};
+        points.push_back(ret);
     }
+
+    for (int i = 0; i < (int) points.size() - 1; ++i) {
+        Vec2d p1 = points[i];
+        Vec2d p2 = points[i + 1];
+        Vec2d dir = (p2 - p1).normal();
+        if (fabs(p2.x() - p1.x()) > 0.1) {
+            for (Vec2d p = p1; (p1 - p).len_squared() < (p1 - p2).len_squared(); p += dir / 5) {
+                output[p.x()] = 255 - p.y();
+            }
+        }
+    }
+
 }
 
 void v_Spline::render(Renderer *renderer) {
@@ -69,42 +105,38 @@ void v_Spline::render(Renderer *renderer) {
 
     if (!output.size()) return;
 
-    // for (size_t i = 0; i < output.size() - 1; ++i) {
-    //     Vec2d pos1 = {body.size.x() * i / 255, body.size.y() * output[i] / 255};
-    //     pos1.content[1] = body.size.y() - pos1.y();
+    for (size_t i = 0; i < output.size() - 1; ++i) {
+        Vec2d pos1 = {body.size.x() * i / 255, body.size.y() * output[i] / 255};
+        pos1.content[1] = body.size.y() - pos1.y();
 
-    //     Vec2d pos2 = {body.size.x() * (i + 1) / 255, body.size.y() * output[i + 1] / 255};
-    //     pos2.content[1] = body.size.y() - pos2.y();
+        Vec2d pos2 = {body.size.x() * (i + 1) / 255, body.size.y() * output[i + 1] / 255};
+        pos2.content[1] = body.size.y() - pos2.y();
 
-    //     renderer->draw_line(pos1, pos2, {255, 0, 0});
+        renderer->draw_line(pos1, pos2, {255, 0, 0});
+    }
+
+    // Interpolator2d inter;
+    // for (size_t i = 0; i < dots.size(); ++i) {
+    //     auto dot = dots[i];
+    //     Vec2d pos = dot->get_body().position;
+    //     pos.content[1] = body.size.y() - pos.y();
+    //     inter.add(pos);
     // }
 
-    Interpolator2d inter;
-    for (size_t i = 0; i < dots.size(); ++i) {
-        auto dot = dots[i];
-        Vec2d pos = dot->get_body().position;
-        // printf("pos %g %g -> ", pos.x(), pos.y());
-        pos.content[1] = body.size.y() - pos.y();
-        // pos *= 255;
-        // pos /= body.size;
-        // printf("add %g %g\n", pos.x(), pos.y());
-        inter.add(pos);
-    }
+    // inter.add({inter.data[0].x() - 1, inter.data[0].y() - 1});
+    // auto data_size = inter.data.size();
+    // inter.add({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
 
-    inter.add({inter.data[0].x() - 1, inter.data[0].y() - 1});
-    auto data_size = inter.data.size();
-    inter.add({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
+    // output[0] = inter.data[0].y();
+    // output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
 
-    output[0] = inter.data[0].y();
-    output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
+    // for (int i = 1; i < body.size.x(); ++i) {
+    //     auto ret = inter[i];
 
-    for (int i = 1; i < body.size.x(); ++i) {
-        auto ret = inter[i];
+    //     ret = Vec2d{ret.x(), body.size.y() - ret.y()};
 
-        ret = Vec2d{ret.x(), body.size.y() - ret.y()};
-
-        renderer->draw_circle(ret, 1, {255, 0, 0});
-    }
+    //     renderer->draw_circle(ret, 1, {255, 0, 0});
+    // }
 
 
     renderer->shift(-body.position);

@@ -64,8 +64,10 @@ Vec2d Interpolator2d::get_y(const Vec2d &p1, const Vec2d &p2, const Vec2d &p3, c
     Vec2d A1 = (t2 - t) / (t2 - t1) * p1 + (t - t1) / (t2 - t1) * p2;
     Vec2d A2 = (t3 - t) / (t3 - t2) * p2 + (t - t2) / (t3 - t2) * p3;
     Vec2d A3 = (t4 - t) / (t4 - t3) * p3 + (t - t3) / (t4 - t3) * p4;
+
     Vec2d B1 = (t3 - t) / (t3 - t1) * A1 + (t - t1) / (t3 - t1) * A2;
     Vec2d B2 = (t4 - t) / (t4 - t2) * A2 + (t - t2) / (t4 - t2) * A3;
+    
     Vec2d C  = (t3 - t) / (t3 - t2) * B1 + (t - t2) / (t3 - t2) * B2;
     
     return C;
