@@ -19,11 +19,11 @@ Vec3d::Vec3d() {
 }
 
 Vec3d::Vec3d(double x_, double y_, double z_) {
-    content = {x_, y_, z_};
+    content = {x_, y_, z_, 0};
 }
 
 Vec3d::Vec3d(double fill) {
-    content = {fill, fill, fill};
+    content = {fill, fill, fill, fill};
 }
 
 [[maybe_unused]] Vec3d Vec3d::orient(const Vec3d &axis) {

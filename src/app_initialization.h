@@ -47,4 +47,8 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     opt_panel->add_spaceholder(6);
 
+    // ==================================================================================
+
+    
+
 }

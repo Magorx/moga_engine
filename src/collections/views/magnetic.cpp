@@ -1,11 +1,12 @@
 #include "magnetic.h"
 
 
-v_Magnetic::v_Magnetic(const ViewBody &body, const ViewBody &bounds, bool to_be_pressed) :
+v_Magnetic::v_Magnetic(const ViewBody &body, const ViewBody &bounds, double mag_radius, bool to_be_pressed) :
 v_Highlighter(body),
 bounds({0, bounds.size}),
 bounds_offset(bounds.position - body.position),
-to_be_pressed(to_be_pressed)
+to_be_pressed(to_be_pressed),
+mag_radius(mag_radius)
 {
     e_mouse_press.add(new AVMagneticPressAcceptor(this));
     e_mouse_move.add(new AVMagneticMoveAcceptor(this));
@@ -16,7 +17,9 @@ void v_Magnetic::update_bounds(const ViewBody &bounds_) {
     bounds = {bounds_offset, bounds_.size};
 }
 
-void v_Magnetic::magnetize_to(const Vec2d &pos) {
+bool v_Magnetic::magnetize_to(const Vec2d &pos, bool to_check_mag_radius) {
+    if (to_check_mag_radius && mag_radius == mag_radius && pos.len() > mag_radius) return false;
+
     Vec2d shift = pos;
     Vec2d bound_pos = shift - bounds_offset;
 
@@ -30,6 +33,8 @@ void v_Magnetic::magnetize_to(const Vec2d &pos) {
 
     e_fraction_changed.emit({{bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
                               bounds.size.y() ? body.position.y() / bounds.size.y() : 0}});
+    
+    return true;
 }
 
 void v_Magnetic::shift_with_bounds(const Vec2d &shift) {
@@ -55,8 +60,7 @@ void v_Magnetic::set_fraction(Vec2d fraction) {
 AVMagneticPressAcceptor::AVMagneticPressAcceptor(v_Magnetic *magnetic) : EventAcceptor(magnetic) {}
 
 EventAccResult AVMagneticPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
-    acceptor->magnetize_to(event.position);
-    acceptor->pressed = true;
+    acceptor->pressed = acceptor->magnetize_to(event.position);
 
     return EventAccResult::cont;
 }
@@ -75,7 +79,7 @@ AVMagneticMoveAcceptor::AVMagneticMoveAcceptor(v_Magnetic *magnetic) : EventAcce
 
 EventAccResult AVMagneticMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (!acceptor->to_be_pressed || acceptor->is_pressed()) {
-        acceptor->magnetize_to(event.to);
+        acceptor->magnetize_to(event.to, false);
     }
 
     return EventAccResult::cont;

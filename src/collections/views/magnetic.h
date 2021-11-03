@@ -40,11 +40,12 @@ class v_Magnetic : public v_Highlighter {
     Vec2d bounds_offset;
 
     bool to_be_pressed;
+    double mag_radius;
 
 public:
-    v_Magnetic(const ViewBody &body, const ViewBody &bounds, bool to_be_pressed = true);
+    v_Magnetic(const ViewBody &body, const ViewBody &bounds, double mag_radius = NAN, bool to_be_pressed = true);
 
-    void magnetize_to(const Vec2d &pos);
+    bool magnetize_to(const Vec2d &pos, bool to_check_mag_radius = true);
 
     void update_bounds(const ViewBody &bounds_);
 

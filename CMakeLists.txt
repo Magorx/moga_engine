@@ -75,6 +75,8 @@ add_executable(moga
         src/collections/views/utility_tab.cpp
         src/collections/views/window.cpp
 
+        src/collections/views/spline.cpp
+
         src/collections/redactor_views/canvas.cpp
         src/collections/redactor_views/color_picker.cpp
 
@@ -89,6 +91,7 @@ add_executable(moga
         # utils
         src/utils/vec3d.cpp
         src/utils/timer.cpp
+        src/utils/interpolator.cpp
 
         # resources
         src/engine/Resources.cpp

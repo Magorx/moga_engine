@@ -4,8 +4,10 @@
 #include "visual/renderer/gate_type_aliases.h"
 #include "visual/renderer/renderer.h"
 
+#include "utils/affected.h"
 
-struct Layer {
+
+struct Layer : public Affected<Layer> {
     Renderer *renderer;
 
     RRendTexture *target;
@@ -24,9 +26,11 @@ struct Layer {
         target = new RRendTexture;
         target->create((float) size.x(), (float) size.y());
         target->setRepeated(true);
+        target->clear({0, 0, 0, 0});
+        // target->display();
     }
 
-    ~Layer() {
+    virtual ~Layer() {
         delete target;
     }
 

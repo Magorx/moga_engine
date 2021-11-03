@@ -17,3 +17,5 @@
 #include "window.h"
 
 #include "text.h"
+
+#include "spline.h"

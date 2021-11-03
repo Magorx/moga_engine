@@ -4,8 +4,6 @@
 
 class Vec2d : public Vec3d {
 public:
-    using Vec3d::len;
-    using Vec3d::len_squared;
     using Vec3d::normal;
     using Vec3d::normalize;
     using Vec3d::is_zero;
@@ -16,6 +14,7 @@ public:
     using Vec3d::x;
     using Vec3d::y;
     using Vec3d::z;
+    using Vec3d::w;
 
     Vec2d(content3 newContent) {
         content = newContent;
@@ -24,13 +23,24 @@ public:
     Vec2d(double x, double y) {
         content[0] = x;
         content[1] = y;
+        content[2] = 0;
+        content[3] = 0;
     }
 
     Vec2d(const Vec3d &vec3) {
         content[0] = vec3.content[0];
         content[1] = vec3.content[1];
-        content[2] = 1;
+        content[2] = 0;
         content[3] = 0;
+    }
+
+    inline double len() const {
+        return sqrt(len_squared());
+    }
+
+    inline double len_squared() const {
+        const auto squared = content * content;
+        return squared[0] + squared[1];
     }
 };
 
@@ -108,7 +118,7 @@ inline bool operator==(const Vec2d &first, const Vec2d &second) {
 
 inline bool operator<(const Vec2d &first, const Vec2d &second) {
     const auto res = first.content < second.content;
-    return res[0] * res[1] * res[2];
+    return res[0] * res[1];
 }
 
 inline Vec2d sqrt(const Vec2d &first) {
