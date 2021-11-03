@@ -6,6 +6,7 @@ scr(new sf::RenderWindow(sf::VideoMode(size_x, size_y), window_name), size_x, si
 state(nullptr)
 {
     push_target(scr.window);
+    scr.window->setFramerateLimit(60);
 }
 
 Renderer::~Renderer() {

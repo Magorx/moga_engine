@@ -39,9 +39,9 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    spawn_canvas_window(&moga, {200, {200, 300}});
+    spawn_canvas_window(&moga, {{800, 100}, {200, 300}});
 
-    spawn_color_picker_window(&moga, {50, {200, 200}});
+    spawn_color_picker_window(&moga, {{550, 100}, {200, 200}});
 
     // ==================================================================================
 
@@ -49,6 +49,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    
+    v_Spline *sp = new v_Spline({50, 255});
+    moga.add_view(sp);
 
 }

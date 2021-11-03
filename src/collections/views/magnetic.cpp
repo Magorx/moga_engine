@@ -1,10 +1,10 @@
 #include "magnetic.h"
 
 
-v_Magnetic::v_Magnetic(const ViewBody &body, const ViewBody &bounds, double mag_radius, bool to_be_pressed) :
+v_Magnetic::v_Magnetic(const ViewBody &body, const ViewBody &bounds_, double mag_radius, bool to_be_pressed) :
 v_Highlighter(body),
-bounds({0, bounds.size}),
-bounds_offset(bounds.position - body.position),
+bounds({0, bounds_.size}),
+bounds_offset(bounds_.position - body.position),
 to_be_pressed(to_be_pressed),
 mag_radius(mag_radius)
 {
