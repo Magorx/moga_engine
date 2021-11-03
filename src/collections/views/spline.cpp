@@ -89,10 +89,8 @@ void v_Spline::recalculate_output() {
         Vec2d p1 = points[i];
         Vec2d p2 = points[i + 1];
         Vec2d dir = (p2 - p1).normal();
-        if (fabs(p2.x() - p1.x()) > 0.1) {
-            for (Vec2d p = p1; (p1 - p).len_squared() < (p1 - p2).len_squared(); p += dir / 5) {
-                output[p.x()] = 255 - p.y();
-            }
+        for (Vec2d p = p1; (p1 - p).len_squared() < (p1 - p2).len_squared(); p += dir / 5) {
+            output[p.x()] = body.size.y() - p.y();
         }
     }
 
@@ -114,30 +112,6 @@ void v_Spline::render(Renderer *renderer) {
 
         renderer->draw_line(pos1, pos2, {255, 0, 0});
     }
-
-    // Interpolator2d inter;
-    // for (size_t i = 0; i < dots.size(); ++i) {
-    //     auto dot = dots[i];
-    //     Vec2d pos = dot->get_body().position;
-    //     pos.content[1] = body.size.y() - pos.y();
-    //     inter.add(pos);
-    // }
-
-    // inter.add({inter.data[0].x() - 1, inter.data[0].y() - 1});
-    // auto data_size = inter.data.size();
-    // inter.add({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
-
-    // output[0] = inter.data[0].y();
-    // output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
-
-    // for (int i = 1; i < body.size.x(); ++i) {
-    //     auto ret = inter[i];
-
-    //     ret = Vec2d{ret.x(), body.size.y() - ret.y()};
-
-    //     renderer->draw_circle(ret, 1, {255, 0, 0});
-    // }
-
 
     renderer->shift(-body.position);
 }
