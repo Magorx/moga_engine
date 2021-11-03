@@ -33,7 +33,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto new_picker_button = new v_Button({0, 0}, StdStyle::Button::basic());
     new_picker_button->e_clicked.add(new AddNewColorPickerReaction(&moga));
-    new_picker_button->add_label("Color Pucker", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    new_picker_button->add_label("Color Picker", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
 
     opt_panel->layout_add(new_picker_button, 1.5);
 

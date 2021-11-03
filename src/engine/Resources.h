@@ -50,8 +50,8 @@ struct res_WindowResources {
 struct ResourcesHolder {
     MogaEngine *engine;
 
-    std::vector<sf::Texture*> created_textures;
-    std::vector<Appearence*> created_apprs;
+    std::vector<RTexture*> created_textures;
+    std::vector<Appearence*>  created_apprs;
 
     struct {
         struct {

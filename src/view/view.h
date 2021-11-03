@@ -213,11 +213,14 @@ public:
 };
 
 
-class AVCloseGenerator : public EventAcceptor<AbstractView, Event::Clicked> {
+template <typename EVENT_T>
+class AVCloseGenerator : public EventAcceptor<AbstractView, EVENT_T> {
 public:
-    AVCloseGenerator(AbstractView *acceptor) : EventAcceptor(acceptor) {}
+    using EventAcceptor<AbstractView, EVENT_T>::acceptor;
 
-    EventAccResult operator()(const Event::Clicked &, const EventAccResult *) { 
+    AVCloseGenerator(AbstractView *acceptor) : EventAcceptor<AbstractView, EVENT_T>(acceptor) {}
+
+    EventAccResult operator()(const EVENT_T &, const EventAccResult *) {
         acceptor->e_close.emit({});
         return EventAccResult::cont;
     }
