@@ -42,6 +42,12 @@ public:
         const auto squared = content * content;
         return squared[0] + squared[1];
     }
+
+    inline void clamp(const Vec2d &vmin, const Vec2d &vmax) {
+        for (int coord = 0; coord < 2; ++coord) {
+            content[coord] = fmin(fmax(content[coord], vmin.content[coord]), vmax.content[coord]);
+        }
+    }
 };
 
 

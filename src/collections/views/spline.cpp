@@ -82,6 +82,7 @@ void v_Spline::recalculate_output() {
         auto ret = inter[i];
 
         ret = Vec2d{ret.x(), body.size.y() - ret.y()};
+        ret.clamp({0, 0}, body.size);
         points.push_back(ret);
     }
 
