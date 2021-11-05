@@ -3,6 +3,9 @@
 
 template <typename T>
 class Effect {
+    friend T;
+
+protected:
     T *target;
 
 public:

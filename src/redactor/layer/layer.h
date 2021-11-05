@@ -25,6 +25,7 @@ struct Layer : public Affected<Layer> {
     }
 
     RRendTexture *get_target() {
+        effects_applied = false;
         return target;
     }
 
@@ -32,8 +33,8 @@ struct Layer : public Affected<Layer> {
         return &target->getTexture();
     }
 
-    void clear(const RColor &color = {0, 0, 0, 0}) { target->clear(to_glib_color(color)); }
+    void clear(const RColor &color = {0, 0, 0, 0}) { target->clear(to_glib_color(color)); effects_applied = false; }
 
-    void flush_to(Layer *layer, bool to_flip = false, RMode rmode = {});
+    void flush_to(Layer *layer, bool to_flip = false, bool to_apply_effects = false, RMode rmode = {});
 
 };

@@ -7,8 +7,11 @@
 
 template <typename T>
 class Affected {
+    friend Effect<T>;
+
 protected:
     std::vector<Effect<T>*> effects;
+    bool effects_applied = false;
 
 public:
     virtual ~Affected() {

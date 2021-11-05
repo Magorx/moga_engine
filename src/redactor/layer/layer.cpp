@@ -19,18 +19,28 @@ idx(idx)
     final_target->clear({0, 0, 0, 0});
 }
 
-void Layer::flush_to(Layer *layer, bool to_flip, RMode rmode) {
+void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rmode) {
     if (!layer || !renderer) return;
 
-    final_target->clear({0, 0, 0, 0});
-    renderer->push_target(final_target);
-    renderer->draw_texture({0, 0}, &target->getTexture(), true);
-    renderer->pop_target();
+    if (to_apply_effects) {
+        if (!effects_applied) {
+            final_target->clear({0, 0, 0, 0});
+            renderer->push_target(final_target);
+            renderer->draw_texture({0, 0}, &target->getTexture(), true);
+            renderer->pop_target();
 
-    apply_effects();
+            apply_effects();
+            effects_applied = true;
+        }
 
-    renderer->push_target(layer->get_target());
-    renderer->set_render_state(rmode);
-    renderer->draw_texture({0, 0}, &final_target->getTexture(), to_flip);
-    renderer->pop_target();
+        renderer->push_target(layer->get_target());
+        renderer->set_render_state(rmode);
+        renderer->draw_texture({0, 0}, &final_target->getTexture(), to_flip);
+        renderer->pop_target();
+    } else {
+        renderer->push_target(layer->get_target());
+        renderer->set_render_state(rmode);
+        renderer->draw_texture({0, 0}, &target->getTexture(), to_flip);
+        renderer->pop_target();
+    }
 }

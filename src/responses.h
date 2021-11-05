@@ -90,6 +90,44 @@ public:
 };
 
 
+#include "utils/effect.h"
+
+class Negative : public Effect<Layer> {
+    RGBA *data;
+    int w;
+    int h;
+public:
+    Negative(Layer *target) : Effect(target), data(nullptr), w(0), h(0) {
+        w = target->final_target->getTexture().getSize().x;
+        h = target->final_target->getTexture().getSize().y;
+        data = (RGBA*) calloc(w * h, sizeof(RGBA));
+    }
+
+    virtual void apply() override {
+        auto img = target->final_target->getTexture().copyToImage();
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x) {
+                auto color = img.getPixel(x, y);
+                color = {(uint8_t)(255 - color.r), (uint8_t)(255 - color.g), (uint8_t)(255 - color.b), color.a};
+                // data[y * w + x] = col;
+                img.setPixel(x, y, color);
+            }
+        }
+
+        RTexture texture;
+        texture.loadFromImage(img);
+
+        img.saveToFile("a.png");
+
+        target->final_target->clear({0, 0, 0, 0});
+        target->renderer->push_target(target->final_target);
+        target->renderer->draw_texture({0, 0}, &texture, true);
+        target->renderer->pop_target();
+        printf("bup\n");
+    }
+};
+
+
 v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
     auto window_style = StdStyle::Window::basic();
 
@@ -129,6 +167,9 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
     button_save->e_clicked.add(new SaveCanvasReaction(window, canvas->get_canvas()));
 
     options->normal_stretch();
+
+    auto layer = canvas->get_canvas()->get_active_layer();
+    layer->add_effect(new Negative(layer));
 
     return window;
 }
