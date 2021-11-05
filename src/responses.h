@@ -121,7 +121,6 @@ public:
         target->renderer->push_target(target->final_target);
         target->renderer->draw_texture({0, 0}, &texture, true);
         target->renderer->pop_target();
-        printf("bup\n");
     }
 };
 
