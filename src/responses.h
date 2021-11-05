@@ -117,8 +117,6 @@ public:
         RTexture texture;
         texture.loadFromImage(img);
 
-        img.saveToFile("a.png");
-
         target->final_target->clear({0, 0, 0, 0});
         target->renderer->push_target(target->final_target);
         target->renderer->draw_texture({0, 0}, &texture, true);
