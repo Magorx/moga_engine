@@ -33,7 +33,6 @@ bool v_Magnetic::magnetize_to(const Vec2d &pos, bool to_check_mag_radius) {
 
     e_fraction_changed.emit({{bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
                               bounds.size.y() ? body.position.y() / bounds.size.y() : 0}});
-    printf("bp %g %g\n", body.position.x(), body.position.y());
     
     return true;
 }
