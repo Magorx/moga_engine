@@ -29,6 +29,7 @@ class v_Spline : public v_Highlighter {
     AppearenceTexture *dot_appr;
 
     RGBA curve_color;
+    double mag_radius;
 
     bool dot_captured = false;
 
@@ -36,7 +37,7 @@ class v_Spline : public v_Highlighter {
     bool try_delete_dot(const Vec2d &pos);
 
 public:
-    v_Spline(const ViewBody &body, RGBA curve_color = {255, 0, 0, 255});
+    v_Spline(const ViewBody &body, RGBA curve_color = {255, 0, 0, 255}, double mag_radius = PX_SPLINE_MAG_RAD);
     virtual ~v_Spline();
     
     void recalculate_output();

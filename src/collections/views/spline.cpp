@@ -1,7 +1,7 @@
 #include "spline.h"
 
 
-v_Spline::v_Spline(const ViewBody &body, RGBA curve_color) :
+v_Spline::v_Spline(const ViewBody &body, RGBA curve_color, double mag_radius) :
 v_Highlighter(body),
 dots({
     // new v_Magnetic({{0 - 2, body.size.y() + 2}, PX_SPLINE_DOT}, {0, body.size}, -1),
@@ -17,11 +17,12 @@ output(this->body.size.x(), 0),
 
 dot_appr(new AppearenceTexture(Resources.texture.dot)),
 
-curve_color(curve_color)
+curve_color(curve_color),
+mag_radius(mag_radius)
 {
     e_mouse_press.add(new AVMissPressBlocker(this));
 
-    set_appearence(new AppearenceColor({100, 100, 100}));
+    set_appearence(new AppearenceColor({100, 100, 100, 100}));
 
     dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
     
@@ -107,6 +108,20 @@ void v_Spline::render(Renderer *renderer) {
 }
 
 v_Magnetic *v_Spline::try_spawn_dot(const Vec2d &pos) {
+    if (mag_radius == mag_radius) { // check if pos is somewhere near our curve
+        bool flag = false;
+        for (size_t i = 0; i < output.size(); ++i) {
+            if (mag_radius * mag_radius > (pos - Vec2d{(double) i, body.size.y() - output[i]}).len_squared()) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            return nullptr;
+        }
+    }
+
+
     auto dot = new v_Magnetic({pos, PX_SPLINE_DOT}, {0, get_body().size - 1}, 10);
 
     dot->set_appearence(dot_appr);
@@ -147,10 +162,13 @@ EventAccResult SplineSpawnNewDot::operator()(const Event::MousePress &event, con
             if (dot) {
                 acceptor->recalculate_output();
                 dot->e_mouse_press.emit(event);
+                return EventAccResult::done;
             }
         }
     } else if (event.button == Event::MouseButton::right) {
-        acceptor->try_delete_dot(event.position);
+        if (acceptor->try_delete_dot(event.position)) {
+            return EventAccResult::done;
+        }
     }
 
     acceptor->dot_captured = false;

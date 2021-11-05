@@ -52,7 +52,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     v_Spline *sp = new v_Spline({50, 300}, {40, 255, 40});
     moga.add_view(sp);
 
-    // v_Spline *sp2 = new v_Spline({50, 300}, {255, 40, 40});
-    // moga.add_view(sp2);
+    v_Spline *sp2 = new v_Spline({50, 300}, {255, 40, 40});
+    moga.add_view(sp2);
 
 }
