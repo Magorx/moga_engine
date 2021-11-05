@@ -109,7 +109,6 @@ public:
             for (int x = 0; x < w; ++x) {
                 auto color = img.getPixel(x, y);
                 color = {(uint8_t)(255 - color.r), (uint8_t)(255 - color.g), (uint8_t)(255 - color.b), color.a};
-                // data[y * w + x] = col;
                 img.setPixel(x, y, color);
             }
         }
