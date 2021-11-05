@@ -2,7 +2,7 @@
 
 #include <cstdio>
 
-#include "redactor/layer.h"
+#include "redactor/layer/layer.h"
 
 #include "visual/renderer/renderer.h"
 

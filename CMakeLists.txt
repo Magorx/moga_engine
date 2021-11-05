@@ -103,6 +103,8 @@ add_executable(moga
         src/redactor/tools/tool_manager.cpp
         src/redactor/canvas.cpp
 
+        src/redactor/layer/layer.cpp
+
         src/redactor/engine.cpp
 
         # chemistry
