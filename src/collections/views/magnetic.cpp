@@ -3,7 +3,7 @@
 
 v_Magnetic::v_Magnetic(const ViewBody &body, const ViewBody &bounds_, double mag_radius, bool to_be_pressed) :
 v_Highlighter(body),
-bounds({0, bounds_.size}),
+bounds({bounds_.position, bounds_.size}),
 bounds_offset(bounds_.position - body.position),
 to_be_pressed(to_be_pressed),
 mag_radius(mag_radius)
@@ -33,6 +33,7 @@ bool v_Magnetic::magnetize_to(const Vec2d &pos, bool to_check_mag_radius) {
 
     e_fraction_changed.emit({{bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
                               bounds.size.y() ? body.position.y() / bounds.size.y() : 0}});
+    printf("bp %g %g\n", body.position.x(), body.position.y());
     
     return true;
 }

@@ -28,12 +28,15 @@ class v_Spline : public v_Highlighter {
 
     AppearenceTexture *dot_appr;
 
+    RGBA curve_color;
+
     bool dot_captured = false;
 
     v_Magnetic *try_spawn_dot(const Vec2d &pos);
+    bool try_delete_dot(const Vec2d &pos);
 
 public:
-    v_Spline(const ViewBody &body);
+    v_Spline(const ViewBody &body, RGBA curve_color = {255, 0, 0, 255});
     virtual ~v_Spline();
     
     void recalculate_output();

@@ -53,6 +53,7 @@ public:
     v_Magnetic(const ViewBody &body, const ViewBody &bounds, double mag_radius = NAN, bool to_be_pressed = true);
 
     bool magnetize_to(const Vec2d &pos, bool to_check_mag_radius = true);
+    inline bool magnetize_test(const Vec2d &pos) { return !(mag_radius == mag_radius && (pos - body.position).len_squared() > mag_radius * mag_radius); }
 
     void update_bounds(const ViewBody &bounds_);
 

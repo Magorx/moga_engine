@@ -1,27 +1,30 @@
 #include "spline.h"
 
 
-v_Spline::v_Spline(const ViewBody &body) :
+v_Spline::v_Spline(const ViewBody &body, RGBA curve_color) :
 v_Highlighter(body),
 dots({
     // new v_Magnetic({{0 - 2, body.size.y() + 2}, PX_SPLINE_DOT}, {0, body.size}, -1),
-    new v_Magnetic({{0 - 1, body.size.y() + 1}, PX_SPLINE_DOT}, {0, body.size}, -1),
-    new v_Magnetic({{body.size.x() + 1, 0 - 1}, PX_SPLINE_DOT}, {0, body.size}, -1),
+    new v_Magnetic({{0, body.size.y()}, PX_SPLINE_DOT}, {{0, 0}, {0, body.size.y()}}, PX_SPLINE_MAG_RAD),
+    new v_Magnetic({{body.size.x(), 0}, PX_SPLINE_DOT}, {{body.size.x(), 0}, {0, body.size.y()}}, PX_SPLINE_MAG_RAD),
     // new v_Magnetic({{body.size.x() + 2, 0 - 2}, PX_SPLINE_DOT}, {0, body.size}, -1),
     
-    new v_Magnetic({{0, body.size.y()}, PX_SPLINE_DOT}, {0, body.size}, PX_SPLINE_MAG_RAD),
-    new v_Magnetic({{body.size.x() / 2, body.size.y() / 2}, PX_SPLINE_DOT}, {0, body.size}, PX_SPLINE_MAG_RAD),
-    new v_Magnetic({{body.size.x(), 0}, PX_SPLINE_DOT}, {0, body.size}, PX_SPLINE_MAG_RAD),
+    // new v_Magnetic({{0, body.size.y()}, PX_SPLINE_DOT}, {0, body.size}, PX_SPLINE_MAG_RAD),
+    new v_Magnetic({{body.size.x() / 2, body.size.y() / 2}, PX_SPLINE_DOT}, {0, body.size - 1}, PX_SPLINE_MAG_RAD),
+    // new v_Magnetic({{body.size.x(), 0}, PX_SPLINE_DOT}, {0, body.size}, PX_SPLINE_MAG_RAD),
 }),
-output(255, 0),
+output(this->body.size.x(), 0),
 
-dot_appr(new AppearenceTexture(Resources.texture.dot))
+dot_appr(new AppearenceTexture(Resources.texture.dot)),
+
+curve_color(curve_color)
 {
     e_mouse_press.add(new AVMissPressBlocker(this));
 
     set_appearence(new AppearenceColor({100, 100, 100}));
 
     dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
+    
     for (auto dot : dots) {
         dot->set_appearence(dot_appr);
         add_subview(dot);
@@ -54,16 +57,13 @@ void v_Spline::recalculate_output() {
     auto data_size = inter.data.size();
     inter.add_p({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
 
-    output[0] = inter.data[0].y();
-    output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
-
     std::vector<Vec2d> points;
 
-    for (int i = 1; i < body.size.x(); ++i) {
+    for (int i = 0; i < body.size.x(); ++i) {
         auto ret = inter[i];
 
         ret = Vec2d{ret.x(), body.size.y() - ret.y()};
-        ret.clamp({0, 0}, body.size);
+        ret.clamp({0, 0}, body.size - 1);
         points.push_back(ret);
     }
 
@@ -76,6 +76,14 @@ void v_Spline::recalculate_output() {
         }
     }
 
+    Vec2d p0 = body.size - dots[0]->get_body().position;
+    Vec2d p1 = body.size - dots[1]->get_body().position;
+    p0.clamp({0, 0}, body.size - 1);
+    p1.clamp({0, 0}, body.size - 1);
+
+    output[0] = p0.y();
+    output[output.size() - 1] = p1.y();
+
 }
 
 void v_Spline::render(Renderer *renderer) {
@@ -86,20 +94,20 @@ void v_Spline::render(Renderer *renderer) {
     if (!output.size()) return;
 
     for (size_t i = 0; i < output.size() - 1; ++i) {
-        Vec2d pos1 = {body.size.x() * i / 255, body.size.y() * output[i] / 255};
+        Vec2d pos1 = {body.size.x() * i / output.size(), body.size.y() * output[i] / output.size()};
         pos1.content[1] = body.size.y() - pos1.y();
 
-        Vec2d pos2 = {body.size.x() * (i + 1) / 255, body.size.y() * output[i + 1] / 255};
+        Vec2d pos2 = {body.size.x() * (i + 1) / output.size(), body.size.y() * output[i + 1] / output.size()};
         pos2.content[1] = body.size.y() - pos2.y();
 
-        renderer->draw_line(pos1, pos2, {255, 0, 0});
+        renderer->draw_line(pos1, pos2, curve_color);
     }
 
     renderer->shift(-body.position);
 }
 
 v_Magnetic *v_Spline::try_spawn_dot(const Vec2d &pos) {
-    auto dot = new v_Magnetic({pos, PX_SPLINE_DOT}, {0, get_body().size}, 10);
+    auto dot = new v_Magnetic({pos, PX_SPLINE_DOT}, {0, get_body().size - 1}, 10);
 
     dot->set_appearence(dot_appr);
     dot->e_fraction_changed.add(new SplineDotChangeAcceptor(this));
@@ -111,18 +119,38 @@ v_Magnetic *v_Spline::try_spawn_dot(const Vec2d &pos) {
     return dot;
 }
 
+bool v_Spline::try_delete_dot(const Vec2d &pos) {
+    v_Magnetic *dot = nullptr;
+    for (size_t i = 2; i < dots.size(); ++i) {
+        if (dots[i]->magnetize_test(pos)) {
+            dot = dots[i];
+            dots.erase(dots.begin() + i);
+            recalculate_output();
+
+            dot->to_delete = true;  
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 
 SplineSpawnNewDot::SplineSpawnNewDot(v_Spline *spline) : 
 EventAcceptor(spline)
 {}
 
 EventAccResult SplineSpawnNewDot::operator()(const Event::MousePress &event, const EventAccResult *) {
-    if (!acceptor->dot_captured) {
-        auto dot = acceptor->try_spawn_dot(event.position);
-        if (dot) {
-            acceptor->recalculate_output();
-            dot->e_mouse_press.emit(event);
+    if (event.button == Event::MouseButton::left) {
+        if (!acceptor->dot_captured) {
+            auto dot = acceptor->try_spawn_dot(event.position);
+            if (dot) {
+                acceptor->recalculate_output();
+                dot->e_mouse_press.emit(event);
+            }
         }
+    } else if (event.button == Event::MouseButton::right) {
+        acceptor->try_delete_dot(event.position);
     }
 
     acceptor->dot_captured = false;
