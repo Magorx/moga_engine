@@ -1,7 +1,7 @@
-#include "interpolator.h"
+#include "catmullrom.h"
 
 
-void Interpolator2d::add_to_data(const Vec2d point) {
+void Interpolator2dCatmullRom::add_to_data(const Vec2d &point) {
     if (!data.size()) {
         data.push_back(point);
         return;
@@ -24,41 +24,31 @@ void Interpolator2d::add_to_data(const Vec2d point) {
     }
 }
 
-Interpolator2d::Interpolator2d(bool to_swap_coords, size_t init_len) :
-data(),
+Interpolator2dCatmullRom::Interpolator2dCatmullRom(bool to_swap_coords, size_t init_len) :
+Interpolator(init_len),
 swap_coords(to_swap_coords)
-{
-    data.reserve(init_len);
-}
+{}
 
-void Interpolator2d::add(Vec2d point) {
+void Interpolator2dCatmullRom::add_p(const Vec2d &point) {
     if (swap_coords) {
-        double tmp = point.content[0];
-        point.content[0] = point.content[1];
-        point.content[1] = tmp;
+        add_to_data({point.y(), point.x()});
+    } else {
+        add_to_data(point);
     }
-
-    add_to_data(point);
 }
 
-double Interpolator2d::get_t(double t, double alpha, const Vec2d& p1, const Vec2d& p2) {
+double Interpolator2dCatmullRom::get_t(double t, double alpha, const Vec2d& p1, const Vec2d& p2) {
     auto d  = p2 - p1;
     double a = d.dot(d);
     double b = std::pow(a, alpha * 0.5);
     return (b + t);
 }
 
-#define VF "(%g, %g)"
-#define V(v) v.x(), v.y()
-
-Vec2d Interpolator2d::get_y(const Vec2d &p1, const Vec2d &p2, const Vec2d &p3, const Vec2d &p4, double t, double alpha) {
-    // printf("pts " VF " " VF " " VF " " VF, V(p1), V(p2), V(p3), V(p4));
+Vec2d Interpolator2dCatmullRom::get_p(const Vec2d &p1, const Vec2d &p2, const Vec2d &p3, const Vec2d &p4, double t, double alpha) {
     double t1 = 0.0f;
     double t2 = get_t( t1, alpha, p1, p2 );
     double t3 = get_t( t2, alpha, p2, p3 );
     double t4 = get_t( t3, alpha, p3, p4 );
-
-    //printf("t1 = %f, t2 = %f, t3 = %f, t4 = %f\n", t1, t2, t3, t4);
 
     t = std::lerp(t2, t3, t);
     Vec2d A1 = (t2 - t) / (t2 - t1) * p1 + (t - t1) / (t2 - t1) * p2;
@@ -73,7 +63,7 @@ Vec2d Interpolator2d::get_y(const Vec2d &p1, const Vec2d &p2, const Vec2d &p3, c
     return C;
 }
 
-Vec2d Interpolator2d::operator[](double x) {
+Vec2d Interpolator2dCatmullRom::operator[](const double &x) {
     size_t data_size = data.size();
 
     if (!data_size) {
@@ -96,7 +86,7 @@ Vec2d Interpolator2d::operator[](double x) {
     for (size_t i = 1; i < data_size - 2; ++i) {
         if (data[i].x() <= x && x <= data[i + 1].x()) {
             double t = (x - data[i].x()) / (data[i + 1].x() - data[i].x());
-            return get_y(data[i - 1], data[i], data[i + 1], data[i + 2], t);
+            return get_p(data[i - 1], data[i], data[i + 1], data[i + 2], t);
         }
     }
 

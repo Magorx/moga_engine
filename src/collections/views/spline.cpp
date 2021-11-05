@@ -17,6 +17,8 @@ output(255, 0),
 
 dot_appr(new AppearenceTexture(Resources.texture.dot))
 {
+    e_mouse_press.add(new AVMissPressBlocker(this));
+
     set_appearence(new AppearenceColor({100, 100, 100}));
 
     dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
@@ -25,6 +27,8 @@ dot_appr(new AppearenceTexture(Resources.texture.dot))
         add_subview(dot);
 
         dot->e_fraction_changed.add(new SplineDotChangeAcceptor(this));
+
+        dot->get_acc_press()->set_singular_mag_button(Event::MouseButton::left);
     }
 
     e_mouse_press.add(new SplineSpawnNewDot(this), false);
@@ -38,40 +42,17 @@ v_Spline::~v_Spline() {
 }
 
 void v_Spline::recalculate_output() {
-    // Interpolator2d inter;
-    // for (size_t i = 0; i < dots.size(); ++i) {
-    //     auto dot = dots[i];
-    //     Vec2d pos = dot->get_body().position;
-    //     pos.content[1] = body.size.y() - pos.y();
-    //     pos *= 255;
-    //     pos /= body.size;
-    //     inter.add(pos);
-    // }
-
-    // inter.add({inter.data[0].x() - 1, inter.data[0].y() - 1});
-    // auto data_size = inter.data.size();
-    // inter.add({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
-
-    // output[0] = inter.data[0].y();
-    // output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
-
-    // for (int i = 1; i < (int) output.size() - 1; ++i) {
-    //     auto ret = inter[i];
-    //     output[i] = ret.y();
-    //     // printf("%d) %d\n", i, output[i]);
-    // }
-
-    Interpolator2d inter;
+    Interpolator2dCatmullRom inter;
     for (size_t i = 0; i < dots.size(); ++i) {
         auto dot = dots[i];
         Vec2d pos = dot->get_body().position;
         pos.content[1] = body.size.y() - pos.y();
-        inter.add(pos);
+        inter.add_p(pos);
     }
 
-    inter.add({inter.data[0].x() - 1, inter.data[0].y() - 1});
+    inter.add_p({inter.data[0].x() - 1, inter.data[0].y() - 1});
     auto data_size = inter.data.size();
-    inter.add({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
+    inter.add_p({inter.data[data_size - 1].x() + 1, inter.data[data_size - 1].y() + 1});
 
     output[0] = inter.data[0].y();
     output[output.size() - 1] = inter.data[inter.data.size() - 1].y();
@@ -87,8 +68,8 @@ void v_Spline::recalculate_output() {
     }
 
     for (int i = 0; i < (int) points.size() - 1; ++i) {
-        Vec2d p1 = points[i];
-        Vec2d p2 = points[i + 1];
+        const Vec2d p1 = points[i];
+        const Vec2d p2 = points[i + 1];
         Vec2d dir = (p2 - p1).normal();
         for (Vec2d p = p1; (p1 - p).len_squared() < (p1 - p2).len_squared(); p += dir / 5) {
             output[p.x()] = body.size.y() - p.y();
@@ -117,6 +98,19 @@ void v_Spline::render(Renderer *renderer) {
     renderer->shift(-body.position);
 }
 
+v_Magnetic *v_Spline::try_spawn_dot(const Vec2d &pos) {
+    auto dot = new v_Magnetic({pos, PX_SPLINE_DOT}, {0, get_body().size}, 10);
+
+    dot->set_appearence(dot_appr);
+    dot->e_fraction_changed.add(new SplineDotChangeAcceptor(this));
+    dot->get_acc_press()->set_singular_mag_button(Event::MouseButton::left);
+
+    dots.push_back(dot);
+    add_subview(dot);
+
+    return dot;
+}
+
 
 SplineSpawnNewDot::SplineSpawnNewDot(v_Spline *spline) : 
 EventAcceptor(spline)
@@ -124,14 +118,11 @@ EventAcceptor(spline)
 
 EventAccResult SplineSpawnNewDot::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (!acceptor->dot_captured) {
-        auto dot = new v_Magnetic({event.position, PX_SPLINE_DOT}, {0, acceptor->get_body().size}, 10);
-        dot->set_appearence(acceptor->dot_appr);
-        acceptor->dots.push_back(dot);
-        acceptor->add_subview(dot);
-        dot->e_fraction_changed.add(new SplineDotChangeAcceptor(acceptor));
-        acceptor->recalculate_output();
-
-        dot->e_mouse_press.emit(event);
+        auto dot = acceptor->try_spawn_dot(event.position);
+        if (dot) {
+            acceptor->recalculate_output();
+            dot->e_mouse_press.emit(event);
+        }
     }
 
     acceptor->dot_captured = false;

@@ -81,9 +81,9 @@ public:
 	virtual void tickable_tick();
 	virtual void logic_tick();
 
-	virtual void on_mouse_click(Vec2d click);
+	virtual void on_mouse_click(Vec2d click, Event::MouseButton button = Event::MouseButton::none);
 	virtual void on_mouse_hover(Vec2d click);
-	virtual void on_mouse_release(Vec2d click);
+	virtual void on_mouse_release(Vec2d click, Event::MouseButton button = Event::MouseButton::none);
 	virtual void handle_events(sf::RenderWindow &window);
 
 	virtual void everlasting_loop();

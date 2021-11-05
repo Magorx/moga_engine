@@ -136,16 +136,16 @@ void MogaEngine::logic_tick() {
 	#endif
 }
 
-void MogaEngine::on_mouse_click(Vec2d click) {
-	main_view->e_mouse_press.emit({click});
+void MogaEngine::on_mouse_click(Vec2d click, Event::MouseButton button) {
+	main_view->e_mouse_press.emit({click, button});
 }
 
 void MogaEngine::on_mouse_hover(Vec2d hover) {
 	main_view->e_mouse_move.emit({mouse_pos, hover});
 }
 
-void MogaEngine::on_mouse_release(Vec2d click) {
-		main_view->e_mouse_release.emit({click});
+void MogaEngine::on_mouse_release(Vec2d click, Event::MouseButton button) {
+		main_view->e_mouse_release.emit({click, button});
 }
 
 void MogaEngine::handle_events(sf::RenderWindow &window) {
@@ -154,12 +154,33 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 		if (event.type == sf::Event::Closed)
 			window.close();
 
-		if (event.type == sf::Event::MouseButtonPressed) {
-			on_mouse_click({(double) event.mouseButton.x, (double) event.mouseButton.y});
-		}
+		if (event.type == sf::Event::MouseButtonPressed || event.type == sf::Event::MouseButtonReleased) {
+			Event::MouseButton button = Event::MouseButton::none;
+			switch (event.mouseButton.button) {
+				case sf::Mouse::Left:
+					button = Event::MouseButton::left;
+					break;
+				
+				case sf::Mouse::Right:
+					button = Event::MouseButton::right;
+					break;
+				
+				case sf::Mouse::Middle:
+					button = Event::MouseButton::middle;
+					break;
+				
+				default:
+					button = Event::MouseButton::none;
+					break;
+			}
 
-		if (event.type == sf::Event::MouseButtonReleased) {
-			on_mouse_release({(double) event.mouseButton.x, (double) event.mouseButton.y});
+			if (event.type == sf::Event::MouseButtonPressed) {
+				on_mouse_click({(double) event.mouseButton.x, (double) event.mouseButton.y}, button);
+			}
+
+			if (event.type == sf::Event::MouseButtonReleased) {
+				on_mouse_release({(double) event.mouseButton.x, (double) event.mouseButton.y}, button);
+			}
 		}
 
 		if (event.type == sf::Event::MouseMoved) {

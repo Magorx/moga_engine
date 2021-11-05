@@ -8,7 +8,7 @@ bounds_offset(bounds_.position - body.position),
 to_be_pressed(to_be_pressed),
 mag_radius(mag_radius)
 {
-    e_mouse_press.add(new AVMagneticPressAcceptor(this));
+    e_mouse_press.add(acc_press = new AVMagneticPressAcceptor(this));
     e_mouse_move.add(new AVMagneticMoveAcceptor(this));
     e_mouse_release.add(new AVMagneticReleaseAcceptor(this));
 }
@@ -57,12 +57,29 @@ void v_Magnetic::set_fraction(Vec2d fraction) {
 }
 
 
-AVMagneticPressAcceptor::AVMagneticPressAcceptor(v_Magnetic *magnetic) : EventAcceptor(magnetic) {}
+AVMagneticPressAcceptor::AVMagneticPressAcceptor(v_Magnetic *magnetic) : EventAcceptor(magnetic) {
+    memset(button_mag, 1, sizeof(button_mag));
+}
 
 EventAccResult AVMagneticPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
-    acceptor->pressed = acceptor->magnetize_to(event.position);
+    if (!button_mag[(int)event.button]) return EventAccResult::none;
 
-    return EventAccResult::cont;
+    acceptor->pressed = acceptor->magnetize_to(event.position);
+    
+    if (acceptor->pressed) {
+        return EventAccResult::done;
+    } else {
+        return EventAccResult::cont;
+    }
+}
+
+void AVMagneticPressAcceptor::set_button_mag(Event::MouseButton button, bool flag) {
+    button_mag[(int)button] = flag;
+}
+
+void AVMagneticPressAcceptor::set_singular_mag_button(Event::MouseButton button) {
+    memset(button_mag, 0, sizeof(button_mag));
+    set_button_mag(button, true);
 }
 
 

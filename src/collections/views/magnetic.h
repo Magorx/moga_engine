@@ -8,8 +8,13 @@ class v_Magnetic;
 
 
 class AVMagneticPressAcceptor : public EventAcceptor<v_Magnetic, Event::MousePress> {
+    bool button_mag[(int)Event::MouseButton::MAX + 1];
 public:
     AVMagneticPressAcceptor(v_Magnetic *magnetic);
+
+    void set_button_mag(Event::MouseButton button, bool flag);
+
+    void set_singular_mag_button(Event::MouseButton button);
 
     EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
 };
@@ -42,6 +47,8 @@ class v_Magnetic : public v_Highlighter {
     bool to_be_pressed;
     double mag_radius;
 
+    AVMagneticPressAcceptor *acc_press;
+
 public:
     v_Magnetic(const ViewBody &body, const ViewBody &bounds, double mag_radius = NAN, bool to_be_pressed = true);
 
@@ -53,4 +60,6 @@ public:
 
     Vec2d get_fraction() const;
     void set_fraction(Vec2d fraction);
+
+    AVMagneticPressAcceptor *get_acc_press() { return acc_press; }
 };

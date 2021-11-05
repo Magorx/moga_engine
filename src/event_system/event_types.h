@@ -7,6 +7,15 @@ class Renderer;
 
 namespace Event {
 
+enum MouseButton {
+    none,
+    left,
+    right,
+    middle,
+
+    MAX
+};
+
 struct ControlKeysData {
     bool alt;
     bool ctrl;
@@ -15,10 +24,12 @@ struct ControlKeysData {
 
 struct MousePress {
     Vec2d position;
+    MouseButton button = MouseButton::none;
 };
 
 struct MouseRelease {
     Vec2d position;
+    MouseButton button = MouseButton::none;
 };
 
 struct MouseMove {

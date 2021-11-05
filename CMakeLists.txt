@@ -91,7 +91,8 @@ add_executable(moga
         # utils
         src/utils/vec3d.cpp
         src/utils/timer.cpp
-        src/utils/interpolator.cpp
+
+        src/utils/interpolator/catmullrom.cpp
 
         # resources
         src/engine/Resources.cpp

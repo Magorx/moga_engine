@@ -4,7 +4,7 @@
 #include "highlighter.h"
 #include "magnetic.h"
 
-#include "utils/interpolator.h"
+#include "utils/interpolator/catmullrom.h"
 
 #include <vector>
 
@@ -29,6 +29,8 @@ class v_Spline : public v_Highlighter {
     AppearenceTexture *dot_appr;
 
     bool dot_captured = false;
+
+    v_Magnetic *try_spawn_dot(const Vec2d &pos);
 
 public:
     v_Spline(const ViewBody &body);
