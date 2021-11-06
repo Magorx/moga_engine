@@ -1,7 +1,7 @@
 #include "spline.h"
 
 
-v_Spline::v_Spline(const ViewBody &body, RGBA curve_color, double mag_radius) :
+v_Spline::v_Spline(const ViewBody &body, RGBA curve_color, RGBA background_color, double mag_radius) :
 v_Highlighter(body),
 dots({
     // new v_Magnetic({{0 - 2, body.size.y() + 2}, PX_SPLINE_DOT}, {0, body.size}, -1),
@@ -22,7 +22,9 @@ mag_radius(mag_radius)
 {
     e_mouse_press.add(new AVMissPressBlocker(this));
 
-    set_appearence(new AppearenceColor({100, 100, 100, 100}));
+    auto appr = new AppearenceColor(background_color);
+    Resources.created_apprs.push_back(appr);
+    set_appearence(appr);
 
     dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
     
@@ -85,7 +87,7 @@ void v_Spline::recalculate_output() {
     output[0] = p0.y();
     output[output.size() - 1] = p1.y();
 
-    e_vec_fraction_changed.emit({output, body.size.x()});
+    e_vec_fraction_changed.emit({output, body.size.y()});
 }
 
 void v_Spline::render(Renderer *renderer) {
@@ -163,12 +165,14 @@ EventAccResult SplineSpawnNewDot::operator()(const Event::MousePress &event, con
             if (dot) {
                 acceptor->recalculate_output();
                 dot->e_mouse_press.emit(event);
-                return EventAccResult::done;
+                return (EventAccResult) (EventAccResult::done | EventAccResult::focus);
             }
+        } else {
+            return (EventAccResult) (EventAccResult::done | EventAccResult::focus);
         }
     } else if (event.button == Event::MouseButton::right) {
         if (acceptor->try_delete_dot(event.position)) {
-            return EventAccResult::done;
+            return (EventAccResult) (EventAccResult::done | EventAccResult::focus);
         }
     }
 

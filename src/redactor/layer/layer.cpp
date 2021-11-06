@@ -27,11 +27,6 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
 
     if (to_apply_effects) {
         if (!effects_applied) {
-            // final_target->clear({0, 0, 0, 0});
-            // renderer->push_target(final_target);
-            // renderer->draw_texture({0, 0}, &target->getTexture(), true);
-            // renderer->pop_target();
-
             apply_effects();
             effects_applied = true;
         }

@@ -4,9 +4,12 @@
 const int RGB_MAPPING_CNT = 3;
 
 
-eff_RGBSplined::eff_RGBSplined(Layer *layer) :
-ShaderEffect(layer, Resources.shader.name.rgb_mapping)
+eff_RGBSplined::eff_RGBSplined(Canvas *canvas) :
+ShaderEffect(canvas->get_active_layer(), Resources.shader.name.rgb_mapping),
+canvas(canvas)
 {
+    target->add_effect(this);
+
     for (int i = 0; i < RGB_MAPPING_CNT; ++i) {
         mapping[i].resize(255);
         for (size_t j = 0; j < mapping[i].size(); ++j) {
@@ -16,9 +19,9 @@ ShaderEffect(layer, Resources.shader.name.rgb_mapping)
 
     shader = Resources.create_frag_shader(Resources.shader.name.rgb_mapping);
 
-    shader->setUniformArray("red", &mapping[0][0], mapping[0].size());
-    shader->setUniformArray("green", &mapping[0][0], mapping[0].size());
-    shader->setUniformArray("blue", &mapping[0][0], mapping[0].size());
+    shader->setUniformArray("red",   &mapping[0][0], mapping[0].size());
+    shader->setUniformArray("green", &mapping[1][0], mapping[1].size());
+    shader->setUniformArray("blue",  &mapping[2][0], mapping[2].size());
     shader->setUniform("max_rgb", 254.0f);
 }
 
@@ -29,9 +32,9 @@ void eff_RGBSplined::set_spline(int idx, AbstractView *view) {
 }
 
 void eff_RGBSplined::apply() {
-    shader->setUniformArray("red", &mapping[0][0], mapping[0].size());
-    shader->setUniformArray("green", &mapping[0][0], mapping[0].size());
-    shader->setUniformArray("blue", &mapping[0][0], mapping[0].size());
+    shader->setUniformArray("red",   &mapping[0][0], mapping[0].size());
+    shader->setUniformArray("green", &mapping[1][0], mapping[1].size());
+    shader->setUniformArray("blue",  &mapping[2][0], mapping[2].size());
     shader->setUniform("max_rgb", 254.0f);
 
     ShaderEffect::apply();
@@ -48,7 +51,13 @@ idx(idx)
 }
 
 EventAccResult RGBMappingUpdate::operator()(const Event::VectorFractionChanged &event, const EventAccResult *) {
+    for (size_t i = 0; i < event.data.size(); ++i) {
+        float res = event.data[i] / event.max_coef;
+        double map_idx = (double) i / event.data.size() * acceptor->mapping[0].size();
+        acceptor->mapping[idx][(size_t) map_idx] = res;
+    }
 
-
+    acceptor->target->set_effects_not_applied();
+    acceptor->canvas->force_redraw();
     return EventAccResult::cont;
 }

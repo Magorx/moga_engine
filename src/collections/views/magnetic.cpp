@@ -67,7 +67,7 @@ EventAccResult AVMagneticPressAcceptor::operator()(const Event::MousePress &even
     acceptor->pressed = acceptor->magnetize_to(event.position);
     
     if (acceptor->pressed) {
-        return EventAccResult::done;
+        return (EventAccResult) (EventAccResult::done | EventAccResult::focus);
     } else {
         return EventAccResult::cont;
     }

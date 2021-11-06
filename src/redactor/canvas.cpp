@@ -44,6 +44,8 @@ void Canvas::flush_to_final() {
             layer->flush_to(final_layer, true, true);
         }
     }
+
+    _to_redraw = false;
 }
 
 int Canvas::new_layer() {

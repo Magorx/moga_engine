@@ -5,6 +5,7 @@
 
 #include "utils.h"
 #include "redactor/layer/layer.h"
+#include "redactor/canvas.h"
 #include "view/view.h"
 
 #include "event_system/event_reaction.h"
@@ -20,9 +21,10 @@ class eff_RGBSplined : public ShaderEffect {
     friend RGBMappingUpdate;
 
     std::vector<float> mapping[3];
+    Canvas *canvas;
 
 public:
-    eff_RGBSplined(Layer *layer);
+    eff_RGBSplined(Canvas *canvas);
 
     void set_spline(int idx, AbstractView *view);
 

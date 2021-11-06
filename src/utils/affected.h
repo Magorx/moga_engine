@@ -29,6 +29,8 @@ public:
         }
     }
 
+    inline void set_effects_not_applied() { effects_applied = false; }
+
     virtual void add_effect(Effect<T>* effect) {
         if (!effects_owned) {
             logger.warning("Affected", "adding effect to affected that doesn't own its effects, clearing previous effects");

@@ -24,6 +24,10 @@ v_Canvas::~v_Canvas() {
 }
 
 void v_Canvas::render(Renderer *renderer)  {
+    if (canvas->to_redraw()) {
+        canvas->flush_to_final();
+    }
+
     v_Highlighter::render(renderer);
 
     // renderer->draw_texture(body.position, canvas->get_active_layer()->get_texture(), false);

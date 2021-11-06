@@ -131,7 +131,19 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
     options->normal_stretch();
 
     auto layer = canvas->get_canvas()->get_active_layer();
-    layer->add_effect(new eff_RGBSplined(layer));
+    auto effect = new eff_RGBSplined(canvas->get_canvas());
+    // layer->add_effect(effect);
+    
+    v_Spline *spr = new v_Spline({50, 300}, {255, 40, 40});
+    engine->add_view(spr);
+    v_Spline *spg = new v_Spline({50, 300}, {40, 255, 40});
+    engine->add_view(spg);
+    v_Spline *spb = new v_Spline({50, 300}, {40, 40, 255});
+    engine->add_view(spb);
+
+    effect->set_spline(0, spr);
+    effect->set_spline(1, spg);
+    effect->set_spline(2, spb);
 
     return window;
 }

@@ -19,6 +19,8 @@ class Canvas {
     Layer *inter_action_layer;
     Layer *final_layer;
 
+    bool _to_redraw;
+
 public:
     Canvas(Renderer *renderer, ToolManager *tool_manager, Vec2d size);
 
@@ -27,6 +29,9 @@ public:
     Layer *get_active_layer() { return active_layer; }
     Layer *get_final_layer() { return final_layer; }
     Layer *get_draw_layer() { return draw_layer; }
+
+    inline void force_redraw() { _to_redraw = true; }
+    inline bool to_redraw() { return _to_redraw; }
 
     void flush_draw_to_active();
     void flush_to_final();
