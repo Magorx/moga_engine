@@ -1,9 +1,11 @@
 #include "layer.h"
+#include "redactor/canvas.h"
 
 
-Layer::Layer(Renderer *renderer, Vec2d size, int idx):
+Layer::Layer(Renderer *renderer, Canvas *canvas, Vec2d size, int idx):
 Affected(this),
 renderer(renderer),
+canvas(canvas),
 target(nullptr),
 final_target(nullptr),
 size(size),
@@ -41,4 +43,9 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
         renderer->draw_texture({0, 0}, &target->getTexture(), to_flip);
         renderer->pop_target();
     }
+}
+
+void Layer::force_redraw() {
+    effects_applied = false;
+    if (canvas) canvas->force_redraw();
 }

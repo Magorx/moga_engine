@@ -1,4 +1,5 @@
 #include <string>
+#include "utils/logger.h"
 
 
 std::string randstr(int len) {
@@ -90,7 +91,7 @@ public:
 };
 
 
-v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
+v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canvas **out_canvas = nullptr) {
     auto window_style = StdStyle::Window::basic();
 
     auto name = randstr(10) + " - 0";
@@ -130,20 +131,9 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
 
     options->normal_stretch();
 
-    auto layer = canvas->get_canvas()->get_active_layer();
-    auto effect = new eff_RGBSplined(canvas->get_canvas());
-    // layer->add_effect(effect);
-    
-    v_Spline *spr = new v_Spline({50, 300}, {255, 40, 40});
-    engine->add_view(spr);
-    v_Spline *spg = new v_Spline({50, 300}, {40, 255, 40});
-    engine->add_view(spg);
-    v_Spline *spb = new v_Spline({50, 300}, {40, 40, 255});
-    engine->add_view(spb);
-
-    effect->set_spline(0, spr);
-    effect->set_spline(1, spg);
-    effect->set_spline(2, spb);
+    if (out_canvas) {
+        *out_canvas = canvas->get_canvas();
+    }
 
     return window;
 }
@@ -158,6 +148,47 @@ v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body
     auto picker = new v_ColorPicker({0, {body.size.x(), body.size.y()}}, engine->get_tool_manager());
 
     window->add_subview(picker);
+
+    return window;
+}
+
+
+v_Window *open_image(RedactorEngine *engine, const Vec2d &pos) {
+    char filename[200] = "1.jpg";
+    // scanf("%200s", filename);
+
+    RImage img;
+    if (!img.loadFromFile(filename)) {
+        logger.error("open_image", "can't open image %s", filename);
+        return nullptr;
+    }
+
+    auto size = img.getSize();
+
+    Canvas *canvas;
+    v_Window *window = spawn_canvas_window(engine, {pos, {(double) size.x, (double) size.y}}, &canvas);
+    if (!window) {
+        logger.error("open_image", "can't create canvas for image %s [%lux%lu]", filename, size.x, size.y);
+        return nullptr;
+    }
+
+    RTexture texture;
+    texture.loadFromImage(img);
+    canvas->get_active_layer()->copy_from(&texture);
+
+    auto effect = new eff_RGBSplined(canvas->get_active_layer());
+    canvas->get_active_layer()->add_effect(effect);
+    
+    v_Spline *spr = new v_Spline({50, 300}, {255, 40, 40});
+    engine->add_view(spr);
+    v_Spline *spg = new v_Spline({50, 300}, {40, 255, 40});
+    engine->add_view(spg);
+    v_Spline *spb = new v_Spline({50, 300}, {40, 40, 255});
+    engine->add_view(spb);
+
+    effect->set_spline(0, spr);
+    effect->set_spline(1, spg);
+    effect->set_spline(2, spb);
 
     return window;
 }
@@ -190,6 +221,22 @@ public:
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
         spawn_color_picker_window(engine, {engine->random_screen_pos(), {200, 200}});
+
+        return EventAccResult::none;
+    }
+};
+
+class OpenImage : public EventReaction<Event::Clicked> {
+    RedactorEngine *engine;
+
+public:
+    OpenImage(RedactorEngine *engine):
+    engine(engine)
+    {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+
+        open_image(engine, engine->random_screen_pos());
 
         return EventAccResult::none;
     }

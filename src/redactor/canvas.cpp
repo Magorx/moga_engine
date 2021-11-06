@@ -10,12 +10,12 @@ size(size)
         printf("Canvas was created without renderer or tool_manager, luckily to crush now\n");
     }
 
-    active_layer = new Layer(renderer, size);
+    active_layer = new Layer(renderer, this, size);
     layers.push_back(active_layer);
 
-    draw_layer = new Layer(renderer, size);
-    final_layer = new Layer(renderer, size);
-    inter_action_layer = new Layer(renderer, size);
+    draw_layer = new Layer(renderer, this, size);
+    final_layer = new Layer(renderer, this, size);
+    inter_action_layer = new Layer(renderer, this, size);
 }
 
 Canvas::~Canvas() {
@@ -49,7 +49,7 @@ void Canvas::flush_to_final() {
 }
 
 int Canvas::new_layer() {
-    active_layer = new Layer(renderer, size);
+    active_layer = new Layer(renderer, this, size);
     layers.push_back(active_layer);
 
     flush_to_final();

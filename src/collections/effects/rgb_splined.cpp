@@ -4,12 +4,9 @@
 const int RGB_MAPPING_CNT = 3;
 
 
-eff_RGBSplined::eff_RGBSplined(Canvas *canvas) :
-ShaderEffect(canvas->get_active_layer(), Resources.shader.name.rgb_mapping),
-canvas(canvas)
+eff_RGBSplined::eff_RGBSplined(Layer *layer) :
+ShaderEffect(layer, Resources.shader.name.rgb_mapping)
 {
-    target->add_effect(this);
-
     for (int i = 0; i < RGB_MAPPING_CNT; ++i) {
         mapping[i].resize(255);
         for (size_t j = 0; j < mapping[i].size(); ++j) {
@@ -57,7 +54,6 @@ EventAccResult RGBMappingUpdate::operator()(const Event::VectorFractionChanged &
         acceptor->mapping[idx][(size_t) map_idx] = res;
     }
 
-    acceptor->target->set_effects_not_applied();
-    acceptor->canvas->force_redraw();
+    acceptor->target->force_redraw();
     return EventAccResult::cont;
 }

@@ -21,10 +21,9 @@ class eff_RGBSplined : public ShaderEffect {
     friend RGBMappingUpdate;
 
     std::vector<float> mapping[3];
-    Canvas *canvas;
 
 public:
-    eff_RGBSplined(Canvas *canvas);
+    eff_RGBSplined(Layer *layer);
 
     void set_spline(int idx, AbstractView *view);
 

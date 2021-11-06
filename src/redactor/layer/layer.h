@@ -7,8 +7,12 @@
 #include "utils/affected.h"
 
 
+class Canvas;
+
+
 struct Layer : public Affected<Layer> {
     Renderer *renderer;
+    Canvas *canvas;
 
     RRendTexture *target;
     RRendTexture *final_target;
@@ -18,14 +22,27 @@ struct Layer : public Affected<Layer> {
 
     bool visible = true;
 
-    Layer(Renderer *renderer, Vec2d size, int idx = 0);
+    Layer(Renderer *renderer, Canvas *canvas, Vec2d size, int idx = 0);
 
     virtual ~Layer() {
         delete target;
     }
 
-    RRendTexture *get_target() {
-        effects_applied = false;
+    inline void set_canvas(Canvas *canvas_) {
+        canvas = canvas_;
+    }
+
+    void copy_from(RTexture *img) {
+        renderer->push_target(get_target());
+        renderer->set_render_state(sf::BlendNone);
+        renderer->draw_texture({0, 0}, img, true);
+        renderer->pop_target();
+    }
+    
+    void force_redraw();
+
+    inline RRendTexture *get_target() {
+        force_redraw();
         return target;
     }
 

@@ -39,13 +39,21 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
+    auto open_img_button = new v_Button({0, 0}, StdStyle::Button::basic());
+    open_img_button->e_clicked.add(new OpenImage(&moga));
+    open_img_button->add_label("Open Image", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+
+    opt_panel->layout_add(open_img_button, 1.5);
+
+    // ==================================================================================
+
     spawn_canvas_window(&moga, {{800, 100}, {200, 300}});
 
     spawn_color_picker_window(&moga, {{550, 100}, {200, 200}});
 
     // ==================================================================================
 
-    opt_panel->add_spaceholder(6);
+    opt_panel->add_spaceholder(5);
 
     // ==================================================================================
 
