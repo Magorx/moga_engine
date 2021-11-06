@@ -83,6 +83,10 @@ add_executable(moga
 
         src/collections/actions/toggle.cpp
 
+        # effects
+
+        src/collections/effects/rgb_splined.cpp
+
         # components
         src/visual/visual_engine.cpp
 

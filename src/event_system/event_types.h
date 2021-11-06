@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include <vector>
 #include "utils/vec2d.h"
 
 class Renderer;
@@ -83,6 +83,11 @@ struct Clicked {
 
 struct FractionChanged {
     Vec2d fraction;
+};
+
+struct VectorFractionChanged {
+    const std::vector<double> &data;
+    double max_coef;
 };
 
 }

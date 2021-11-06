@@ -58,18 +58,19 @@ public:
 
 
 class ShaderEffect : public Effect<Layer> {
-    RShader shader;
+protected:
+    RShader *shader;
 
 public:
-    ShaderEffect(Layer *layer, const char *filename) : Effect(layer), shader() {
-        shader.loadFromFile(filename, sf::Shader::Fragment);
-        shader.setUniform("texture", sf::Shader::CurrentTexture);
+    ShaderEffect(Layer *layer, const char *filename) : Effect(layer), shader(new RShader) {
+        shader->loadFromFile(filename, sf::Shader::Fragment);
+        shader->setUniform("texture", sf::Shader::CurrentTexture);
     }
 
     virtual void apply() override {
         target->renderer->push_target(target->final_target);
         target->renderer->get_rstate()->rmode.blendMode = RBlend::none;
-        target->renderer->get_rstate()->rmode.shader = &shader;
+        target->renderer->get_rstate()->rmode.shader = shader;
         target->renderer->draw_texture({0, 0}, target->get_final_texture(), true);
         target->renderer->pop_target();
     }

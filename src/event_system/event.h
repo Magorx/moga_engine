@@ -6,35 +6,7 @@
 #include <cassert>
 
 #include "event_types.h"
-
-
-enum EventAccResult {
-    none  = 0,
-    stop  = 1 << 1,
-    cont  = 1 << 2,
-    done  = 1 << 3,
-    focus = 1 << 4,
-    prevent_siblings_dispatch = 1 << 5,
-    to_delete = 1 << 6,
-};
-
-
-template <typename EVENT_T>
-class EventReaction {
-public:
-    virtual ~EventReaction() = default;
-    virtual EventAccResult operator()(const EVENT_T &event, const EventAccResult *cur_res = nullptr) = 0;
-};
-
-
-template <typename ACCEPTOR_T, typename EVENT_T>
-class EventAcceptor : public EventReaction<EVENT_T> {
-protected:
-    ACCEPTOR_T *acceptor;
-public:
-    virtual ~EventAcceptor() = default;
-    EventAcceptor(ACCEPTOR_T *acceptor) : acceptor(acceptor) {}
-};
+#include "event_reaction.h"
 
 
 class EventSystem;
@@ -161,6 +133,7 @@ public:
     EventDispatcher<Event::Close>           e_close;
     EventDispatcher<Event::Clicked>         e_clicked;
     EventDispatcher<Event::FractionChanged> e_fraction_changed;
+    EventDispatcher<Event::VectorFractionChanged> e_vec_fraction_changed;
 
     EventSystem() :
     parent(nullptr),
@@ -174,8 +147,9 @@ public:
     e_toggle_activity(this, "toggle_activity"),
     e_render_call(this, "render_call"),
     e_close(this, "close"),
-    e_clicked(this, "clie_clicked"),
-    e_fraction_changed(this, "chane_changed")
+    e_clicked(this, "clicked"),
+    e_fraction_changed(this, "fraction_changed"),
+    e_vec_fraction_changed(this, "vec_fraction_changed")
     {}
 
     virtual ~EventSystem() {
@@ -290,6 +264,11 @@ inline EventDispatcher<Event::Clicked> &EventSystem::get_dispatcher() {
 template <>
 inline EventDispatcher<Event::FractionChanged> &EventSystem::get_dispatcher() {
     return e_fraction_changed;
+}
+
+template <>
+inline EventDispatcher<Event::VectorFractionChanged> &EventSystem::get_dispatcher() {
+    return e_vec_fraction_changed;
 }
 
 //=====================================================================================================================

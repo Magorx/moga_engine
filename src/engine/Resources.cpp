@@ -49,6 +49,16 @@ sf::Font *load_font(const char *filename) {
     return font;
 }
 
+sf::Shader *load_frag_shader(const char *filename) {
+    auto shader = new sf::Shader;
+    if (!shader->loadFromFile(filename, sf::Shader::Fragment)) {
+        printf("can't load shader\n");
+    }
+    shader->setUniform("texture", sf::Shader::CurrentTexture);
+
+    return shader;
+}
+
 void load_animation(AnimationResourse &res, const std::vector<const char*> &frame_names) {
     for (size_t i = 0; i < frame_names.size(); ++i) {
         res.frames.push_back(new RTexture);
@@ -62,8 +72,13 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 
 #define ANM(path) RES("animation/") path "/"
 
+#define SHDR(path) RES("shader/") path
+
 
 void ResourcesHolder::init(MogaEngine *engine_) {
+    shader.name.rgb_mapping = "resources/shader/" "rgb_mapping.glsl";
+
+
     engine = engine_;
 
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
@@ -167,6 +182,9 @@ void ResourcesHolder::init(MogaEngine *engine_) {
 
     font.smart_color.basic_header = new SmartColor(font.color.basic_header);
     font.smart_color.basic_menu = new SmartColor(font.color.basic_menu);
+
+    shader.negative = load_frag_shader(SHDR("negative.glsl"));
+    shader.rgb_mapping = load_frag_shader(SHDR("rgb_mapping.glsl"));
 }
 
 ResourcesHolder::~ResourcesHolder() {
@@ -243,5 +261,11 @@ RTexture *ResourcesHolder::create_color(RGBA color) {
     return color_texture;
 }
 
+RShader *ResourcesHolder::create_frag_shader(const char *filename) {
+    auto shader = load_frag_shader(filename);
+    created_shaders.push_back(shader);
+    return shader;
+}
 
-ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}, {}};
+
+ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}, {}, {}, {}};

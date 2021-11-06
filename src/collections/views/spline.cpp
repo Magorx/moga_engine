@@ -85,6 +85,7 @@ void v_Spline::recalculate_output() {
     output[0] = p0.y();
     output[output.size() - 1] = p1.y();
 
+    e_vec_fraction_changed.emit({output, body.size.x()});
 }
 
 void v_Spline::render(Renderer *renderer) {

@@ -52,6 +52,7 @@ struct ResourcesHolder {
 
     std::vector<RTexture*> created_textures;
     std::vector<Appearence*>  created_apprs;
+    std::vector<RShader*> created_shaders;
 
     struct {
         struct {
@@ -123,12 +124,23 @@ struct ResourcesHolder {
         } smart_color;
     } font;
 
+    struct {
+        RShader *rgb_mapping;
+        RShader *negative;
+
+        struct {
+            const char *rgb_mapping;
+        } name;
+    } shader;
+
     ~ResourcesHolder();
 
     void init(MogaEngine *engine_);
 
     AppearenceAnimation *create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped = false, Vec2d transform = {1, 1}, double time_coef = 1);
     RTexture *create_color(RGBA color);
+
+    RShader *create_frag_shader(const char *filename);
 };
 
 extern ResourcesHolder Resources;

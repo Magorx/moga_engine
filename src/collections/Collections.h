@@ -8,6 +8,7 @@
 #include "actions/actions.h"
 #include "solid_bodies.h"
 #include "styles/styles.h"
+#include "effects/effects.h"
 
 #include "redactor_views/redactor_views.h"
 

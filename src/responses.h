@@ -131,7 +131,7 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body) {
     options->normal_stretch();
 
     auto layer = canvas->get_canvas()->get_active_layer();
-    layer->add_effect(new ShaderEffect(layer, "negative.glsl"));
+    layer->add_effect(new eff_RGBSplined(layer));
 
     return window;
 }

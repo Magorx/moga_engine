@@ -24,7 +24,7 @@ class v_Spline : public v_Highlighter {
     friend SplineUncaptureDot;
 
     std::vector<v_Magnetic*> dots;
-    std::vector<int> output;
+    std::vector<double> output;
 
     AppearenceTexture *dot_appr;
 
