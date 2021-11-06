@@ -101,6 +101,8 @@ public:
         states.pop_back();
         state = &states[states.size() - 1];
     }
+
+    RendererState *get_rstate() { return state; }
 };
 
 #endif // RENDERER_H

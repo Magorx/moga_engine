@@ -1,5 +1,7 @@
 #pragma once
 
+template <typename T>
+class affected;
 
 template <typename T>
 class Effect {

@@ -2,6 +2,7 @@
 
 
 Layer::Layer(Renderer *renderer, Vec2d size, int idx):
+Affected(this),
 renderer(renderer),
 target(nullptr),
 final_target(nullptr),
@@ -17,6 +18,8 @@ idx(idx)
     final_target->create((float) size.x(), (float) size.y());
     final_target->setRepeated(true);
     final_target->clear({0, 0, 0, 0});
+
+    add_effect(new FlushToFinalTexture(this));
 }
 
 void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rmode) {
@@ -24,10 +27,10 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
 
     if (to_apply_effects) {
         if (!effects_applied) {
-            final_target->clear({0, 0, 0, 0});
-            renderer->push_target(final_target);
-            renderer->draw_texture({0, 0}, &target->getTexture(), true);
-            renderer->pop_target();
+            // final_target->clear({0, 0, 0, 0});
+            // renderer->push_target(final_target);
+            // renderer->draw_texture({0, 0}, &target->getTexture(), true);
+            // renderer->pop_target();
 
             apply_effects();
             effects_applied = true;

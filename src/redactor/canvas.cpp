@@ -36,8 +36,9 @@ void Canvas::flush_to_final() {
     for (auto layer : layers) {
         if (layer == active_layer) {
             inter_action_layer->clear();
-            active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
-            draw_layer->flush_to(inter_action_layer, true);
+            active_layer->flush_to(inter_action_layer, false, true, sf::BlendNone);
+            draw_layer->set_effects(active_layer->get_effects());
+            draw_layer->flush_to(inter_action_layer, true, true);
             inter_action_layer->flush_to(final_layer);
         } else {
             layer->flush_to(final_layer, true, true);

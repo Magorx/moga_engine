@@ -94,6 +94,8 @@ add_executable(moga
 
         src/utils/interpolator/catmullrom.cpp
 
+        src/utils/logger.cpp
+
         # resources
         src/engine/Resources.cpp
 
