@@ -232,8 +232,9 @@ v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body
 }
 
 
-v_Window *open_image(RedactorEngine *engine, const Vec2d &pos) {
+v_Window *open_canvas_image(RedactorEngine *engine, const Vec2d &pos) {
     char filename[200] = "1.jpg";
+
     printf("Enter a file path for an image\n> ");
     scanf("%200s", filename);
 
@@ -302,7 +303,7 @@ public:
 
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
-        open_image(engine, engine->random_screen_pos());
+        open_canvas_image(engine, engine->random_screen_pos());
 
         return EventAccResult::none;
     }

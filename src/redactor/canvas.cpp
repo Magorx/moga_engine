@@ -28,7 +28,9 @@ Canvas::~Canvas() {
 }
 
 void Canvas::flush_draw_to_active() {
-    draw_layer->flush_to(active_layer, false);
+    active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
+    draw_layer->flush_to(inter_action_layer, true, false);
+    inter_action_layer->flush_to(active_layer, false, false, sf::BlendNone);
 }
 
 void Canvas::flush_to_final() {
@@ -37,7 +39,6 @@ void Canvas::flush_to_final() {
         if (layer == active_layer) {
             inter_action_layer->clear();
             active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
-            // draw_layer->set_effects(active_layer->get_effects());
             draw_layer->flush_to(inter_action_layer, true, false);
 
             inter_action_layer->set_effects(active_layer->get_effects());
@@ -107,9 +108,7 @@ void Canvas::on_mouse_down(const Vec2d &pos) {
 void Canvas::on_mouse_up(const Vec2d &pos) {
     tool_manager->on_mouse_up(pos);
 
-    active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
-    draw_layer->flush_to(inter_action_layer, true, false);
-    inter_action_layer->flush_to(active_layer, false, false, sf::BlendNone);
+    flush_draw_to_active();
 
     draw_layer->clear({0, 0, 0, 0});
     flush_to_final();
