@@ -8,6 +8,13 @@
 
 
 class Canvas {
+public:
+    enum DrawMode {
+        use_draw_layer,
+        use_active_layer,
+    };
+
+private:
     Renderer *renderer;
     ToolManager *tool_manager;
     Vec2d size;
@@ -21,6 +28,8 @@ class Canvas {
 
     bool _to_redraw;
 
+    DrawMode draw_mode = DrawMode::use_draw_layer;
+
 public:
     Canvas(Renderer *renderer, ToolManager *tool_manager, Vec2d size);
 
@@ -32,6 +41,9 @@ public:
 
     inline void force_redraw() { _to_redraw = true; }
     inline bool to_redraw() { return _to_redraw; }
+
+    inline void set_draw_mode(DrawMode draw_mode_) { draw_mode = draw_mode_; }
+    inline DrawMode get_draw_mode() const { return draw_mode; }
 
     void flush_draw_to_active();
     void flush_to_final();
@@ -50,4 +62,6 @@ public:
     void on_mouse_move(const Vec2d &from, const Vec2d &to);
 
     void save_to_file(const char *filename);
+
+    inline Vec2d flip(const Vec2d &p) { return {p.x(), size.y() - p.y()}; }
 };

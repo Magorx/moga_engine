@@ -85,6 +85,10 @@ Vec2d Interpolator2dCatmullRom::operator[](const double &x) {
 
     for (size_t i = 1; i < data_size - 2; ++i) {
         if (data[i].x() <= x && x <= data[i + 1].x()) {
+            if (data[i + 1].x() - data[i].x()) {
+                return data[i + 1].x();
+            }
+
             double t = (x - data[i].x()) / (data[i + 1].x() - data[i].x());
             return get_p(data[i - 1], data[i], data[i + 1], data[i + 2], t);
         }

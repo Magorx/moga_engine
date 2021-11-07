@@ -102,20 +102,32 @@ int Canvas::idx_by_layer(Layer *layer) {
 void Canvas::grab_tool_manager_activity() { tool_manager->set_active_canvas(this); }
 
 void Canvas::on_mouse_down(const Vec2d &pos) {
-    tool_manager->on_mouse_down(pos);
+    if (draw_mode == DrawMode::use_active_layer) {
+        tool_manager->on_mouse_down(flip(pos));
+    } else {
+        tool_manager->on_mouse_down(pos);
+    }
 }
 
 void Canvas::on_mouse_up(const Vec2d &pos) {
-    tool_manager->on_mouse_up(pos);
+    if (draw_mode == DrawMode::use_active_layer) {
+        tool_manager->on_mouse_up(flip(pos));
+    } else {
+        tool_manager->on_mouse_up(pos);
+    }
 
-    flush_draw_to_active();
+    if (draw_mode == DrawMode::use_draw_layer) flush_draw_to_active();
 
     draw_layer->clear({0, 0, 0, 0});
     flush_to_final();
 }
 
 void Canvas::on_mouse_move(const Vec2d &from, const Vec2d &to) {
-    tool_manager->on_mouse_move(from, to);
+    if (draw_mode == DrawMode::use_active_layer) {
+        tool_manager->on_mouse_move(flip(from), flip(to));
+    } else {
+        tool_manager->on_mouse_move(from, to);
+    }
 }
 
 void Canvas::save_to_file(const char *filename) {

@@ -32,6 +32,8 @@ struct Layer : public Affected<Layer> {
         canvas = canvas_;
     }
 
+    inline Canvas* get_canvas() { return canvas; }
+
     void copy_from(RTexture *img) {
         renderer->push_target(get_target());
         renderer->set_render_state(sf::BlendNone);

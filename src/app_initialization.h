@@ -57,6 +57,8 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     spawn_color_picker_window(&moga, {{550, 100}, {200, 200}});
 
+    spawn_tool_picker_window(&moga, {{200, 100}, {200, 200}});
+
     // ==================================================================================
 
     opt_panel->add_spaceholder(5);

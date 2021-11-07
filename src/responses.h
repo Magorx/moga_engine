@@ -261,6 +261,49 @@ v_Window *open_canvas_image(RedactorEngine *engine, const Vec2d &pos) {
 }
 
 
+class SetActiveTool : public EventReaction<Event::Clicked> {
+    ToolManager *tool_manager;
+    int idx;
+
+public:
+    SetActiveTool(ToolManager *tool_manager, int idx):
+    tool_manager(tool_manager),
+    idx(idx)
+    {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+        tool_manager->set_active_tool(idx);
+
+        return EventAccResult::none;
+    }
+};
+
+
+v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body) {
+    auto window_style = StdStyle::Window::basic();
+
+    auto window = new v_Window("Tools", body, window_style);
+
+    engine->add_view(window);
+
+    v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95});
+    window->get_content()->add_subview(layout);
+
+    v_Button *b_brush  = new v_Button({0, 0}, StdStyle::Button::basic());
+    v_Button *b_eraser = new v_Button({0, 0}, StdStyle::Button::basic());
+
+    layout->layout_add(b_brush);
+    layout->layout_add(b_eraser);
+
+    b_brush->add_label("bruh", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    b_eraser->add_label("eraer", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+
+    b_brush->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 0));
+    b_eraser->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 1));
+
+    return window;
+}
+
 class AddNewCanvasReaction : public EventReaction<Event::Clicked> {
     RedactorEngine *engine;
 

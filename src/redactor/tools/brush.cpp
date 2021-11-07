@@ -1,12 +1,12 @@
 #include "brush.h"
 #include "tool_manager.h"
+#include "redactor/canvas.h"
 
 
  void t_Brush::draw_point(const Vec2d &pos) {
     if (!draw_layer || !renderer) {
         return;
     }
-
     renderer->push_target(draw_layer->get_target());
 
     renderer->set_render_state({sf::BlendNone});
@@ -48,4 +48,12 @@ void t_Brush::on_mouse_move(const Vec2d &from, const Vec2d &to) {
 
     draw_point(from);
     draw_point(to);
+}
+
+void t_Brush::on_activate() {
+    if (draw_layer) draw_layer->get_canvas()->set_draw_mode(Canvas::DrawMode::use_draw_layer);
+}
+
+void t_Brush::on_update() {
+    if (draw_layer) draw_layer->get_canvas()->set_draw_mode(Canvas::DrawMode::use_draw_layer);
 }

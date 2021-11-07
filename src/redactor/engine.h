@@ -4,7 +4,7 @@
 #include "MogaEngine.h"
 
 #include "tools/tool_manager.h"
-#include "tools/brush.h"
+#include "tools/tools.h"
 
 
 class RedactorEngine : public MogaEngine {

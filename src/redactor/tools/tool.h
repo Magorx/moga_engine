@@ -52,6 +52,7 @@ public:
     
     virtual void on_activate() {}
     virtual void on_deactivate() {}
+    virtual void on_update() {}
 
     virtual void set_size(double size_) {
         size = size_;

@@ -25,22 +25,23 @@ void ToolManager::set_active_tool(size_t idx) {
         return;
     }
 
-    if (active_tool) active_tool->on_deactivate();
-
     Tool *tool = tools[idx];
     if (active_tool == tool) {
         return;
     }
+
+    if (active_tool) active_tool->on_deactivate();
+
     active_tool = nullptr;
 
     if (tool == nullptr) {
         return;
     }
 
-    tool->on_activate();
-
     active_tool = tool;
     update_active_tool();
+
+    tool->on_activate();
 }
 
 void ToolManager::set_active_canvas(Canvas *canvas) {
@@ -56,9 +57,14 @@ void ToolManager::update_active_tool() {
     active_tool->set_draw_color(draw_color);
 
     if (active_canvas) {
-        active_tool->set_draw_layer(active_canvas->get_active_layer());
-        active_tool->set_draw_layer(active_canvas->get_draw_layer());
+        Layer *layer_for_tool = nullptr;
+        // if (active_canvas->get_draw_mode() == Canvas::DrawMode::use_active_layer) layer_for_tool = active_canvas->get_active_layer();
+        // if (active_canvas->get_draw_mode() == Canvas::DrawMode::use_draw_layer)   layer_for_tool = active_canvas->get_draw_layer();
+        layer_for_tool = active_canvas->get_draw_layer();
+        active_tool->set_draw_layer(layer_for_tool);
     }
+
+    active_tool->on_update();
 }
 
 void ToolManager::on_mouse_down(const Vec2d &pos) {
