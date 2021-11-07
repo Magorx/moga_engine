@@ -47,10 +47,10 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
     auto bip_button = new v_Button({0, 0}, StdStyle::Button::basic());
-    bip_button->add_label("Bipki", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    bip_button->add_label("Tools", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
 
     opt_panel->layout_add(bip_button, 1.5);
-    bip_button->e_clicked.add(new AVToggleActivityGenerator<Event::Clicked>(bip_button));
+    bip_button->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
     // ==================================================================================
 
     spawn_canvas_window(&moga, {{800, 100}, {200, 300}});

@@ -57,7 +57,8 @@ public:
 
     void update_bounds(const ViewBody &bounds_);
 
-    void shift_with_bounds(const Vec2d &shift);
+    void shift(const Vec2d &shift, bool with_bounds = true);
+    void shift_bounds(const Vec2d &shift);
 
     Vec2d get_fraction() const;
     void set_fraction(Vec2d fraction);

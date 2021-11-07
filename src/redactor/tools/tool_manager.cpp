@@ -55,6 +55,7 @@ void ToolManager::update_active_tool() {
     }
 
     active_tool->set_draw_color(draw_color);
+    active_tool->set_size(size);
 
     if (active_canvas) {
         Layer *layer_for_tool = nullptr;

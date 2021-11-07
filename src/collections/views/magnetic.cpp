@@ -18,6 +18,7 @@ void v_Magnetic::update_bounds(const ViewBody &bounds_) {
 }
 
 bool v_Magnetic::magnetize_to(const Vec2d &pos, bool to_check_mag_radius) {
+    // pos -= body.size.x() / 1.5;
     if (to_check_mag_radius && mag_radius == mag_radius && pos.len() > mag_radius) return false;
 
     Vec2d shift = pos;
@@ -37,9 +38,16 @@ bool v_Magnetic::magnetize_to(const Vec2d &pos, bool to_check_mag_radius) {
     return true;
 }
 
-void v_Magnetic::shift_with_bounds(const Vec2d &shift) {
+void v_Magnetic::shift(const Vec2d &shift, bool with_bounds) {
     body.position   += shift;
+    if (with_bounds) {
+        bounds.position += shift;
+    }
+}
+
+void v_Magnetic::shift_bounds(const Vec2d &shift) {
     bounds.position += shift;
+    bounds_offset += shift;
 }
 
 Vec2d v_Magnetic::get_fraction() const { 

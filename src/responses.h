@@ -279,6 +279,24 @@ public:
 };
 
 
+class ToolManagerSetToolSize : public EventAcceptor<ToolManager, Event::FractionChanged> {
+    double max_rad;
+
+public:
+    ToolManagerSetToolSize(ToolManager *tool_manager, double max_rad = 35) :
+    EventAcceptor(tool_manager),
+    max_rad(max_rad)
+    {}
+
+    EventAccResult operator()(const Event::FractionChanged &event, const EventAccResult*) override {
+        acceptor->set_size(max_rad * event.fraction.x());
+        acceptor->update_active_tool();
+
+        return EventAccResult::cont;
+    }
+};
+
+
 v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window_style = StdStyle::Window::basic();
 
@@ -286,20 +304,45 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     engine->add_view(window);
 
-    v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95});
+    v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95}, 5);
     window->get_content()->add_subview(layout);
 
     v_Button *b_brush  = new v_Button({0, 0}, StdStyle::Button::basic());
     v_Button *b_eraser = new v_Button({0, 0}, StdStyle::Button::basic());
 
-    layout->layout_add(b_brush);
-    layout->layout_add(b_eraser);
+    v_Highlighter *slider_rect = new v_Highlighter({0, 0});
+    slider_rect->e_mouse_press.add(new AVMissPressBlocker(slider_rect));
+
+    auto slider_rect_appr = new AppearenceColor({230, 230, 230});
+    Resources.add_appr(slider_rect_appr);
+    slider_rect->set_appearence(slider_rect_appr);
+
+    layout->layout_add(b_brush, 2);
+    layout->layout_add(b_eraser, 2);
+    layout->layout_add(slider_rect);
+
+    v_Magnetic *slider = new v_Magnetic(
+        {{PX_SPLINE_DOT / 1.5, slider_rect->get_body().size.y() / 2}, PX_SPLINE_DOT}, 
+        {{PX_SPLINE_DOT / 1.5, slider_rect->get_body().size.y() / 2}, {body.size.x() * 0.9 - PX_SPLINE_DOT / 1.5 * 2, 0}}
+    );
+    slider_rect->add_subview(slider);
+
+    // slider->shift_bounds(slider->get_body().position + Vec2d{0, slider->get_body().size.y()});
+    // slider->get_body().position += Vec2d{0, slider->get_body().size.y()};
+
+    // slider->get_body().size = PX_SPLINE_DOT;
+    auto dot_appr = new AppearenceTexture(Resources.texture.dot);
+    slider->set_appearence(dot_appr);
+
+    dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
 
     b_brush->add_label("bruh", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
     b_eraser->add_label("eraer", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
 
     b_brush->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 0));
     b_eraser->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 1));
+
+    slider->e_fraction_changed.add(new ToolManagerSetToolSize(engine->get_tool_manager()));
 
     return window;
 }
@@ -331,6 +374,22 @@ public:
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
         spawn_color_picker_window(engine, {engine->random_screen_pos(), {200, 200}});
+
+        return EventAccResult::none;
+    }
+};
+
+class AddNewToolManagerWindowReaction : public EventReaction<Event::Clicked> {
+    RedactorEngine *engine;
+
+public:
+    AddNewToolManagerWindowReaction(RedactorEngine *engine):
+    engine(engine)
+    {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+
+        spawn_tool_picker_window(engine, {engine->random_screen_pos(), {200, 200}});
 
         return EventAccResult::none;
     }
