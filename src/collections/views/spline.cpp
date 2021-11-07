@@ -20,7 +20,7 @@ dot_appr(new AppearenceTexture(Resources.texture.dot)),
 curve_color(curve_color),
 mag_radius(mag_radius)
 {
-    e_mouse_press.add(new AVMissPressBlocker(this));
+    if (!(mag_radius == mag_radius)) e_mouse_press.add(new AVMissPressBlocker(this));
 
     auto appr = new AppearenceColor(background_color);
     Resources.created_apprs.push_back(appr);
