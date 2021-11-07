@@ -180,7 +180,7 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canv
 
     auto button_plus = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::plus());
 
-    auto button_open_effects = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::save());
+    auto button_open_effects = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::rgb());
     auto effects_opener = new CanvasOpenEffects(engine, canvas->get_canvas(), window);
     button_open_effects->e_clicked.add(effects_opener);
 

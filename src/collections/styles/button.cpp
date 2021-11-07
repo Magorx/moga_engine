@@ -71,6 +71,14 @@ namespace Button {
         );
     }
 
+    MouseReactionStyle *rgb() {
+        return basic_mouse_reaction_style(
+            Resources.texture.button.rgb.idle,
+            Resources.texture.button.rgb.hovered,
+            Resources.texture.button.rgb.pressed
+        );
+    }
+
     namespace Arrow {
         MouseReactionStyle *right() {
             return basic_mouse_reaction_style(

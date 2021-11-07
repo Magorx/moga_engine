@@ -18,6 +18,8 @@ namespace Button {
 
     MouseReactionStyle *save();
 
+    MouseReactionStyle *rgb();
+
     namespace Arrow {
         MouseReactionStyle *right();
         MouseReactionStyle *left();
