@@ -74,7 +74,7 @@ void v_Spline::recalculate_output() {
         const Vec2d p1 = points[i];
         const Vec2d p2 = points[i + 1];
         Vec2d dir = (p2 - p1).normal();
-        for (Vec2d p = p1; (p1 - p).len_squared() < (p1 - p2).len_squared(); p += dir / 5) {
+        for (Vec2d p = p1; (p1 - p).len_squared() < (p1 - p2).len_squared(); p += dir / SPLINE_GRANULARITY) {
             output[p.x()] = body.size.y() - p.y();
         }
     }

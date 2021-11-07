@@ -54,6 +54,8 @@ struct ResourcesHolder {
     std::vector<Appearence*>  created_apprs;
     std::vector<RShader*> created_shaders;
 
+    inline void add_appr(Appearence *appr) { created_apprs.push_back(appr); }
+
     struct {
         struct {
             AVMouseReactionResources close;

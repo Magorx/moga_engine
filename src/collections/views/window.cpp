@@ -38,12 +38,15 @@ text_color(RColor{255, 255, 255})
     if (draggable) header->get_drag_pod()->e_mouse_drag.add(new AVDragAcceptor(this, false));
 
     header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
+    header->get_button_hide()->e_toggle_activity.add(new HideableActivityToggleAcceptor(this));
     
     header->add_label(name, Resources.font.size.basic_header, &text_color);
     
     set_focuseable(true);
 
-    content->set_appearence(new AppearenceColor({255, 255, 255, 255}));
+    auto content_appr = new AppearenceColor({255, 255, 255, 255});
+    Resources.add_appr(content_appr);
+    content->set_appearence(content_appr);
     add_subview(content);
 
     header->focus();
@@ -55,4 +58,10 @@ void v_Window::add_subview(AbstractView *subview) {
     subview->get_body().position.content[1] += header->get_body().size.content[1];
     subview->get_body().position.content[0] += padding;
     v_Highlighter::add_subview(subview);
+}
+
+void v_Window::set_content_color(RColor color) {
+    auto content_appr = new AppearenceColor(color);
+    Resources.add_appr(content_appr);
+    content->set_appearence(content_appr);
 }

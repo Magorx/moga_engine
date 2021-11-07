@@ -27,4 +27,6 @@ public:
     inline AbstractView *get_content() { return content; }
 
     inline v_UtilityTab *get_header() { return header; }
+
+    void set_content_color(RColor color);
 };

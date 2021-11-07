@@ -67,6 +67,6 @@ v_under   (new v_Repeater({{0, size.y()}, {size.x(), PX_UTIL_BUTTON_SIZE}}, styl
         v_middle->set_appearence(style->bar);
     }
 
-
     b_close->e_clicked.add(new AVCloseGenerator<Event::Clicked>(b_close));
+    b_hide->e_clicked.add(new AVToggleActivityGenerator<Event::Clicked>(b_hide));
 }

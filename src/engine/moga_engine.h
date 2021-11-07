@@ -107,6 +107,8 @@ public:
 		return fps_seconds_tick;
 	};
 
+	inline Vec2d random_screen_pos() { return {vec3d_randdouble(0, screen_width), vec3d_randdouble(0, screen_height)}; }
+
 //  =====================
 };
 

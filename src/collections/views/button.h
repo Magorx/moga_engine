@@ -54,8 +54,6 @@ class v_Button : public v_Highlighter {
     friend ButtonReleaseAcceptor;
     friend ButtonMoveAcceptor;
 
-    MouseReactionStyle *style;
-
 public:
     v_Button(const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
     v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent = nullptr);

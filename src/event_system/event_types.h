@@ -90,4 +90,11 @@ struct VectorFractionChanged {
     double max_coef;
 };
 
+struct DataPtr {
+    void *receiver;
+    void *data;
+
+    inline bool check_receiver(void *obj) const { return !receiver || receiver == obj; }
+};
+
 }

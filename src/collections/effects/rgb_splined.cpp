@@ -57,3 +57,33 @@ EventAccResult RGBMappingUpdate::operator()(const Event::VectorFractionChanged &
     acceptor->target->force_redraw();
     return EventAccResult::cont;
 }
+
+
+v_Window *eff_RGBSplined::create_settings_window(MogaEngine *engine) {
+    v_Window *window = new v_Window("RGB mapping", {engine->random_screen_pos(), 300}, StdStyle::Window::basic());
+    engine->add_view(window);
+
+    auto content = window->get_content();
+    auto size = content->get_body().size;
+
+    const double coef = 0.05;
+    Vec2d sp_pos  = size * coef;
+    Vec2d sp_size = size * (1 - coef * 2);
+
+    v_Spline *spr = new v_Spline({sp_pos, sp_size}, {255, 40, 40});
+    window->add_subview(spr);
+    v_Spline *spg = new v_Spline({sp_pos, sp_size}, {40, 255, 40});
+    window->add_subview(spg);
+    v_Spline *spb = new v_Spline({sp_pos, sp_size}, {50, 50, 255});
+    window->add_subview(spb);
+
+    set_spline(0, spr);
+    set_spline(1, spg);
+    set_spline(2, spb);
+
+    window->get_header()->get_button_close()->to_delete = true;
+
+    window->set_content_color({60, 60, 60});
+
+    return window;
+}

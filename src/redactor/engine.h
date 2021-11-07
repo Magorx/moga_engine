@@ -17,6 +17,4 @@ public:
                    const size_t pixel_size);
     
     inline ToolManager *get_tool_manager() { return tool_manager; }
-
-    inline Vec2d random_screen_pos() { return {vec3d_randdouble(0, screen_width), vec3d_randdouble(0, screen_height)}; }
 };

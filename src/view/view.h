@@ -208,6 +208,8 @@ public:
 
     inline Appearence *get_appearence() { return appearence; }
 
+    inline MogaEngine *get_engine() { return Resources.engine; }
+
     ViewBody &get_body();
 
 };
@@ -215,9 +217,9 @@ public:
 
 template <typename EVENT_T>
 class AVCloseGenerator : public EventAcceptor<AbstractView, EVENT_T> {
-public:
     using EventAcceptor<AbstractView, EVENT_T>::acceptor;
 
+public:
     AVCloseGenerator(AbstractView *acceptor) : EventAcceptor<AbstractView, EVENT_T>(acceptor) {}
 
     EventAccResult operator()(const EVENT_T &, const EventAccResult *) {
@@ -226,3 +228,16 @@ public:
     }
 };
 
+
+template <typename EVENT_T>
+class AVToggleActivityGenerator : public EventAcceptor<AbstractView, EVENT_T> {
+    using EventAcceptor<AbstractView, EVENT_T>::acceptor;
+
+public:
+    AVToggleActivityGenerator(AbstractView *acceptor) : EventAcceptor<AbstractView, EVENT_T>(acceptor) {}
+
+    EventAccResult operator()(const EVENT_T &, const EventAccResult *) {
+        acceptor->e_toggle_activity.emit({Event::ActivityToggle::toggle});
+        return EventAccResult::cont;
+    }
+};
