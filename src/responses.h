@@ -234,7 +234,8 @@ v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body
 
 v_Window *open_image(RedactorEngine *engine, const Vec2d &pos) {
     char filename[200] = "1.jpg";
-    // scanf("%200s", filename);
+    printf("Enter a file path for an image\n> ");
+    scanf("%200s", filename);
 
     RImage img;
     if (!img.loadFromFile(filename)) {
