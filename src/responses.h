@@ -321,9 +321,14 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     layout->layout_add(b_eraser, 2);
     layout->layout_add(slider_rect);
 
+    double k = 0.4;
+    slider_rect->get_body().position = {slider_rect->get_body().position.x(),
+                                        slider_rect->get_body().position.y() + slider_rect->get_body().size.y() * (0.5 - k / 2)};
+    slider_rect->get_body().size = {slider_rect->get_body().size.x(), slider_rect->get_body().size.y() * k};
+
     v_Magnetic *slider = new v_Magnetic(
-        {{PX_SPLINE_DOT / 1.5, slider_rect->get_body().size.y() / 2}, PX_SPLINE_DOT}, 
-        {{PX_SPLINE_DOT / 1.5, slider_rect->get_body().size.y() / 2}, {body.size.x() * 0.9 - PX_SPLINE_DOT / 1.5 * 2, 0}}
+        {{0, slider_rect->get_body().size.y() / 2}, PX_SPLINE_DOT}, 
+        {{0, slider_rect->get_body().size.y() / 2}, {body.size.x() * 0.9, 0}}
     );
     slider_rect->add_subview(slider);
 
