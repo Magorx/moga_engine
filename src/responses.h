@@ -74,12 +74,14 @@ void CanvasOpenEffects::update_effects(eff_RGBSplined *effect) {
     windows[layer] = window;
 
     window->get_header()->get_button_hide()->e_toggle_activity.emit({});
+    window->focus();
 
     window->get_engine()->add_view(window);
 }
 
 EventAccResult CanvasOpenEffects::operator()(const Event::Clicked &, const EventAccResult*) {
     windows[acceptor->get_active_layer()]->get_header()->get_button_hide()->e_toggle_activity.emit({});
+    windows[acceptor->get_active_layer()]->focus();
 
     return EventAccResult::cont;
 }
@@ -323,7 +325,7 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     double k = 0.4;
     slider_rect->get_body().position = {slider_rect->get_body().position.x(),
-                                        slider_rect->get_body().position.y() + slider_rect->get_body().size.y() * (0.5 - k / 2)};
+                                        slider_rect->get_body().position.y() + slider_rect->get_body().size.y() * (0.7 - k / 2)};
     slider_rect->get_body().size = {slider_rect->get_body().size.x(), slider_rect->get_body().size.y() * k};
 
     v_Magnetic *slider = new v_Magnetic(

@@ -73,6 +73,7 @@ public:
     EventAccResult dispatch_to_sub_es(const EVENT_T &event, bool sub_es_reverse = false);
 
     void process_acc_result(EventAccResult &res, EventAccResult &sub_res);
+    EventAccResult clear_sub_result(EventAccResult sub_res);
 
     EventAccResult dispatch(const EVENT_T &event, bool sub_es_reverse) {
         EventAccResult sub_res = EventAccResult::none;
@@ -301,6 +302,13 @@ void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, EventAccR
     if (res & EventAccResult::to_delete) {
         sub_res = (EventAccResult) (sub_res | EventAccResult::to_delete);
     }
+}
+
+template <typename EVENT_T>
+EventAccResult EventDispatcher<EVENT_T>::clear_sub_result(EventAccResult sub_res) {
+    sub_res = (EventAccResult) (sub_res & ~EventAccResult::stop);
+
+    return sub_res;
 }
 
 

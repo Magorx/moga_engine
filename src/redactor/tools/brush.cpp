@@ -7,13 +7,19 @@
     if (!draw_layer || !renderer) {
         return;
     }
-    renderer->push_target(draw_layer->get_target());
+
+    auto target = draw_layer->get_target();
+    target->setRepeated(false);
+
+    renderer->push_target(target);
 
     renderer->set_render_state({sf::BlendNone});
 
     renderer->draw_circle(pos, size, draw_color);
 
     renderer->pop_target();
+
+    target->setRepeated(true);
 }
 
 t_Brush::t_Brush(Tool *manager) :
