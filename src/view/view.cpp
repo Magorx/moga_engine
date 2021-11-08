@@ -227,6 +227,8 @@ EventAccResult AVDragEmitter::operator()(const Event::MouseMove &event, const Ev
 AVPressFocuser::AVPressFocuser(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVPressFocuser::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (!acceptor->is_active()) return EventAccResult::none;
+
     if (acceptor->is_inside(event.position) && acceptor->is_focuseable()) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::focus | EventAccResult::prevent_siblings_dispatch);
     } else {
@@ -237,6 +239,8 @@ EventAccResult AVPressFocuser::operator()(const Event::MousePress &event, const 
 AVCoveredMoveBlocker::AVCoveredMoveBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, const EventAccResult *) {
+        if (!acceptor->is_active()) return EventAccResult::none;
+
     if (acceptor->is_inside(event.to)) {
         acceptor->cursor_inside = true;
     } else {
@@ -268,6 +272,8 @@ EventAccResult AVCloseAcceptor::operator()(const Event::Close &, const EventAccR
 AVCoveredPressBlocker::AVCoveredPressBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredPressBlocker::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (!acceptor->is_active()) return EventAccResult::none;
+
     if (acceptor->is_inside(event.position)) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
     }
@@ -278,6 +284,8 @@ EventAccResult AVCoveredPressBlocker::operator()(const Event::MousePress &event,
 AVCoveredReleaseBlocker::AVCoveredReleaseBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredReleaseBlocker::operator()(const Event::MouseRelease &event, const EventAccResult *) {
+    if (!acceptor->is_active()) return EventAccResult::none;
+
     if (acceptor->is_inside(event.position)) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
     }

@@ -23,7 +23,10 @@ void v_Hideable::render(Renderer *renderer) {
 HideablePressAcceptor::HideablePressAcceptor(v_Hideable *hideable) : EventAcceptor(hideable) {}
 
 EventAccResult HideablePressAcceptor::operator()(const Event::MousePress &, const EventAccResult*) {
-    if (!acceptor->is_active() && !acceptor->to_pass_inactive) return EventAccResult::stop;
+    if (!acceptor->is_active() && !acceptor->to_pass_inactive) {
+        printf("%p not active\n", this);
+        return EventAccResult::stop;
+    }
 
     return EventAccResult::none;
 }

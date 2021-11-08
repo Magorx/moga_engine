@@ -111,7 +111,6 @@ public:
         // settings_window->get_header()->get_button_hide()->e_toggle_activity.emit({});
 
         window->e_data_ptr.emit({effects_opener_upd, effect});
-        printf("emited\n");
 
         return EventAccResult::cont;
     }
