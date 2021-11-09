@@ -50,6 +50,7 @@ text_color(RColor{255, 255, 255})
     add_subview(content);
 
     header->focus();
+    content->focus();
 }
 
 void v_Window::add_subview(AbstractView *subview) {

@@ -19,7 +19,7 @@
 
     renderer->pop_target();
 
-    target->setRepeated(true);
+    // target->setRepeated(true);
 }
 
 t_Brush::t_Brush(Tool *manager) :

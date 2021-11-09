@@ -10,8 +10,8 @@ v_Highlighter(body)
     set_appearence(new AppearenceTexture(canvas->get_final_layer()->get_texture(), {1, 1}));
 
     e_mouse_press.add(new AVMissPressBlocker(this));
-    // e_mouse_release.add(new AVMissReleaseBlocker(this));
-    e_mouse_move.add(new AVMissMoveBlocker(this));
+    e_mouse_release.add(new AVMissReleaseBlocker(this));
+    // e_mouse_move.add(new AVMissMoveBlocker(this));
 
     e_mouse_press.add(new CanvasPressAcceptor(this));
     e_mouse_release.add(new CanvasReleaseAcceptor(this));
