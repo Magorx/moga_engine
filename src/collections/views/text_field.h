@@ -6,10 +6,6 @@
 #include "utils/text_line/line.h"
 
 
-extern const char CHR_COPY;
-extern const char CHR_PASTE;
-
-
 class TextEnterAcceptor;
 class KeyDownTextFieldAcceptor;
 class KeyUpTextFieldAcceptor;

@@ -1,10 +1,6 @@
 #include "text_field.h"
 
 
-const char CHR_COPY = 3;
-const char CHR_PASTE = 22;
-
-
 v_TextField::v_TextField(const ViewBody &body, TextStyle *style, bool redactable) :
 v_Highlighter(body),
 line(10),
@@ -111,11 +107,13 @@ void convert(char *dst, const uint32_t *unicode, int len) {
 void v_TextField::paste_from_clipboard() {
     int len = (int) sf::Clipboard::getString().getSize();
 
-    char *data = (char*) calloc(len, sizeof(char));
+    char *data = (char*) calloc(len + 1, sizeof(char));
     convert(data, sf::Clipboard::getString().getData(), len);
 
     line.put_str(data);
     display();
+
+    logger.info("text_field", "pasted [%s] to the clipboard", data);
 
     free(data);
 }
