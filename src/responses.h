@@ -416,3 +416,23 @@ public:
         return EventAccResult::none;
     }
 };
+
+class DBG : public EventReaction<Event::TextChanged> {
+    RedactorEngine *engine;
+
+public:
+    DBG(RedactorEngine *engine):
+    engine(engine)
+    {}
+
+    EventAccResult operator()(const Event::TextChanged &event, const EventAccResult*) override {
+
+        printf("TextChanged:\n");
+        printf("  str  : [%s]\n", event.text);
+        printf("  val_d: [%.20lg]\n", event.val_d);
+        printf("  val_i: [%d]\n", event.val_i);
+
+        return EventAccResult::none;
+    }
+};
+

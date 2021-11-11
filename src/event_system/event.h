@@ -142,6 +142,8 @@ public:
     EventDispatcher<Event::KeyUp>     e_key_up;
     EventDispatcher<Event::TextEnter> e_text_enter;
 
+    EventDispatcher<Event::TextChanged> e_text_changed;
+
     EventDispatcher<Event::DataPtr> e_data_ptr;
 
     EventSystem() :
@@ -162,6 +164,7 @@ public:
     e_key_down(this, "key down"),
     e_key_up(this, "key up"),
     e_text_enter(this, "text enter"),
+    e_text_changed(this, "text changed"),
     e_data_ptr(this, "data ptr")
     {}
 
@@ -302,6 +305,11 @@ inline EventDispatcher<Event::KeyUp> &EventSystem::get_dispatcher() {
 template <>
 inline EventDispatcher<Event::TextEnter> &EventSystem::get_dispatcher() {
     return e_text_enter;
+}
+
+template <>
+inline EventDispatcher<Event::TextChanged> &EventSystem::get_dispatcher() {
+    return e_text_changed;
 }
 
 //=====================================================================================================================

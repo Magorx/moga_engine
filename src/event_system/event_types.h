@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cstring>
 #include "utils/vec2d.h"
 
 #include "keymap.h"
@@ -90,6 +91,33 @@ struct FractionChanged {
 struct VectorFractionChanged {
     const std::vector<double> &data;
     double max_coef;
+};
+
+struct TextChanged {
+    const char *text;
+    size_t len;
+
+    double val_d;
+    int    val_i;
+
+    TextChanged(const char *text) :
+    text(text),
+    len(text ? strlen(text) : 0),
+    val_d(NAN),
+    val_i(0)
+    {
+        if (!text) return;
+
+        char *next = nullptr;
+        val_d = strtod(text, &next);
+        if (*next != '\0') {
+            val_d = NAN;
+            val_i = 0;
+            return;
+        }
+
+        val_i = static_cast<int>(val_d);
+    }
 };
 
 struct DataPtr {

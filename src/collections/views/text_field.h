@@ -24,8 +24,6 @@ class v_TextField : public v_Highlighter {
     int shifted = 0;
     int ctrled = 0;
 
-    RRendTexture inner_texture;
-
     friend TextEnterAcceptor;
     friend KeyDownTextFieldAcceptor;
     friend KeyUpTextFieldAcceptor;

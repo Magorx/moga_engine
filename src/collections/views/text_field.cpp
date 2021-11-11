@@ -127,6 +127,8 @@ EventAccResult TextEnterAcceptor::operator()(const Event::TextEnter &event, cons
     if (!event.is_symbolic()) return EventAccResult::done;
 
     char c = event.ascii();
+    if (c == '\n' || c == '\r') return EventAccResult::done;
+
     acceptor->add_char(c);
     acceptor->display();
 
@@ -184,6 +186,9 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
                 acceptor->paste_from_clipboard();
             }
             break;
+        
+        case Keyboard::Key::enter :
+            acceptor->e_text_changed.emit({acceptor->line.c_str()});
         
         default:
             break;
