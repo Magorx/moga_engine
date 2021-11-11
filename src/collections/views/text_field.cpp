@@ -32,6 +32,8 @@ v_TextField::~v_TextField() {
 void v_TextField::render(Renderer *renderer) {
     v_Highlighter::render(renderer);
 
+    if (!is_focused()) return;
+
     renderer->shift(body.position + v_label->get_body().position);
 
     v_cursor->render(renderer);
@@ -184,6 +186,21 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
         case Keyboard::Key::v :
             if (acceptor->ctrled) {
                 acceptor->paste_from_clipboard();
+            }
+            break;
+        
+        case Keyboard::Key::x :
+            if (acceptor->ctrled) {
+                acceptor->copy_to_clipboard();
+                acceptor->line.cut();
+                acceptor->display();
+            }
+            break;
+        
+        case Keyboard::Key::a :
+            if (acceptor->ctrled) {
+                acceptor->line.select_all(acceptor->shifted);
+                acceptor->display();
             }
             break;
         

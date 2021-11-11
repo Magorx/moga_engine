@@ -9,6 +9,12 @@ anchor(pos)
 void Cursor::fix_anchor()  { anchor_fixed = true; }
 void Cursor::free_anchor() { anchor_fixed = false; }
 
+void Cursor::pull_anchor() {
+    if (!anchor_fixed) {
+        anchor = pos;
+    }
+}
+
 void Cursor::move_r() {
     if (is_selection() && !anchor_fixed) {
         if (anchor() > pos()) {
@@ -20,9 +26,7 @@ void Cursor::move_r() {
     }
 
     pos.move_r();
-    if (!anchor_fixed) {
-        anchor = pos;
-    }
+    pull_anchor();
 }
 
 void Cursor::move_l() {
@@ -36,8 +40,27 @@ void Cursor::move_l() {
     }
 
     pos.move_l();
-    if (!anchor_fixed) {
-        anchor = pos;
+    pull_anchor();
+}
+
+void Cursor::move_home() {
+    pos.move_home();
+    pull_anchor();
+}
+
+void Cursor::move_end() {
+    pos.move_end();
+    pull_anchor();
+}
+
+
+void Cursor::select_all(bool to_fix_anchor) {
+    anchor.move_home();
+    pos.move_home();
+    fix_anchor();
+    pos.move_end();
+    if (!to_fix_anchor) {
+        free_anchor();
     }
 }
 

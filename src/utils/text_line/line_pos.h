@@ -15,8 +15,10 @@ public:
     LinePos &operator=(const LinePos &other);
 
     void move_r();
-
     void move_l();
+
+    void move_home();
+    void move_end();
 
     inline int operator()() const {
         return pos;

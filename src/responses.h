@@ -417,11 +417,11 @@ public:
     }
 };
 
-class DBG : public EventReaction<Event::TextChanged> {
+class DebugTextChange : public EventReaction<Event::TextChanged> {
     RedactorEngine *engine;
 
 public:
-    DBG(RedactorEngine *engine):
+    DebugTextChange(RedactorEngine *engine):
     engine(engine)
     {}
 

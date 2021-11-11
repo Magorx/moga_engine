@@ -33,6 +33,10 @@ public:
 
     void cursor_l() { cursor.move_l(); }
     void cursor_r() { cursor.move_r(); }
+    void cursor_home() { cursor.move_home(); }
+    void cursor_end()  { cursor.move_end(); }
+    void select_all(bool to_fix_anchor) { cursor.select_all(to_fix_anchor); }
+
     bool cursor_mag() { return cursor.anchor_magnet(); }
 
     int selection_l() { return std::min(cursor.pos(), cursor.anchor()); }

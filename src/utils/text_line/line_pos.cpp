@@ -27,3 +27,13 @@ void LinePos::move_l() {
     --pos;
     pos = pos < 0 ? 0 : pos;
 }
+
+void LinePos::move_home() {
+    pos = 0;
+}
+
+void LinePos::move_end() {
+    pos = line->len() - 1;
+    pos = pos < 0 ? 0 : pos;
+}
+

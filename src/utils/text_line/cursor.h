@@ -16,10 +16,15 @@ struct Cursor {
     void free_anchor();
 
     void move_r();
-
     void move_l();
 
+    void move_home();
+    void move_end();
+
+    void select_all(bool to_fix_anchor = false);
+
     bool anchor_magnet();
+    void pull_anchor();
 
     bool is_selection();
 

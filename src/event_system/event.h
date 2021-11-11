@@ -224,6 +224,15 @@ public:
         if (parent) parent->focus(index_in_parent);
     }
 
+    bool is_focused() {
+        return (!parent || parent->is_focused(index_in_parent));
+    }
+
+    bool is_focused(int idx) {
+        if (idx >= (int) sub_es.size()) return false;
+        else return idx == 0;
+    }
+
     template <typename T>
     EventDispatcher<T> &get_dispatcher();
 
