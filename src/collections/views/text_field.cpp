@@ -130,8 +130,8 @@ EventAccResult TextEnterAcceptor::operator()(const Event::TextEnter &event, cons
 
     char c = event.ascii();
 
-    if (c == '\r') {
-        acceptor->add_char('\n');
+    if (c == '\r' || c == '\n') {
+        // acceptor->add_char('\n');
     } else {
         acceptor->add_char(c);
     }
