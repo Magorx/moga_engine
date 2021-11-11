@@ -129,9 +129,12 @@ EventAccResult TextEnterAcceptor::operator()(const Event::TextEnter &event, cons
     if (!event.is_symbolic()) return EventAccResult::done;
 
     char c = event.ascii();
-    if (c == '\n' || c == '\r') return EventAccResult::done;
 
-    acceptor->add_char(c);
+    if (c == '\r') {
+        acceptor->add_char('\n');
+    } else {
+        acceptor->add_char(c);
+    }
     acceptor->display();
 
     return EventAccResult::done;
@@ -202,6 +205,16 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
                 acceptor->line.select_all(acceptor->shifted);
                 acceptor->display();
             }
+            break;
+        
+        case Keyboard::Key::home :
+            acceptor->line.cursor_home();
+            acceptor->display();
+            break;
+
+        case Keyboard::Key::end :
+            acceptor->line.cursor_end();
+            acceptor->display();
             break;
         
         case Keyboard::Key::enter :
