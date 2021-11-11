@@ -7,6 +7,6 @@
 #include "visual/style/utility_bar_style.h"
 #include "visual/style/text_style.h"
 
-#include "visual/renderer/Appearence.h"
+#include "visual/renderer/appearence.h"
 
 #include "engine/Resources.h"
