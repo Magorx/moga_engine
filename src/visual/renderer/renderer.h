@@ -82,6 +82,7 @@ public:
     inline void set_render_state(RState rstate) { state->rmode = rstate; }
 
     static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.basic);
+    static Vec2d get_char_position(const char *text, int idx, int char_size, const RFont *font = Resources.font.basic);
 
     void push_target(sf::RenderTarget *target) {
         if (state) {

@@ -185,14 +185,20 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 
 		if (event.type == sf::Event::MouseMoved) {
 			Vec2d hover = {(double) event.mouseMove.x, (double) event.mouseMove.y};
-			// if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
-			// 	main_view->e_mouse_drag.emit({mouse_pos, hover, Event::MouseDrag::left});
-			// } else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
-			// 	main_view->e_mouse_drag.emit({mouse_pos, hover, Event::MouseDrag::right});
-			// } else {
-				on_mouse_hover(hover);
-			// }
+			on_mouse_hover(hover);
 			mouse_pos = {(double) event.mouseMove.x, (double) event.mouseMove.y};
+		}
+
+		if (event.type == sf::Event::TextEntered) {
+			main_view->e_text_enter.emit({event.text.unicode});
+		}
+
+		if (event.type == sf::Event::KeyPressed) {
+			main_view->e_key_down.emit({(Keyboard::Key) event.key.code});
+		}
+
+		if (event.type == sf::Event::KeyReleased) {
+			main_view->e_key_up.emit({(Keyboard::Key) event.key.code});
 		}
 	}
 }

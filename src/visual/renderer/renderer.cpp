@@ -132,6 +132,16 @@ Vec2d Renderer::get_text_size(const char *text, int char_size, const RFont *font
     return {bounds.x, bounds.y * 2};
 }
 
+Vec2d Renderer::get_char_position(const char *text, int idx, int char_size, const RFont *font) {
+    sf::Text sf_text = {};
+    sf_text.setFont(*font);
+    sf_text.setString(text);
+    sf_text.setCharacterSize(char_size);
+
+    sf::Vector2f pos = sf_text.findCharacterPos(idx);
+    return {pos.x, pos.y};
+}
+
 void Renderer::apr_draw_circle(Vec2d pos, double rad, int granularity) {
     if (!state->appearence) return;
     pos += state->offset;

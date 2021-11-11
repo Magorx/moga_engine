@@ -138,6 +138,10 @@ public:
     EventDispatcher<Event::FractionChanged> e_fraction_changed;
     EventDispatcher<Event::VectorFractionChanged> e_vec_fraction_changed;
 
+    EventDispatcher<Event::KeyDown>   e_key_down;
+    EventDispatcher<Event::KeyUp>     e_key_up;
+    EventDispatcher<Event::TextEnter> e_text_enter;
+
     EventDispatcher<Event::DataPtr> e_data_ptr;
 
     EventSystem() :
@@ -155,6 +159,9 @@ public:
     e_clicked(this, "clicked"),
     e_fraction_changed(this, "fraction_changed"),
     e_vec_fraction_changed(this, "vec_fraction_changed"),
+    e_key_down(this, "key down"),
+    e_key_up(this, "key up"),
+    e_text_enter(this, "text enter"),
     e_data_ptr(this, "data ptr")
     {}
 
@@ -280,6 +287,21 @@ inline EventDispatcher<Event::VectorFractionChanged> &EventSystem::get_dispatche
 template <>
 inline EventDispatcher<Event::DataPtr> &EventSystem::get_dispatcher() {
     return e_data_ptr;
+}
+
+template <>
+inline EventDispatcher<Event::KeyDown> &EventSystem::get_dispatcher() {
+    return e_key_down;
+}
+
+template <>
+inline EventDispatcher<Event::KeyUp> &EventSystem::get_dispatcher() {
+    return e_key_up;
+}
+
+template <>
+inline EventDispatcher<Event::TextEnter> &EventSystem::get_dispatcher() {
+    return e_text_enter;
 }
 
 //=====================================================================================================================

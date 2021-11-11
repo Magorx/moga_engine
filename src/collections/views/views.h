@@ -18,4 +18,5 @@
 
 #include "text.h"
 
+#include "text_field.h"
 #include "spline.h"

@@ -40,7 +40,7 @@ text_color(RColor{255, 255, 255})
     header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
     header->get_button_hide()->e_toggle_activity.add(new HideableActivityToggleAcceptor(this));
     
-    header->add_label(name, Resources.font.size.basic_header, &text_color);
+    header->add_label(name, Resources.font.size.basic_header, text_color.rgb());
     
     set_focuseable(true);
 

@@ -29,7 +29,7 @@ public:
         char *cur_label = window->get_header()->get_label_text();
         std::string str = cur_label;
         str[str.size() - 1] = '0' + ret;
-        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.smart_color.basic_header);
+        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.color.basic_header);
 
         return EventAccResult::cont;
     }
@@ -102,7 +102,7 @@ public:
         char *cur_label = window->get_header()->get_label_text();
         std::string str = cur_label;
         str[str.size() - 1] = '0' + ret;
-        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.smart_color.basic_header);
+        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.color.basic_header);
 
         auto effect = new eff_RGBSplined(acceptor->get_active_layer());
         acceptor->get_active_layer()->add_effect(effect);
@@ -342,8 +342,8 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
 
-    b_brush->add_label("bruh", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
-    b_eraser->add_label("eraer", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    b_brush->add_label("bruh", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    b_eraser->add_label("eraer", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     b_brush->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 0));
     b_eraser->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 1));

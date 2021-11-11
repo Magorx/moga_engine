@@ -2,7 +2,7 @@
 #include "../Collections.h"
 
 
-v_Submenu::v_Submenu(Type type, const ViewBody &body_, SmartColor *color, const char *label, std::vector<const char*> button_labels, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color, int char_size, Vec2d button_scale):
+v_Submenu::v_Submenu(Type type, const ViewBody &body_, SmartColor *color, const char *label, std::vector<const char*> button_labels, SmartColor *button_color, RGBA text_color, SmartColor *back_color, int char_size, Vec2d button_scale):
 v_Highlighter(body_, color),
 align({{0, 1}, {1, 2}})
 {

@@ -3,6 +3,8 @@
 #include <vector>
 #include "utils/vec2d.h"
 
+#include "keymap.h"
+
 class Renderer;
 
 namespace Event {

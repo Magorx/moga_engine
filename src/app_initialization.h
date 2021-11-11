@@ -25,7 +25,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto new_canvas_button = new v_Button({0, 0}, StdStyle::Button::basic());
     new_canvas_button->e_clicked.add(new AddNewCanvasReaction(&moga));
-    new_canvas_button->add_label("Canvas", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    new_canvas_button->add_label("Canvas", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     opt_panel->layout_add(new_canvas_button);
     
@@ -33,7 +33,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto new_picker_button = new v_Button({0, 0}, StdStyle::Button::basic());
     new_picker_button->e_clicked.add(new AddNewColorPickerReaction(&moga));
-    new_picker_button->add_label("Color Picker", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    new_picker_button->add_label("Color Picker", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     opt_panel->layout_add(new_picker_button, 1.5);
 
@@ -41,13 +41,13 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto open_img_button = new v_Button({0, 0}, StdStyle::Button::basic());
     open_img_button->e_clicked.add(new OpenImage(&moga));
-    open_img_button->add_label("Open Image", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    open_img_button->add_label("Open Image", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     opt_panel->layout_add(open_img_button, 1.5);
 
     // ==================================================================================
     auto bip_button = new v_Button({0, 0}, StdStyle::Button::basic());
-    bip_button->add_label("Tools", Resources.font.size.basic_menu, Resources.font.smart_color.basic_menu);
+    bip_button->add_label("Tools", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     opt_panel->layout_add(bip_button, 1.5);
     bip_button->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
@@ -65,10 +65,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    // v_Spline *sp = new v_Spline({50, 300}, {40, 255, 40});
-    // moga.add_view(sp);
-
-    // v_Spline *sp2 = new v_Spline({50, 300}, {255, 40, 40});
-    // moga.add_view(sp2);
+    v_TextField *txt = new v_TextField({50, 100});
+    moga.add_view(txt);
 
 }

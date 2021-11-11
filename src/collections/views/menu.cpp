@@ -1,7 +1,7 @@
 #include "menu.h"
 
 
-v_Menu::v_Menu(const std::vector<const char*> &button_labels, SmartColor *button_color, SmartColor *text_color, SmartColor *back_color, int char_size, Vec2d button_scale):
+v_Menu::v_Menu(const std::vector<const char*> &button_labels, SmartColor *button_color, RGBA text_color, SmartColor *back_color, int char_size, Vec2d button_scale):
 v_VerticalLayout({{0, 0}, {0, 0}}, {{0, 0}, {0, 0}}, 0, nullptr, back_color),
 // button_color(button_color),
 // text_color(text_color),

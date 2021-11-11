@@ -15,7 +15,7 @@ include_directories(src
                     src/collections)
 
 set(CMAKE_EXE_LINKER_FLAGS "-pthread")
-set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native") #-fsanitize=address
+set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native -fsanitize=undefined") #-fsanitize=address
 
 find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
 
@@ -58,6 +58,9 @@ add_executable(moga
         src/collections/styles/button.cpp
         src/collections/styles/util_bar.cpp
         src/collections/styles/window.cpp
+        src/collections/styles/text.cpp
+
+        # views
 
         src/collections/views/button.cpp
         src/collections/views/toggler.cpp
@@ -75,7 +78,10 @@ add_executable(moga
         src/collections/views/utility_tab.cpp
         src/collections/views/window.cpp
 
+        src/collections/views/text_field.cpp
         src/collections/views/spline.cpp
+
+        # redactor views
 
         src/collections/redactor_views/canvas.cpp
         src/collections/redactor_views/color_picker.cpp
@@ -99,6 +105,10 @@ add_executable(moga
         src/utils/interpolator/catmullrom.cpp
 
         src/utils/logger.cpp
+
+        src/utils/text_line/line.cpp
+        src/utils/text_line/line_pos.cpp
+        src/utils/text_line/cursor.cpp
 
         # resources
         src/engine/Resources.cpp

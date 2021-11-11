@@ -6,7 +6,6 @@
 #include "app_initialization.h"
 #endif
 
-#include "utils/string_input/string_field.h"
 
 int main() {
     #ifndef TEST
