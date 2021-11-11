@@ -1,8 +1,8 @@
 uniform sampler2D texture;
 
-uniform float[255] red;
-uniform float[255] green;
-uniform float[255] blue;
+uniform float red[255];
+uniform float green[255];
+uniform float blue[255];
 
 uniform float max_rgb;
 

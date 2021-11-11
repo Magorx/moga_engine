@@ -175,8 +175,14 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
             acceptor->shifted++;
             break;
         
+        #ifdef __APPLE__
+        case Keyboard::Key::lsystem :
+        case Keyboard::Key::rsystem :
+        #else
         case Keyboard::Key::lcontrol :
         case Keyboard::Key::rcontrol :
+        #endif
+
             acceptor->ctrled++;
             break;
         
@@ -243,8 +249,13 @@ EventAccResult KeyUpTextFieldAcceptor::operator()(const Event::KeyUp &event, con
             }
             break;
 
+        #ifdef __APPLE__
+        case Keyboard::Key::lsystem :
+        case Keyboard::Key::rsystem :
+        #else
         case Keyboard::Key::lcontrol :
         case Keyboard::Key::rcontrol :
+        #endif
             acceptor->ctrled--;
             break;
         
