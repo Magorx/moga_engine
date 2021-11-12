@@ -161,7 +161,7 @@ EventAccResult TextEnterAcceptor::operator()(const Event::TextEnter &event, cons
     char c = event.ascii();
 
     if (c == '\r' || c == '\n') {
-        // acceptor->add_char('\n');
+        // acceptor->add_char('\n'); we don't want add new lines chars in ONE line input
     } else {
         acceptor->add_char(c);
     }
