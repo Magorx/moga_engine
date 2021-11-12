@@ -50,6 +50,7 @@ public:
     virtual ~v_TextField();
 
     virtual void render(Renderer *renderer) override;
+    virtual void refit() override;
 
     void add_char(char c);
     void display();
@@ -57,8 +58,10 @@ public:
     void copy_to_clipboard();
     void paste_from_clipboard();
 
-    void set_string(const char *str);
+    void set_string(const char *str, bool to_fit_width = false);
     void set_number(const double number);
+
+    void fit_width_to_string();
 
     void put_cursor_under_mouse(const Vec2d &mouse_pos);
 };

@@ -18,5 +18,12 @@ struct TextStyle : public Style {
     background(background)
     {}
 
+    TextStyle *negative() {
+        foreground = !foreground;
+        background = !background;
+
+        return this;
+    }
+
     virtual ~TextStyle() {}
 };

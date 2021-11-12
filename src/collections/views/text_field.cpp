@@ -17,7 +17,7 @@ redactable(redactable)
         v_content->get_body().size = Vec2d{body.size.x() - PX_TF_PADDING * 2.0, this->body.size.y() - PX_TF_PADDING * 2.0};
     }
 
-    set_focuseable(true);
+    set_focuseable(redactable);
 
     set_appearence(Resources.add_appr(new AppearenceColor(frame_color)));
 
@@ -30,8 +30,8 @@ redactable(redactable)
 
     display();
 
-    v_cursor->set_appearence(Resources.add_appr(new AppearenceColor({230, 230, 230})));
-    v_selection->set_appearence(Resources.add_appr(new AppearenceColor({140, 140, 195, 200})));
+    v_cursor->set_appearence(Resources.add_appr(new AppearenceColor(Resources.color.text_field.basic.cursor)));
+    v_selection->set_appearence(Resources.add_appr(new AppearenceColor(Resources.color.text_field.basic.selection)));
 
     add_subview(v_content);
     v_content->set_appearence(Resources.add_appr(new AppearenceColor(content_color)));
@@ -52,12 +52,24 @@ void v_TextField::render(Renderer *renderer) {
 
     if (is_focused() && text_focused) {
         v_selection->render(renderer);
-        v_cursor->render(renderer);
     }
 
     v_label->render(renderer);
 
+    if (is_focused() && text_focused) {
+        v_cursor->render(renderer);
+    }
+
     renderer->shift(-shift);
+}
+
+void v_TextField::refit() {
+    v_Highlighter::refit();
+
+    v_content->get_body().position = PX_TF_PADDING;
+    v_content->get_body().size     = body.size - PX_TF_PADDING * 2;
+
+    display();
 }
 
 Vec2d v_TextField::char_pos(int idx) {
@@ -115,15 +127,25 @@ void v_TextField::add_char(char c) {
     }
 }
 
-void v_TextField::set_string(const char *str) {
+void v_TextField::set_string(const char *str, bool to_fit_width) {
     line.set_str(str);
     display();
+
+    if (to_fit_width) {
+        fit_width_to_string();
+    }
 }
 
 void v_TextField::set_number(const double number) {
     char tmp_str[100] = {};
     sprintf(tmp_str, "%lg", number);
     set_string(tmp_str);
+}
+
+void v_TextField::fit_width_to_string() {
+    Vec2d last_char_pos = char_pos(line.len() + 1);
+    body.size.content[0] = last_char_pos.x() + 4 * PX_TF_PADDING;
+    v_content->get_body().size.content[0] = body.size.content[0] - 2 * PX_TF_PADDING;
 }
 
 void v_TextField::copy_to_clipboard() {
@@ -323,6 +345,8 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (!acceptor->redactable) return EventAccResult::none;
+
     if (acceptor->is_inside(event.position)) {
         acceptor->text_focused = true;
         acceptor->put_cursor_under_mouse(event.position);

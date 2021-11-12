@@ -70,6 +70,10 @@ void AbstractView::add_subview(AbstractView *subview) {
     add_es(subview);
     subview->set_parent(this);
 
+    Vec2d p_size = body.size;
+    subview->fit_body.position = subview->get_body().position / p_size;
+    subview->fit_body.size = (subview->get_body().position + subview->get_body().size) / p_size;
+
     const bool to_focus = true;
     if (to_focus) subview->focus();
 }

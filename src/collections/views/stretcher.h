@@ -6,6 +6,7 @@
 
 class v_Stretcher : public v_Highlighter {
     int coord_idx;
+    bool to_zerify_normal_coord = true;
 public:
 
     enum Coord {
@@ -26,6 +27,10 @@ public:
         return new v_Stretcher(Coord::y, body, color, parent, highlight_coef);
     }
 
+    void set_zerify_normal_coord(bool to_zerify_normal_coord_) {
+        to_zerify_normal_coord = to_zerify_normal_coord_;
+    }
+
     void pre_add_subview(AbstractView *subview) {
         double sum_size = 0;
         for (auto subv : subviews) {
@@ -33,7 +38,9 @@ public:
         }
 
         subview->get_body().position.content[coord_idx] = sum_size - subview->get_body().position.content[coord_idx];
-        subview->get_body().position.content[coord_idx ^ 1] = 0;
+        if (to_zerify_normal_coord) {
+            subview->get_body().position.content[coord_idx ^ 1] = 0;
+        }
         body.size.content[coord_idx] = sum_size;
     }
 

@@ -184,8 +184,10 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     font.color.basic_header = {255, 255, 255, 255};
     font.color.basic_menu   = {15, 15, 15, 255};
 
-    color.text_field.basic.frame = {75, 116, 202};
-    color.text_field.basic.content = {50, 88, 167};
+    color.text_field.basic.frame     = {177, 188, 255};
+    color.text_field.basic.content   = {126, 158, 255};
+    color.text_field.basic.cursor    = {20, 20, 20, 200};
+    color.text_field.basic.selection = {120, 100, 145, 220};
 
     font.smart_color.basic_header = new SmartColor(font.color.basic_header);
     font.smart_color.basic_menu = new SmartColor(font.color.basic_menu);

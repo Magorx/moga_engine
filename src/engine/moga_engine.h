@@ -112,7 +112,7 @@ public:
 	inline Vec2d random_screen_pos() { return {vec3d_randdouble(0, screen_width), vec3d_randdouble(0, screen_height)}; }
 
 	inline void centrize_view_body(ViewBody &body) {
-		body.position = Vec2d{screen_width / 2.0, screen_height / 2.0} - body.size / 2;
+		main_view->centrize(body);
 	}
 
 };

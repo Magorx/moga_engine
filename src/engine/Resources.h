@@ -101,6 +101,8 @@ struct ResourcesHolder {
             struct {
                 RColor frame;
                 RColor content;
+                RColor cursor;
+                RColor selection;
             } basic;
         } text_field;
     } color;

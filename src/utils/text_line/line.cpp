@@ -6,7 +6,8 @@ data(),
 cursor(LinePos(this, 0))
 {
     data.resize(to_reserve, 0);
-    data.resize(0);
+    data.resize(1);
+    data[0] = '\0';
     data.reserve(to_reserve);
 }
 

@@ -210,6 +210,10 @@ public:
 
     inline MogaEngine *get_engine() { return Resources.engine; }
 
+    inline void centrize(ViewBody &other_body) {
+        other_body.position = body.size / 2 - other_body.size / 2;
+    }
+
     ViewBody &get_body();
 
 };

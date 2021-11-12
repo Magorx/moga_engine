@@ -18,6 +18,8 @@ union RGBA {
 	RGBA(const int x);
 	RGBA(const unsigned char r_, const unsigned char g_, const unsigned char b_, const unsigned char a_ = 255);
 
+	RGBA operator!() const;
+
 	RGBA operator+(const RGBA &other) const;
 
 	RGBA operator/(const float &coef) const;

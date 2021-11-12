@@ -44,7 +44,7 @@ text_color(RColor{255, 255, 255})
     
     set_focuseable(true);
 
-    auto content_appr = new AppearenceColor({255, 255, 255, 255});
+    auto content_appr = new AppearenceColor({230, 230, 230, 255});
     Resources.add_appr(content_appr);
     content->set_appearence(content_appr);
     add_subview(content);

@@ -69,10 +69,13 @@ void initialize_photoshop(RedactorEngine &moga) {
     moga.add_view(txt);
 
     txt->e_text_changed.add(new DebugTextChange);
-    txt->set_string("text_input");
-    txt->set_number(123123);
+    // txt->set_string("text_input");
+    // txt->set_number(123123);
 
-    auto dw = new v_DialogWindow("How are you?", {250, 150});
+    auto dw = new v_DialogWindow("How are you?", {250, 150}, -30);
     moga.add_view(dw);
+    dw->add_field("Width", 50, "px");
+    dw->add_field("Height", 50, "px");
+    dw->add_field("Free Text", 100);
 
 }
