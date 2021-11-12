@@ -2,9 +2,10 @@
 
 
 #include "window.h"
+#include "collections/styles/window.h"
 
 
-class v_DialogWindow : v_Window {
+class v_DialogWindow : public v_Window {
 public:
-    v_DialogWindow(const char *name, const ViewBody &body, WindowStyle *style);
+    v_DialogWindow(const char *name, const Vec2d &size, WindowStyle *style = StdStyle::Window::dialog());
 };

@@ -96,6 +96,13 @@ struct ResourcesHolder {
 
     struct {
         RTexture *spectrum;
+
+        struct {
+            struct {
+                RColor frame;
+                RColor content;
+            } basic;
+        } text_field;
     } color;
 
     struct {

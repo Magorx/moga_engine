@@ -10,6 +10,8 @@ namespace Window {
 
     WindowStyle *basic();
 
+    WindowStyle *dialog();
+
 }
 
 }

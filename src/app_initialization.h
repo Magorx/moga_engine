@@ -72,4 +72,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     txt->set_string("text_input");
     txt->set_number(123123);
 
+    auto dw = new v_DialogWindow("How are you?", {250, 150});
+    moga.add_view(dw);
+
 }

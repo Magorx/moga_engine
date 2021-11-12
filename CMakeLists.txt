@@ -89,6 +89,7 @@ add_executable(moga
         src/collections/views/magnetic.cpp
         src/collections/views/utility_tab.cpp
         src/collections/views/window.cpp
+        src/collections/views/dialog_window.cpp
 
         src/collections/views/text_field.cpp
         src/collections/views/spline.cpp

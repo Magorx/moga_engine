@@ -44,7 +44,8 @@ class v_TextField : public v_Highlighter {
 
 public:
     v_TextField(const ViewBody &body, TextStyle *style = StdStyle::Text::basic(),
-               RColor frame_color = {100, 100, 100}, RColor content_color = {70, 70, 70}, 
+               RColor frame_color = Resources.color.text_field.basic.frame,
+               RColor content_color = Resources.color.text_field.basic.content, 
                bool autofit_to_text_size = true, bool redactable = true);
     virtual ~v_TextField();
 

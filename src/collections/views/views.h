@@ -15,6 +15,7 @@
 #include "submenu.h"
 
 #include "window.h"
+#include "dialog_window.h"
 
 #include "text.h"
 

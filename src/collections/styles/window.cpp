@@ -13,6 +13,10 @@ namespace Window {
         };
     }
 
+    WindowStyle *dialog() {
+        return basic();
+    }
+
 }
 
 }
