@@ -155,7 +155,8 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult TextEnterAcceptor::operator()(const Event::TextEnter &event, const EventAccResult *) {
-    if (!event.is_symbolic()) return EventAccResult::done;
+    if (!acceptor->text_focused) return EventAccResult::none;
+    if (!event.is_symbolic()) return EventAccResult::none;
 
     char c = event.ascii();
 
@@ -175,6 +176,7 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event, const EventAccResult *) {
+    if (!acceptor->text_focused) return EventAccResult::none;
     
     switch (event.code) {
 
@@ -254,6 +256,7 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
         
         case Keyboard::Key::enter :
             acceptor->e_text_changed.emit({acceptor->line.c_str()});
+            acceptor->text_focused = false;
         
         default:
             break;
@@ -267,6 +270,7 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult KeyUpTextFieldAcceptor::operator()(const Event::KeyUp &event, const EventAccResult *) {
+    if (!acceptor->text_focused) return EventAccResult::none;
     
     switch (event.code) {
 
@@ -308,7 +312,10 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
         acceptor->pressed = true;
         return EventAccResult::cont;
     } else {
-        acceptor->text_focused = false;
+        if (acceptor->text_focused) {
+            acceptor->e_text_changed.emit({acceptor->line.c_str()});
+            acceptor->text_focused = false;
+        }
     }
 
     return EventAccResult::none;
