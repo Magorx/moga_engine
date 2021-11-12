@@ -46,6 +46,14 @@ class Logger {
 public:
     int paging_mode;
 
+    enum class Level {
+        none = 0,
+        error = 2,
+        warning = 4,
+        info = 6,
+        debug = 10,
+    };
+
     Logger(FILE *fileptr = stdout, int log_level=5, int reset_max_lens_counter = 50);
 
     void log(const char* code, const char* announcer, const char *message, ...); // normal logging
@@ -69,9 +77,11 @@ public:
 
     int  get_log_level() const;
     void set_log_level(int log_level_);
+    void set_log_level(Logger::Level log_level_);
 
     int  get_verb_level() const;
     void set_verb_level(int verb_level_);
+    void set_verb_level(Logger::Level verb_level_);
 
     void reset_max_lens();
 };

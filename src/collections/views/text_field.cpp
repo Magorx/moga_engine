@@ -22,7 +22,7 @@ redactable(redactable)
     display();
 
     v_cursor->set_appearence(Resources.add_appr(new AppearenceColor({230, 230, 230})));
-    v_selection->set_appearence(Resources.add_appr(new AppearenceColor({180, 180, 230, 150})));
+    v_selection->set_appearence(Resources.add_appr(new AppearenceColor({210, 210, 255, 70})));
 }
 
 v_TextField::~v_TextField() {

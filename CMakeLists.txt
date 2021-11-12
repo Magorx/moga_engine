@@ -21,6 +21,18 @@ find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
 
 add_executable(moga
 
+        # utils
+        src/utils/vec3d.cpp
+        src/utils/timer.cpp
+
+        src/utils/interpolator/catmullrom.cpp
+
+        src/utils/logger.cpp
+
+        src/utils/text_line/line.cpp
+        src/utils/text_line/line_pos.cpp
+        src/utils/text_line/cursor.cpp
+
         # event
 
         # interface
@@ -97,18 +109,6 @@ add_executable(moga
         src/visual/visual_engine.cpp
 
         src/engine/tickable.h
-
-        # utils
-        src/utils/vec3d.cpp
-        src/utils/timer.cpp
-
-        src/utils/interpolator/catmullrom.cpp
-
-        src/utils/logger.cpp
-
-        src/utils/text_line/line.cpp
-        src/utils/text_line/line_pos.cpp
-        src/utils/text_line/cursor.cpp
 
         # resources
         src/engine/Resources.cpp

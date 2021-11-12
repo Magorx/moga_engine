@@ -68,6 +68,6 @@ void initialize_photoshop(RedactorEngine &moga) {
     v_TextField *txt = new v_TextField({50, 100});
     moga.add_view(txt);
 
-    txt->e_text_changed.add(new DebugTextChange(&moga));
+    txt->e_text_changed.add(new DebugTextChange);
 
 }

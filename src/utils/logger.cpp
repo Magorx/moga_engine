@@ -101,7 +101,7 @@ void Logger::print_n_spaces(size_t n) {
 }
 
 void Logger::_log(bool to_ignore_log_level, const char* code, const char* announcer, const char *message, va_list arglist) { // dirty code, I suppose it can be cleaned
-    if (log_level < verb_level && !to_ignore_log_level) return;
+    if (log_level > verb_level && !to_ignore_log_level) return;
 
     if (!announcer || !code || !message) {
         print_nullptr_passed_error();
@@ -168,38 +168,63 @@ void Logger::log(int override_log_level, const char* code, const char* announcer
 }
 
 void Logger::error(const char* announcer, const char *message, ...) {
+    int prev_log_level = log_level;
+    set_log_level(Level::error);
+
     va_list args;
     va_start(args, message);
     _log(false, "ERROR", announcer, message, args);
     va_end(args);
+
+    log_level = prev_log_level;
 }
 
 void Logger::ERROR(const char* announcer, const char *message, ...) {
+    int prev_log_level = log_level;
+    set_log_level(Level::error);
+
     va_list args;
     va_start(args, message);
     _log(false, "!--ERROR--!", announcer, message, args);
     va_end(args);
+
+    log_level = prev_log_level;
 }
 
 void Logger::info(const char* announcer, const char *message, ...) {
+    int prev_log_level = log_level;
+    set_log_level(Level::info);
+
     va_list args;
     va_start(args, message);
-    _log(false, "INFO", announcer, message, args);
+    _log(false, "info", announcer, message, args);
     va_end(args);
+
+    log_level = prev_log_level;
 }
 
 void Logger::warning(const char* announcer, const char *message, ...) {
+    int prev_log_level = log_level;
+    set_log_level(Level::warning);
+
     va_list args;
     va_start(args, message);
     _log(false, "~~~~", announcer, message, args);
     va_end(args);
+
+    log_level = prev_log_level;
 }
 
-void Logger::doubt   (const char* announcer, const char *message, ...) {
+void Logger::doubt(const char* announcer, const char *message, ...) {
+    int prev_log_level = log_level;
+    set_log_level(Level::info);
+
     va_list args;
     va_start(args, message);
     _log(false, "????", announcer, message, args);
     va_end(args);
+
+    log_level = prev_log_level;
 }
 
 void Logger::n() {
@@ -227,12 +252,20 @@ void Logger::set_log_level(int log_level_) {
     log_level = log_level_;
 }
 
+void Logger::set_log_level(Logger::Level log_level_) {
+    log_level = (int) log_level_;
+}
+
 int  Logger::get_verb_level() const {
     return verb_level;
 }
 
 void Logger::set_verb_level(int verb_level_) {
     verb_level = verb_level_;
+}
+
+void Logger::set_verb_level(Logger::Level verb_level_) {
+    verb_level = (int) verb_level_;
 }
 
 LogLevel::LogLevel(Logger &logger, int log_level, int verb_level):

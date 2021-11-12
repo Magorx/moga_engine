@@ -118,6 +118,13 @@ struct TextChanged {
 
         val_i = static_cast<int>(val_d);
     }
+
+    TextChanged(const char *text, size_t len, double val_d = NAN, int val_i = 0) :
+    text(text),
+    len(len),
+    val_d(val_d),
+    val_i(val_i)
+    {}
 };
 
 struct DataPtr {

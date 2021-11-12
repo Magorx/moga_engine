@@ -418,11 +418,8 @@ public:
 };
 
 class DebugTextChange : public EventReaction<Event::TextChanged> {
-    RedactorEngine *engine;
-
 public:
-    DebugTextChange(RedactorEngine *engine):
-    engine(engine)
+    DebugTextChange()
     {}
 
     EventAccResult operator()(const Event::TextChanged &event, const EventAccResult*) override {
