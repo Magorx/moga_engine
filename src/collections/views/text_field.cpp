@@ -78,6 +78,11 @@ void v_TextField::add_char(char c) {
     }
 }
 
+void v_TextField::set_string(const char *str) {
+    line.set_str(str);
+    display();
+}
+
 void v_TextField::copy_to_clipboard() {
     char *str = (char*) calloc(line.len(), sizeof(char));
     int from = line.selection_l();

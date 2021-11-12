@@ -39,6 +39,8 @@ public:
 
     void copy_to_clipboard();
     void paste_from_clipboard();
+
+    void set_string(const char *str);
 };
 
 

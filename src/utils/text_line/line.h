@@ -25,6 +25,7 @@ public:
     void put_char(char c);
 
     void put_str(const char *str);
+    void set_str(const char *str);
 
     void erase_next();
     void erase_prev();
@@ -44,8 +45,6 @@ public:
 
     int cursor_pos() { return cursor.pos(); }
     int anchor_pos() { return cursor.anchor(); }
-
-
 
     void fix_anchors();
     void free_anchors();

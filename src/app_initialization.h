@@ -69,5 +69,6 @@ void initialize_photoshop(RedactorEngine &moga) {
     moga.add_view(txt);
 
     txt->e_text_changed.add(new DebugTextChange);
+    txt->set_string("text_input");
 
 }

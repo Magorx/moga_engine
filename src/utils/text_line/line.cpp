@@ -56,6 +56,16 @@ void Line::put_str(const char *str) {
     }
 }
 
+void Line::set_str(const char *str) {
+    int l = strlen(str);
+    data.resize(l);
+    for (int i = 0; i < l; ++i) {
+        data[i] = str[i];
+    }
+    data.push_back('\0');
+    cursor_end();
+}
+
 void Line::erase_next() {
     if (cursor.is_selection()) {
         cut();
