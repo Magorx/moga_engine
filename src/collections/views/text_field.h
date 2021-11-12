@@ -6,6 +6,9 @@
 #include "utils/text_line/line.h"
 
 
+const double PX_TF_PADDING = 3;
+
+
 class TextEnterAcceptor;
 class KeyDownTextFieldAcceptor;
 class KeyUpTextFieldAcceptor;
@@ -18,6 +21,7 @@ class v_TextField : public v_Highlighter {
     Line line;
     TextStyle *style;
 
+    v_Highlighter *v_content;
     v_Highlighter *v_cursor;
     v_Highlighter *v_selection;
 
@@ -39,7 +43,9 @@ class v_TextField : public v_Highlighter {
     Vec2d char_pos(int idx);
 
 public:
-    v_TextField(const ViewBody &body, TextStyle *style = StdStyle::Text::basic(), bool redactable = true);
+    v_TextField(const ViewBody &body, TextStyle *style = StdStyle::Text::basic(),
+               RColor frame_color = {100, 100, 100}, RColor content_color = {70, 70, 70}, 
+               bool autofit_to_text_size = true, bool redactable = true);
     virtual ~v_TextField();
 
     virtual void render(Renderer *renderer) override;
@@ -51,6 +57,7 @@ public:
     void paste_from_clipboard();
 
     void set_string(const char *str);
+    void set_number(const double number);
 
     void put_cursor_under_mouse(const Vec2d &mouse_pos);
 };

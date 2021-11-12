@@ -1,19 +1,25 @@
 #include "text_field.h"
 
 
-v_TextField::v_TextField(const ViewBody &body, TextStyle *style, bool redactable) :
-v_Highlighter(body),
+v_TextField::v_TextField(const ViewBody &body, TextStyle *style,
+                         RColor frame_color, RColor content_color,
+                         bool autofit_to_text_size, bool redactable) :
+v_Highlighter({body.position, body.size}),
 line(10),
 style(style),
+v_content(new v_Highlighter({PX_TF_PADDING, this->body.size - PX_TF_PADDING * 2})),
 v_cursor(new v_Highlighter({0, {2, body.size.y()}})),
 v_selection(new v_Highlighter({0, 0})),
 redactable(redactable)
 {
+    if (autofit_to_text_size) {
+        this->body.size = Vec2d{body.size.x(), style->size + PX_TF_PADDING * 4.0};
+        v_content->get_body().size = Vec2d{body.size.x() - PX_TF_PADDING * 2.0, this->body.size.y() - PX_TF_PADDING * 2.0};
+    }
+
     set_focuseable(true);
 
-    Appearence *appr = nullptr;
-    Resources.add_appr(appr = new AppearenceColor({100, 100, 100}));
-    set_appearence(appr);
+    set_appearence(Resources.add_appr(new AppearenceColor(frame_color)));
 
     e_key_down.add(new KeyDownTextFieldAcceptor(this));
     e_key_up.add(new KeyUpTextFieldAcceptor(this));
@@ -26,6 +32,9 @@ redactable(redactable)
 
     v_cursor->set_appearence(Resources.add_appr(new AppearenceColor({230, 230, 230})));
     v_selection->set_appearence(Resources.add_appr(new AppearenceColor({140, 140, 195, 200})));
+
+    add_subview(v_content);
+    v_content->set_appearence(Resources.add_appr(new AppearenceColor(content_color)));
 }
 
 v_TextField::~v_TextField() {
@@ -33,18 +42,22 @@ v_TextField::~v_TextField() {
 }
 
 void v_TextField::render(Renderer *renderer) {
+    v_Text *my_label = v_label;
+    v_label = nullptr;
     v_Highlighter::render(renderer);
+    v_label = my_label;
 
-    if (!is_focused() || !text_focused) return;
+    Vec2d shift = body.position + v_label->get_body().position + v_content->get_body().position + Vec2d{PX_TF_PADDING, 0};
+    renderer->shift(shift);
 
-    renderer->shift(body.position + v_label->get_body().position);
-
-    v_selection->render(renderer);
-    v_cursor->render(renderer);
+    if (is_focused() && text_focused) {
+        v_selection->render(renderer);
+        v_cursor->render(renderer);
+    }
 
     v_label->render(renderer);
 
-    renderer->shift(-(body.position + v_label->get_body().position));
+    renderer->shift(-shift);
 }
 
 Vec2d v_TextField::char_pos(int idx) {
@@ -57,8 +70,8 @@ void v_TextField::display() {
     Vec2d pos_cursor = char_pos(line.cursor_pos());
     Vec2d pos_anchor = char_pos(line.anchor_pos());
 
-    pos_cursor.content[1] += style->size / 5;
-    pos_anchor.content[1] += style->size / 5;
+    pos_cursor += Vec2d{0, style->size / 5.0}; // + v_content->get_body().position;
+    pos_anchor += Vec2d{0, style->size / 5.0}; // + v_content->get_body().position;
 
     v_cursor->get_body().position = pos_cursor;
     v_cursor->get_body().size.content[1] = style->size;
@@ -105,6 +118,12 @@ void v_TextField::add_char(char c) {
 void v_TextField::set_string(const char *str) {
     line.set_str(str);
     display();
+}
+
+void v_TextField::set_number(const double number) {
+    char tmp_str[100] = {};
+    sprintf(tmp_str, "%lg", number);
+    set_string(tmp_str);
 }
 
 void v_TextField::copy_to_clipboard() {
@@ -325,7 +344,7 @@ TextFieldMouseReleaseAcceptor::TextFieldMouseReleaseAcceptor(v_TextField *accept
 EventAcceptor(acceptor)
 {}
 
-EventAccResult TextFieldMouseReleaseAcceptor::operator()(const Event::MouseRelease &event, const EventAccResult *) {
+EventAccResult TextFieldMouseReleaseAcceptor::operator()(const Event::MouseRelease &, const EventAccResult *) {
     if (acceptor->text_focused) {
         acceptor->shifted--;
         if (acceptor->shifted == 0)

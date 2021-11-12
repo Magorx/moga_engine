@@ -70,5 +70,6 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     txt->e_text_changed.add(new DebugTextChange);
     txt->set_string("text_input");
+    txt->set_number(123123);
 
 }
