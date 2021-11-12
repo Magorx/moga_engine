@@ -18,11 +18,14 @@ redactable(redactable)
     e_key_down.add(new KeyDownTextFieldAcceptor(this));
     e_key_up.add(new KeyUpTextFieldAcceptor(this));
     e_text_enter.add(new TextEnterAcceptor(this));
+    e_mouse_press.add(new TextFieldMousePressAcceptor(this));
+    e_mouse_release.add(new TextFieldMouseReleaseAcceptor(this));
+    e_mouse_move.add(new TextFieldMouseMoveAcceptor(this));
 
     display();
 
     v_cursor->set_appearence(Resources.add_appr(new AppearenceColor({230, 230, 230})));
-    v_selection->set_appearence(Resources.add_appr(new AppearenceColor({210, 210, 255, 70})));
+    v_selection->set_appearence(Resources.add_appr(new AppearenceColor({140, 140, 195, 200})));
 }
 
 v_TextField::~v_TextField() {
@@ -32,21 +35,27 @@ v_TextField::~v_TextField() {
 void v_TextField::render(Renderer *renderer) {
     v_Highlighter::render(renderer);
 
-    if (!is_focused()) return;
+    if (!is_focused() || !text_focused) return;
 
     renderer->shift(body.position + v_label->get_body().position);
 
-    v_cursor->render(renderer);
     v_selection->render(renderer);
+    v_cursor->render(renderer);
+
+    v_label->render(renderer);
 
     renderer->shift(-(body.position + v_label->get_body().position));
+}
+
+Vec2d v_TextField::char_pos(int idx) {
+    return Renderer::get_char_position(line.c_str(), idx, style->size, style->font);
 }
 
 void v_TextField::display() {
     add_label(line.c_str(), style->size, style->foreground, style->background, false);
 
-    Vec2d pos_cursor = Renderer::get_char_position(line.c_str(), line.cursor_pos(), style->size, style->font);
-    Vec2d pos_anchor = Renderer::get_char_position(line.c_str(), line.anchor_pos(), style->size, style->font);
+    Vec2d pos_cursor = char_pos(line.cursor_pos());
+    Vec2d pos_anchor = char_pos(line.anchor_pos());
 
     pos_cursor.content[1] += style->size / 5;
     pos_anchor.content[1] += style->size / 5;
@@ -57,6 +66,21 @@ void v_TextField::display() {
     v_selection->get_body().position = pos_cursor;
     v_selection->get_body().size = pos_anchor - pos_cursor;
     v_selection->get_body().size.content[1] = style->size;
+}
+
+void v_TextField::put_cursor_under_mouse(const Vec2d &mouse_pos) {
+    int l = 0;
+    int r = line.len();
+    while (l + 1 < r) {
+        int m = (l + r) / 2;
+        if (char_pos(m).x() > mouse_pos.x()) {
+            r = m;
+        } else {
+            l = m;
+        }
+    }
+    line.cursor_set(l);
+    display();
 }
 
 void v_TextField::add_char(char c) {
@@ -269,4 +293,49 @@ EventAccResult KeyUpTextFieldAcceptor::operator()(const Event::KeyUp &event, con
     }
 
     return EventAccResult::done;
+}
+
+TextFieldMousePressAcceptor::TextFieldMousePressAcceptor(v_TextField *acceptor) :
+EventAcceptor(acceptor)
+{}
+
+EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (acceptor->is_inside(event.position)) {
+        acceptor->text_focused = true;
+        acceptor->put_cursor_under_mouse(event.position);
+        acceptor->shifted++;
+        acceptor->line.fix_anchors();
+        acceptor->pressed = true;
+        return EventAccResult::cont;
+    } else {
+        acceptor->text_focused = false;
+    }
+
+    return EventAccResult::none;
+}
+
+TextFieldMouseReleaseAcceptor::TextFieldMouseReleaseAcceptor(v_TextField *acceptor) :
+EventAcceptor(acceptor)
+{}
+
+EventAccResult TextFieldMouseReleaseAcceptor::operator()(const Event::MouseRelease &event, const EventAccResult *) {
+    if (acceptor->text_focused) {
+        acceptor->shifted--;
+        if (acceptor->shifted == 0)
+            acceptor->line.free_anchors();
+        acceptor->pressed = false;
+    }
+
+    return EventAccResult::none;
+}
+
+TextFieldMouseMoveAcceptor::TextFieldMouseMoveAcceptor(v_TextField *acceptor) :
+EventAcceptor(acceptor)
+{}
+
+EventAccResult TextFieldMouseMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
+    if (!acceptor->text_focused || !acceptor->is_pressed()) return EventAccResult::none;
+    acceptor->put_cursor_under_mouse(event.to);
+
+    return EventAccResult::cont;
 }

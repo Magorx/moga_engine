@@ -14,6 +14,8 @@ public:
     
     LinePos &operator=(const LinePos &other);
 
+    void set(int idx);
+
     void move_r();
     void move_l();
 

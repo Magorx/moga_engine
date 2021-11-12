@@ -32,6 +32,7 @@ public:
 
     void cut(bool include_border = false);
 
+    void cursor_set(int idx) { cursor.set(idx); }
     void cursor_l() { cursor.move_l(); }
     void cursor_r() { cursor.move_r(); }
     void cursor_home() { cursor.move_home(); }

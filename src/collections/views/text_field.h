@@ -9,6 +9,9 @@
 class TextEnterAcceptor;
 class KeyDownTextFieldAcceptor;
 class KeyUpTextFieldAcceptor;
+class TextFieldMousePressAcceptor;
+class TextFieldMouseReleaseAcceptor;
+class TextFieldMouseMoveAcceptor;
 
 
 class v_TextField : public v_Highlighter {
@@ -24,9 +27,16 @@ class v_TextField : public v_Highlighter {
     int shifted = 0;
     int ctrled = 0;
 
+    bool text_focused = false;
+
     friend TextEnterAcceptor;
     friend KeyDownTextFieldAcceptor;
     friend KeyUpTextFieldAcceptor;
+    friend TextFieldMousePressAcceptor;
+    friend TextFieldMouseReleaseAcceptor;
+    friend TextFieldMouseMoveAcceptor;
+
+    Vec2d char_pos(int idx);
 
 public:
     v_TextField(const ViewBody &body, TextStyle *style = StdStyle::Text::basic(), bool redactable = true);
@@ -41,6 +51,8 @@ public:
     void paste_from_clipboard();
 
     void set_string(const char *str);
+
+    void put_cursor_under_mouse(const Vec2d &mouse_pos);
 };
 
 
@@ -69,4 +81,31 @@ public:
     KeyUpTextFieldAcceptor(v_TextField *acceptor);
 
     EventAccResult operator()(const Event::KeyUp &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class TextFieldMousePressAcceptor : public EventAcceptor<v_TextField, Event::MousePress> {
+    friend v_TextField;
+
+public:
+    TextFieldMousePressAcceptor(v_TextField *acceptor);
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class TextFieldMouseReleaseAcceptor : public EventAcceptor<v_TextField, Event::MouseRelease> {
+    friend v_TextField;
+
+public:
+    TextFieldMouseReleaseAcceptor(v_TextField *acceptor);
+
+    EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class TextFieldMouseMoveAcceptor : public EventAcceptor<v_TextField, Event::MouseMove> {
+    friend v_TextField;
+
+public:
+    TextFieldMouseMoveAcceptor(v_TextField *acceptor);
+
+    EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };

@@ -18,6 +18,13 @@ LinePos &LinePos::operator=(const LinePos &other) {
     return *this;
 }
 
+void LinePos::set(int idx) {
+    idx = idx < 0 ? 0 : idx;
+    idx = idx >= line->len() ? line->len() - 1 : idx;
+    
+    pos = idx;
+}
+
 void LinePos::move_r() {
     ++pos;
     pos = pos >= line->len() ? line->len() - 1 : pos;

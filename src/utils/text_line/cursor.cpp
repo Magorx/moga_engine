@@ -15,6 +15,11 @@ void Cursor::pull_anchor() {
     }
 }
 
+void Cursor::set(int idx) {
+    pos.set(idx);
+    pull_anchor();
+}
+
 void Cursor::move_r() {
     if (is_selection() && !anchor_fixed) {
         if (anchor() > pos()) {

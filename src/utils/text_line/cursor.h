@@ -15,6 +15,8 @@ struct Cursor {
     void fix_anchor();
     void free_anchor();
 
+    void set(int idx);
+
     void move_r();
     void move_l();
 
