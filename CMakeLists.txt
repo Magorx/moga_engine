@@ -42,6 +42,9 @@ add_executable(moga
         src/engine/object.cpp
         src/engine/moga_engine.cpp
 
+        # devices
+        src/engine/device/keyboard.cpp
+
         # visual
         src/visual/color/color.cpp
         src/visual/color/rgba.cpp

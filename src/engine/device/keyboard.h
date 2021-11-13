@@ -3,9 +3,13 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <cstdint>
+#include <cctype>
+#include <cstring>
 
 
 namespace Keyboard {
+
+    extern const int KEYMAP_SIZE;
 
 enum class Key {
     a            = sf::Keyboard::A,
@@ -110,6 +114,36 @@ enum class Key {
     f15          = sf::Keyboard::F15,
     pause        = sf::Keyboard::Pause,
 };
+
+    extern bool keymap_pressed[];
+
+    inline void init() {
+        memset(keymap_pressed, 0, KEYMAP_SIZE);
+    }
+
+    inline void key_down(Key key) {
+        keymap_pressed[(int) key] = true;
+    }
+
+    inline void key_up(Key key) {
+        keymap_pressed[(int) key] = false;
+    }
+
+    inline bool is_pressed(Key key) {
+        return keymap_pressed[(int) key];
+    }
+
+    inline bool is_pressed_shift() {
+        return is_pressed(Key::lshift) || is_pressed(Key::rshift);
+    }
+
+    inline bool is_pressed_ctrl() {
+        return is_pressed(Key::lcontrol) || is_pressed(Key::rcontrol);
+    }
+
+    inline bool is_pressed_system() {
+        return is_pressed(Key::lsystem) || is_pressed(Key::rsystem);
+    }
 
 }
 

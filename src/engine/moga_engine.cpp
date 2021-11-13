@@ -194,11 +194,15 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 		}
 
 		if (event.type == sf::Event::KeyPressed) {
-			main_view->e_key_down.emit({(Keyboard::Key) event.key.code});
+			Keyboard::Key key = (Keyboard::Key) event.key.code;
+			Keyboard::key_down(key);
+			main_view->e_key_down.emit({key});
 		}
 
 		if (event.type == sf::Event::KeyReleased) {
-			main_view->e_key_up.emit({(Keyboard::Key) event.key.code});
+			Keyboard::Key key = (Keyboard::Key) event.key.code;
+			Keyboard::key_up(key);
+			main_view->e_key_up.emit({key});
 		}
 	}
 }
@@ -234,6 +238,8 @@ MogaEngine::MogaEngine(const char  *window_name,
 	physics(new PhysicsEngine()),
 	main_view(new AbstractView(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))
 {
+	Keyboard::init();
+
 	init_time            = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count() / 1000000000.0;
 	current_time         = 0;
 	physics_current_time = 0;

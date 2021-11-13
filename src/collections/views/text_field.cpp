@@ -132,7 +132,7 @@ void v_TextField::add_char(char c) {
         line.cursor_r();
     }
 
-    if (shifted) {
+    if (selection_online) {
         line.fix_anchors();
     }
 }
@@ -254,34 +254,29 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
         case Keyboard::Key::lshift :
         case Keyboard::Key::rshift :
             acceptor->line.fix_anchors();
-            acceptor->shifted++;
+            acceptor->selection_online++;
             break;
         
         #ifdef __APPLE__
-        case Keyboard::Key::lsystem :
-        case Keyboard::Key::rsystem :
+        #define CHECK_CTRL_PRESS Keyboard::is_pressed_system()
         #else
-        case Keyboard::Key::lcontrol :
-        case Keyboard::Key::rcontrol :
+        #define CHECK_CTRL_PRESS Keyboard::is_pressed_ctrl()
         #endif
-
-            acceptor->ctrled++;
-            break;
         
         case Keyboard::Key::c :
-            if (acceptor->ctrled) {
+            if (CHECK_CTRL_PRESS) {
                 acceptor->copy_to_clipboard();
             }
             break;
         
         case Keyboard::Key::v :
-            if (acceptor->ctrled) {
+            if (CHECK_CTRL_PRESS) {
                 acceptor->paste_from_clipboard();
             }
             break;
         
         case Keyboard::Key::x :
-            if (acceptor->ctrled) {
+            if (CHECK_CTRL_PRESS) {
                 acceptor->copy_to_clipboard();
                 acceptor->line.cut();
                 acceptor->display();
@@ -289,8 +284,8 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
             break;
         
         case Keyboard::Key::a :
-            if (acceptor->ctrled) {
-                acceptor->line.select_all(acceptor->shifted);
+            if (CHECK_CTRL_PRESS) {
+                acceptor->line.select_all(acceptor->selection_online);
                 acceptor->display();
             }
             break;
@@ -326,20 +321,10 @@ EventAccResult KeyUpTextFieldAcceptor::operator()(const Event::KeyUp &event, con
 
         case Keyboard::Key::lshift :
         case Keyboard::Key::rshift :
-            acceptor->shifted--;
-            if (!acceptor->shifted) {
+            acceptor->selection_online--;
+            if (!acceptor->selection_online) {
                 acceptor->line.free_anchors();
             }
-            break;
-
-        #ifdef __APPLE__
-        case Keyboard::Key::lsystem :
-        case Keyboard::Key::rsystem :
-        #else
-        case Keyboard::Key::lcontrol :
-        case Keyboard::Key::rcontrol :
-        #endif
-            acceptor->ctrled--;
             break;
         
         default:
@@ -359,7 +344,7 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
     if (acceptor->is_inside(event.position)) {
         acceptor->set_selected(true);
         acceptor->put_cursor_under_mouse(event.position);
-        acceptor->shifted++;
+        acceptor->selection_online++;
         acceptor->line.fix_anchors();
         acceptor->pressed = true;
         return EventAccResult::cont;
@@ -378,8 +363,8 @@ EventAcceptor(acceptor)
 
 EventAccResult TextFieldMouseReleaseAcceptor::operator()(const Event::MouseRelease &, const EventAccResult *) {
     if (acceptor->selected) {
-        acceptor->shifted--;
-        if (acceptor->shifted == 0)
+        acceptor->selection_online--;
+        if (acceptor->selection_online == 0)
             acceptor->line.free_anchors();
         acceptor->pressed = false;
     }
@@ -397,3 +382,5 @@ EventAccResult TextFieldMouseMoveAcceptor::operator()(const Event::MouseMove &ev
 
     return EventAccResult::cont;
 }
+
+#undef CHECK_CTRL_PRESS

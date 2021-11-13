@@ -4,7 +4,7 @@
 #include <cstring>
 #include "utils/vec2d.h"
 
-#include "keymap.h"
+#include "engine/device/keyboard.h"
 
 class Renderer;
 

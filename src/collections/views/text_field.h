@@ -28,8 +28,7 @@ class v_TextField : public v_Highlighter {
     bool redactable;
     bool insert = false;
     
-    int shifted = 0;
-    int ctrled = 0;
+    int selection_online = 0;
 
     friend TextEnterAcceptor;
     friend KeyDownTextFieldAcceptor;
