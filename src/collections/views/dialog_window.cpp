@@ -15,6 +15,7 @@ padding(padding)
 
     v_stretcher->set_zerify_normal_coord(false);
     v_stretcher->add_placehodler(padding);
+    printf("stretcher %p\n", v_stretcher);
 }
 
 void v_DialogWindow::fit_content_to_fields() {

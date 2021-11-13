@@ -19,4 +19,6 @@ tool_manager(new ToolManager(visual->get_renderer()))
     tool_manager->add_tool(t_eraser);
 
     tool_manager->set_active_tool(1);
+
+    printf("main view is %p\n", main_view);
 }

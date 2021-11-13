@@ -18,6 +18,9 @@ redactable(redactable)
     }
 
     set_focuseable(redactable);
+    set_selectable(redactable);
+
+    e_key_down.add(new AVSelectableFocuser(this));
 
     set_appearence(Resources.add_appr(new AppearenceColor(frame_color)));
 
@@ -50,13 +53,13 @@ void v_TextField::render(Renderer *renderer) {
     Vec2d shift = body.position + v_label->get_body().position + v_content->get_body().position + Vec2d{PX_TF_PADDING, 0};
     renderer->shift(shift);
 
-    if (is_focused() && text_focused) {
+    if (selected) {
         v_selection->render(renderer);
     }
 
     v_label->render(renderer);
 
-    if (is_focused() && text_focused) {
+    if (selected) {
         v_cursor->render(renderer);
     }
 
@@ -196,12 +199,12 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult TextEnterAcceptor::operator()(const Event::TextEnter &event, const EventAccResult *) {
-    if (!acceptor->text_focused) return EventAccResult::none;
+    if (!acceptor->selected) return EventAccResult::none;
     if (!event.is_symbolic()) return EventAccResult::none;
 
     char c = event.ascii();
 
-    if (c == '\r' || c == '\n') {
+    if (c == '\r' || c == '\n' || c == '\t') {
         // acceptor->add_char('\n'); we don't want add new lines chars in ONE line input
     } else {
         acceptor->add_char(c);
@@ -217,7 +220,7 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event, const EventAccResult *) {
-    if (!acceptor->text_focused) return EventAccResult::none;
+    if (!acceptor->selected) return EventAccResult::none;
     
     switch (event.code) {
 
@@ -296,8 +299,7 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
             break;
         
         case Keyboard::Key::enter :
-            acceptor->e_text_changed.emit({acceptor->line.c_str()});
-            acceptor->text_focused = false;
+            acceptor->deselect();
         
         default:
             break;
@@ -311,7 +313,7 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult KeyUpTextFieldAcceptor::operator()(const Event::KeyUp &event, const EventAccResult *) {
-    if (!acceptor->text_focused) return EventAccResult::none;
+    if (!acceptor->selected) return EventAccResult::none;
     
     switch (event.code) {
 
@@ -348,16 +350,15 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
     if (!acceptor->redactable) return EventAccResult::none;
 
     if (acceptor->is_inside(event.position)) {
-        acceptor->text_focused = true;
+        acceptor->select();
         acceptor->put_cursor_under_mouse(event.position);
         acceptor->shifted++;
         acceptor->line.fix_anchors();
         acceptor->pressed = true;
         return EventAccResult::cont;
     } else {
-        if (acceptor->text_focused) {
-            acceptor->e_text_changed.emit({acceptor->line.c_str()});
-            acceptor->text_focused = false;
+        if (acceptor->selected) {
+            acceptor->deselect();
         }
     }
 
@@ -369,7 +370,7 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult TextFieldMouseReleaseAcceptor::operator()(const Event::MouseRelease &, const EventAccResult *) {
-    if (acceptor->text_focused) {
+    if (acceptor->selected) {
         acceptor->shifted--;
         if (acceptor->shifted == 0)
             acceptor->line.free_anchors();
@@ -384,7 +385,7 @@ EventAcceptor(acceptor)
 {}
 
 EventAccResult TextFieldMouseMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
-    if (!acceptor->text_focused || !acceptor->is_pressed()) return EventAccResult::none;
+    if (!acceptor->selected || !acceptor->is_pressed()) return EventAccResult::none;
     acceptor->put_cursor_under_mouse(event.to);
 
     return EventAccResult::cont;

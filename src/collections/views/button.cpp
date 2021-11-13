@@ -21,6 +21,7 @@ v_Highlighter(body, nullptr, parent, 0, true),
 pos_delta(0, 0)
 {
     appearenced = true;
+    // set_selectable(true);
 
     if (style) {
         auto av_animator_press = new AVAnimatorPress(this, style);
@@ -44,6 +45,7 @@ v_Highlighter({0, Renderer::get_text_size(label_name, label_style->size, label_s
 pos_delta(0, 0)
 {
     appearenced = true;
+    // set_selectable(true);
 
     if (style) {
         auto av_animator_press = new AVAnimatorPress(this, style);

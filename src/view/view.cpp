@@ -13,6 +13,8 @@ parent(parent),
 appearence(nullptr),
 pressed(false),
 focuseable(false),
+selectable(false),
+selected(false),
 appearenced(false),
 cursor_inside(false)
 {
@@ -49,6 +51,9 @@ cursor_inside(false)
 }
 
 AbstractView::~AbstractView() {
+    if (parent) {
+        parent->delete_subview(this);
+    }
 }
 
 void AbstractView::render(Renderer *renderer) {
@@ -85,7 +90,7 @@ void AbstractView::delete_subview(AbstractView *view) {
     for (; i < views_cnt && subviews[i] != view; ++i);
 
     if (i < views_cnt) {
-        printf("CHECK delete_subview IF FAILS\n");
+        // printf("CHECK delete_subview IF FAILS\n");
         // delete subviews[i];
         std::swap(subviews[i], subviews[views_cnt - 1]);
         subviews.pop_back();
@@ -154,6 +159,91 @@ void AbstractView::recalculate_fit_body() {
     fit_body.position = body.position / p_size;
     fit_body.size = (body.position + body.size) / p_size;
 }
+
+int AbstractView::get_idx(AbstractView *child) {
+    for (int i = 0; i < (int) subviews.size(); ++i) {
+        if (subviews[i] == child) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+AbstractView *AbstractView::next_by_idx(int idx, int direction) { 
+    int next_idx = idx + direction;
+    if (next_idx < 0 || next_idx >= (int) subviews.size()) {
+        return nullptr;
+    } else {
+        return subviews[next_idx];
+    }
+}
+
+AbstractView *AbstractView::traverse_for_selectable(int idx, int direction, bool from_parent) {
+    if (is_selectable()) return this;
+
+    AbstractView *next = nullptr;
+    while ((next = next_by_idx(idx, direction))) {
+        idx += direction;
+
+        if (next->is_selectable()) {
+            return next;
+        }
+
+        AbstractView *ret = nullptr;
+        if (direction < 0) {
+            ret = next->get_prev_selectable(true);
+        } else {
+            ret = next->get_next_selectable(true);
+        }
+
+        if (ret) {
+            return ret;
+        }
+    }
+
+    if (!from_parent && parent) {
+        int my_idx = parent->get_idx(this);
+        if (my_idx < 0) return nullptr;
+
+        return parent->traverse_for_selectable(my_idx, direction);
+    }
+
+    return nullptr;
+}
+
+AbstractView *AbstractView::get_next_selectable(bool from_parent) {
+    for (int i = 0; i < (int) subviews.size(); ++i) {
+        AbstractView *ret = subviews[i]->traverse_for_selectable(-1, +1, true);
+        if (ret) return ret;
+    }
+
+    if (!from_parent && parent) {
+        int my_idx = parent->get_idx(this);
+        if (my_idx < 0) return nullptr;
+
+        return parent->traverse_for_selectable(my_idx, +1); 
+    }
+
+    return nullptr;
+}
+
+AbstractView *AbstractView::get_prev_selectable(bool from_parent) {
+    for (int i = (int) subviews.size() - 1; i >= 0; --i) {
+        AbstractView *ret = subviews[i]->traverse_for_selectable((int) subviews[i]->subviews.size(), -1, true);
+        if (ret) return ret;
+    }
+
+    if (!from_parent && parent) {
+        int my_idx = parent->get_idx(this);
+        if (my_idx < 0) return nullptr;
+
+        return parent->traverse_for_selectable(my_idx, -1); 
+    }
+
+    return nullptr;
+}
+
 
 
 AVMissPressBlocker::AVMissPressBlocker(AbstractView *av) : EventAcceptor(av) {}
@@ -335,4 +425,31 @@ EventAccResult AVAnimatorRelease::operator()(const Event::MouseRelease &, const 
     }
 
     return EventAccResult::none;
+}
+
+AVSelectableFocuser::AVSelectableFocuser(AbstractView *view) :
+EventAcceptor(view)
+{}
+
+EventAccResult AVSelectableFocuser::operator()(const Event::KeyDown &event, const EventAccResult *) {
+    if (!(event.code == Keyboard::Key::tab || event.code == Keyboard::Key::tilde) || !acceptor->is_selected()) {
+        return EventAccResult::none;
+    }
+    AbstractView *view = acceptor;
+
+    if (event.code == Keyboard::Key::tab) {
+        AbstractView *next = view->get_next_selectable();
+        if (next) {
+            view->deselect();
+            next->select();
+        }
+    } else {
+        AbstractView *prev = view->get_prev_selectable();
+        if (prev) {
+            view->deselect();
+            prev->select();
+        }
+    }
+
+    return EventAccResult::done;
 }

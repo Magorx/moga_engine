@@ -120,7 +120,7 @@ public:
 
 
 class EventSystem {
-    EventSystem *parent;
+    EventSystem *es_parent;
 
     std::vector<EventSystem*> sub_es;
 public:
@@ -147,7 +147,7 @@ public:
     EventDispatcher<Event::DataPtr> e_data_ptr;
 
     EventSystem() :
-    parent(nullptr),
+    es_parent(nullptr),
     index_in_parent(0),
     to_delete(false),
     e_mouse_press(this, "mouse_press"),
@@ -186,9 +186,9 @@ public:
     }
 
     void delete_from_parent() {
-        if (!parent) return;
+        if (!es_parent) return;
 
-        parent->delete_es(index_in_parent);
+        es_parent->delete_es(index_in_parent);
     }
 
     void delete_es(size_t sub_idx) {
@@ -221,11 +221,11 @@ public:
     }
 
     void focus() {
-        if (parent) parent->focus(index_in_parent);
+        if (es_parent) es_parent->focus(index_in_parent);
     }
 
     bool is_focused() {
-        return (!parent || parent->is_focused(index_in_parent));
+        return (!es_parent || es_parent->is_focused(index_in_parent));
     }
 
     bool is_focused(int idx) {
@@ -237,7 +237,7 @@ public:
     EventDispatcher<T> &get_dispatcher();
 
     inline void set_es_parent(EventSystem *parent_) {
-        parent = parent_;
+        es_parent = parent_;
     }
 };
 

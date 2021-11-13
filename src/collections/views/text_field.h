@@ -31,8 +31,6 @@ class v_TextField : public v_Highlighter {
     int shifted = 0;
     int ctrled = 0;
 
-    bool text_focused = false;
-
     friend TextEnterAcceptor;
     friend KeyDownTextFieldAcceptor;
     friend KeyUpTextFieldAcceptor;
@@ -51,6 +49,11 @@ public:
 
     virtual void render(Renderer *renderer) override;
     virtual void refit() override;
+
+    virtual void deselect() override {
+        selected = false;
+        e_text_changed.emit({line.c_str()});
+    }
 
     void add_char(char c);
     void display();

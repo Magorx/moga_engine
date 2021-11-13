@@ -127,6 +127,13 @@ public:
     inline MouseReactionStyle *get_style() { return style; }
 };
 
+class AVSelectableFocuser : public EventAcceptor<AbstractView, Event::KeyDown> {
+public:
+    AVSelectableFocuser(AbstractView *view);
+
+    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 
 struct ViewBody {
     Vec2d position;
@@ -166,8 +173,16 @@ protected:
     bool pressed;
     bool focuseable;
     
+    bool selectable;
+    bool selected;
+    
     bool appearenced;
     bool cursor_inside;
+
+    AbstractView *next_by_idx(int idx, int direction);
+    AbstractView *traverse_for_selectable(int idx, int direction, bool from_parent = false);
+
+    int get_idx(AbstractView *child);
 
 public:
     AbstractView(ViewBody body, AbstractView *parent = nullptr, bool to_block_covered = false);
@@ -199,7 +214,15 @@ public:
     inline bool is_cursor_inside() const { return cursor_inside; }
 
     inline bool is_focuseable() { return focuseable; }
-    inline void set_focuseable(bool focuseable_) { focuseable = focuseable_;  }
+    inline void set_focuseable(bool focuseable_) { focuseable = focuseable_; }
+
+    inline bool is_selectable() { return selectable; }
+    inline void set_selectable(bool selectable_) { selectable = selectable_; }
+
+    inline bool is_selected() { return selected; }
+    inline void set_selected(bool selected_) { selected = selected_; }
+    inline void select() { focus(); selected = true; }
+    virtual void deselect() { selected = false; }
 
     inline void set_appearence(Appearence *appearence_, bool activate = true) { appearence = appearence_; if (appearence && activate) appearence->activate(); }
 
@@ -215,6 +238,9 @@ public:
     }
 
     ViewBody &get_body();
+
+    AbstractView *get_next_selectable(bool from_parent = false);
+    AbstractView *get_prev_selectable(bool from_parent = false);
 
 };
 

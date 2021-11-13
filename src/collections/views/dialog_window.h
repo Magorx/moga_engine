@@ -25,7 +25,7 @@ public:
 
     v_Button *add_text_button(const char *button_name, 
                               MouseReactionStyle *button_style = Resources.add_style(StdStyle::Button::blue()),
-                              TextStyle *text_style = Resources.add_style(StdStyle::Text::basic()->negative()));
+                              TextStyle *text_style = Resources.add_style(StdStyle::Text::basic()));
 
     v_Button *add_accept_button (const char *button_name, TextStyle *style = Resources.add_style(StdStyle::Text::basic()->negative()));
     v_Button *add_decline_button(const char *button_name, TextStyle *style = Resources.add_style(StdStyle::Text::basic()->negative()));
