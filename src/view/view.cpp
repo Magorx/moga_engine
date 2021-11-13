@@ -324,7 +324,7 @@ EventAccResult AVPressFocuser::operator()(const Event::MousePress &event, const 
     if (!acceptor->is_active()) return EventAccResult::none;
 
     if (acceptor->is_inside(event.position) && acceptor->is_focuseable()) {
-        return (EventAccResult) (EventAccResult::cont | EventAccResult::focus | EventAccResult::prevent_siblings_dispatch);
+        return (EventAccResult) (EventAccResult::cont | EventAccResult::focus); // | EventAccResult::prevent_siblings_dispatch);
     } else {
         return EventAccResult::none;
     }

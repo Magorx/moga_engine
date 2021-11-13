@@ -75,6 +75,13 @@ void v_TextField::refit() {
     display();
 }
 
+void v_TextField::select() {
+    AbstractView::select();
+
+    line.select_all(true);
+    display();
+}
+
 Vec2d v_TextField::char_pos(int idx) {
     return Renderer::get_char_position(line.c_str(), idx, style->size, style->font);
 }
@@ -350,7 +357,7 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
     if (!acceptor->redactable) return EventAccResult::none;
 
     if (acceptor->is_inside(event.position)) {
-        acceptor->select();
+        acceptor->set_selected(true);
         acceptor->put_cursor_under_mouse(event.position);
         acceptor->shifted++;
         acceptor->line.fix_anchors();

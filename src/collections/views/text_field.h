@@ -50,6 +50,8 @@ public:
     virtual void render(Renderer *renderer) override;
     virtual void refit() override;
 
+    virtual void select() override;
+
     virtual void deselect() override {
         selected = false;
         e_text_changed.emit({line.c_str()});

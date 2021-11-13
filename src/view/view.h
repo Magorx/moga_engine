@@ -205,8 +205,8 @@ public:
     virtual void refit();
     void refit_in_parent();
 
-    inline bool is_inside(const Vec2d &click) { return body.is_inside(click); }
-    inline bool is_inside(const Vec2d &from, const Vec2d &to) { return body.is_inside(from) || body.is_inside(to); }
+    virtual bool is_inside(const Vec2d &click) { return body.is_inside(click); }
+    virtual bool is_inside(const Vec2d &from, const Vec2d &to) { return body.is_inside(from) || body.is_inside(to); }
 
     inline void set_parent(AbstractView *parent_) { parent = parent_; }
 
@@ -221,7 +221,7 @@ public:
 
     inline bool is_selected() { return selected; }
     inline void set_selected(bool selected_) { selected = selected_; }
-    inline void select() { focus(); selected = true; }
+    virtual void select() { focus(); selected = true; }
     virtual void deselect() { selected = false; }
 
     inline void set_appearence(Appearence *appearence_, bool activate = true) { appearence = appearence_; if (appearence && activate) appearence->activate(); }
