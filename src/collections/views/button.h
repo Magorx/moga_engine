@@ -2,6 +2,8 @@
 
 
 #include "highlighter.h"
+#include "visual/style/mouse_reaction_style.h"
+#include "visual/style/text_style.h"
 
 
 extern const Vec2d BUTTON_HOVER_POS_DELTA;
@@ -57,6 +59,7 @@ class v_Button : public v_Highlighter {
 public:
     v_Button(const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
     v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent = nullptr);
+    v_Button(const char *label_name, MouseReactionStyle *style, TextStyle *label_style, const Vec2d &padding = {0, 0});
 
     virtual ~v_Button();
 

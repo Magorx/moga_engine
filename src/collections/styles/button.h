@@ -12,13 +12,17 @@ namespace Button {
 
     MouseReactionStyle *hide();
 
-    MouseReactionStyle *basic();
+    MouseReactionStyle *basic_menu();
 
     MouseReactionStyle *plus();
 
     MouseReactionStyle *save();
 
     MouseReactionStyle *rgb();
+
+    MouseReactionStyle *green();
+    MouseReactionStyle *red();
+    MouseReactionStyle *blue();
 
     namespace Arrow {
         MouseReactionStyle *right();

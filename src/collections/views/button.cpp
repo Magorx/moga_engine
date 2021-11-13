@@ -39,6 +39,31 @@ pos_delta(0, 0)
     e_mouse_move.add(new ButtonMoveAcceptor(this));
 }
 
+v_Button::v_Button(const char *label_name, MouseReactionStyle *style, TextStyle *label_style, const Vec2d &padding) :
+v_Highlighter({0, Renderer::get_text_size(label_name, label_style->size, label_style->font) + padding * 2}, nullptr, nullptr, 0, true),
+pos_delta(0, 0)
+{
+    appearenced = true;
+
+    if (style) {
+        auto av_animator_press = new AVAnimatorPress(this, style);
+        auto av_animator_release = new AVAnimatorRelease(this, style);
+        auto av_animator_move    = new AVAnimatorMove(this, style);
+        
+        e_mouse_press.add(av_animator_press);
+        e_mouse_release.add(av_animator_release);
+        e_mouse_move.add(av_animator_move);
+
+        if (style->idle) set_appearence(style->idle);
+    }
+
+    e_mouse_press.add(new ButtonPressAcceptor(this));
+    e_mouse_release.add(new ButtonReleaseAcceptor(this));
+    e_mouse_move.add(new ButtonMoveAcceptor(this));
+
+    add_label(label_name, label_style->size, label_style->foreground, label_style->background, true);
+}
+
 v_Button::~v_Button() {
     // delete style;
 }

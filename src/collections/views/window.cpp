@@ -23,10 +23,11 @@ v_Window::v_Window(const char *name, const ViewBody &body, WindowStyle *style, b
 v_Highlighter({body.position, {body.size.x(), body.size.y() + header_size}}, nullptr, parent, 0, true),
 header(new v_UtilityTab({body.size.x() + PX_WINDOW_PADDING * 2, header_size}, style ? style->header : nullptr)),
 content(new v_Highlighter({{0, 0}, body.size}, nullptr, nullptr, 0)),
+frame(nullptr),
 text_color(RColor{255, 255, 255})
 {
     if (style->body) {
-        auto frame = new v_Highlighter({-padding, body.size + Vec2d{padding * 2, 2 * padding}}, nullptr, nullptr, 0);
+        frame = new v_Highlighter({-padding, body.size + Vec2d{padding * 2, 2 * padding}}, nullptr, nullptr, 0);
         frame->set_appearence(style->body);
         add_subview(frame);
     }
@@ -65,4 +66,10 @@ void v_Window::set_content_color(RColor color) {
     auto content_appr = new AppearenceColor(color);
     Resources.add_appr(content_appr);
     content->set_appearence(content_appr);
+}
+
+void v_Window::fit_frame_to_content() {
+    if (!frame || !content) return;
+
+    frame->get_body().size = content->get_body().size + 2 * PX_WINDOW_PADDING;
 }

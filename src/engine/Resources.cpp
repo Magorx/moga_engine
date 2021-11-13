@@ -248,6 +248,10 @@ ResourcesHolder::~ResourcesHolder() {
     for (auto txt : created_textures) {
         delete txt;
     }
+
+    for (auto style : created_styles) {
+        delete style;
+    }
 }
 
 AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped, Vec2d transform, double time_coef) {
@@ -281,4 +285,4 @@ RShader *ResourcesHolder::create_frag_shader(const char *filename) {
 }
 
 
-ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}, {}, {}, {}};
+ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}, {}, {}, {}, {}};

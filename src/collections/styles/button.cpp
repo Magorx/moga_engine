@@ -47,7 +47,7 @@ namespace Button {
         );
     }
 
-    MouseReactionStyle *basic() {
+    MouseReactionStyle *basic_menu() {
         return basic_mouse_reaction_style(
             Resources.texture.button.basic.idle,
             Resources.texture.button.basic.hovered,
@@ -76,6 +76,33 @@ namespace Button {
             Resources.texture.button.rgb.idle,
             Resources.texture.button.rgb.hovered,
             Resources.texture.button.rgb.pressed
+        );
+    }
+
+    const RGBA SCND = {100, 120, 85};
+    const RGBA MAIN = {220, 240, 140};
+
+    MouseReactionStyle *red() {
+        return basic_mouse_reaction_style(
+            Resources.create_color({MAIN.r, SCND.r, SCND.r}),
+            Resources.create_color({MAIN.g, SCND.g, SCND.g}),
+            Resources.create_color({MAIN.b, SCND.b, SCND.b})
+        );
+    }
+
+    MouseReactionStyle *green() {
+        return basic_mouse_reaction_style(
+            Resources.create_color({SCND.r, MAIN.r, SCND.r}),
+            Resources.create_color({SCND.g, MAIN.g, SCND.g}),
+            Resources.create_color({SCND.b, MAIN.b, SCND.b})
+        );
+    }
+
+    MouseReactionStyle *blue() {
+        return basic_mouse_reaction_style(
+            Resources.create_color({SCND.r, SCND.r, MAIN.r}),
+            Resources.create_color({SCND.g, SCND.g, MAIN.g}),
+            Resources.create_color({SCND.b, SCND.b, MAIN.b})
         );
     }
 

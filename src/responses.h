@@ -308,8 +308,8 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95}, 5);
     window->get_content()->add_subview(layout);
 
-    v_Button *b_brush  = new v_Button({0, 0}, StdStyle::Button::basic());
-    v_Button *b_eraser = new v_Button({0, 0}, StdStyle::Button::basic());
+    v_Button *b_brush  = new v_Button({0, 0}, StdStyle::Button::basic_menu());
+    v_Button *b_eraser = new v_Button({0, 0}, StdStyle::Button::basic_menu());
 
     v_Highlighter *slider_rect = new v_Highlighter({0, 0});
     slider_rect->e_mouse_press.add(new AVMissPressBlocker(slider_rect));

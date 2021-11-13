@@ -4,6 +4,7 @@
 #include "visual/renderer/gate_type_aliases.h"
 #include "visual/renderer/appearence.h"
 #include "visual/color/smart_color.h"
+#include "visual/style/style.h"
 
 
 class MogaEngine;
@@ -53,8 +54,12 @@ struct ResourcesHolder {
     std::vector<RTexture*> created_textures;
     std::vector<Appearence*>  created_apprs;
     std::vector<RShader*> created_shaders;
+    std::vector<Style*> created_styles;
 
     inline Appearence *add_appr(Appearence *appr) { created_apprs.push_back(appr); return appr; }
+
+    template <typename StyleT>
+    inline StyleT *add_style(StyleT *style) { created_styles.push_back(style); return style; }
 
     struct {
         struct {
@@ -126,6 +131,7 @@ struct ResourcesHolder {
         } color;
 
         struct {
+            int basic = 20;
             int basic_header = 20;
             int basic_menu = 25;
         } size;

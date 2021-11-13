@@ -23,7 +23,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    auto new_canvas_button = new v_Button({0, 0}, StdStyle::Button::basic());
+    auto new_canvas_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     new_canvas_button->e_clicked.add(new AddNewCanvasReaction(&moga));
     new_canvas_button->add_label("Canvas", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
@@ -31,7 +31,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     
     // ==================================================================================
 
-    auto new_picker_button = new v_Button({0, 0}, StdStyle::Button::basic());
+    auto new_picker_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     new_picker_button->e_clicked.add(new AddNewColorPickerReaction(&moga));
     new_picker_button->add_label("Color Picker", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
@@ -39,14 +39,14 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    auto open_img_button = new v_Button({0, 0}, StdStyle::Button::basic());
+    auto open_img_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     open_img_button->e_clicked.add(new OpenImage(&moga));
     open_img_button->add_label("Open Image", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     opt_panel->layout_add(open_img_button, 1.5);
 
     // ==================================================================================
-    auto bip_button = new v_Button({0, 0}, StdStyle::Button::basic());
+    auto bip_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     bip_button->add_label("Tools", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     opt_panel->layout_add(bip_button, 1.5);
@@ -72,10 +72,14 @@ void initialize_photoshop(RedactorEngine &moga) {
     // txt->set_string("text_input");
     // txt->set_number(123123);
 
-    auto dw = new v_DialogWindow("How are you?", {250, 150}, -30);
+    auto dw = new v_DialogWindow("How are you?", 250, 10, -30);
     moga.add_view(dw);
     dw->add_field("Width", 50, "px");
     dw->add_field("Height", 50, "px");
     dw->add_field("Free Text", 100);
+
+    dw->add_text_button("Accept");
+    dw->add_accept_button("Accept");
+    dw->add_decline_button("Accept");
 
 }

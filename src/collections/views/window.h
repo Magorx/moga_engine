@@ -13,6 +13,7 @@ const int PX_WINDOW_PADDING = 5;
 class v_Window : public v_Highlighter {
     v_UtilityTab *header;
     AbstractView *content;
+    AbstractView *frame;
 
     double padding = PX_WINDOW_PADDING;
 
@@ -29,4 +30,6 @@ public:
     inline v_UtilityTab *get_header() { return header; }
 
     void set_content_color(RColor color);
+
+    void fit_frame_to_content();
 };

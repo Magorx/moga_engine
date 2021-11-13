@@ -10,7 +10,7 @@ namespace UtilBar {
         return new  UtilityBarStyle {
             StdStyle::Button::close(),
             StdStyle::Button::hide(),
-            StdStyle::Button::basic(),
+            StdStyle::Button::basic_menu(),
 
             new AppearenceTexture(Resources.texture.util_bar.basic.bar),
 
