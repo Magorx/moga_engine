@@ -87,6 +87,11 @@ void v_TextField::select(bool tabbed) {
     display();
 }
 
+void v_TextField::deselect() {
+    AbstractView::deselect();
+    e_text_changed.emit({line.c_str(), false});
+}
+
 void v_TextField::deselect_text_field(bool input_complete) {
     AbstractView::deselect();
 
@@ -401,12 +406,39 @@ text(text_ptr)
 {}
 
 EventAccResult TextFieldChangeStringSynchronizer::operator()(const Event::TextChanged &event, const EventAccResult*) {
+    printf("new str: %s\n", event.text);
     if (!text) return EventAccResult::none;
 
     if (*text) {
         free(*text);
     }
     *text = strdup(event.text);
+
+    return EventAccResult::cont;
+}
+
+TextFieldChangeValueSynchronizer::TextFieldChangeValueSynchronizer(double *val_d, int *val_i) :
+val_d(val_d),
+val_i(val_i)
+{}
+
+TextFieldChangeValueSynchronizer::TextFieldChangeValueSynchronizer(int *val_i) :
+TextFieldChangeValueSynchronizer(nullptr, val_i)
+{}
+
+TextFieldChangeValueSynchronizer::TextFieldChangeValueSynchronizer(double *val_d):
+TextFieldChangeValueSynchronizer(val_d, nullptr)
+{}
+
+EventAccResult TextFieldChangeValueSynchronizer::operator()(const Event::TextChanged &event, const EventAccResult*) {
+    printf("new vals: %g | %d\n", event.val_d, event.val_i);
+    if (val_d) {
+        *val_d = event.val_d;
+    }
+
+    if (val_i) {
+        *val_i = event.val_i;
+    }
 
     return EventAccResult::cont;
 }

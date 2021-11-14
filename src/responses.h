@@ -162,12 +162,19 @@ public:
 };
 
 
-v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canvas **out_canvas = nullptr) {
+v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canvas **out_canvas = nullptr, char *name = nullptr) {
     auto window_style = StdStyle::Window::basic();
 
-    auto name = randstr(10) + " - 0";
+    std::string canvas_name;
+    if (name) {
+        canvas_name = name;
+    } else {
+        canvas_name = randstr(10);
+    }
 
-    auto window = new v_Window(name.c_str(), body, window_style);
+    canvas_name += " - 0";
+
+    auto window = new v_Window(canvas_name.c_str(), body, window_style);
 
     engine->add_view(window);
 
@@ -221,6 +228,71 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canv
     effects_opener->update_effects(effect);
 
     return window;
+}
+
+
+class NewCanvasReaction : public EventReaction<Event::Clicked> {
+    RedactorEngine *engine;
+
+    double width;
+    double height;
+    char *name;
+
+    Canvas **out_canvas = nullptr;
+
+public:
+    NewCanvasReaction(RedactorEngine *engine, Canvas **out_canvas = nullptr):
+    engine(engine),
+    width(0),
+    height(0),
+    name(nullptr),
+    out_canvas(out_canvas)
+    {}
+
+    double *get_width_ptr() { return &width; }
+    double *get_height_ptr() { return &height; }
+    char **get_name_ptr() { return &name; }
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+        if (!(width >= 1 && height >= 1 && name && *name != '\0')) {
+            auto error_window = v_DialogWindow::Error(200, "Bad parametrs");
+            engine->add_view(error_window);
+            return EventAccResult::cont;
+        }
+
+        ViewBody body = {engine->random_screen_pos(), {width, height}};
+
+        spawn_canvas_window(engine, body, out_canvas, name);
+
+        return EventAccResult::cont;
+    }
+};
+
+
+v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
+    auto dw = new v_DialogWindow("New canvas", 200);
+    
+    auto f_width  = dw->add_field("Width", 100, "px");
+    auto f_height = dw->add_field("Height", 100, "px");
+    auto f_name   = dw->add_field("Name");
+    auto b_create = dw->add_accept_button("Create");
+
+    f_name->set_string(randstr(10).c_str());
+
+    auto reaction = new NewCanvasReaction(engine);
+    b_create->e_clicked.add(reaction);
+
+    f_width->e_text_changed.add(new TextFieldChangeValueSynchronizer(reaction->get_width_ptr()));
+    f_height->e_text_changed.add(new TextFieldChangeValueSynchronizer(reaction->get_height_ptr()));
+    f_name->e_text_changed.add(new TextFieldChangeStringSynchronizer(reaction->get_name_ptr()));
+
+    dw->make_closing_button(b_create);
+
+    engine->add_view(dw);
+
+    dw->select_first_field();
+
+    return dw;
 }
 
 v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body) {
@@ -400,7 +472,7 @@ public:
 
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
-        spawn_canvas_window(engine, {engine->random_screen_pos(), {600, 400}});
+        spawn_canvas_window_dialog(engine);
 
         return EventAccResult::none;
     }

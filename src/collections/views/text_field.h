@@ -50,6 +50,7 @@ public:
     virtual void refit() override;
 
     virtual void select(bool tabbed = false) override;
+    virtual void deselect() override;
 
     void deselect_text_field(bool input_complete = false);
 
@@ -127,6 +128,17 @@ class TextFieldChangeStringSynchronizer : public EventReaction<Event::TextChange
     char **text;
 public:
     TextFieldChangeStringSynchronizer(char **text_ptr);
+
+    EventAccResult operator()(const Event::TextChanged &event, const EventAccResult*) override;
+};
+
+class TextFieldChangeValueSynchronizer : public EventReaction<Event::TextChanged> {
+    double *val_d;
+    int *val_i;
+public:
+    TextFieldChangeValueSynchronizer(double *val_d, int *val_i);
+    TextFieldChangeValueSynchronizer(int *val_i);
+    TextFieldChangeValueSynchronizer(double *val_d);
 
     EventAccResult operator()(const Event::TextChanged &event, const EventAccResult*) override;
 };
