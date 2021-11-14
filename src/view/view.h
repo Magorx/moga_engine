@@ -169,17 +169,20 @@ protected:
     friend AVCoveredReleaseBlocker;
     friend AVDragAcceptor;
     friend AVDragEmitter;
+    friend AVSelectableFocuser;
 
     bool pressed;
     bool focuseable;
     
     bool selectable;
+    bool selectable_blocking_node;
     bool selected;
     
     bool appearenced;
     bool cursor_inside;
 
     AbstractView *next_by_idx(int idx, int direction);
+    AbstractView *get_selectable_blocking_node();
     AbstractView *traverse_for_selectable(int idx, int direction, bool from_parent = false);
 
     int get_idx(AbstractView *child);
@@ -241,6 +244,9 @@ public:
 
     AbstractView *get_next_selectable(bool from_parent = false);
     AbstractView *get_prev_selectable(bool from_parent = false);
+
+    AbstractView *get_first_selectable();
+    AbstractView *get_last_selectable();
 
 };
 

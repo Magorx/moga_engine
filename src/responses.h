@@ -130,7 +130,12 @@ public:
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
         auto filename = window->get_header()->get_label_text();
+        filename[strlen(filename) - 4] = '\0';
         canvas->save_to_file(filename);
+
+        logger.info("moga", "canvas \"%s.png\" was saved", filename);
+        filename[strlen(filename)] = ' ';
+
 
         return EventAccResult::none;
     }
@@ -314,7 +319,7 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     v_Highlighter *slider_rect = new v_Highlighter({0, 0});
     slider_rect->e_mouse_press.add(new AVMissPressBlocker(slider_rect));
 
-    auto slider_rect_appr = new AppearenceColor({230, 230, 230});
+    auto slider_rect_appr = new AppearenceColor({170, 170, 190});
     Resources.add_appr(slider_rect_appr);
     slider_rect->set_appearence(slider_rect_appr);
 

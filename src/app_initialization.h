@@ -69,25 +69,18 @@ void initialize_photoshop(RedactorEngine &moga) {
     moga.add_view(txt);
 
     txt->e_text_changed.add(new DebugTextChange);
-    // txt->set_string("text_input");
+    txt->set_string("text_input");
     // txt->set_number(123123);
 
     auto dw = new v_DialogWindow("How are you?", 250, 10, -30);
     moga.add_view(dw);
-    AbstractView *v = nullptr;
-    v = dw->add_field("Width", 50, "px");
-    v->e_text_changed.add(new DebugTextChange);
-    
-    v = dw->add_field("Height", 50, "px");
-    v->e_text_changed.add(new DebugTextChange);
-    v = dw->add_field("Free Text", 100);
-    v->e_text_changed.add(new DebugTextChange);
+    // AbstractView *v = nullptr;
+    dw->add_field("Width", 50, "px");
+    dw->add_field("Height", 50, "px");
+    dw->add_field("Free Text", 100);
 
-    v = dw->add_text_button("Accept");
-    v->e_text_changed.add(new DebugTextChange);
-    v = dw->add_accept_button("Accept");
-    v->e_text_changed.add(new DebugTextChange);
-    v = dw->add_decline_button("Accept");
-    v->e_text_changed.add(new DebugTextChange);
+    dw->add_text_button("Accept");
+    dw->add_accept_button("Accept");
+    dw->add_decline_button("Accept");
 
 }

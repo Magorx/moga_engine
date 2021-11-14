@@ -14,6 +14,7 @@ appearence(nullptr),
 pressed(false),
 focuseable(false),
 selectable(false),
+selectable_blocking_node(false),
 selected(false),
 appearenced(false),
 cursor_inside(false)
@@ -189,6 +190,9 @@ AbstractView *AbstractView::traverse_for_selectable(int idx, int direction, bool
         if (next->is_selectable()) {
             return next;
         }
+        if (next->selectable_blocking_node) {
+            continue;
+        }
 
         AbstractView *ret = nullptr;
         if (direction < 0) {
@@ -202,7 +206,7 @@ AbstractView *AbstractView::traverse_for_selectable(int idx, int direction, bool
         }
     }
 
-    if (!from_parent && parent) {
+    if (!selectable_blocking_node && !from_parent && parent) {
         int my_idx = parent->get_idx(this);
         if (my_idx < 0) return nullptr;
 
@@ -244,7 +248,21 @@ AbstractView *AbstractView::get_prev_selectable(bool from_parent) {
     return nullptr;
 }
 
+AbstractView *AbstractView::get_selectable_blocking_node() {
+    if (selectable_blocking_node || !parent) return this;
 
+    return parent->get_selectable_blocking_node();
+}
+
+AbstractView *AbstractView::get_first_selectable() {
+    AbstractView *blocking_node = get_selectable_blocking_node();
+    return blocking_node->traverse_for_selectable(-1, +1, true);
+}
+
+AbstractView *AbstractView::get_last_selectable() {
+    AbstractView *blocking_node = get_selectable_blocking_node();
+    return blocking_node->traverse_for_selectable(blocking_node->subviews.size(), -1);
+}
 
 AVMissPressBlocker::AVMissPressBlocker(AbstractView *av) : EventAcceptor(av) {}
 
@@ -391,7 +409,6 @@ EventAccResult AVCoveredReleaseBlocker::operator()(const Event::MouseRelease &ev
 AVAnimatorPress::AVAnimatorPress(AbstractView *view, MouseReactionStyle *style) : EventAcceptor(view), style(style) {}
 
 EventAccResult AVAnimatorPress::operator()(const Event::MousePress &event, const EventAccResult *) {
-    if (acceptor->get_view_id() && strcmp(acceptor->get_view_id(), "aaa")) printf("hi\n");
     if (acceptor->is_inside(event.position) && !acceptor->is_pressed()) {
         acceptor->set_appearence(style->press);
     }
@@ -432,21 +449,29 @@ EventAcceptor(view)
 {}
 
 EventAccResult AVSelectableFocuser::operator()(const Event::KeyDown &event, const EventAccResult *) {
-    if (!(event.code == Keyboard::Key::tab || event.code == Keyboard::Key::tilde) || !acceptor->is_selected()) {
+    if (!(event.code == Keyboard::Key::tab) || !(acceptor->is_selected() || acceptor->selectable_blocking_node)) {
         return EventAccResult::none;
     }
     AbstractView *view = acceptor;
 
-    if (event.code == Keyboard::Key::tab) {
+    if (!Keyboard::is_pressed_shift()) {
         AbstractView *next = view->get_next_selectable();
+        if (!next) {
+            next = view->get_first_selectable();
+        }
+
         if (next) {
-            view->deselect();
+            if (view->is_selected()) view->deselect();
             next->select();
         }
     } else {
         AbstractView *prev = view->get_prev_selectable();
+        if (!prev) {
+            prev = view->get_last_selectable();
+        }
+
         if (prev) {
-            view->deselect();
+            if (view->is_selected()) view->deselect();
             prev->select();
         }
     }
