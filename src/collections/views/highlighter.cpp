@@ -40,13 +40,9 @@ void v_Highlighter::render(Renderer *renderer) {
     subrender(renderer);
     AbstractLabledView::render(renderer);
 
-    // if (cursor_inside) {
-    //     if (highlight_coef > 0) {
-    //         renderer->draw_rectangle(body.position, body.size, {CLRMAX, CLRMAX, CLRMAX, (unsigned char) ((highlight_coef) * CLRMAX)});
-    //     } else {
-    //         renderer->draw_rectangle(body.position, body.size, {0, 0, 0, (unsigned char) ((highlight_coef) * CLRMAX)});
-    //     }
-    // }
+    if (to_draw_selected_bounds && is_selected() && tab_selected) {
+        renderer->draw_rectangle(body.position, body.size, {0, 0, 0, 0}, {255, 0, 0, 255});
+    }
 }
 
 HighlighterPressAcceptor::HighlighterPressAcceptor(v_Highlighter *highlighter) : EventAcceptor(highlighter) {}

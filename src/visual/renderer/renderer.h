@@ -70,7 +70,7 @@ public:
     void draw_circle(Vec2d pos, const double rad, const RGBA &color);
     void draw_line(Vec2d p1, Vec2d p2, const RGBA &color);
     void draw_square(Vec2d pos, const double size, const RGBA &color);
-    void draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color);
+    void draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color, const RGBA &bounds_color = {0, 0, 0, 0});
     void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const RFont *font = Resources.font.basic);
 
     void apr_draw_circle(Vec2d pos, double rad, int granularity);

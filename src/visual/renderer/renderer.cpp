@@ -52,15 +52,19 @@ void Renderer::draw_square(Vec2d pos, const double size, const RGBA &color) {
     state->target->draw(rect, state->rmode);
 }
 
-void Renderer::draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color) {
+void Renderer::draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color, const RGBA &bounds_color) {
     pos += state->offset;
 
     sf::Color sf_color(color.r, color.g, color.b, color.a);
+    sf::Color sf_bounds_color(bounds_color.r, bounds_color.g, bounds_color.b, bounds_color.a);
 
     sf::RectangleShape rect({static_cast<float>(size.x()), static_cast<float>(size.y())});
     rect.setPosition({static_cast<float>(-size.x() / 2), static_cast<float>(-size.y() / 2)});
     rect.setOrigin({static_cast<float>(-pos.x() - size.x() / 2), static_cast<float>(-pos.y() - size.y() / 2)});
     rect.setFillColor(sf_color);
+
+    rect.setOutlineColor(sf_bounds_color);
+    rect.setOutlineThickness(1);
 
     state->target->draw(rect, state->rmode);
 }

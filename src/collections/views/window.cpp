@@ -57,3 +57,20 @@ void v_Window::fit_frame_to_content() {
 
     frame->get_body().size = content->get_body().size + 2 * PX_WINDOW_PADDING;
 }
+
+AbstractView *v_Window::get_first_selectable(bool) {
+    auto first = content->get_first_selectable(true);
+    if (first) return first;
+    
+    first = header->get_first_selectable();
+    return first;
+}
+
+AbstractView *v_Window::get_last_selectable(bool) {
+    auto last = content->get_last_selectable(true);
+    if (last) return last;
+    
+    last = header->get_last_selectable();
+    return last;
+}
+

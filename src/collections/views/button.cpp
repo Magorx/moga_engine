@@ -18,21 +18,19 @@ pos_delta(0, 0)
 
 v_Button::v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent) :
 v_Highlighter(body, nullptr, parent, 0, true),
-pos_delta(0, 0)
+pos_delta(0, 0),
+style(style)
 {
     appearenced = true;
-    // set_selectable(true);
+    set_selectable(true);
+    e_key_down.add(new AVSelectableFocuser(this));
+    e_mouse_press.add(new AVSelectablePressDefocuser(this));
+    e_key_down.add(new ButtonKeyDownAcceptor(this, Keyboard::Key::enter));
+    e_key_up.add(new ButtonKeyUpAcceptor(this, Keyboard::Key::enter));
 
     if (style) {
-        auto av_animator_press = new AVAnimatorPress(this, style);
-        auto av_animator_release = new AVAnimatorRelease(this, style);
-        auto av_animator_move    = new AVAnimatorMove(this, style);
-        
-        e_mouse_press.add(av_animator_press);
-        e_mouse_release.add(av_animator_release);
-        e_mouse_move.add(av_animator_move);
-
-        if (style->idle) set_appearence(style->idle);
+        to_draw_selected_bounds = false;
+        set_appearence(style->idle);
     }
 
     e_mouse_press.add(new ButtonPressAcceptor(this));
@@ -42,21 +40,19 @@ pos_delta(0, 0)
 
 v_Button::v_Button(const char *label_name, MouseReactionStyle *style, TextStyle *label_style, const Vec2d &padding) :
 v_Highlighter({0, Renderer::get_text_size(label_name, label_style->size, label_style->font) + padding * 2}, nullptr, nullptr, 0, true),
-pos_delta(0, 0)
+pos_delta(0, 0),
+style(style)
 {
     appearenced = true;
-    // set_selectable(true);
+    set_selectable(true);
+    e_key_down.add(new AVSelectableFocuser(this));
+    e_mouse_press.add(new AVSelectablePressDefocuser(this));
+    e_key_down.add(new ButtonKeyDownAcceptor(this, Keyboard::Key::enter));
+    e_key_up.add(new ButtonKeyUpAcceptor(this, Keyboard::Key::enter));
 
     if (style) {
-        auto av_animator_press = new AVAnimatorPress(this, style);
-        auto av_animator_release = new AVAnimatorRelease(this, style);
-        auto av_animator_move    = new AVAnimatorMove(this, style);
-        
-        e_mouse_press.add(av_animator_press);
-        e_mouse_release.add(av_animator_release);
-        e_mouse_move.add(av_animator_move);
-
-        if (style->idle) set_appearence(style->idle);
+        to_draw_selected_bounds = false;
+        set_appearence(style->idle);
     }
 
     e_mouse_press.add(new ButtonPressAcceptor(this));
@@ -90,15 +86,40 @@ void v_Button::render(Renderer *renderer) {
 
 void v_Button::press() {
     pressed = true;
+    set_appearence(style->press);
 
     pos_delta += BUTTON_CLICK_POS_DELTA;
 }
 
-void v_Button::unpress() {
+void v_Button::release() {
     pressed = false;
+    set_appearence(style->release);
 
     pos_delta -= BUTTON_CLICK_POS_DELTA;
 }
+
+void v_Button::hover() {
+    set_appearence(style->hover);
+}
+
+void v_Button::unhover() {
+    set_appearence(style->unhover);
+}
+
+void v_Button::select(bool tabbed) {
+    AbstractView::select(tabbed);
+
+    if (pressed) release();
+    hover();
+}
+
+void v_Button::deselect() {
+    AbstractView::deselect();
+
+    if (pressed) release();
+    unhover();
+}
+
 
 ButtonPressAcceptor::ButtonPressAcceptor(v_Button *button, AVMouseReactionResources *res) : EventAcceptor(button), appr_presed(nullptr) {
     if (res) {
@@ -129,7 +150,7 @@ EventAccResult ButtonReleaseAcceptor::operator()(const Event::MouseRelease &even
     if (!button->is_inside(event.position)) return EventAccResult::stop;
 
     if (button->pressed) {
-        button->unpress();
+        button->release();
         button->e_clicked.emit({});
     }
 
@@ -150,14 +171,49 @@ EventAccResult ButtonMoveAcceptor::operator()(const Event::MouseMove &event, con
 
     if (button->is_inside(event.to) && !button->is_inside(event.from)) {
         button->pos_delta += BUTTON_HOVER_POS_DELTA;
+        acceptor->hover();
     }
 
     if (button->is_inside(event.from) && !button->is_inside(event.to)) {
         if (button->pressed) {
-            button->unpress();
+            button->release();
         }
+        button->unhover();
 
         button->pos_delta -= BUTTON_HOVER_POS_DELTA;
+    }
+
+    return EventAccResult::cont;
+}
+
+ButtonKeyDownAcceptor::ButtonKeyDownAcceptor(v_Button *button, Keyboard::Key key) :
+EventAcceptor(button),
+key(key)
+{}
+
+EventAccResult ButtonKeyDownAcceptor::operator()(const Event::KeyDown &event, const EventAccResult *) {
+    if (!acceptor->is_selected() || event.code != key) return EventAccResult::none;
+
+    if (!acceptor->pressed) {
+        acceptor->key_pressed = true;
+        acceptor->press();
+    }
+
+    return EventAccResult::cont;
+}
+
+ButtonKeyUpAcceptor::ButtonKeyUpAcceptor(v_Button *button, Keyboard::Key key) :
+EventAcceptor(button),
+key(key)
+{}
+
+EventAccResult ButtonKeyUpAcceptor::operator()(const Event::KeyUp &event, const EventAccResult *) {
+    if (!acceptor->is_selected() || event.code != key) return EventAccResult::none;
+
+    if (acceptor->key_pressed && acceptor->pressed) {
+        acceptor->release();
+        acceptor->e_clicked.emit({});
+        acceptor->key_pressed = false;
     }
 
     return EventAccResult::cont;

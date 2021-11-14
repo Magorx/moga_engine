@@ -48,13 +48,35 @@ public:
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
+class ButtonKeyDownAcceptor : public EventAcceptor<v_Button, Event::KeyDown> {
+    Keyboard::Key key;
+public:
+    ButtonKeyDownAcceptor(v_Button *button, Keyboard::Key key);
+
+    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class ButtonKeyUpAcceptor : public EventAcceptor<v_Button, Event::KeyUp> {
+    Keyboard::Key key;
+public:
+    ButtonKeyUpAcceptor(v_Button *button, Keyboard::Key key);
+
+    EventAccResult operator()(const Event::KeyUp &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 
 class v_Button : public v_Highlighter {
     Vec2d pos_delta;
 
+    MouseReactionStyle *style;
+
     friend ButtonPressAcceptor;
     friend ButtonReleaseAcceptor;
     friend ButtonMoveAcceptor;
+    friend ButtonKeyDownAcceptor;
+    friend ButtonKeyUpAcceptor;
+
+    bool key_pressed;
 
 public:
     v_Button(const ViewBody &body, SmartColor *color = nullptr, AbstractView *parent = nullptr, double highlight_coef = HIGHLIGHTER_ON_COEF);
@@ -65,6 +87,11 @@ public:
 
     virtual void render(Renderer *renderer) override;
 
+    virtual void select(bool tabbed = false) override;
+    virtual void deselect() override;
+
     void press();
-    void unpress();
+    void release();
+    void hover();
+    void unhover();
 };

@@ -16,6 +16,8 @@ focuseable(false),
 selectable(false),
 selectable_blocking_node(false),
 selected(false),
+to_draw_selected_bounds(true),
+tab_selected(false),
 appearenced(false),
 cursor_inside(false)
 {
@@ -254,13 +256,13 @@ AbstractView *AbstractView::get_selectable_blocking_node() {
     return parent->get_selectable_blocking_node();
 }
 
-AbstractView *AbstractView::get_first_selectable() {
-    AbstractView *blocking_node = get_selectable_blocking_node();
+AbstractView *AbstractView::get_first_selectable(bool from_parent) {
+    AbstractView *blocking_node = from_parent ? this : get_selectable_blocking_node();
     return blocking_node->traverse_for_selectable(-1, +1, true);
 }
 
-AbstractView *AbstractView::get_last_selectable() {
-    AbstractView *blocking_node = get_selectable_blocking_node();
+AbstractView *AbstractView::get_last_selectable(bool from_parent) {
+    AbstractView *blocking_node = from_parent ? this : get_selectable_blocking_node();
     return blocking_node->traverse_for_selectable(blocking_node->subviews.size(), -1);
 }
 
@@ -455,26 +457,37 @@ EventAccResult AVSelectableFocuser::operator()(const Event::KeyDown &event, cons
     AbstractView *view = acceptor;
 
     if (!Keyboard::is_pressed_shift()) {
-        AbstractView *next = view->get_next_selectable();
+        AbstractView *next = acceptor->selectable_blocking_node ? acceptor->get_first_selectable() : view->get_next_selectable();
         if (!next) {
             next = view->get_first_selectable();
         }
 
         if (next) {
             if (view->is_selected()) view->deselect();
-            next->select();
+            next->select(true);
         }
     } else {
-        AbstractView *prev = view->get_prev_selectable();
+        AbstractView *prev = acceptor->selectable_blocking_node ? acceptor->get_last_selectable() : view->get_prev_selectable();
         if (!prev) {
             prev = view->get_last_selectable();
         }
 
         if (prev) {
             if (view->is_selected()) view->deselect();
-            prev->select();
+            prev->select(true);
         }
     }
 
     return EventAccResult::done;
+}
+
+
+AVSelectablePressDefocuser::AVSelectablePressDefocuser(AbstractView *view) : EventAcceptor(view) {}
+
+EventAccResult AVSelectablePressDefocuser::operator()(const Event::MousePress &event, const EventAccResult *) {
+    if (!acceptor->is_selected()) return EventAccResult::none;
+
+    if (!acceptor->is_inside(event.position)) acceptor->deselect();
+
+    return EventAccResult::none;
 }

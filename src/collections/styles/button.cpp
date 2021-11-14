@@ -80,7 +80,7 @@ namespace Button {
     }
 
     const RGBA SCND = {100, 120, 85};
-    const RGBA MAIN = {220, 240, 140};
+    const RGBA MAIN = {200, 230, 130};
 
     MouseReactionStyle *red() {
         return basic_mouse_reaction_style(

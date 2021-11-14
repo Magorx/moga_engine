@@ -20,7 +20,9 @@ redactable(redactable)
     set_focuseable(redactable);
     set_selectable(redactable);
 
+    to_draw_selected_bounds = false;
     e_key_down.add(new AVSelectableFocuser(this));
+    e_mouse_press.add(new AVSelectablePressDefocuser(this));
 
     set_appearence(Resources.add_appr(new AppearenceColor(frame_color)));
 
@@ -75,10 +77,13 @@ void v_TextField::refit() {
     display();
 }
 
-void v_TextField::select() {
-    AbstractView::select();
+void v_TextField::select(bool tabbed) {
+    AbstractView::select(tabbed);
 
-    line.select_all(true);
+    if (tabbed) {
+        line.select_all(true);
+    }
+
     display();
 }
 
@@ -342,7 +347,7 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
     if (!acceptor->redactable) return EventAccResult::none;
 
     if (acceptor->is_inside(event.position)) {
-        acceptor->set_selected(true);
+        acceptor->select();
         acceptor->put_cursor_under_mouse(event.position);
         acceptor->selection_online++;
         acceptor->line.fix_anchors();

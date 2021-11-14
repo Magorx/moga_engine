@@ -27,6 +27,9 @@ public:
     virtual bool is_inside(const Vec2d &click) override { return header->is_inside(click) || content->is_inside(click); }
     virtual bool is_inside(const Vec2d &from, const Vec2d &to) override { return header->is_inside(from) || content->is_inside(from) || header->is_inside(to) || content->is_inside(to); }
 
+    virtual AbstractView *get_first_selectable(bool from_parent = false) override;
+    virtual AbstractView *get_last_selectable(bool from_parent = false) override;
+
     inline AbstractView *get_accessory() { return header ? header->get_accessory() : nullptr; }
     inline AbstractView *get_content() { return content; }
 

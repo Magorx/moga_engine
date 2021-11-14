@@ -134,6 +134,13 @@ public:
     EventAccResult operator()(const Event::KeyDown &event, const EventAccResult *cur_res = nullptr) override;
 };
 
+class AVSelectablePressDefocuser : public EventAcceptor<AbstractView, Event::MousePress> {
+public:
+    AVSelectablePressDefocuser(AbstractView *view);
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 
 struct ViewBody {
     Vec2d position;
@@ -177,6 +184,8 @@ protected:
     bool selectable;
     bool selectable_blocking_node;
     bool selected;
+    bool to_draw_selected_bounds;
+    bool tab_selected;
     
     bool appearenced;
     bool cursor_inside;
@@ -224,7 +233,8 @@ public:
 
     inline bool is_selected() { return selected; }
     inline void set_selected(bool selected_) { selected = selected_; }
-    virtual void select() { focus(); selected = true; }
+
+    virtual void select(bool tabbed = false) { focus(); selected = true; tab_selected = tabbed; }
     virtual void deselect() { selected = false; }
 
     inline void set_appearence(Appearence *appearence_, bool activate = true) { appearence = appearence_; if (appearence && activate) appearence->activate(); }
@@ -245,8 +255,8 @@ public:
     AbstractView *get_next_selectable(bool from_parent = false);
     AbstractView *get_prev_selectable(bool from_parent = false);
 
-    AbstractView *get_first_selectable();
-    AbstractView *get_last_selectable();
+    virtual AbstractView *get_first_selectable(bool from_parent = false);
+    virtual AbstractView *get_last_selectable(bool from_parent = false);
 
 };
 

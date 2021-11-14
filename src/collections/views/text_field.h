@@ -49,7 +49,7 @@ public:
     virtual void render(Renderer *renderer) override;
     virtual void refit() override;
 
-    virtual void select() override;
+    virtual void select(bool tabbed = false) override;
 
     virtual void deselect() override {
         selected = false;
