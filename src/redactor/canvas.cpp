@@ -16,6 +16,9 @@ size(size)
     draw_layer = new Layer(renderer, this, size);
     final_layer = new Layer(renderer, this, size);
     inter_action_layer = new Layer(renderer, this, size);
+
+    transparency_squares_layer = new Layer(renderer, this, size);
+    transparency_squares_layer->fill_with(Resources.texture.transparency_squares);
 }
 
 Canvas::~Canvas() {
@@ -25,6 +28,7 @@ Canvas::~Canvas() {
 
     delete draw_layer;
     delete inter_action_layer;
+    delete transparency_squares_layer;
 }
 
 void Canvas::flush_draw_to_active() {
@@ -35,6 +39,7 @@ void Canvas::flush_draw_to_active() {
 
 void Canvas::flush_to_final() {
     final_layer->clear();
+    transparency_squares_layer->flush_to(final_layer);
     for (auto layer : layers) {
         if (layer == active_layer) {
             inter_action_layer->clear();

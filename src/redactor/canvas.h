@@ -25,6 +25,7 @@ private:
     Layer *draw_layer;
     Layer *inter_action_layer;
     Layer *final_layer;
+    Layer *transparency_squares_layer;
 
     bool _to_redraw;
 

@@ -1,5 +1,6 @@
 #include "layer.h"
 #include "redactor/canvas.h"
+#include "visual/renderer/appearence.h"
 
 
 Layer::Layer(Renderer *renderer, Canvas *canvas, Vec2d size, int idx):
@@ -48,4 +49,20 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
 void Layer::force_redraw() {
     effects_applied = false;
     if (canvas) canvas->force_redraw();
+}
+
+void Layer::fill_with(RTexture *img) {
+    if (!img) return;
+
+    Vec2d frac = {(double) img->getSize().x, (double) img->getSize().y};
+    frac = frac / size;
+
+    AppearenceTexture *appr = new AppearenceTexture(img);
+
+    renderer->push_target(get_target());
+    renderer->set_appearence(appr);
+    renderer->apr_draw_rectangle({0, 0}, size);
+    renderer->pop_target();
+
+    delete appr;
 }

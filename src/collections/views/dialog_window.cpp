@@ -120,7 +120,7 @@ void v_DialogWindow::make_closing_button(v_Button *closer) {
 
 void v_DialogWindow::select_first_field() {
     if (first_selectable) {
-        first_selectable->select();
+        first_selectable->select(true);
     }
 }
 

@@ -160,6 +160,8 @@ void v_TextField::set_string(const char *str, bool to_fit_width) {
     if (to_fit_width) {
         fit_width_to_string();
     }
+
+    e_text_changed.emit({line.c_str()});
 }
 
 void v_TextField::set_number(const double number) {
@@ -406,7 +408,6 @@ text(text_ptr)
 {}
 
 EventAccResult TextFieldChangeStringSynchronizer::operator()(const Event::TextChanged &event, const EventAccResult*) {
-    printf("new str: %s\n", event.text);
     if (!text) return EventAccResult::none;
 
     if (*text) {
@@ -431,7 +432,6 @@ TextFieldChangeValueSynchronizer(val_d, nullptr)
 {}
 
 EventAccResult TextFieldChangeValueSynchronizer::operator()(const Event::TextChanged &event, const EventAccResult*) {
-    printf("new vals: %g | %d\n", event.val_d, event.val_i);
     if (val_d) {
         *val_d = event.val_d;
     }

@@ -270,14 +270,12 @@ public:
 
 
 v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
-    auto dw = new v_DialogWindow("New canvas", 200);
+    auto dw = new v_DialogWindow("New canvas", 250, 5, -30);
     
     auto f_width  = dw->add_field("Width", 100, "px");
     auto f_height = dw->add_field("Height", 100, "px");
     auto f_name   = dw->add_field("Name");
     auto b_create = dw->add_accept_button("Create");
-
-    f_name->set_string(randstr(10).c_str());
 
     auto reaction = new NewCanvasReaction(engine);
     b_create->e_clicked.add(reaction);
@@ -287,6 +285,10 @@ v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
     f_name->e_text_changed.add(new TextFieldChangeStringSynchronizer(reaction->get_name_ptr()));
 
     dw->make_closing_button(b_create);
+
+    f_width->set_string("800");
+    f_height->set_string("600");
+    f_name->set_string(randstr(10).c_str());
 
     engine->add_view(dw);
 

@@ -78,11 +78,12 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 void ResourcesHolder::init(MogaEngine *engine_) {
     shader.name.rgb_mapping = "resources/shader/" "rgb_mapping.glsl";
 
-
     engine = engine_;
 
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
     texture.dot = load_texture(IMG("dot.png"));
+
+    texture.transparency_squares = load_texture(IMG("transparency_squares.png"));
 
     texture.button.basic.idle    = load_texture(BUTTON_IMG("basic", "idle.png"));
     texture.button.basic.hovered = load_texture(BUTTON_IMG("basic", "hovered.png"));

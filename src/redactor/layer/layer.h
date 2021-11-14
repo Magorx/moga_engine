@@ -40,6 +40,8 @@ struct Layer : public Affected<Layer> {
         renderer->draw_texture({0, 0}, img, true);
         renderer->pop_target();
     }
+
+    void fill_with(RTexture *img);
     
     void force_redraw();
 
