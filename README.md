@@ -11,8 +11,8 @@ Top features one by one:
 <img src="showcase/layers.png" alt="oops" width="800" height="600">
 <img src="showcase/brush_eraser.png" alt="oops" width="800" height="600">
 <img src="showcase/size.png" alt="oops" width="800" height="600">
-<img src="showcase/dialog.png" alt="oops" width="800" height="600">
-<img src="showcase/text_field.png" alt="oops" width="800" height="600">
+<img src="showcase/dialog_window.png" alt="oops" width="800" height="600">
+<img src="showcase/text_field.png" alt="oops" width="300" height="100">
 
 Example of the rgb_mapping effect
 <img src="showcase/rgb.png" alt="oops" width="800" height="600">
