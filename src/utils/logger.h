@@ -5,6 +5,7 @@
 #include <string.h>
 #include <cstdio>
 #include <cstdlib>
+#include <cstdarg>
 
 
 class Logger {
