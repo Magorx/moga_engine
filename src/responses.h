@@ -238,8 +238,14 @@ v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body
 }
 
 
+
+
 v_Window *open_canvas_image(RedactorEngine *engine, const Vec2d &pos) {
     char filename[200] = "1.jpg";
+
+    auto dw = new v_DialogWindow("Open image", 200);
+    auto path = dw->add_field("Path");
+    auto open_button = dw->add_accept_button("Open");
 
     printf("Enter a file path for an image\n> ");
     scanf("%200s", filename);

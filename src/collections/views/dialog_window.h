@@ -19,7 +19,7 @@ class v_DialogWindow : public v_Window {
     double padding;
 
 public:
-    v_DialogWindow(const char *name, double width, double padding, double center_offset = 0, WindowStyle *style = Resources.add_style(StdStyle::Window::dialog()));
+    v_DialogWindow(const char *name, double width, double padding = 5, double center_offset = 0, WindowStyle *style = Resources.add_style(StdStyle::Window::dialog()));
 
     v_TextField *add_field(const char *field_name, double max_ans_length = 100, const char *after_name = nullptr);
 

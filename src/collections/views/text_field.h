@@ -124,3 +124,12 @@ public:
 
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
+
+
+class TextFieldChangeStringSynchronizer : public EventReaction<Event::TextChanged> {
+    char **text;
+public:
+    TextFieldChangeStringSynchronizer(char **text_ptr);
+
+    EventAccResult operator()(const Event::TextChanged &event, const EventAccResult*) override;
+};

@@ -389,3 +389,16 @@ EventAccResult TextFieldMouseMoveAcceptor::operator()(const Event::MouseMove &ev
 }
 
 #undef CHECK_CTRL_PRESS
+
+TextFieldChangeStringSynchronizer::TextFieldChangeStringSynchronizer(char **text_ptr):
+text(text_ptr)
+{}
+
+EventAccResult TextFieldChangeStringSynchronizer::operator()(const Event::TextChanged &event, const EventAccResult*) {
+    if (*text) {
+        free(text);
+    }
+    *text = strdup(event.text);
+
+    return EventAccResult::none;
+}
