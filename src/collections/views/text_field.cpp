@@ -87,6 +87,12 @@ void v_TextField::select(bool tabbed) {
     display();
 }
 
+void v_TextField::deselect_text_field(bool input_complete) {
+    AbstractView::deselect();
+
+    e_text_changed.emit({line.c_str(), input_complete});
+}
+
 Vec2d v_TextField::char_pos(int idx) {
     return Renderer::get_char_position(line.c_str(), idx, style->size, style->font);
 }
@@ -306,7 +312,7 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
             break;
         
         case Keyboard::Key::enter :
-            acceptor->deselect();
+            acceptor->deselect_text_field(true);
         
         default:
             break;
@@ -355,7 +361,7 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
         return EventAccResult::cont;
     } else {
         if (acceptor->selected) {
-            acceptor->deselect();
+            acceptor->deselect_text_field();
         }
     }
 
@@ -395,10 +401,12 @@ text(text_ptr)
 {}
 
 EventAccResult TextFieldChangeStringSynchronizer::operator()(const Event::TextChanged &event, const EventAccResult*) {
+    if (!text) return EventAccResult::none;
+
     if (*text) {
-        free(text);
+        free(*text);
     }
     *text = strdup(event.text);
 
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }

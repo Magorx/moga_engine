@@ -67,7 +67,9 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto dw = new v_DialogWindow("How are you?", 250, 10, -30);
     moga.add_view(dw);
-    // AbstractView *v = nullptr;
+    
+    dw->add_info_line("This is a test!");
+
     dw->add_field("Width", 50, "px");
     dw->add_field("Height", 50, "px");
     dw->add_field("Free Text", 100);

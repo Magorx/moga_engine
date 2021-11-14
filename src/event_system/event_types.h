@@ -100,11 +100,14 @@ struct TextChanged {
     double val_d;
     int    val_i;
 
-    TextChanged(const char *text) :
+    bool input_complete = false;
+
+    TextChanged(const char *text, bool input_complete = false) :
     text(text),
     len(text ? strlen(text) : 0),
     val_d(NAN),
-    val_i(0)
+    val_i(0),
+    input_complete(input_complete)
     {
         if (!text) return;
 
@@ -119,11 +122,12 @@ struct TextChanged {
         val_i = static_cast<int>(val_d);
     }
 
-    TextChanged(const char *text, size_t len, double val_d = NAN, int val_i = 0) :
+    TextChanged(const char *text, size_t len, bool input_complete = false, double val_d = NAN, int val_i = 0) :
     text(text),
     len(len),
     val_d(val_d),
-    val_i(val_i)
+    val_i(val_i),
+    input_complete(input_complete)
     {}
 };
 

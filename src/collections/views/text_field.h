@@ -51,10 +51,7 @@ public:
 
     virtual void select(bool tabbed = false) override;
 
-    virtual void deselect() override {
-        selected = false;
-        e_text_changed.emit({line.c_str()});
-    }
+    void deselect_text_field(bool input_complete = false);
 
     void add_char(char c);
     void display();
