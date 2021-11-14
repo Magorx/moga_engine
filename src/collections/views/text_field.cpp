@@ -81,7 +81,7 @@ void v_TextField::select(bool tabbed) {
     AbstractView::select(tabbed);
 
     if (tabbed) {
-        line.select_all(true);
+        line.select_all(false);
     }
 
     display();

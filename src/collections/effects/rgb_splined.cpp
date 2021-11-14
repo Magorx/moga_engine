@@ -60,7 +60,7 @@ EventAccResult RGBMappingUpdate::operator()(const Event::VectorFractionChanged &
 
 
 v_Window *eff_RGBSplined::create_settings_window(MogaEngine *engine) {
-    v_Window *window = new v_Window("RGB mapping", {engine->random_screen_pos(), 500}, StdStyle::Window::basic());
+    v_Window *window = new v_Window("RGB mapping", {engine->random_screen_pos(), 300}, StdStyle::Window::basic());
     engine->add_view(window);
 
     auto content = window->get_content();
