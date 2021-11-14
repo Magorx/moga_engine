@@ -15,5 +15,5 @@ Top features one by one:
 <img src="showcase/text_field.png" alt="oops" width="300" height="75">
 
 Example of the rgb_mapping effect
-<img src="showcase/rgb.png" alt="oops" width="760" height="600">
+<img src="showcase/rgb.png" alt="oops" width="730" height="600">
 
