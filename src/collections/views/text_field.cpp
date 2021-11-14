@@ -43,7 +43,7 @@ redactable(redactable)
 }
 
 v_TextField::~v_TextField() {
-    delete style;
+    // delete style;
 }
 
 void v_TextField::render(Renderer *renderer) {

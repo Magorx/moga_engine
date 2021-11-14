@@ -67,7 +67,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto style = Resources.add_style(StdStyle::Text::basic());
     style->size = 45;
-    v_TextField *txt = new v_TextField({75, 100}, style);
+    v_TextField *txt = new v_TextField({75, 500}, style);
     moga.add_view(txt);
 
     txt->e_text_changed.add(new DebugTextChange);
