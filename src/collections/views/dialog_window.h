@@ -30,5 +30,7 @@ public:
     v_Button *add_accept_button (const char *button_name, TextStyle *style = Resources.add_style(StdStyle::Text::basic()->negative()));
     v_Button *add_decline_button(const char *button_name, TextStyle *style = Resources.add_style(StdStyle::Text::basic()->negative()));
 
+    void make_closing_button(v_Button *closer);
+
     void fit_content_to_fields();
 };

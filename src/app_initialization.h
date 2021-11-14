@@ -65,15 +65,6 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    auto style = Resources.add_style(StdStyle::Text::basic());
-    // style->size = 25;
-    v_TextField *txt = new v_TextField({75, {300, 100}}, style);
-    moga.add_view(txt);
-
-    txt->e_text_changed.add(new DebugTextChange);
-    txt->set_string("text_input");
-    // txt->set_number(123123);
-
     auto dw = new v_DialogWindow("How are you?", 250, 10, -30);
     moga.add_view(dw);
     // AbstractView *v = nullptr;

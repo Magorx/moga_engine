@@ -76,3 +76,8 @@ v_Button *v_DialogWindow::add_decline_button(const char *button_name, TextStyle 
                            text_style);
 }
 
+void v_DialogWindow::make_closing_button(v_Button *closer) {
+    closer->e_clicked.add(new AVCloseGenerator<Event::Clicked>(closer));
+    closer->e_close.add(new AVCloseAcceptor(this));
+}
+

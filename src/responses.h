@@ -238,38 +238,57 @@ v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body
 }
 
 
+class OpenCanvasWithImageReaction : public EventReaction<Event::Clicked> {
+    RedactorEngine *engine;
+    char *path;
+
+public:
+    OpenCanvasWithImageReaction(RedactorEngine *engine):
+    engine(engine),
+    path(nullptr)
+    {}
+
+    char **get_path_ptr() { return &path; }
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+        RImage img;
+        if (!img.loadFromFile(path)) {
+            logger.error("open_image", "can't open image %s", path);
+            return EventAccResult::none;
+        }
+
+        auto size = img.getSize();
+
+        Canvas *canvas;
+        v_Window *window = spawn_canvas_window(engine, {engine->random_screen_pos(), {(double) size.x, (double) size.y}}, &canvas);
+        if (!window) {
+            logger.error("open_image", "can't create canvas for image %s [%lux%lu]", path, size.x, size.y);
+            return EventAccResult::none;
+        }
+
+        RTexture texture;
+        texture.loadFromImage(img);
+        canvas->get_active_layer()->copy_from(&texture);
+
+        return EventAccResult::none;
+    }
+};
 
 
-v_Window *open_canvas_image(RedactorEngine *engine, const Vec2d &pos) {
-    char filename[200] = "1.jpg";
-
+v_Window *spawn_open_image_dialog(RedactorEngine *engine) {
     auto dw = new v_DialogWindow("Open image", 200);
     auto path = dw->add_field("Path");
     auto open_button = dw->add_accept_button("Open");
 
-    printf("Enter a file path for an image\n> ");
-    scanf("%200s", filename);
+    auto open_reaction = new OpenCanvasWithImageReaction(engine);
+    open_button->e_clicked.add(open_reaction);
+    dw->make_closing_button(open_button);
 
-    RImage img;
-    if (!img.loadFromFile(filename)) {
-        logger.error("open_image", "can't open image %s", filename);
-        return nullptr;
-    }
+    path->e_text_changed.add(new TextFieldChangeStringSynchronizer(open_reaction->get_path_ptr()));
 
-    auto size = img.getSize();
+    engine->add_view(dw);
 
-    Canvas *canvas;
-    v_Window *window = spawn_canvas_window(engine, {pos, {(double) size.x, (double) size.y}}, &canvas);
-    if (!window) {
-        logger.error("open_image", "can't create canvas for image %s [%lux%lu]", filename, size.x, size.y);
-        return nullptr;
-    }
-
-    RTexture texture;
-    texture.loadFromImage(img);
-    canvas->get_active_layer()->copy_from(&texture);
-
-    return window;
+    return dw;
 }
 
 
@@ -422,7 +441,7 @@ public:
 
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
-        open_canvas_image(engine, engine->random_screen_pos());
+        spawn_open_image_dialog(engine);
 
         return EventAccResult::none;
     }
