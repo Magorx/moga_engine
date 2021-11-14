@@ -368,14 +368,6 @@ EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, c
     return EventAccResult::none;
 }
 
-// AVCloseGenerator::AVCloseGenerator(AbstractView *av) : EventAcceptor(av) {}
-
-// EventAccResult AVCloseGenerator::operator()(const Event::MouseRelease &, const EventAccResult *) {
-//     acceptor->e_close.emit({});
-//     return EventAccResult::cont;
-// }
-
-
 AVCloseAcceptor::AVCloseAcceptor(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCloseAcceptor::operator()(const Event::Close &, const EventAccResult *) {  
@@ -489,5 +481,5 @@ EventAccResult AVSelectablePressDefocuser::operator()(const Event::MousePress &e
 
     if (!acceptor->is_inside(event.position)) acceptor->deselect();
 
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }

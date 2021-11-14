@@ -66,7 +66,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     // ==================================================================================
 
     auto dw = new v_DialogWindow("How are you?", 250, 10, -30);
-    moga.add_view(dw);
+    // moga.add_view(dw);
     
     dw->add_info_line("This is a test!");
 

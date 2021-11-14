@@ -22,7 +22,7 @@ redactable(redactable)
 
     to_draw_selected_bounds = false;
     e_key_down.add(new AVSelectableFocuser(this));
-    e_mouse_press.add(new AVSelectablePressDefocuser(this));
+    // e_mouse_press.add(new AVSelectablePressDefocuser(this));
 
     set_appearence(Resources.add_appr(new AppearenceColor(frame_color)));
 
@@ -358,6 +358,7 @@ EventAcceptor(acceptor)
 
 EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (!acceptor->redactable) return EventAccResult::none;
+    printf("press\n");
 
     if (acceptor->is_inside(event.position)) {
         acceptor->select();
@@ -367,12 +368,13 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
         acceptor->pressed = true;
         return EventAccResult::cont;
     } else {
-        if (acceptor->selected) {
+        printf("miss %p\n", this);
+        if (acceptor->is_selected()) {
             acceptor->deselect_text_field();
         }
     }
 
-    return EventAccResult::none;
+    return EventAccResult::cont;
 }
 
 TextFieldMouseReleaseAcceptor::TextFieldMouseReleaseAcceptor(v_TextField *acceptor) :
