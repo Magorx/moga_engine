@@ -40,7 +40,7 @@ class v_TextField : public v_Highlighter {
     Vec2d char_pos(int idx);
 
 public:
-    v_TextField(const ViewBody &body, TextStyle *style = StdStyle::Text::basic(),
+    v_TextField(const ViewBody &body, TextStyle *style = Resources.add_style(StdStyle::Text::basic()),
                RColor frame_color = Resources.color.text_field.basic.frame,
                RColor content_color = Resources.color.text_field.basic.content, 
                bool autofit_to_text_size = true, bool redactable = true);

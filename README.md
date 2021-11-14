@@ -7,4 +7,7 @@ An abstract hierarchical system of events dispatching and UI managing. Buttons, 
 
 For now image editor supports canvas with many layers, clever transparency usage, save button, color picker abstract effects for layers, dialog windows, tab & shift-tab in dialogs and any selectable buttons. Let's cover these features one by one.
 
+Canvas with layers support:
+
+
 
