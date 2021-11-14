@@ -54,15 +54,10 @@ void Layer::force_redraw() {
 void Layer::fill_with(RTexture *img) {
     if (!img) return;
 
-    Vec2d frac = {(double) img->getSize().x, (double) img->getSize().y};
-    frac = frac / size;
-
-    AppearenceTexture *appr = new AppearenceTexture(img);
+    AppearenceTexture appr(img);
 
     renderer->push_target(get_target());
-    renderer->set_appearence(appr);
+    renderer->set_appearence(&appr);
     renderer->apr_draw_rectangle({0, 0}, size);
     renderer->pop_target();
-
-    delete appr;
 }
