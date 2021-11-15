@@ -63,7 +63,7 @@ public:
     v_Highlighter *get_dot() { return dot; }
 
     bool magnetize_to(const Vec2d &pos, bool to_check_mag_radius = true);
-    inline bool magnetize_test(const Vec2d &pos) { return !(mag_radius == mag_radius && (pos - body.position).len_squared() > mag_radius * mag_radius); }
+    inline bool magnetize_test(const Vec2d &pos) { return !(mag_radius == mag_radius && (pos - dot->get_body().position).len_squared() > mag_radius * mag_radius); }
 
     void update_bounds(const ViewBody &bounds_);
 
@@ -80,6 +80,8 @@ public:
         e_fraction_changed.emit({{body.size.x() ? dot->get_body().position.x() / body.size.x() : NAN,
                                   body.size.y() ? dot->get_body().position.y() / body.size.y() : NAN}});
     }
+
+    inline Vec2d dot_coord() { return body.position + dot->get_body().position; }
 
     AVMagneticPressAcceptor *get_acc_press() { return acc_press; }
 };

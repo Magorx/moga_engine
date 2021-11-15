@@ -5,7 +5,7 @@ v_Spline::v_Spline(const ViewBody &body, RGBA curve_color, RGBA background_color
 v_Highlighter(body),
 dots({
     new v_Magnetic({{0, 0}, {0, body.size.y()}}, {{0, body.size.y()}, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD),
-    new v_Magnetic({{body.size.x(), 0}, {0, body.size.y()}}, {{body.size.x(), 0}, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD),
+    new v_Magnetic({{body.size.x(), 0}, {0, body.size.y()}}, {0, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD),
     
     new v_Magnetic({0, body.size - 1}, {{body.size.x() / 2, body.size.y() / 2}, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD),
 }),
@@ -21,11 +21,8 @@ mag_radius(mag_radius)
     auto appr = new AppearenceColor(background_color);
     Resources.created_apprs.push_back(appr);
     set_appearence(appr);
-
-    dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
     
     for (auto dot : dots) {
-        dot->set_appearence(dot_appr);
         add_subview(dot);
 
         dot->e_fraction_changed.add(new SplineDotChangeAcceptor(this));
@@ -47,7 +44,7 @@ void v_Spline::recalculate_output() {
     Interpolator2dCatmullRom inter;
     for (size_t i = 0; i < dots.size(); ++i) {
         auto dot = dots[i];
-        Vec2d pos = dot->get_body().position;
+        Vec2d pos = dot->dot_coord();
         pos.content[1] = body.size.y() - pos.y();
         inter.add_p(pos);
     }
@@ -75,8 +72,8 @@ void v_Spline::recalculate_output() {
         }
     }
 
-    Vec2d p0 = body.size - dots[0]->get_body().position;
-    Vec2d p1 = body.size - dots[1]->get_body().position;
+    Vec2d p0 = body.size - dots[0]->dot_coord();
+    Vec2d p1 = body.size - dots[1]->dot_coord();
     p0.clamp({0, 0}, body.size - 1);
     p1.clamp({0, 0}, body.size - 1);
 
@@ -121,9 +118,7 @@ v_Magnetic *v_Spline::try_spawn_dot(const Vec2d &pos) {
     }
 
 
-    auto dot = new v_Magnetic({0, get_body().size - 1}, {pos, PX_SPLINE_DOT}, 10);
-
-    dot->set_appearence(dot_appr);
+    auto dot = new v_Magnetic({0, get_body().size - 1}, {pos, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD);
     dot->e_fraction_changed.add(new SplineDotChangeAcceptor(this));
     dot->get_acc_press()->set_singular_mag_button(Event::MouseButton::left);
 
