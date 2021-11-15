@@ -65,6 +65,17 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
+    open_img_button->e_clicked.emit({});
+
+    const char *str = "author.jpg";
+    for (const char *c = str; *c; ++c) {
+        moga.main_view->e_text_enter.emit({(uint32_t) *c});
+    }
+    moga.main_view->e_key_down.emit({Keyboard::Key::enter});
+    moga.main_view->e_key_up.emit({Keyboard::Key::enter});
+
+    // ==================================================================================
+
     auto dw = new v_DialogWindow("How are you?", 250, 10, -30);
     // moga.add_view(dw);
     

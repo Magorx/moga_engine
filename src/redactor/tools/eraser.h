@@ -14,7 +14,9 @@ public:
     }
 
     virtual void on_update() override {
-        if (draw_layer) set_draw_layer(draw_layer->get_canvas()->get_active_layer());
-        if (draw_layer) draw_layer->get_canvas()->set_draw_mode(Canvas::DrawMode::use_active_layer);
+        if (draw_layer) {
+            set_draw_layer(draw_layer->get_canvas()->get_active_layer());
+            draw_layer->get_canvas()->set_draw_mode(Canvas::DrawMode::use_active_layer);
+        }
     }
 };

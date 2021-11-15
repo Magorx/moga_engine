@@ -20,6 +20,16 @@ void ToolManager::add_tool(Tool *tool) {
     tools.push_back(tool);
 }
 
+void ToolManager::set_draw_layer(Layer* layer) {
+    draw_layer = layer;
+    update_active_tool();
+}
+
+void ToolManager::set_draw_color(RGBA color) {
+    draw_color = color;
+    update_active_tool();
+}
+
 void ToolManager::set_active_tool(size_t idx) {
     if (idx >= tools.size()) {
         return;

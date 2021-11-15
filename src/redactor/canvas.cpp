@@ -17,6 +17,9 @@ size(size)
     final_layer = new Layer(renderer, this, size);
     inter_action_layer = new Layer(renderer, this, size);
 
+    final_layer->saved_image_needed = false;
+    inter_action_layer->saved_image_needed = false;
+
     transparency_squares_layer = new Layer(renderer, this, size);
     transparency_squares_layer->fill_with(Resources.texture.transparency_squares);
 }

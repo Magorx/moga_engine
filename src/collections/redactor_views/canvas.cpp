@@ -67,5 +67,5 @@ EventAccResult CanvasMoveAcceptor::operator()(const Event::MouseMove &event, con
 
     acceptor->canvas->flush_to_final();
 
-    return EventAccResult::done;
+    return EventAccResult::cont;
 }

@@ -11,12 +11,14 @@ tool_manager(new ToolManager(visual->get_renderer()))
     t_Brush *t_brush = new t_Brush(tool_manager);
     t_brush->set_size(5);
 
-    tool_manager->add_tool(t_brush);
-
     t_Eraser *t_eraser = new t_Eraser(tool_manager);
     t_eraser->set_size(5);
 
-    tool_manager->add_tool(t_eraser);
+    t_ColorPipett *t_pipette = new t_ColorPipett(tool_manager);
 
-    tool_manager->set_active_tool(1);
+    tool_manager->add_tool(t_brush);
+    tool_manager->add_tool(t_eraser);
+    tool_manager->add_tool(t_pipette);
+
+    tool_manager->set_active_tool(2);
 }

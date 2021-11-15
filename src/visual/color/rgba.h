@@ -3,6 +3,9 @@
 
 #include <cstdint>
 
+#define RGBA_PRINT3(rgba) rgba.r, rgba.g, rgba.b
+#define RGBA_PRINT(rgba) rgba.r, rgba.g, rgba.b, rgba.a
+
 union RGBA {
 	unsigned char rgba[4];
 	struct {

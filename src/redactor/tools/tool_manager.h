@@ -26,8 +26,8 @@ public:
 
     void set_active_canvas(Canvas *canvas);
 
-    void set_draw_layer(Layer* layer) { draw_layer = layer; update_active_tool(); }
-    void set_draw_color(RGBA color) { draw_color = color; update_active_tool(); }
+    virtual void set_draw_layer(Layer* layer) override;
+    virtual void set_draw_color(RGBA color) override;
     void set_renderer(Renderer *renderer_) { renderer = renderer_; }
 
     RGBA get_draw_color() const { return draw_color; }

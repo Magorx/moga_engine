@@ -26,28 +26,37 @@ idx(idx)
 }
 
 void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rmode) {
+    if (to_apply_effects && !effects_applied) {
+        apply_effects();
+        effects_applied = true;
+    }
+
+    if (!saved_image_done && saved_image_needed) {
+        saved_image_done = true;
+
+        Layer inter(renderer, nullptr, size);
+        inter.saved_image_needed = false;
+        flush_to(&inter, false, true);
+        saved_image = inter.target->getTexture().copyToImage();
+    }
+
     if (!layer || !renderer) return;
 
-    if (to_apply_effects) {
-        if (!effects_applied) {
-            apply_effects();
-            effects_applied = true;
-        }
+    renderer->push_target(layer->get_target());
+    renderer->set_render_state(rmode);
 
-        renderer->push_target(layer->get_target());
-        renderer->set_render_state(rmode);
+    if (to_apply_effects) {
         renderer->draw_texture({0, 0}, &final_target->getTexture(), to_flip);
-        renderer->pop_target();
     } else {
-        renderer->push_target(layer->get_target());
-        renderer->set_render_state(rmode);
         renderer->draw_texture({0, 0}, &target->getTexture(), to_flip);
-        renderer->pop_target();
     }
+
+    renderer->pop_target();
 }
 
 void Layer::force_redraw() {
     effects_applied = false;
+    saved_image_done = false;
     if (canvas) canvas->force_redraw();
 }
 
@@ -60,4 +69,20 @@ void Layer::fill_with(RTexture *img) {
     renderer->set_appearence(&appr);
     renderer->apr_draw_rectangle({0, 0}, size);
     renderer->pop_target();
+}
+
+RColor Layer::get_pixel_color(const Vec2d &position) {
+    bool prev_needed = saved_image_needed;
+    saved_image_needed = true;
+
+    if (!saved_image_done) {
+        flush_to(nullptr, false, true);
+    }
+
+    if (position.x() < 0 || position.x() >= size.x() || position.y() < 0 || position.y() >= size.y()) return {0, 0, 0, 0};
+
+    auto color = saved_image.getPixel(position.x(), position.y());
+
+    saved_image_needed = prev_needed;
+    return {color.r, color.g, color.b, color.a};
 }

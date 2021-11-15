@@ -122,6 +122,7 @@ add_executable(moga
         # redactor
 
         src/redactor/tools/brush.cpp
+        src/redactor/tools/color_pipette.cpp
         src/redactor/tools/tool_manager.cpp
         src/redactor/canvas.cpp
 

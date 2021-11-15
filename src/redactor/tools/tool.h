@@ -10,6 +10,7 @@
 class Tool {
 protected:
     Renderer *renderer;
+    Tool *tool_manager;
 
     Layer *draw_layer;
     RColor draw_color;
@@ -22,18 +23,20 @@ protected:
 public:
     Tool(Tool *manager) :
     renderer(manager ? manager->get_renderer() : nullptr),
+    tool_manager(manager),
     draw_layer(nullptr),
     draw_color(0, 0, 0, 255)
     {}
 
     Tool(Renderer *renderer) :
     renderer(renderer),
+    tool_manager(nullptr),
     draw_layer(nullptr),
     draw_color(0, 0, 0, 255)
     {}
 
-    void set_draw_layer(Layer* layer) { draw_layer = layer; }
-    void set_draw_color(RColor color) { draw_color = color; }
+    virtual void set_draw_layer(Layer* layer) { draw_layer = layer; }
+    virtual void set_draw_color(RColor color) { draw_color = color; }
     void set_renderer(Renderer *renderer_) { renderer = renderer_; }
 
     virtual void on_mouse_down(const Vec2d &pos) {
