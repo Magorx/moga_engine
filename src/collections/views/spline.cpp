@@ -4,14 +4,10 @@
 v_Spline::v_Spline(const ViewBody &body, RGBA curve_color, RGBA background_color, double mag_radius) :
 v_Highlighter(body),
 dots({
-    // new v_Magnetic({{0 - 2, body.size.y() + 2}, PX_SPLINE_DOT}, {0, body.size}, -1),
-    new v_Magnetic({{0, body.size.y()}, PX_SPLINE_DOT}, {{0, 0}, {0, body.size.y()}}, PX_SPLINE_MAG_RAD),
-    new v_Magnetic({{body.size.x(), 0}, PX_SPLINE_DOT}, {{body.size.x(), 0}, {0, body.size.y()}}, PX_SPLINE_MAG_RAD),
-    // new v_Magnetic({{body.size.x() + 2, 0 - 2}, PX_SPLINE_DOT}, {0, body.size}, -1),
+    new v_Magnetic({{0, 0}, {0, body.size.y()}}, {{0, body.size.y()}, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD),
+    new v_Magnetic({{body.size.x(), 0}, {0, body.size.y()}}, {{body.size.x(), 0}, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD),
     
-    // new v_Magnetic({{0, body.size.y()}, PX_SPLINE_DOT}, {0, body.size}, PX_SPLINE_MAG_RAD),
-    new v_Magnetic({{body.size.x() / 2, body.size.y() / 2}, PX_SPLINE_DOT}, {0, body.size - 1}, PX_SPLINE_MAG_RAD),
-    // new v_Magnetic({{body.size.x(), 0}, PX_SPLINE_DOT}, {0, body.size}, PX_SPLINE_MAG_RAD),
+    new v_Magnetic({0, body.size - 1}, {{body.size.x() / 2, body.size.y() / 2}, PX_SPLINE_DOT}, PX_SPLINE_MAG_RAD),
 }),
 output(this->body.size.x(), 0),
 
@@ -125,7 +121,7 @@ v_Magnetic *v_Spline::try_spawn_dot(const Vec2d &pos) {
     }
 
 
-    auto dot = new v_Magnetic({pos, PX_SPLINE_DOT}, {0, get_body().size - 1}, 10);
+    auto dot = new v_Magnetic({0, get_body().size - 1}, {pos, PX_SPLINE_DOT}, 10);
 
     dot->set_appearence(dot_appr);
     dot->e_fraction_changed.add(new SplineDotChangeAcceptor(this));
