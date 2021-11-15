@@ -181,7 +181,8 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     texture.util_bar.basic.r_corner = load_texture(IMG("util_bar/basic/corner.png"));
 
     texture.window.basic.util_bar = &texture.util_bar.basic;
-    texture.window.basic.frame = generate_color_texture({203, 219, 252, 220});
+    texture.window.color.basic_frame = {203, 219, 252, 220};
+    texture.window.basic.frame = generate_color_texture(texture.window.color.basic_frame);
 
     font.color.basic_header = {255, 255, 255, 255};
     font.color.basic_menu   = {15, 15, 15, 255};

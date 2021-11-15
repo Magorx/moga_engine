@@ -41,17 +41,16 @@ alpha_texture(nullptr)
 
 {
     add_subview(v_transparency);
-    v_transparency->set_appearence(
-        Resources.add_appr(new AppearenceTexture(Resources.texture.transparency_squares, v_transparency->get_body().size, true))
-    );
     
     add_subview(v_vert_layout);
 
-    v_vert_layout->add_spaceholder(0.35)->set_appearence(Resources.add_appr(new AppearenceColor({203, 219, 252, 220})));
+    v_vert_layout->add_spaceholder(0.35)->set_appearence(Resources.add_appr(new AppearenceColor(Resources.texture.window.color.basic_frame)));
     v_vert_layout->layout_add(v_field, 8);
-    v_vert_layout->add_spaceholder(0.35)->set_appearence(Resources.add_appr(new AppearenceColor({203, 219, 252, 220})));
+    v_vert_layout->add_spaceholder(0.35)->set_appearence(Resources.add_appr(new AppearenceColor(Resources.texture.window.color.basic_frame)));
     v_vert_layout->layout_add(v_spectrum, 1);
     v_vert_layout->layout_add(v_alpha, 1);
+
+    v_field->focus();
 
     v_field->set_appearence(appr_field);
     v_spectrum->set_appearence(appr_spectrum);
@@ -59,6 +58,19 @@ alpha_texture(nullptr)
 
     v_spectrum->restrict_to_x();
     v_alpha->restrict_to_x();
+
+    v_transparency->get_body() = v_alpha->get_body();
+    v_transparency->get_body().position += v_vert_layout->get_body().position;
+
+    // scaling squares to fit right in
+
+    auto appr = new AppearenceTexture(Resources.texture.transparency_squares, v_transparency->get_body().size, true);
+    auto _trs_size = Resources.texture.transparency_squares->getSize();
+    Vec2d trs_size = {(double) _trs_size.x, (double) _trs_size.y};
+    double scale_y = trs_size.y() / v_transparency->get_body().size.y();
+    appr->set_transform(appr->transform * scale_y);
+    v_transparency->set_appearence(Resources.add_appr(appr));
+    
 
     //  ======================================================================= Geometry is done
 

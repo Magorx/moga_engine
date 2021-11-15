@@ -90,7 +90,9 @@ struct ResourcesHolder {
         struct {
             res_WindowResources basic;
 
-
+            struct {
+                RColor basic_frame;
+            } color;
         } window;
 
         RTexture *alpha_blue;
