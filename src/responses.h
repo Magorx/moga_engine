@@ -471,7 +471,7 @@ public:
 
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
-        spawn_color_picker_window(engine, {engine->random_screen_pos(), {200, 200}});
+        spawn_color_picker_window(engine, {engine->random_screen_pos(), {220, 200}});
 
         return EventAccResult::none;
     }
