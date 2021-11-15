@@ -1,66 +1,74 @@
 #include "magnetic.h"
 
 
-v_Magnetic::v_Magnetic(const ViewBody &body, const ViewBody &bounds_, double mag_radius, bool to_be_pressed) :
-v_Highlighter(body),
-bounds({bounds_.position, bounds_.size}),
-bounds_offset(bounds_.position - body.position),
+v_Magnetic::v_Magnetic(const ViewBody &bounds_, const ViewBody &body, double mag_radius, bool press_respects_bound, bool to_be_pressed) :
+v_Highlighter(bounds_),
+dot(new v_Highlighter(body)),
 to_be_pressed(to_be_pressed),
 mag_radius(mag_radius)
 {
+    if (press_respects_bound) {
+        e_mouse_press.add(new AVMissPressBlocker(this));
+    }
+
     e_mouse_press.add(acc_press = new AVMagneticPressAcceptor(this));
     e_mouse_move.add(new AVMagneticMoveAcceptor(this));
     e_mouse_release.add(new AVMagneticReleaseAcceptor(this));
+
+    add_subview(dot);
+}
+
+void v_Magnetic::render(Renderer *renderer) {
+    v_Highlighter::render(renderer);
+}
+
+void v_Magnetic::refit() {
+    refit_in_parent();
+    dot->recalculate_fit_body();
+    v_Highlighter::refit();
 }
 
 void v_Magnetic::update_bounds(const ViewBody &bounds_) {
-    bounds = {bounds_offset, bounds_.size};
+    body = {body.position, bounds_.size};
 }
 
 bool v_Magnetic::magnetize_to(const Vec2d &pos, bool to_check_mag_radius) {
-    if (to_check_mag_radius && mag_radius == mag_radius && pos.len() > mag_radius) return false;
-
-    Vec2d shift = pos;
-    Vec2d bound_pos = shift - bounds_offset;
+    if (to_check_mag_radius && mag_radius == mag_radius && (dot->get_body().position - pos).len() > mag_radius) return false;
 
     Vec2d allowed_pos = {
-        fmin(fmax(bound_pos.content[0], bounds.position.content[0]), bounds.position.content[0] + bounds.size.content[0]),
-        fmin(fmax(bound_pos.content[1], bounds.position.content[1]), bounds.position.content[1] + bounds.size.content[1])
+        fmin(fmax(pos[0], 0), body.size[0]),
+        fmin(fmax(pos[1], 0), body.size[1])
     };
 
-    body.position = allowed_pos;
-    bounds_offset = bounds.position - body.position;
+    dot->get_body().position = allowed_pos;
 
-    e_fraction_changed.emit({{bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
-                              bounds.size.y() ? body.position.y() / bounds.size.y() : 0}});
+    e_fraction_changed.emit({{body.size.x() ? dot->get_body().position.x() / body.size.x() : 0,
+                              body.size.y() ? dot->get_body().position.y() / body.size.y() : 0}});
     
     return true;
 }
 
 void v_Magnetic::shift(const Vec2d &shift, bool with_bounds) {
-    body.position   += shift;
+    body.position += shift;
     if (with_bounds) {
-        bounds.position += shift;
+        body.position += shift;
     }
 }
 
 void v_Magnetic::shift_bounds(const Vec2d &shift) {
-    bounds.position += shift;
-    bounds_offset += shift;
+    body.position += shift;
 }
 
 Vec2d v_Magnetic::get_fraction() const { 
-    return {bounds.size.x() ? body.position.x() / bounds.size.x() : 0,
-            bounds.size.y() ? body.position.y() / bounds.size.y() : 0};
+    return {body.size.x() ? dot->get_body().position.x() / body.size.x() : NAN,
+            body.size.y() ? dot->get_body().position.y() / body.size.y() : NAN};
 }
 
 void v_Magnetic::set_fraction(Vec2d fraction) {
     fraction.content[0] = fmin(fmax(fraction.content[0], 0), 1);
     fraction.content[1] = fmin(fmax(fraction.content[1], 0), 1);
 
-    body.position = bounds.position + bounds.size * fraction;
-
-    bounds_offset = bounds.position - body.position;
+    body.position = body.position + body.size * fraction;
 }
 
 

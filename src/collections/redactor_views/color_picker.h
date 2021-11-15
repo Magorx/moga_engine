@@ -21,14 +21,14 @@ class v_ColorPicker : public v_Highlighter {
     v_VerticalLayout *v_vert_layout;
     v_HorizontalLayout *v_horz_layout;
 
-    v_Highlighter *v_field;
-    v_Highlighter *v_spectrum;
-
     AppearenceTexture *appr_field;
     AppearenceTexture *appr_spectrum;
 
-    v_Magnetic *v_dot_field;
-    v_Magnetic *v_dot_spectrum;
+    v_Magnetic *v_field;
+    v_Magnetic *v_spectrum;
+
+    v_Highlighter *v_dot_field;
+    v_Highlighter *v_dot_spectrum;
 
     AppearenceTexture *appr_dot_field;
     AppearenceTexture *appr_dot_spectrum;

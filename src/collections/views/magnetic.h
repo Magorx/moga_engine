@@ -41,8 +41,7 @@ class v_Magnetic : public v_Highlighter {
     friend AVMagneticReleaseAcceptor;
     friend AVMagneticMoveAcceptor;
 
-    ViewBody bounds;
-    Vec2d bounds_offset;
+    v_Highlighter *dot;
 
     bool to_be_pressed;
     double mag_radius;
@@ -50,7 +49,12 @@ class v_Magnetic : public v_Highlighter {
     AVMagneticPressAcceptor *acc_press;
 
 public:
-    v_Magnetic(const ViewBody &body, const ViewBody &bounds, double mag_radius = NAN, bool to_be_pressed = true);
+    v_Magnetic(const ViewBody &bounds, const ViewBody &body = {0, 0}, double mag_radius = NAN, bool press_respects_bound = true, bool to_be_pressed = true);
+
+    virtual void render(Renderer *renderer) override;
+    virtual void refit() override;
+
+    v_Highlighter *get_dot() { return dot; }
 
     bool magnetize_to(const Vec2d &pos, bool to_check_mag_radius = true);
     inline bool magnetize_test(const Vec2d &pos) { return !(mag_radius == mag_radius && (pos - body.position).len_squared() > mag_radius * mag_radius); }

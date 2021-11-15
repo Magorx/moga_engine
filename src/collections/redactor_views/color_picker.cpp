@@ -21,14 +21,14 @@ v_horz_layout(new v_HorizontalLayout(
     PX_UTIL_PADDING)
 ),
 
-v_field(new v_Highlighter({0, 0})),
-v_spectrum(new v_Highlighter({0, 0})),
-
 appr_field(new AppearenceTexture(nullptr)),
 appr_spectrum(new AppearenceTexture(Resources.color.spectrum)),
 
-v_dot_field(new v_Magnetic({0, PX_COLOR_PICKER_CIRCLE_SIZE}, v_field->get_body())),
-v_dot_spectrum(new v_Magnetic({0, PX_COLOR_PICKER_CIRCLE_SIZE}, v_spectrum->get_body())),
+v_field(new v_Magnetic({0, 0}, {0, PX_COLOR_PICKER_CIRCLE_SIZE})),
+v_spectrum(new v_Magnetic({0, 0}, {0, PX_COLOR_PICKER_CIRCLE_SIZE})),
+
+v_dot_field(v_field->get_dot()),
+v_dot_spectrum(v_spectrum->get_dot()),
 
 appr_dot_field(new AppearenceTexture(Resources.texture.dot)),
 appr_dot_spectrum(new AppearenceTexture(Resources.texture.dot)),
@@ -47,25 +47,15 @@ field(nullptr)
 
     v_field->set_appearence(appr_field);
     v_spectrum->set_appearence(appr_spectrum);
+    
     appr_spectrum->set_transform({1, 1});
-    
     appr_spectrum->update_image();
-
-    v_dot_field->set_appearence(appr_dot_field);
-    v_dot_field->update_bounds(v_field->get_body());
     
-    appr_dot_field->set_screen_shift(-PX_COLOR_PICKER_CIRCLE_SIZE / 2);
+    appr_dot_field->set_screen_shift   (-PX_COLOR_PICKER_CIRCLE_SIZE / 2);
     appr_dot_spectrum->set_screen_shift(-PX_COLOR_PICKER_CIRCLE_SIZE / 2);
 
-    v_dot_spectrum->set_appearence(appr_dot_spectrum);
-    v_dot_spectrum->update_bounds({0, {v_spectrum->get_body().size.x(), v_spectrum->get_body().size.y()}});
-    // v_dot_spectrum->shift_with_bounds({0, v_spectrum->get_body().size.y() / 2});
-
-    v_field->e_mouse_press.add(new AVMissPressBlocker(v_field));
-    v_spectrum->e_mouse_press.add(new AVMissPressBlocker(v_spectrum));
-
-    v_field->add_subview(v_dot_field);
-    v_spectrum->add_subview(v_dot_spectrum);
+    v_field->get_dot()->set_appearence(appr_dot_field);
+    v_spectrum->get_dot()->set_appearence(appr_dot_spectrum);
 
     field = new RColor[field_size.x() * field_size.y()];
 
@@ -73,14 +63,14 @@ field(nullptr)
     field_texture->create(field_size.x(), field_size.y());
     appr_field->get_render_mode()->texture = field_texture;
 
-    v_dot_spectrum->e_fraction_changed.add(new ColorPickerSpectrumChangeAcceptor(this));
-    v_dot_field->e_fraction_changed.add(new ColorPickerFieldChangeAcceptor(this));
+    v_spectrum->e_fraction_changed.add(new ColorPickerSpectrumChangeAcceptor(this));
+    v_field->e_fraction_changed.add(new ColorPickerFieldChangeAcceptor(this));
 
     update_field();
 }
 
 void v_ColorPicker::update_field() {
-    Vec2d px_coord = v_dot_spectrum->get_fraction() * v_spectrum->get_body().size;
+    Vec2d px_coord = v_spectrum->get_fraction() * v_spectrum->get_body().size;
     RColor base_color = v_spectrum->get_appearence()->get_px_color(px_coord);
 
     for (double y = 0; y < field_size.y(); y += 1) {
@@ -106,7 +96,7 @@ void v_ColorPicker::update_field() {
 }
 
 void v_ColorPicker::update_tool_manager_color() {
-    Vec2d px_coord = v_dot_field->get_fraction() * v_field->get_body().size;
+    Vec2d px_coord = v_field->get_fraction() * v_field->get_body().size;
     RColor color = v_field->get_appearence()->get_px_color(px_coord);
 
     tool_manager->set_draw_color(color);

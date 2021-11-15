@@ -404,7 +404,7 @@ public:
     {}
 
     EventAccResult operator()(const Event::FractionChanged &event, const EventAccResult*) override {
-        acceptor->set_size(max_rad * event.fraction.x());
+        acceptor->set_size(1 + max_rad * event.fraction.x());
         acceptor->update_active_tool();
 
         return EventAccResult::cont;
