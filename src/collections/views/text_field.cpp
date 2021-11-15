@@ -358,7 +358,6 @@ EventAcceptor(acceptor)
 
 EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
     if (!acceptor->redactable) return EventAccResult::none;
-    printf("press\n");
 
     if (acceptor->is_inside(event.position)) {
         acceptor->select();
@@ -368,7 +367,6 @@ EventAccResult TextFieldMousePressAcceptor::operator()(const Event::MousePress &
         acceptor->pressed = true;
         return EventAccResult::cont;
     } else {
-        printf("miss %p\n", this);
         if (acceptor->is_selected()) {
             acceptor->deselect_text_field();
         }
