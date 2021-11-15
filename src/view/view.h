@@ -190,6 +190,8 @@ protected:
     bool appearenced;
     bool cursor_inside;
 
+    bool to_subrender;
+
     AbstractView *next_by_idx(int idx, int direction);
     AbstractView *get_selectable_blocking_node();
     AbstractView *traverse_for_selectable(int idx, int direction, bool from_parent = false);
@@ -241,6 +243,8 @@ public:
 
     inline void set_view_id(const char *view_id_) { view_id = view_id_; }
     inline const char *get_view_id() { return view_id; }
+
+    inline void set_to_subrender(bool to_subrender_) { to_subrender = to_subrender_; }
 
     inline Appearence *get_appearence() { return appearence; }
 

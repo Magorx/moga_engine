@@ -19,7 +19,8 @@ selected(false),
 to_draw_selected_bounds(true),
 tab_selected(false),
 appearenced(false),
-cursor_inside(false)
+cursor_inside(false),
+to_subrender(true)
 {
     e_render_call.add(new AVRenderCallAcceptor(this));
     
@@ -64,6 +65,8 @@ void AbstractView::render(Renderer *renderer) {
 }
 
 void AbstractView::subrender(Renderer *renderer) {
+    if (!to_subrender) return;
+
     renderer->shift(body.position);
 
     e_render_call.dispatch_to_sub_es({renderer}, true);

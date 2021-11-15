@@ -59,13 +59,16 @@ public:
         layout_refit();
     }
 
-    inline void add_spaceholder(double weight = 1) {
-        if (weight < 0) return;
+    inline AbstractView *add_spaceholder(double weight = 1) {
+        if (weight < 0) return nullptr;
 
-        add_subview(new AbstractView({{0, 0}, {0, 0}}));
+        AbstractView *view = new v_Highlighter({{0, 0}, {0, 0}});
+        add_subview(view);
         sum_weight += weight;
         weights.push_back(weight);
 
         layout_refit();
+
+        return view;
     }
 };
