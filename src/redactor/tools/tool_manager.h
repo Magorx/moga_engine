@@ -22,6 +22,7 @@ public:
 
     void add_tool(Tool *tool);
     void set_active_tool(size_t idx);
+    int get_active_tool_idx();
     void update_active_tool();
 
     void set_active_canvas(Canvas *canvas);

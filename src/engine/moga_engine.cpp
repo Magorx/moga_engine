@@ -204,6 +204,12 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 			Keyboard::key_up(key);
 			main_view->e_key_up.emit({key});
 		}
+		
+		if (event.type == sf::Event::MouseWheelScrolled) {
+			if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+				main_view->e_scroll.emit({{0, event.mouseWheelScroll.delta}});
+			}
+		}
 	}
 }
 

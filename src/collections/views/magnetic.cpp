@@ -90,6 +90,12 @@ void v_Magnetic::set_fraction(Vec2d fraction) {
     emit_frac();
 }
 
+void v_Magnetic::shift_fraction(Vec2d shift) {
+    if (x_shift_banned) shift.content[0] = 0;
+    if (y_shift_banned) shift.content[1] = 0;
+
+    set_fraction(get_fraction() + shift);
+}
 
 AVMagneticPressAcceptor::AVMagneticPressAcceptor(v_Magnetic *magnetic) : EventAcceptor(magnetic) {
     memset(button_mag, 1, sizeof(button_mag));

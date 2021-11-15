@@ -129,6 +129,7 @@ public:
     EventDispatcher<Event::MousePress>      e_mouse_press;
     EventDispatcher<Event::MouseRelease>    e_mouse_release;
     EventDispatcher<Event::MouseMove>       e_mouse_move;
+    EventDispatcher<Event::Scroll>          e_scroll;
     EventDispatcher<Event::MouseDrag>       e_mouse_drag;
     EventDispatcher<Event::Activator>       e_toggle;
     EventDispatcher<Event::ActivityToggle>  e_toggle_activity;
@@ -153,6 +154,7 @@ public:
     e_mouse_press(this, "mouse_press"),
     e_mouse_release(this, "mouse_release"),
     e_mouse_move(this, "mouse_move"),
+    e_scroll(this, "scroll"),
     e_mouse_drag(this, "mouse_drag"),
     e_toggle(this, "toggle"),
     e_toggle_activity(this, "toggle_activity"),
@@ -321,6 +323,11 @@ inline EventDispatcher<Event::TextEnter> &EventSystem::get_dispatcher() {
 template <>
 inline EventDispatcher<Event::TextChanged> &EventSystem::get_dispatcher() {
     return e_text_changed;
+}
+
+template <>
+inline EventDispatcher<Event::Scroll> &EventSystem::get_dispatcher() {
+    return e_scroll;
 }
 
 //=====================================================================================================================

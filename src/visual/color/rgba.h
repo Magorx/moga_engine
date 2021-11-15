@@ -17,6 +17,10 @@ union RGBA {
 	int i;
 	uint32_t ui32;
 
+	inline bool is_transp() {
+		return ui32 == 0;
+	}
+
 	RGBA();
 	RGBA(const int x);
 	RGBA(const unsigned char r_, const unsigned char g_, const unsigned char b_, const unsigned char a_ = 255);

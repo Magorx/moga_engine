@@ -60,6 +60,17 @@ void t_Brush::on_activate() {
     if (draw_layer) draw_layer->get_canvas()->set_draw_mode(Canvas::DrawMode::use_draw_layer);
 }
 
+void t_Brush::on_deactivate() {
+    mouse_down = false;
+
+    if (draw_layer) {
+       if (Canvas *canvas = draw_layer->get_canvas()) {
+           canvas->flush_draw_to_active();
+           canvas->get_draw_layer()->clear();
+       }
+    }
+}
+
 void t_Brush::on_update() {
     if (draw_layer) draw_layer->get_canvas()->set_draw_mode(Canvas::DrawMode::use_draw_layer);
 }

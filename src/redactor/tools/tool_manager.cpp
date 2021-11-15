@@ -54,6 +54,18 @@ void ToolManager::set_active_tool(size_t idx) {
     tool->on_activate();
 }
 
+int ToolManager::get_active_tool_idx() {
+    if (!active_tool) return -1;
+
+    for (size_t i = 0; i < tools.size(); ++i) {
+        if (tools[i] == active_tool) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void ToolManager::set_active_canvas(Canvas *canvas) {
     active_canvas = canvas;
     update_active_tool();

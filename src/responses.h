@@ -394,6 +394,54 @@ public:
 };
 
 
+class ToolManagerHotkeys : public EventAcceptor<ToolManager, Event::KeyDown> {
+    int prev_index = 0;
+
+public:
+    ToolManagerHotkeys(ToolManager *tool_manager) :
+    EventAcceptor(tool_manager)
+    {}
+
+    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult*) override {
+        int cur = acceptor->get_active_tool_idx();
+
+        switch (event.code) {
+            case Keyboard::Key::b:
+                if (cur == TOOL_BRUSH_IDX) break;
+
+                prev_index = cur;
+                acceptor->set_active_tool(TOOL_BRUSH_IDX);
+                break;
+            
+            case Keyboard::Key::e:
+                if (cur == TOOL_ERASER_IDX) {
+                    acceptor->set_draw_color({0, 0, 0, 0});
+                } else {
+                    prev_index = cur;
+                    acceptor->set_active_tool(TOOL_ERASER_IDX);
+                }
+                break;
+            
+            case Keyboard::Key::q:
+                if (cur == TOOL_PIPETTE_IDX) break;
+                prev_index = cur;
+                acceptor->set_active_tool(TOOL_PIPETTE_IDX);
+                break;
+            
+            case Keyboard::Key::x:
+                acceptor->set_active_tool(prev_index);
+                prev_index = cur;
+                break;
+            
+            default:
+                break;
+        }
+
+        return EventAccResult::cont;
+    }
+};
+
+
 class ToolManagerSetToolSize : public EventAcceptor<ToolManager, Event::FractionChanged> {
     double max_rad;
 
@@ -412,6 +460,23 @@ public:
 };
 
 
+class ToolManagerScrollShiftToolSize : public EventAcceptor<v_Magnetic, Event::Scroll> {
+    double granularity;
+
+public:
+    ToolManagerScrollShiftToolSize(v_Magnetic *slider, double granularity = -0.015) :
+    EventAcceptor(slider),
+    granularity(granularity)
+    {}
+
+    EventAccResult operator()(const Event::Scroll &event, const EventAccResult*) override {
+        acceptor->shift_fraction({event.delta.y() * granularity, 0});
+
+        return EventAccResult::done;
+    }
+};
+
+
 v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window = new v_Window("Tools", body);
 
@@ -419,6 +484,8 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95}, 5);
     window->get_content()->add_subview(layout);
+
+    window->e_key_down.add(new ToolManagerHotkeys(engine->get_tool_manager()));
 
     v_Button *b_brush   = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     v_Button *b_eraser  = new v_Button({0, 0}, StdStyle::Button::basic_menu());
@@ -436,15 +503,16 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     slider->set_appearence(Resources.add_appr(new AppearenceColor({180, 160, 190})));
     slider->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
 
-    b_brush->add_label("bruh", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
-    b_eraser->add_label("eraer", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
-    b_pipette->add_label("pipete", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    b_brush->add_label("[b] Bruh", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    b_eraser->add_label("[e] Eraer", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    b_pipette->add_label("[q] Pipete", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     b_brush->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 0));
     b_eraser->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 1));
     b_pipette->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 2));
 
     slider->e_fraction_changed.add(new ToolManagerSetToolSize(engine->get_tool_manager()));
+    slider->e_scroll.add(new ToolManagerScrollShiftToolSize(slider));
 
     return window;
 }

@@ -20,5 +20,5 @@ tool_manager(new ToolManager(visual->get_renderer()))
     tool_manager->add_tool(t_eraser);
     tool_manager->add_tool(t_pipette);
 
-    tool_manager->set_active_tool(2);
+    tool_manager->set_active_tool(TOOL_BRUSH_IDX);
 }

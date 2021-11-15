@@ -131,6 +131,10 @@ struct TextChanged {
     {}
 };
 
+struct Scroll {
+    Vec2d delta;
+};
+
 struct DataPtr {
     void *receiver;
     void *data;
