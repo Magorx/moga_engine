@@ -82,6 +82,7 @@ void ResourcesHolder::init(MogaEngine *engine_) {
 
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
     texture.dot = load_texture(IMG("dot.png"));
+    texture.stick = load_texture(IMG("stick.png"));
 
     texture.transparency_squares = load_texture(IMG("transparency_squares.png"));
 
@@ -202,6 +203,7 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.frame_gray;
 
     delete texture.dot;
+    delete texture.stick;
 
     delete texture.button.basic.idle   ;
     delete texture.button.basic.hovered;

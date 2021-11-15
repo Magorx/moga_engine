@@ -4,6 +4,9 @@
 #include "highlighter.h"
 
 
+extern const double PX_MAG_DOT;
+
+
 class v_Magnetic;
 
 
@@ -48,6 +51,9 @@ class v_Magnetic : public v_Highlighter {
 
     AVMagneticPressAcceptor *acc_press;
 
+    bool x_shift_banned = false;
+    bool y_shift_banned = false;
+
 public:
     v_Magnetic(const ViewBody &bounds, const ViewBody &body = {0, 0}, double mag_radius = NAN, bool press_respects_bound = true, bool to_be_pressed = true);
 
@@ -66,6 +72,14 @@ public:
 
     Vec2d get_fraction() const;
     void set_fraction(Vec2d fraction);
+
+    void restrict_to_x() { y_shift_banned ^= true; }
+    void restrict_to_y() { x_shift_banned ^= true; }
+
+    inline void emit_frac() {
+        e_fraction_changed.emit({{body.size.x() ? dot->get_body().position.x() / body.size.x() : NAN,
+                                  body.size.y() ? dot->get_body().position.y() / body.size.y() : NAN}});
+    }
 
     AVMagneticPressAcceptor *get_acc_press() { return acc_press; }
 };

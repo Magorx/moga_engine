@@ -1,6 +1,9 @@
 #include "magnetic.h"
 
 
+const double PX_MAG_DOT = 10;
+
+
 v_Magnetic::v_Magnetic(const ViewBody &bounds_, const ViewBody &body, double mag_radius, bool press_respects_bound, bool to_be_pressed) :
 v_Highlighter(bounds_),
 dot(new v_Highlighter(body)),
@@ -16,6 +19,9 @@ mag_radius(mag_radius)
     e_mouse_release.add(new AVMagneticReleaseAcceptor(this));
 
     add_subview(dot);
+    auto appr = new AppearenceTexture(Resources.texture.dot);
+    appr->set_screen_shift(-body.size/ 2);
+    dot->set_appearence(Resources.add_appr(appr));
 }
 
 void v_Magnetic::render(Renderer *renderer) {
@@ -32,18 +38,30 @@ void v_Magnetic::update_bounds(const ViewBody &bounds_) {
     body = {body.position, bounds_.size};
 }
 
+double clamp(double val, double l, double r) {
+    return fmin(fmax(val, l), r);
+}
+
 bool v_Magnetic::magnetize_to(const Vec2d &pos, bool to_check_mag_radius) {
     if (to_check_mag_radius && mag_radius == mag_radius && (dot->get_body().position - pos).len() > mag_radius) return false;
 
+    Vec2d prev_pos = dot->get_body().position;
+
     Vec2d allowed_pos = {
-        fmin(fmax(pos[0], 0), body.size[0]),
-        fmin(fmax(pos[1], 0), body.size[1])
+        clamp(pos[0], 0, body.size[0]),
+        clamp(pos[1], 0, body.size[1]),
     };
+
+    if (x_shift_banned) {
+        allowed_pos.content[0] = prev_pos[0];
+    }
+    if (y_shift_banned) {
+        allowed_pos.content[1] = prev_pos[1];
+    }
 
     dot->get_body().position = allowed_pos;
 
-    e_fraction_changed.emit({{body.size.x() ? dot->get_body().position.x() / body.size.x() : 0,
-                              body.size.y() ? dot->get_body().position.y() / body.size.y() : 0}});
+    emit_frac();
     
     return true;
 }
@@ -68,7 +86,8 @@ void v_Magnetic::set_fraction(Vec2d fraction) {
     fraction.content[0] = fmin(fmax(fraction.content[0], 0), 1);
     fraction.content[1] = fmin(fmax(fraction.content[1], 0), 1);
 
-    body.position = body.position + body.size * fraction;
+    dot->get_body().position = body.size * fraction;
+    emit_frac();
 }
 
 

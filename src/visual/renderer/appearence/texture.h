@@ -10,7 +10,11 @@ public:
     Vec2d transform = {1, 1};
     Vec2d screen_shift = {0, 0};
 
-    AppearenceTexture(const RTexture *texture, const Vec2d &transform = {1, 1}) : transform(transform) { rmode.texture = texture; }
+    AppearenceTexture(const RTexture *texture, const Vec2d &transform = {1, 1}, const Vec2d &screen_shift = {0, 0}) : 
+    transform(transform) ,
+    screen_shift(screen_shift)
+    { rmode.texture = texture; }
+    
     AppearenceTexture() {}
 
     virtual RVertex vertex(Vec2d on_screen_position, Vec2d shape_position) const override {

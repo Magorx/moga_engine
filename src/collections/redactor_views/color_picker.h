@@ -27,12 +27,6 @@ class v_ColorPicker : public v_Highlighter {
     v_Magnetic *v_field;
     v_Magnetic *v_spectrum;
 
-    v_Highlighter *v_dot_field;
-    v_Highlighter *v_dot_spectrum;
-
-    AppearenceTexture *appr_dot_field;
-    AppearenceTexture *appr_dot_spectrum;
-
     Vec2d &field_size;
     RColor *field;
 

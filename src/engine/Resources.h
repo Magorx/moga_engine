@@ -97,6 +97,7 @@ struct ResourcesHolder {
         RTexture *frame_gray;
 
         RTexture *dot;
+        RTexture *stick;
 
         RTexture *transparency_squares;
     } texture;

@@ -413,9 +413,7 @@ public:
 
 
 v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body) {
-    auto window_style = StdStyle::Window::basic();
-
-    auto window = new v_Window("Tools", body, window_style);
+    auto window = new v_Window("Tools", body);
 
     engine->add_view(window);
 
@@ -425,36 +423,16 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     v_Button *b_brush  = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     v_Button *b_eraser = new v_Button({0, 0}, StdStyle::Button::basic_menu());
 
-    v_Highlighter *slider_rect = new v_Highlighter({0, 0});
-    slider_rect->e_mouse_press.add(new AVMissPressBlocker(slider_rect));
+    layout->layout_add(b_brush,  3);
+    layout->layout_add(b_eraser, 3);
 
-    auto slider_rect_appr = new AppearenceColor({170, 170, 190});
-    Resources.add_appr(slider_rect_appr);
-    slider_rect->set_appearence(slider_rect_appr);
+    auto slider = new v_Magnetic({0, 0}, {0, PX_MAG_DOT});
+    layout->layout_add(slider);
 
-    layout->layout_add(b_brush, 2);
-    layout->layout_add(b_eraser, 2);
-    layout->layout_add(slider_rect);
-
-    double k = 0.4;
-    slider_rect->get_body().position = {slider_rect->get_body().position.x(),
-                                        slider_rect->get_body().position.y() + slider_rect->get_body().size.y() * (0.7 - k / 2)};
-    slider_rect->get_body().size = {slider_rect->get_body().size.x(), slider_rect->get_body().size.y() * k};
-
-    v_Magnetic *slider = new v_Magnetic(
-        {{0, slider_rect->get_body().size.y() / 2}, PX_SPLINE_DOT}, 
-        {{0, slider_rect->get_body().size.y() / 2}, {body.size.x() * 0.9, 0}}
-    );
-    slider_rect->add_subview(slider);
-
-    // slider->shift_bounds(slider->get_body().position + Vec2d{0, slider->get_body().size.y()});
-    // slider->get_body().position += Vec2d{0, slider->get_body().size.y()};
-
-    // slider->get_body().size = PX_SPLINE_DOT;
-    auto dot_appr = new AppearenceTexture(Resources.texture.dot);
-    slider->set_appearence(dot_appr);
-
-    dot_appr->set_screen_shift(-PX_SPLINE_DOT / 2);
+    slider->set_fraction({0, 0.50});
+    slider->restrict_to_x();
+    slider->set_appearence(Resources.add_appr(new AppearenceColor({180, 160, 190})));
+    slider->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
 
     b_brush->add_label("bruh", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
     b_eraser->add_label("eraer", Resources.font.size.basic_menu, Resources.font.color.basic_menu);

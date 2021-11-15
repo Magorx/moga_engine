@@ -27,12 +27,6 @@ appr_spectrum(new AppearenceTexture(Resources.color.spectrum)),
 v_field(new v_Magnetic({0, 0}, {0, PX_COLOR_PICKER_CIRCLE_SIZE})),
 v_spectrum(new v_Magnetic({0, 0}, {0, PX_COLOR_PICKER_CIRCLE_SIZE})),
 
-v_dot_field(v_field->get_dot()),
-v_dot_spectrum(v_spectrum->get_dot()),
-
-appr_dot_field(new AppearenceTexture(Resources.texture.dot)),
-appr_dot_spectrum(new AppearenceTexture(Resources.texture.dot)),
-
 field_size(v_field->get_body().size),
 field(nullptr)
 
@@ -41,7 +35,6 @@ field(nullptr)
 
     v_vert_layout->layout_add(v_field, 5);
     v_vert_layout->layout_add(v_horz_layout, 5);
-    // v_horz_layout->set_appearence(new AppearenceTexture(Resources.create_color({20, 20, 20})));
     
     v_horz_layout->layout_add(v_spectrum, 1);
 
@@ -50,12 +43,6 @@ field(nullptr)
     
     appr_spectrum->set_transform({1, 1});
     appr_spectrum->update_image();
-    
-    appr_dot_field->set_screen_shift   (-PX_COLOR_PICKER_CIRCLE_SIZE / 2);
-    appr_dot_spectrum->set_screen_shift(-PX_COLOR_PICKER_CIRCLE_SIZE / 2);
-
-    v_field->get_dot()->set_appearence(appr_dot_field);
-    v_spectrum->get_dot()->set_appearence(appr_dot_spectrum);
 
     field = new RColor[field_size.x() * field_size.y()];
 
