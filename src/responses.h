@@ -284,6 +284,9 @@ v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
     f_height->e_text_changed.add(new TextFieldChangeValueSynchronizer(reaction->get_height_ptr()));
     f_name->e_text_changed.add(new TextFieldChangeStringSynchronizer(reaction->get_name_ptr()));
 
+    dw->make_closing_field(f_width,  b_create);
+    dw->make_closing_field(f_height, b_create);
+    dw->make_closing_field(f_name,   b_create);
     dw->make_closing_button(b_create);
 
     f_width->set_string("800");
@@ -365,7 +368,7 @@ v_Window *spawn_open_image_dialog(RedactorEngine *engine) {
 
     path->e_text_changed.add(new TextFieldChangeStringSynchronizer(open_reaction->get_path_ptr()));
 
-    dw->make_input_done_closing_field(path, open_button);
+    dw->make_closing_field(path, open_button);
 
     dw->select_first_field();
 

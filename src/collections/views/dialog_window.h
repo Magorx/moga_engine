@@ -43,7 +43,7 @@ public:
     v_Button *add_decline_button(const char *button_name, bool to_centrize = false, TextStyle *style = Resources.add_style(StdStyle::Text::basic()->negative()));
 
     void make_closing_button(v_Button *closer);
-    void make_input_done_closing_field(v_TextField *field, v_Button *acception_button = nullptr);
+    void make_closing_field(v_TextField *field, v_Button *acception_button = nullptr);
 
     void select_first_field();
 

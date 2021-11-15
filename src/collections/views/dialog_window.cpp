@@ -109,7 +109,7 @@ v_Button *v_DialogWindow::add_decline_button(const char *button_name, bool to_ce
                            text_style);
 }
 
-void v_DialogWindow::make_input_done_closing_field(v_TextField *field, v_Button *acception_button) {
+void v_DialogWindow::make_closing_field(v_TextField *field, v_Button *acception_button) {
     field->e_text_changed.add(new DialogWindowCloseByInputDoneReaction(this, acception_button));
 }
 
