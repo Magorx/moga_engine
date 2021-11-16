@@ -12,12 +12,12 @@ active_tool(nullptr)
     
 }
 
-void ToolManager::add_tool(Tool *tool, Keyboard::Key hotkey) {
+void ToolManager::add_tool(Tool *tool, Hotkey hotkey) {
     if (!tool) {
         return;
     }
 
-    if (hotkey != Keyboard::Key::none) tool->set_hotkey(hotkey);
+    if (hotkey != Hotkey::none) tool->set_hotkey(hotkey);
     tools.push_back(tool);
 }
 
@@ -55,7 +55,7 @@ void ToolManager::set_active_tool(size_t idx) {
     tool->on_activate();
 }
 
-void ToolManager::set_active_tool(Keyboard::Key key) {
+void ToolManager::set_active_tool(Hotkey key) {
     if (!active_tool) {
         for (size_t i = 0; i < tools.size(); ++i) {
             Tool *tool = tools[i];

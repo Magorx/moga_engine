@@ -5,7 +5,7 @@
 
 #include "visual/renderer/renderer.h"
 
-#include "redactor/hotkeys.h"
+#include "engine/device/keyboard.h"
 
 class Canvas;
 
@@ -22,11 +22,12 @@ public:
 
     ToolManager(Renderer *renderer);
 
-    void add_tool(Tool *tool, Keyboard::Key hotkey = Keyboard::Key::none);
+    void add_tool(Tool *tool, Hotkey hotkey = Hotkey::none);
     void set_active_tool(size_t idx);
-    void set_active_tool(Keyboard::Key key);
+    void set_active_tool(Hotkey key);
     int get_active_tool_idx();
     void update_active_tool();
+    inline Tool *get_active_tool() { return active_tool; }
 
     void set_active_canvas(Canvas *canvas);
 

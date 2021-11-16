@@ -22,7 +22,7 @@ protected:
 
     double size = 1;
 
-    Keyboard::Key hotkey = Keyboard::Key::none;
+    Hotkey hotkey = Hotkey::none;
 
 public:
     Tool(Tool *manager) :
@@ -39,8 +39,8 @@ public:
     draw_color(0, 0, 0, 255)
     {}
 
-    inline void set_hotkey(Keyboard::Key key) { hotkey = key; }
-    inline Keyboard::Key get_hotkey() { return hotkey; }
+    inline void set_hotkey(Hotkey key) { hotkey = key; }
+    inline Hotkey get_hotkey() { return hotkey; }
 
     virtual void set_draw_layer(Layer* layer) { draw_layer = layer; }
     virtual void set_draw_color(RColor color) { draw_color = color; }
@@ -66,6 +66,11 @@ public:
 
     virtual void set_size(double size_) {
         size = size_;
+        size = size < 0 ? 0 : size;
+    }
+
+    virtual void shift_size(double delta) {
+        set_size(size + delta);
     }
 
     inline Renderer *get_renderer() { return renderer; }

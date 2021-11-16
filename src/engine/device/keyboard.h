@@ -51,14 +51,14 @@ enum class Key {
     num8         = sf::Keyboard::Num8,
     num9         = sf::Keyboard::Num9,
     escape       = sf::Keyboard::Escape,
-    lcontrol     = sf::Keyboard::LControl,
+    lctrl     = sf::Keyboard::LControl,
     lshift       = sf::Keyboard::LShift,
     lalt         = sf::Keyboard::LAlt,
-    lsystem      = sf::Keyboard::LSystem,
-    rcontrol     = sf::Keyboard::RControl,
+    lsuper      = sf::Keyboard::LSystem,
+    rctrl     = sf::Keyboard::RControl,
     rshift       = sf::Keyboard::RShift,
     ralt         = sf::Keyboard::RAlt,
-    rsystem      = sf::Keyboard::RSystem,
+    rsuper      = sf::Keyboard::RSystem,
     menu         = sf::Keyboard::Menu,
     lbracket     = sf::Keyboard::LBracket,
     rbracket     = sf::Keyboard::RBracket,
@@ -117,6 +117,119 @@ enum class Key {
     pause        = sf::Keyboard::Pause,
 };
 
+}
+
+struct SpecKey {
+    enum KeyIndex {
+        lctrl,
+        rctrl,
+        lshift,
+        rshift,
+        lalt,
+        ralt,
+        lsuper,
+        rsuper
+    };
+
+    char content = 0;
+
+    SpecKey(char content) : content(content) {}
+
+    SpecKey(Keyboard::Key key_1 = Keyboard::Key::none, 
+            Keyboard::Key key_2 = Keyboard::Key::none, 
+            Keyboard::Key key_3 = Keyboard::Key::none, 
+            Keyboard::Key key_4 = Keyboard::Key::none,
+            Keyboard::Key key_5 = Keyboard::Key::none, 
+            Keyboard::Key key_6 = Keyboard::Key::none, 
+            Keyboard::Key key_7 = Keyboard::Key::none, 
+            Keyboard::Key key_8 = Keyboard::Key::none)
+    {
+        add(key_1);
+        add(key_2);
+        add(key_3);
+        add(key_4);
+        add(key_5);
+        add(key_6);
+        add(key_7);
+        add(key_8);   
+    }
+
+    void add(Keyboard::Key key) {
+        switch (key) {
+            case Keyboard::Key::lctrl:
+                content |= 1 << KeyIndex::lctrl;
+                break;
+            
+            case Keyboard::Key::rctrl:
+                content |= 1 << KeyIndex::rctrl;
+                break;
+            
+            case Keyboard::Key::lshift:
+                content |= 1 << KeyIndex::lshift;
+                break;
+
+            case Keyboard::Key::rshift:
+                content |= 1 << KeyIndex::rshift;
+                break;
+            
+            case Keyboard::Key::lalt:
+                content |= 1 << KeyIndex::lalt;
+                break;
+            
+            case Keyboard::Key::ralt:
+                content |= 1 << KeyIndex::ralt;
+                break;
+
+            case Keyboard::Key::lsuper:
+                content |= 1 << KeyIndex::lsuper;
+                break;
+            
+            case Keyboard::Key::rsuper:
+                content |= 1 << KeyIndex::rsuper;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    bool operator==(const SpecKey &other) const {
+        return content == other.content;
+    }
+
+    bool operator!=(const SpecKey &other) const {
+        return content != other.content;
+    }
+};
+
+
+struct Hotkey {
+    Keyboard::Key key;
+    SpecKey spec_key;
+
+    Hotkey(Keyboard::Key key) :
+    key(key),
+    spec_key(0)
+    {}
+
+    Hotkey(Keyboard::Key key, SpecKey spec_key) :
+    key(key),
+    spec_key(spec_key)
+    {}
+
+    static const Hotkey none;
+
+    bool operator==(const Hotkey &other) const {
+        return key == other.key && spec_key == other.spec_key;
+    }
+
+    bool operator!=(const Hotkey &other) const {
+        return key != other.key || spec_key != other.spec_key;
+    }
+};
+
+namespace Keyboard {
+
     extern bool keymap_pressed[];
 
     inline void init() {
@@ -140,11 +253,30 @@ enum class Key {
     }
 
     inline bool is_pressed_ctrl() {
-        return is_pressed(Key::lcontrol) || is_pressed(Key::rcontrol);
+        return is_pressed(Key::lctrl) || is_pressed(Key::rctrl);
     }
 
     inline bool is_pressed_system() {
-        return is_pressed(Key::lsystem) || is_pressed(Key::rsystem);
+        return is_pressed(Key::lsuper) || is_pressed(Key::rsuper);
+    }
+
+    inline Hotkey make_hotkey(Key key) {
+        return {
+            key,
+            SpecKey {
+                (char) (
+                    0
+                    | keymap_pressed[(int) Key::lctrl]  << SpecKey::KeyIndex::lctrl 
+                    | keymap_pressed[(int) Key::rctrl]  << SpecKey::KeyIndex::rctrl 
+                    | keymap_pressed[(int) Key::lshift] << SpecKey::KeyIndex::lshift 
+                    | keymap_pressed[(int) Key::rshift] << SpecKey::KeyIndex::rshift
+                    | keymap_pressed[(int) Key::lalt]   << SpecKey::KeyIndex::lalt 
+                    | keymap_pressed[(int) Key::ralt]   << SpecKey::KeyIndex::ralt
+                    | keymap_pressed[(int) Key::lsuper] << SpecKey::KeyIndex::lsuper
+                    | keymap_pressed[(int) Key::rsuper] << SpecKey::KeyIndex::rsuper
+                ) 
+            }
+        };
     }
 
 }

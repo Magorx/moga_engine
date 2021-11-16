@@ -5,3 +5,5 @@ namespace Keyboard {
 
     bool keymap_pressed[KEYMAP_SIZE];
 }
+
+const Hotkey Hotkey::none = {Keyboard::Key::none, 0};

@@ -412,23 +412,6 @@ public:
 };
 
 
-class ToolManagerScrollShiftToolSize : public EventAcceptor<v_Magnetic, Event::Scroll> {
-    double granularity;
-
-public:
-    ToolManagerScrollShiftToolSize(v_Magnetic *slider, double granularity = -0.015) :
-    EventAcceptor(slider),
-    granularity(granularity)
-    {}
-
-    EventAccResult operator()(const Event::Scroll &event, const EventAccResult*) override {
-        acceptor->shift_fraction({event.delta.y() * granularity, 0});
-
-        return EventAccResult::done;
-    }
-};
-
-
 v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window = new v_Window("Tools", body);
 
@@ -462,7 +445,6 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     b_pipette->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 2));
 
     slider->e_fraction_changed.add(new ToolManagerSetToolSize(engine->get_tool_manager()));
-    slider->e_scroll.add(new ToolManagerScrollShiftToolSize(slider));
 
     return window;
 }
