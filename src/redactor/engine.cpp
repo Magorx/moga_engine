@@ -1,5 +1,7 @@
 #include "engine.h"
+#include "hotkeys.h"
 
+#include "overall_redactor_reactions.h"
 
 RedactorEngine::RedactorEngine(const char  *window_name,
                                const size_t screen_width,
@@ -16,9 +18,11 @@ tool_manager(new ToolManager(visual->get_renderer()))
 
     t_ColorPipett *t_pipette = new t_ColorPipett(tool_manager);
 
-    tool_manager->add_tool(t_brush);
-    tool_manager->add_tool(t_eraser);
-    tool_manager->add_tool(t_pipette);
+    tool_manager->add_tool(t_brush, Hotkey::brush);
+    tool_manager->add_tool(t_eraser, Hotkey::eraser);
+    tool_manager->add_tool(t_pipette, Hotkey::pipette);
 
-    tool_manager->set_active_tool(TOOL_BRUSH_IDX);
+    tool_manager->set_active_tool(Hotkey::brush);
+
+    main_view->e_key_down.add(new ToolManagerHotkeys(tool_manager));
 }

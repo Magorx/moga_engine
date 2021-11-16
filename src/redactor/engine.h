@@ -7,11 +7,6 @@
 #include "tools/tools.h"
 
 
-const int TOOL_BRUSH_IDX = 0;
-const int TOOL_ERASER_IDX = 1;
-const int TOOL_PIPETTE_IDX = 2;
-
-
 class RedactorEngine : public MogaEngine {
     ToolManager *tool_manager;
 

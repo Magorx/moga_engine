@@ -394,54 +394,6 @@ public:
 };
 
 
-class ToolManagerHotkeys : public EventAcceptor<ToolManager, Event::KeyDown> {
-    int prev_index = 0;
-
-public:
-    ToolManagerHotkeys(ToolManager *tool_manager) :
-    EventAcceptor(tool_manager)
-    {}
-
-    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult*) override {
-        int cur = acceptor->get_active_tool_idx();
-
-        switch (event.code) {
-            case Keyboard::Key::b:
-                if (cur == TOOL_BRUSH_IDX) break;
-
-                prev_index = cur;
-                acceptor->set_active_tool(TOOL_BRUSH_IDX);
-                break;
-            
-            case Keyboard::Key::e:
-                if (cur == TOOL_ERASER_IDX) {
-                    acceptor->set_draw_color({0, 0, 0, 0});
-                } else {
-                    prev_index = cur;
-                    acceptor->set_active_tool(TOOL_ERASER_IDX);
-                }
-                break;
-            
-            case Keyboard::Key::q:
-                if (cur == TOOL_PIPETTE_IDX) break;
-                prev_index = cur;
-                acceptor->set_active_tool(TOOL_PIPETTE_IDX);
-                break;
-            
-            case Keyboard::Key::x:
-                acceptor->set_active_tool(prev_index);
-                prev_index = cur;
-                break;
-            
-            default:
-                break;
-        }
-
-        return EventAccResult::cont;
-    }
-};
-
-
 class ToolManagerSetToolSize : public EventAcceptor<ToolManager, Event::FractionChanged> {
     double max_rad;
 
@@ -484,8 +436,6 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95}, 5);
     window->get_content()->add_subview(layout);
-
-    window->e_key_down.add(new ToolManagerHotkeys(engine->get_tool_manager()));
 
     v_Button *b_brush   = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     v_Button *b_eraser  = new v_Button({0, 0}, StdStyle::Button::basic_menu());

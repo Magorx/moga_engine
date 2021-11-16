@@ -73,6 +73,7 @@ public:
     Vec2d get_fraction() const;
     void set_fraction(Vec2d fraction);
     void shift_fraction(Vec2d shift);
+    void shift_fraction(double shift);
 
     void toggle_x_restriction() { y_shift_banned ^= true; }
     void toggle_y_restriction() { x_shift_banned ^= true; }

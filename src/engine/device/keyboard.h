@@ -12,6 +12,8 @@ namespace Keyboard {
     extern const int KEYMAP_SIZE;
 
 enum class Key {
+    none = -1,
+
     a            = sf::Keyboard::A,
     b            = sf::Keyboard::B,
     c            = sf::Keyboard::C,

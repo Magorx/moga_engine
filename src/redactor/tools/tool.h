@@ -6,6 +6,8 @@
 
 #include "visual/renderer/renderer.h"
 
+#include "engine/device/keyboard.h"
+
 
 class Tool {
 protected:
@@ -19,6 +21,8 @@ protected:
     Vec2d cur_pos = {0, 0};
 
     double size = 1;
+
+    Keyboard::Key hotkey = Keyboard::Key::none;
 
 public:
     Tool(Tool *manager) :
@@ -34,6 +38,9 @@ public:
     draw_layer(nullptr),
     draw_color(0, 0, 0, 255)
     {}
+
+    inline void set_hotkey(Keyboard::Key key) { hotkey = key; }
+    inline Keyboard::Key get_hotkey() { return hotkey; }
 
     virtual void set_draw_layer(Layer* layer) { draw_layer = layer; }
     virtual void set_draw_color(RColor color) { draw_color = color; }
