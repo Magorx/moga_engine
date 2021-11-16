@@ -35,7 +35,14 @@ redactable(redactable)
 
     display();
 
-    v_cursor->set_appearence(Resources.add_appr(new AppearenceColor(Resources.color.text_field.basic.cursor)));
+    v_cursor->set_appearence(
+        Resources.create_animation(
+            {Resources.create_color(Resources.color.text_field.basic.cursor), 
+             Resources.create_color({0, 0, 0, 0})},
+             SC_TF_BLINK, true
+        )
+    );
+
     v_selection->set_appearence(Resources.add_appr(new AppearenceColor(Resources.color.text_field.basic.selection)));
 
     add_subview(v_content);
@@ -117,6 +124,8 @@ void v_TextField::display() {
     v_selection->get_body().position = pos_cursor;
     v_selection->get_body().size = pos_anchor - pos_cursor;
     v_selection->get_body().size.content[1] = style->size;
+
+    if (v_cursor->get_appearence()) v_cursor->get_appearence()->activate();
 }
 
 void v_TextField::put_cursor_under_mouse(const Vec2d &mouse_pos) {

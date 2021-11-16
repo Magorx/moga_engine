@@ -7,6 +7,7 @@
 
 
 const double PX_TF_PADDING = 3;
+const double SC_TF_BLINK = 0.5;
 
 
 class TextEnterAcceptor;

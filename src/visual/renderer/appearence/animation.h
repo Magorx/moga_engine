@@ -13,6 +13,7 @@ class AppearenceAnimation : public AbstractAnimation, public AppearenceTexture {
 
 public:
     AppearenceAnimation(const std::vector<RTexture*> *frames, double frame_duration, bool looped = true, double time_coef = 1);
+    AppearenceAnimation(const std::vector<RTexture*> &frames, double frame_duration, bool looped = true, double time_coef = 1);
 
     virtual void tick(const double dt = 0, const double absolute_time = 0) override;
 

@@ -20,6 +20,10 @@ frame_duration(frame_duration)
     }
 }
 
+AppearenceAnimation::AppearenceAnimation(const std::vector<RTexture*> &frames, double frame_duration, bool looped, double time_coef) :
+AppearenceAnimation(&frames, frame_duration, looped, time_coef)
+{}
+
 void AppearenceAnimation::tick(const double dt, const double absolute_time) { 
     AbstractAnimation::tick(dt, absolute_time);
 

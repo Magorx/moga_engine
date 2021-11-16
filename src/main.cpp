@@ -3,12 +3,14 @@
 #include "app_initialization.h"
 
 
-int main() {
+int main(int argc, char*[]) {
     srand(time(nullptr));
     logger.set_verb_level(Logger::Level::warning);
 
-    // auto window = MogaEngine::create_window("MOGADACTOR", true);
-    auto window = MogaEngine::create_window("MOGADACTOR", {1200, 800});
+    RWindow *window = nullptr;
+    
+    if (argc > 1) window = MogaEngine::create_window("MOGADACTOR", true);
+    else          window = MogaEngine::create_window("MOGADACTOR", {1200, 800});
 
     RedactorEngine moga(window, "MOGADACTOR");
     Resources.init(&moga);
