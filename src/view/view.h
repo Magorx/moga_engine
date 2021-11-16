@@ -41,6 +41,13 @@ public:
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
 };
 
+class AVMissScrollBlocker : public EventAcceptor<AbstractView, Event::Scroll> {
+public:
+    AVMissScrollBlocker(AbstractView *button);
+
+    EventAccResult operator()(const Event::Scroll &event, const EventAccResult *cur_res = nullptr) override;
+};
+
 
 class AVRenderCallAcceptor : public EventAcceptor<AbstractView, Event::RenderCall> {
 public:
@@ -90,6 +97,13 @@ public:
     AVCoveredReleaseBlocker(AbstractView *view);
 
     EventAccResult operator()(const Event::MouseRelease &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class AVCoveredScrollBlocker : public EventAcceptor<AbstractView, Event::Scroll> {
+public:
+    AVCoveredScrollBlocker(AbstractView *view);
+
+    EventAccResult operator()(const Event::Scroll &event, const EventAccResult *cur_res = nullptr) override;
 };
 
 class AVCloseAcceptor : public EventAcceptor<AbstractView, Event::Close> {
@@ -174,6 +188,7 @@ protected:
     friend AVCoveredPressBlocker;
     friend AVCoveredMoveBlocker;
     friend AVCoveredReleaseBlocker;
+    friend AVCoveredScrollBlocker;
     friend AVDragAcceptor;
     friend AVDragEmitter;
     friend AVSelectableFocuser;
@@ -189,6 +204,7 @@ protected:
     
     bool appearenced;
     bool cursor_inside;
+    bool covering_block;
 
     bool to_subrender;
 

@@ -27,6 +27,7 @@ text_color(RColor{255, 255, 255})
     
     set_focuseable(true);
     selectable_blocking_node = true;
+    covering_block = true;
     e_key_down.add(new AVSelectableFocuser(this), false);
 
     auto content_appr = new AppearenceColor({230, 230, 230, 255});

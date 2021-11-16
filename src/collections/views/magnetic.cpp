@@ -17,6 +17,7 @@ mag_radius(mag_radius)
     e_mouse_press.add(acc_press = new AVMagneticPressAcceptor(this));
     e_mouse_move.add(new AVMagneticMoveAcceptor(this));
     e_mouse_release.add(new AVMagneticReleaseAcceptor(this));
+    e_scroll.add(new AVMagneticScrollAcceptor(this));
 
     add_subview(dot);
     auto appr = new AppearenceTexture(Resources.texture.dot);
@@ -144,4 +145,26 @@ EventAccResult AVMagneticMoveAcceptor::operator()(const Event::MouseMove &event,
     }
 
     return EventAccResult::cont;
+}
+
+AVMagneticScrollAcceptor::AVMagneticScrollAcceptor(v_Magnetic *magnetic, double granularity, bool to_consider_restriciton) :
+EventAcceptor(magnetic),
+granularity(granularity),
+to_consider_restriciton(to_consider_restriciton)
+{}
+
+EventAccResult AVMagneticScrollAcceptor::operator()(const Event::Scroll &event, const EventAccResult *) {
+    if (!acceptor->is_inside(event.position)) return EventAccResult::none;
+
+    Vec2d delta = event.delta;
+    if (to_consider_restriciton && acceptor->x_shift_banned && fabs(delta.x()) > fabs(delta.y())) {
+        delta.content[1] = delta.content[0];
+    }
+    if (to_consider_restriciton && acceptor->y_shift_banned && fabs(delta.y()) > fabs(delta.x())) {
+        delta.content[0] = delta.content[1];
+    }
+
+    acceptor->shift_fraction(delta * granularity);
+
+    return EventAccResult::done;
 }

@@ -248,12 +248,16 @@ namespace Keyboard {
         return keymap_pressed[(int) key];
     }
 
+    inline bool is_pressed_ctrl() {
+        return is_pressed(Key::lctrl) || is_pressed(Key::rctrl);
+    }
+
     inline bool is_pressed_shift() {
         return is_pressed(Key::lshift) || is_pressed(Key::rshift);
     }
 
-    inline bool is_pressed_ctrl() {
-        return is_pressed(Key::lctrl) || is_pressed(Key::rctrl);
+    inline bool is_pressed_alt() {
+        return is_pressed(Key::lalt) || is_pressed(Key::ralt);
     }
 
     inline bool is_pressed_system() {

@@ -39,10 +39,21 @@ public:
 };
 
 
+class AVMagneticScrollAcceptor : public EventAcceptor<v_Magnetic, Event::Scroll> {
+    double granularity;
+    bool to_consider_restriciton;
+public:
+    AVMagneticScrollAcceptor(v_Magnetic *magnetic, double granularity = 0.01, bool to_consider_restriciton = true);
+
+    EventAccResult operator()(const Event::Scroll &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+
 class v_Magnetic : public v_Highlighter {
     friend AVMagneticPressAcceptor;
     friend AVMagneticReleaseAcceptor;
     friend AVMagneticMoveAcceptor;
+    friend AVMagneticScrollAcceptor;
 
     v_Highlighter *dot;
 

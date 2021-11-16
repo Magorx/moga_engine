@@ -206,8 +206,14 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 		}
 		
 		if (event.type == sf::Event::MouseWheelScrolled) {
+			double factor = Keyboard::is_pressed_alt()   ? 3 : 1;
+			Vec2d delta   = Keyboard::is_pressed_ctrl() ? Vec2d{-event.mouseWheelScroll.delta, 0} : Vec2d{0, -event.mouseWheelScroll.delta};
+			delta *= factor;
+
 			if (event.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
-				main_view->e_scroll.emit({{0, event.mouseWheelScroll.delta}});
+				main_view->e_scroll.emit({delta, mouse_pos});
+			} else {
+				main_view->e_scroll.emit({Vec2d{delta.y(), delta.x()}, mouse_pos});
 			}
 		}
 	}

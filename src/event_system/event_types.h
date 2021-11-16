@@ -133,6 +133,7 @@ struct TextChanged {
 
 struct Scroll {
     Vec2d delta;
+    Vec2d position;
 };
 
 struct DataPtr {

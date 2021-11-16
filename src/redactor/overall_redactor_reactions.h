@@ -37,7 +37,7 @@ class ToolManagerScrollShiftToolSize : public EventAcceptor<ToolManager, Event::
     double granularity;
 
 public:
-    ToolManagerScrollShiftToolSize(ToolManager *slider, double granularity = -0.5) :
+    ToolManagerScrollShiftToolSize(ToolManager *slider, double granularity = 0.5) :
     EventAcceptor(slider),
     granularity(granularity)
     {}
