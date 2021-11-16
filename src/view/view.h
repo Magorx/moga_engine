@@ -10,7 +10,7 @@
 
 #include "lambda.h"
 
-#include "event_system/view_es.h"
+#include "event_system/event_system.h"
 
 #include "visual/style/mouse_reaction_style.h"
 
@@ -156,7 +156,7 @@ struct ViewBody {
 };
 
 
-class AbstractView : public RenderableObject, public ViewEventSystem {
+class AbstractView : public RenderableObject, public EventSystem {
 protected:
     const char *view_id;
 
