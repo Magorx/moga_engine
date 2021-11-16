@@ -37,6 +37,8 @@ CanvasPressAcceptor::CanvasPressAcceptor(v_Canvas *canvas) : EventAcceptor(canva
 CanvasPressAcceptor::~CanvasPressAcceptor() {}
 
 EventAccResult CanvasPressAcceptor::operator()(const Event::MousePress &event, const EventAccResult *) {
+    acceptor->pressed = true;
+
     acceptor->canvas->grab_tool_manager_activity();
 
     acceptor->canvas->on_mouse_down(event.position);
@@ -50,6 +52,8 @@ CanvasReleaseAcceptor::CanvasReleaseAcceptor(v_Canvas *canvas) : EventAcceptor(c
 CanvasReleaseAcceptor::~CanvasReleaseAcceptor() {}
 
 EventAccResult CanvasReleaseAcceptor::operator()(const Event::MouseRelease &event, const EventAccResult *) {
+    acceptor->pressed = false;
+
     acceptor->canvas->on_mouse_up(event.position);
 
     acceptor->canvas->flush_to_final();
@@ -62,6 +66,8 @@ CanvasMoveAcceptor::~CanvasMoveAcceptor() {}
 
 EventAccResult CanvasMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (!acceptor->is_pressed()) return EventAccResult::none;
+
+    printf("move reg %p\n", this);
 
     acceptor->canvas->on_mouse_move(event.from, event.to);
 

@@ -32,6 +32,7 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
     }
 
     if (!saved_image_done && saved_image_needed) {
+        // printf("hey\n");
         saved_image_done = true;
 
         Layer inter(renderer, nullptr, size);
