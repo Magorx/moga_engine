@@ -74,8 +74,8 @@ public:
     void set_fraction(Vec2d fraction);
     void shift_fraction(Vec2d shift);
 
-    void restrict_to_x() { y_shift_banned ^= true; }
-    void restrict_to_y() { x_shift_banned ^= true; }
+    void toggle_x_restriction() { y_shift_banned ^= true; }
+    void toggle_y_restriction() { x_shift_banned ^= true; }
 
     inline void emit_frac() {
         e_fraction_changed.emit({{body.size.x() ? dot->get_body().position.x() / body.size.x() : NAN,

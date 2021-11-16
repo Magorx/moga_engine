@@ -56,8 +56,8 @@ alpha_texture(nullptr)
     v_spectrum->set_appearence(appr_spectrum);
     v_alpha->set_appearence(appr_alpha);
 
-    v_spectrum->restrict_to_x();
-    v_alpha->restrict_to_x();
+    v_spectrum->toggle_x_restriction();
+    v_alpha->toggle_x_restriction();
 
     v_transparency->get_body() = v_alpha->get_body();
     v_transparency->get_body().position += v_vert_layout->get_body().position;

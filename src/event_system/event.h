@@ -9,14 +9,11 @@
 #include "event_reaction.h"
 
 
-class EventSystem;
-
-
 #include <cstring>
 
-template <typename EVENT_T>
+template <typename ES_T, typename EVENT_T>
 class EventDispatcher {
-    EventSystem *es;
+    ES_T *es;
     const char  *id;
 
     typedef std::function<EVENT_T(const EVENT_T &)> EventAffector;
@@ -28,7 +25,7 @@ class EventDispatcher {
 
 public:
 
-    EventDispatcher(EventSystem *es, const char *id = "noname_event") : es(es), id(id), event_affector(nullptr) {
+    EventDispatcher(ES_T *es, const char *id = "noname_event") : es(es), id(id), event_affector(nullptr) {
         assert(es && "can't create an EventDispatcher without parental EventSystem");
     }
 
@@ -118,59 +115,24 @@ public:
 
 //=====================================================================================================================
 
+template <typename SUCC_T>
+class AbstractEventSystem {
+protected:
+    SUCC_T *es_parent;
 
-class EventSystem {
-    EventSystem *es_parent;
+    std::vector<SUCC_T*> sub_es;
 
-    std::vector<EventSystem*> sub_es;
 public:
     int index_in_parent;
     bool to_delete;
-    EventDispatcher<Event::MousePress>      e_mouse_press;
-    EventDispatcher<Event::MouseRelease>    e_mouse_release;
-    EventDispatcher<Event::MouseMove>       e_mouse_move;
-    EventDispatcher<Event::Scroll>          e_scroll;
-    EventDispatcher<Event::MouseDrag>       e_mouse_drag;
-    EventDispatcher<Event::Activator>       e_toggle;
-    EventDispatcher<Event::ActivityToggle>  e_toggle_activity;
-    EventDispatcher<Event::RenderCall>      e_render_call;
-    EventDispatcher<Event::Close>           e_close;
-    EventDispatcher<Event::Clicked>         e_clicked;
-    EventDispatcher<Event::FractionChanged> e_fraction_changed;
-    EventDispatcher<Event::VectorFractionChanged> e_vec_fraction_changed;
 
-    EventDispatcher<Event::KeyDown>   e_key_down;
-    EventDispatcher<Event::KeyUp>     e_key_up;
-    EventDispatcher<Event::TextEnter> e_text_enter;
-
-    EventDispatcher<Event::TextChanged> e_text_changed;
-
-    EventDispatcher<Event::DataPtr> e_data_ptr;
-
-    EventSystem() :
+    AbstractEventSystem() :
     es_parent(nullptr),
     index_in_parent(0),
-    to_delete(false),
-    e_mouse_press(this, "mouse_press"),
-    e_mouse_release(this, "mouse_release"),
-    e_mouse_move(this, "mouse_move"),
-    e_scroll(this, "scroll"),
-    e_mouse_drag(this, "mouse_drag"),
-    e_toggle(this, "toggle"),
-    e_toggle_activity(this, "toggle_activity"),
-    e_render_call(this, "render_call"),
-    e_close(this, "close"),
-    e_clicked(this, "clicked"),
-    e_fraction_changed(this, "fraction_changed"),
-    e_vec_fraction_changed(this, "vec_fraction_changed"),
-    e_key_down(this, "key down"),
-    e_key_up(this, "key up"),
-    e_text_enter(this, "text enter"),
-    e_text_changed(this, "text changed"),
-    e_data_ptr(this, "data ptr")
+    to_delete(false)
     {}
 
-    virtual ~EventSystem() {
+    virtual ~AbstractEventSystem() {
         for (size_t i = 0; i < sub_es.size(); ++i) {
             sub_es[i]->set_es_parent(nullptr);
             delete sub_es[i];
@@ -180,11 +142,11 @@ public:
 
     void set_to_delete(bool to_delete_) { to_delete = to_delete_; }
 
-    void add_es(EventSystem *sub_system) {
+    void add_es(SUCC_T *sub_system) {
         if (!sub_system) return;
 
         sub_system->delete_from_parent();
-        sub_system->set_es_parent(this);
+        sub_system->set_es_parent((SUCC_T*) this); //!!!
         sub_system->index_in_parent = sub_es.size();
         sub_es.push_back(sub_system);
     }
@@ -206,7 +168,7 @@ public:
         }
     }
 
-    const std::vector<EventSystem*> &get_sub_es() {
+    const std::vector<SUCC_T*> &get_sub_es() {
         return sub_es;
     }
 
@@ -237,102 +199,148 @@ public:
         else return idx == 0;
     }
 
-    template <typename T>
-    EventDispatcher<T> &get_dispatcher();
-
-    inline void set_es_parent(EventSystem *parent_) {
+    inline void set_es_parent(SUCC_T *parent_) {
         es_parent = parent_;
     }
 };
 
+
+class EventSystem : public AbstractEventSystem<EventSystem> {
+public:
+    EventDispatcher<EventSystem, Event::MousePress>      e_mouse_press;
+    EventDispatcher<EventSystem, Event::MouseRelease>    e_mouse_release;
+    EventDispatcher<EventSystem, Event::MouseMove>       e_mouse_move;
+    EventDispatcher<EventSystem, Event::Scroll>          e_scroll;
+    EventDispatcher<EventSystem, Event::MouseDrag>       e_mouse_drag;
+    EventDispatcher<EventSystem, Event::Activator>       e_toggle;
+    EventDispatcher<EventSystem, Event::ActivityToggle>  e_toggle_activity;
+    EventDispatcher<EventSystem, Event::RenderCall>      e_render_call;
+    EventDispatcher<EventSystem, Event::Close>           e_close;
+    EventDispatcher<EventSystem, Event::Clicked>         e_clicked;
+    EventDispatcher<EventSystem, Event::FractionChanged> e_fraction_changed;
+    EventDispatcher<EventSystem, Event::VectorFractionChanged> e_vec_fraction_changed;
+
+    EventDispatcher<EventSystem, Event::KeyDown>   e_key_down;
+    EventDispatcher<EventSystem, Event::KeyUp>     e_key_up;
+    EventDispatcher<EventSystem, Event::TextEnter> e_text_enter;
+
+    EventDispatcher<EventSystem, Event::TextChanged> e_text_changed;
+
+    EventDispatcher<EventSystem, Event::DataPtr> e_data_ptr;
+
+    EventSystem() :
+    AbstractEventSystem(),
+    e_mouse_press(this, "mouse_press"),
+    e_mouse_release(this, "mouse_release"),
+    e_mouse_move(this, "mouse_move"),
+    e_scroll(this, "scroll"),
+    e_mouse_drag(this, "mouse_drag"),
+    e_toggle(this, "toggle"),
+    e_toggle_activity(this, "toggle_activity"),
+    e_render_call(this, "render_call"),
+    e_close(this, "close"),
+    e_clicked(this, "clicked"),
+    e_fraction_changed(this, "fraction_changed"),
+    e_vec_fraction_changed(this, "vec_fraction_changed"),
+    e_key_down(this, "key down"),
+    e_key_up(this, "key up"),
+    e_text_enter(this, "text enter"),
+    e_text_changed(this, "text changed"),
+    e_data_ptr(this, "data ptr")
+    {}
+
+    template <typename ES_T, typename T>
+    EventDispatcher<ES_T, T> &get_dispatcher();
+};
+
 template <>
-inline EventDispatcher<Event::MousePress> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::MousePress> &EventSystem::get_dispatcher() {
     return e_mouse_press;
 }
 
 template <>
-inline EventDispatcher<Event::MouseRelease> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::MouseRelease> &EventSystem::get_dispatcher() {
     return e_mouse_release;
 }
 
 template <>
-inline EventDispatcher<Event::MouseMove> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::MouseMove> &EventSystem::get_dispatcher() {
     return e_mouse_move;
 }
 
 template <>
-inline EventDispatcher<Event::MouseDrag> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::MouseDrag> &EventSystem::get_dispatcher() {
     return e_mouse_drag;
 }
 
 template <>
-inline EventDispatcher<Event::Activator> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::Activator> &EventSystem::get_dispatcher() {
     return e_toggle;
 }
 
 template <>
-inline EventDispatcher<Event::ActivityToggle> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::ActivityToggle> &EventSystem::get_dispatcher() {
     return e_toggle_activity;
 }
 
 template <>
-inline EventDispatcher<Event::RenderCall> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::RenderCall> &EventSystem::get_dispatcher() {
     return e_render_call;
 }
 
 template <>
-inline EventDispatcher<Event::Close> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::Close> &EventSystem::get_dispatcher() {
     return e_close;
 }
 
 template <>
-inline EventDispatcher<Event::Clicked> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::Clicked> &EventSystem::get_dispatcher() {
     return e_clicked;
 }
 
 template <>
-inline EventDispatcher<Event::FractionChanged> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::FractionChanged> &EventSystem::get_dispatcher() {
     return e_fraction_changed;
 }
 
 template <>
-inline EventDispatcher<Event::VectorFractionChanged> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::VectorFractionChanged> &EventSystem::get_dispatcher() {
     return e_vec_fraction_changed;
 }
 
 template <>
-inline EventDispatcher<Event::DataPtr> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::DataPtr> &EventSystem::get_dispatcher() {
     return e_data_ptr;
 }
 
 template <>
-inline EventDispatcher<Event::KeyDown> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::KeyDown> &EventSystem::get_dispatcher() {
     return e_key_down;
 }
 
 template <>
-inline EventDispatcher<Event::KeyUp> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::KeyUp> &EventSystem::get_dispatcher() {
     return e_key_up;
 }
 
 template <>
-inline EventDispatcher<Event::TextEnter> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::TextEnter> &EventSystem::get_dispatcher() {
     return e_text_enter;
 }
 
 template <>
-inline EventDispatcher<Event::TextChanged> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::TextChanged> &EventSystem::get_dispatcher() {
     return e_text_changed;
 }
 
 template <>
-inline EventDispatcher<Event::Scroll> &EventSystem::get_dispatcher() {
+inline EventDispatcher<EventSystem, Event::Scroll> &EventSystem::get_dispatcher() {
     return e_scroll;
 }
 
 //=====================================================================================================================
-template <typename EVENT_T>
-void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, EventAccResult &sub_res) {
+template <typename ES_T, typename EVENT_T>
+void EventDispatcher<ES_T, EVENT_T>::process_acc_result(EventAccResult &res, EventAccResult &sub_res) {
     if (res & EventAccResult::focus) {
         es->focus();
         sub_res = (EventAccResult) (sub_res | EventAccResult::focus);
@@ -354,17 +362,15 @@ void EventDispatcher<EVENT_T>::process_acc_result(EventAccResult &res, EventAccR
     }
 }
 
-template <typename EVENT_T>
-EventAccResult EventDispatcher<EVENT_T>::clear_sub_result(EventAccResult sub_res) {
-    // printf("was %s\n", sub_res & EventAccResult::stop ? "true" : "false");
+template <typename ES_T, typename EVENT_T>
+EventAccResult EventDispatcher<ES_T, EVENT_T>::clear_sub_result(EventAccResult sub_res) {
     sub_res = (EventAccResult) (sub_res & ~EventAccResult::stop);
-    // printf("is %s\n", sub_res & EventAccResult::stop ? "true" : "false");
 
     return sub_res;
 }
 
-template <typename EVENT_T>
-EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event, bool sub_es_reverse) {
+template <typename ES_T, typename EVENT_T>
+EventAccResult EventDispatcher<ES_T, EVENT_T>::dispatch_to_sub_es(const EVENT_T &event, bool sub_es_reverse) {
     EventAccResult sub_res = EventAccResult::none;
 
     int idx_start = 0;
@@ -376,7 +382,7 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
         idx_stop = -1;
     }
 
-    std::vector<EventSystem*> deleted_sub_es;
+    std::vector<ES_T*> deleted_sub_es;
 
     auto sub_systems = es->get_sub_es();
     for (int i = idx_start; i != idx_stop; i += idx_step) {
@@ -386,7 +392,7 @@ EventAccResult EventDispatcher<EVENT_T>::dispatch_to_sub_es(const EVENT_T &event
             continue;
         }
 
-        EventAccResult res = sub_es->get_dispatcher<EVENT_T>().emit(event, sub_es_reverse);
+        EventAccResult res = sub_es-> template get_dispatcher<ES_T, EVENT_T>().emit(event, sub_es_reverse);
         process_acc_result(res, sub_res);
         sub_res = clear_sub_result(sub_res);
         if ((res & EventAccResult::done) || (res & EventAccResult::prevent_siblings_dispatch)) return sub_res;

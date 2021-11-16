@@ -499,7 +499,7 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     layout->layout_add(slider);
 
     slider->set_fraction({0, 0.50});
-    slider->restrict_to_x();
+    slider->toggle_x_restriction();
     slider->set_appearence(Resources.add_appr(new AppearenceColor({180, 160, 190})));
     slider->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
 

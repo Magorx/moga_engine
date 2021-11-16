@@ -31,7 +31,7 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
     v_MouseCatcher *mc = acceptor;
 
     if (mc->captured) {
-        EventAccResult res = mc->get_dispatcher<Event::MousePress>().dispatch_to_sub_es(event);
+        EventAccResult res = mc->get_dispatcher<EventSystem, Event::MousePress>().dispatch_to_sub_es(event);
         if (res & EventAccResult::cont || res & EventAccResult::done) {
             return (EventAccResult) (res | EventAccResult::done);
         } else {
@@ -42,7 +42,7 @@ EventAccResult MouseCatcherPressAcceptor::operator()(const Event::MousePress &ev
 
     if (mc->is_inside(event.position)) {
         mc->capture();
-        mc->get_dispatcher<Event::MousePress>().dispatch_to_sub_es(event);
+        mc->get_dispatcher<EventSystem, Event::MousePress>().dispatch_to_sub_es(event);
         return (EventAccResult) (EventAccResult::focus | EventAccResult::done);
     }
 
@@ -53,7 +53,7 @@ MouseCatcherMoveAcceptor::MouseCatcherMoveAcceptor(v_MouseCatcher *button) : Eve
 
 EventAccResult MouseCatcherMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (acceptor->captured) {
-        EventAccResult res = acceptor->get_dispatcher<Event::MouseMove>().dispatch_to_sub_es(event);
+        EventAccResult res = acceptor->get_dispatcher<EventSystem, Event::MouseMove>().dispatch_to_sub_es(event);
         return (EventAccResult) (res | EventAccResult::done);
     } else {
         return EventAccResult::stop;
