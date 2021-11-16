@@ -213,10 +213,8 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 	}
 }
 
-MogaEngine::MogaEngine(const char  *window_name,
-					   const size_t screen_width,
-					   const size_t screen_height,
-					   const size_t):
+MogaEngine::MogaEngine(RWindow *window,
+					   const char  *name):
 	tickables(),
 	objects(),
 
@@ -237,10 +235,11 @@ MogaEngine::MogaEngine(const char  *window_name,
 
     mouse_pos(0, 0),
 
-	screen_width(screen_width),
-	screen_height(screen_height),
+	name(name),
+	screen_width(window ? window->getSize().x : 0),
+	screen_height(window ? window->getSize().y : 0),
 
-	visual(new VisualEngine(window_name, screen_width, screen_height)),
+	visual(new VisualEngine(window)),
 	physics(new PhysicsEngine()),
 	main_view(new AbstractView(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))
 {
@@ -289,11 +288,6 @@ bool MogaEngine::add_object(Object *object, bool is_collidable) {
 
 bool MogaEngine::add_view(AbstractView *view) {
 	main_view->add_subview(view);
-
-	// view->tickable_nonfree = true;
-	// add_tickable(view);
-
-	// add_renderable(view);
 
 	return true;
 }
@@ -355,4 +349,25 @@ MogaEngine::~MogaEngine() {
 	delete visual;
 	delete physics;
 	delete main_view;
+}
+
+RWindow *MogaEngine::create_window(const char *name, Vec2d size) {
+	return new RWindow(sf::VideoMode(size.x(), size.y()), name);
+}
+
+RWindow *MogaEngine::create_window(const char *name, bool) {
+	auto modes = sf::VideoMode::getFullscreenModes();
+	if (!modes.size()) { return nullptr; }
+
+	unsigned int max_width = 0;
+	size_t idx = 0;
+	for (size_t i = 0; i < modes.size(); ++i) {
+		auto mode = modes[i];
+		if (mode.width > max_width) {
+			max_width = mode.width;
+			idx = i;
+		}
+	}
+	
+	return new RWindow(modes[idx], name, sf::Style::Fullscreen);
 }

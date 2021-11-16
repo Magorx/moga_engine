@@ -18,9 +18,7 @@ class VisualEngine : Tickable
 
 public:
 
-	VisualEngine(const char *window_name,
-				 const size_t scr_size_x,
-	 			 const size_t scr_size_y);
+	VisualEngine(RWindow *window);
 
 	~VisualEngine();
 

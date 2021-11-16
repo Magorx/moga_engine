@@ -11,10 +11,8 @@ class RedactorEngine : public MogaEngine {
     ToolManager *tool_manager;
 
 public:
-    RedactorEngine(const char  *window_name,
-                   const size_t screen_width,
-                   const size_t screen_height,
-                   const size_t pixel_size);
+    RedactorEngine(RWindow *window,
+                   const char *name);
     
     inline ToolManager *get_tool_manager() { return tool_manager; }
 };

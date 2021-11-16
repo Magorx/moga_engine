@@ -14,6 +14,7 @@ using RFont = sf::Font;
 using RState = sf::RenderStates;
 using RShader = sf::Shader;
 using RImage = sf::Image;
+using RWindow = sf::RenderWindow;
 
 using RBlendMode = sf::BlendMode;
 

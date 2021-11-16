@@ -52,6 +52,7 @@ protected:
     Vec2d mouse_pos;
 //  =====================
 
+	const char  *name;
 	const size_t screen_width;
 	const size_t screen_height;
 
@@ -61,10 +62,8 @@ public:
 	AbstractView *main_view;
 	MogaResourceManager resman;
 
-	MogaEngine(const char  *window_name,
-				const size_t screen_width,
-				const size_t screen_height,
-				const size_t pixel_size);
+	MogaEngine(	RWindow *window,
+				const char  *name);
 	
 	virtual ~MogaEngine();
 
@@ -107,6 +106,9 @@ public:
 		return fps_seconds_tick;
 	};
 
+	inline size_t get_screen_width() const { return screen_width; }
+	inline size_t get_screen_height() const { return screen_height; }
+
 //  =====================
 
 	inline Vec2d random_screen_pos() { return {vec3d_randdouble(0, screen_width), vec3d_randdouble(0, screen_height)}; }
@@ -114,6 +116,11 @@ public:
 	inline void centrize_view_body(ViewBody &body) {
 		main_view->centrize(body);
 	}
+
+// ======================
+
+	static RWindow *create_window(const char *name, Vec2d size);
+	static RWindow *create_window(const char *name, bool fullscreen);
 
 };
 

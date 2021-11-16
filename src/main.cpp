@@ -7,7 +7,9 @@ int main() {
     srand(time(nullptr));
     logger.set_verb_level(Logger::Level::warning);
 
-    RedactorEngine moga("MOGA", SCR_W, SCR_H, 1);
+    auto window = MogaEngine::create_window("MOGADACTOR", true);
+
+    RedactorEngine moga(window, "MOGADACTOR");
     Resources.init(&moga);
 
     initialize_photoshop(moga);

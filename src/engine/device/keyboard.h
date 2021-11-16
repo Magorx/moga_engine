@@ -260,24 +260,28 @@ namespace Keyboard {
         return is_pressed(Key::lsuper) || is_pressed(Key::rsuper);
     }
 
+    #define TRANSLATE_SPEC_KEY_BIT_(key) keymap_pressed[(int) Key::key] << SpecKey::KeyIndex::key 
+
     inline Hotkey make_hotkey(Key key) {
         return {
             key,
             SpecKey {
                 (char) (
                     0
-                    | keymap_pressed[(int) Key::lctrl]  << SpecKey::KeyIndex::lctrl 
-                    | keymap_pressed[(int) Key::rctrl]  << SpecKey::KeyIndex::rctrl 
-                    | keymap_pressed[(int) Key::lshift] << SpecKey::KeyIndex::lshift 
-                    | keymap_pressed[(int) Key::rshift] << SpecKey::KeyIndex::rshift
-                    | keymap_pressed[(int) Key::lalt]   << SpecKey::KeyIndex::lalt 
-                    | keymap_pressed[(int) Key::ralt]   << SpecKey::KeyIndex::ralt
-                    | keymap_pressed[(int) Key::lsuper] << SpecKey::KeyIndex::lsuper
-                    | keymap_pressed[(int) Key::rsuper] << SpecKey::KeyIndex::rsuper
+                    | TRANSLATE_SPEC_KEY_BIT_(lctrl ) 
+                    | TRANSLATE_SPEC_KEY_BIT_(rctrl )
+                    | TRANSLATE_SPEC_KEY_BIT_(lshift)
+                    | TRANSLATE_SPEC_KEY_BIT_(rshift)
+                    | TRANSLATE_SPEC_KEY_BIT_(lalt  )
+                    | TRANSLATE_SPEC_KEY_BIT_(ralt  )
+                    | TRANSLATE_SPEC_KEY_BIT_(lsuper)
+                    | TRANSLATE_SPEC_KEY_BIT_(rsuper)
                 ) 
             }
         };
     }
+
+    #undef TRANSLATE_SPEC_KEY_BIT_
 
 }
 

@@ -8,15 +8,11 @@ const int SCR_H  = 800;
 #include "responses.h"
 
 void initialize_photoshop(RedactorEngine &moga) {
-    SmartColor *color = new SmartColorSin(Color{40, 230, 150});
-    moga.add_tickable(color);
-    create_cage(&moga, color);
-    generate_balls(&moga, 10);
-
-    // ==================================================================================
+    const double scr_width = moga.get_screen_width();
+    // const double scr_height = moga.get_screen_height();
 
     auto appr_frame_box = new AppearenceTexture(Resources.texture.frame_gray);
-    v_HorizontalLayout *opt_panel = new v_HorizontalLayout({{0, 0}, {SCR_W, 30}}, {{0, 0}, {1, 1}}, 0, nullptr, nullptr);
+    v_HorizontalLayout *opt_panel = new v_HorizontalLayout({{0, 0}, {scr_width, 30}}, {{0, 0}, {1, 1}}, 0, nullptr, nullptr);
     opt_panel->set_appearence(appr_frame_box);
     
     moga.add_view(opt_panel);

@@ -17,13 +17,8 @@
 struct Screen {
     sf::RenderWindow *window;
 
-    int size_x;
-    int size_y;
-
-    inline Screen(sf::RenderWindow *window, int size_x, int size_y):
-    window(window),
-    size_x(size_x),
-    size_y(size_y)
+    inline Screen(sf::RenderWindow *window):
+    window(window)
     {}
 };
 
@@ -53,7 +48,7 @@ class Renderer {
     RendererState *state;
 
 public:
-    Renderer(const char *window_name, int size_x, int size_y);
+    Renderer(RWindow *window);
     ~Renderer();
 
     inline void clear(sf::Color color = sf::Color(0, 0, 0, 255)) { scr.window->clear(color); }

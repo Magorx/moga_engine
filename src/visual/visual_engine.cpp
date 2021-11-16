@@ -8,10 +8,8 @@ bool layer_ascending_order(const Renderable *first, const Renderable *second)
 }
 
 
-VisualEngine::VisualEngine(const char *window_name,
-                           const size_t scr_size_x,
-                           const size_t scr_size_y):
-renderer(new Renderer(window_name, scr_size_x, scr_size_y))
+VisualEngine::VisualEngine(RWindow *window):
+renderer(new Renderer(window))
 {}
 
 VisualEngine::~VisualEngine() {
