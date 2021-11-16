@@ -15,7 +15,7 @@ public:
     EventAcceptor(tool_manager)
     {}
 
-    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult*) override { 
+    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult*) override {
         int prev = acceptor->get_active_tool_idx();
 
         Hotkey prev_hotkey = acceptor->get_active_tool()->get_hotkey();
@@ -29,6 +29,43 @@ public:
         }
 
         return EventAccResult::cont;
+    }
+};
+
+
+class ToolManagerAltToolOff : public EventAcceptor<ToolManager, Event::KeyUp> {
+public:
+    int prev_idx = 0;
+
+    ToolManagerAltToolOff(ToolManager *tool_manager) :
+    EventAcceptor(tool_manager)
+    {}
+
+    EventAccResult operator()(const Event::KeyUp &event, const EventAccResult*) override {
+        if (Keyboard::make_hotkey(event.code) != HotkeyBind::alt_active_tool) return EventAccResult::none;
+        
+        acceptor->set_active_tool(prev_idx);
+
+        return EventAccResult::none;
+    }
+};
+
+
+class ToolManagerAltToolOn : public EventAcceptor<ToolManager, Event::KeyDown> {
+    ToolManagerAltToolOff *restorer;
+public:
+    ToolManagerAltToolOn(ToolManager *tool_manager, ToolManagerAltToolOff *restorer) :
+    EventAcceptor(tool_manager),
+    restorer(restorer)
+    {}
+
+    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult*) override {
+        if (Keyboard::make_hotkey(event.code) != HotkeyBind::alt_active_tool) return EventAccResult::none;
+        
+        restorer->prev_idx = acceptor->get_active_tool_idx();
+        acceptor->set_active_tool(HotkeyBind::pipette);
+
+        return EventAccResult::none;
     }
 };
 

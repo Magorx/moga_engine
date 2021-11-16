@@ -18,4 +18,6 @@ namespace HotkeyBind {
     const Hotkey swap_color =  Key::x;
     const Hotkey swap_tools = {Key::x, Key::lctrl};
 
+    const Hotkey alt_active_tool = Key::lalt;
+
 }

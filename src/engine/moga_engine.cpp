@@ -195,8 +195,8 @@ void MogaEngine::handle_events(sf::RenderWindow &window) {
 
 		if (event.type == sf::Event::KeyPressed) {
 			Keyboard::Key key = (Keyboard::Key) event.key.code;
-			Keyboard::key_down(key);
 			main_view->e_key_down.emit({key});
+			Keyboard::key_down(key);
 		}
 
 		if (event.type == sf::Event::KeyReleased) {

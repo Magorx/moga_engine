@@ -18,6 +18,10 @@ tool_manager(new ToolManager(visual->get_renderer()))
 
     tool_manager->set_active_tool(HotkeyBind::brush);
 
+    auto alt_key_tool_restorer = new ToolManagerAltToolOff(tool_manager);
+    main_view->e_key_up.add(alt_key_tool_restorer, false);
+    main_view->e_key_down.add(new ToolManagerAltToolOn(tool_manager, alt_key_tool_restorer), false);
+
     main_view->e_key_down.add(new ToolManagerHotkeys(tool_manager), false);
     main_view->e_scroll.add(new ToolManagerScrollShiftToolSize(tool_manager), false);
 }
