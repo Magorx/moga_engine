@@ -32,7 +32,6 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
     }
 
     if (!saved_image_done && saved_image_needed) {
-        // printf("hey\n");
         saved_image_done = true;
 
         Layer inter(renderer, nullptr, size);
@@ -72,18 +71,26 @@ void Layer::fill_with(RTexture *img) {
     renderer->pop_target();
 }
 
+#include <SFML/OpenGL.hpp>
+
 RColor Layer::get_pixel_color(const Vec2d &position) {
-    bool prev_needed = saved_image_needed;
-    saved_image_needed = true;
+    flush_to(nullptr, false, true);
+    // bool prev_needed = saved_image_needed;
+    // saved_image_needed = true;
 
-    if (!saved_image_done) {
-        flush_to(nullptr, false, true);
-    }
+    // if (!saved_image_done) {
+    //     flush_to(nullptr, false, true);
+    // }
 
-    if (position.x() < 0 || position.x() >= size.x() || position.y() < 0 || position.y() >= size.y()) return {0, 0, 0, 0};
+    // if (position.x() < 0 || position.x() >= size.x() || position.y() < 0 || position.y() >= size.y()) return {0, 0, 0, 0};
 
-    auto color = saved_image.getPixel(position.x(), position.y());
+    // auto color = saved_image.getPixel(position.x(), position.y());
 
-    saved_image_needed = prev_needed;
-    return {color.r, color.g, color.b, color.a};
+    // saved_image_needed = prev_needed;
+    
+    // final_target->setRepeated(true);
+    auto color = Renderer::get_pixel_color(position, &final_target->getTexture());
+    printf("color %d %d %d %d\n", RGBA_PRINT(color));
+
+    return color;
 }

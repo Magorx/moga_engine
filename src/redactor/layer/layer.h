@@ -12,7 +12,7 @@ class Canvas;
 
 struct Layer : public Affected<Layer> {
     Renderer *renderer;
-    Canvas *canvas;
+    Canvas   *canvas;
 
     RRendTexture *target;
     RRendTexture *final_target;
@@ -24,7 +24,7 @@ struct Layer : public Affected<Layer> {
 
     RImage saved_image;
     bool saved_image_done = false;
-    bool saved_image_needed = true;
+    bool saved_image_needed = false;
 
     Layer(Renderer *renderer, Canvas *canvas, Vec2d size, int idx = 0);
 

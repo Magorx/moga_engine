@@ -67,8 +67,6 @@ CanvasMoveAcceptor::~CanvasMoveAcceptor() {}
 EventAccResult CanvasMoveAcceptor::operator()(const Event::MouseMove &event, const EventAccResult *) {
     if (!acceptor->is_pressed()) return EventAccResult::none;
 
-    printf("move reg %p\n", this);
-
     acceptor->canvas->on_mouse_move(event.from, event.to);
 
     acceptor->canvas->flush_to_final();

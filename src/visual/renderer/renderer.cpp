@@ -188,3 +188,23 @@ void Renderer::apr_draw_rectangle(Vec2d pos, const Vec2d size) {
         state->target->draw(&cur_verticies[0], cur_verticies.size(), sf::Quads, state->rmode);
     }
 }
+
+RGBA Renderer::get_pixel_color(Vec2d pos, const RTexture *texture) {
+    RRendTexture inter;
+    inter.create(1, 1);
+
+    sf::Sprite sprite;
+    sprite.setTexture(*texture);
+    sprite.setPosition(-pos.x(), -pos.y());
+
+    auto size = sprite.getLocalBounds();
+    sprite.setOrigin(0, size.height);
+
+    sprite.setScale(1, -1);
+    inter.draw(sprite);
+
+    auto img = inter.getTexture().copyToImage();
+    auto color = img.getPixel(0, 0);
+
+    return {color.r, color.g, color.b, color.a};
+}

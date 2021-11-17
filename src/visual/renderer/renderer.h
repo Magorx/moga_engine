@@ -78,6 +78,7 @@ public:
 
     static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.basic);
     static Vec2d get_char_position(const char *text, int idx, int char_size, const RFont *font = Resources.font.basic);
+    static RGBA get_pixel_color(Vec2d pos, const RTexture *texture);
 
     void push_target(sf::RenderTarget *target) {
         if (state) {

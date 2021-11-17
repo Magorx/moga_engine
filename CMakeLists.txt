@@ -18,6 +18,7 @@ set(CMAKE_EXE_LINKER_FLAGS "-pthread")
 set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native -fsanitize=undefined") #-fsanitize=address
 
 find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
+find_package(OpenGL)
 
 add_executable(moga
 
@@ -137,4 +138,5 @@ add_executable(moga
         src/main.cpp
         )
 
-target_link_libraries(moga sfml-graphics sfml-window sfml-system)        
+target_link_libraries(moga sfml-graphics sfml-window sfml-system)
+target_link_libraries(moga ${OPENGL_LIBRARIES})
