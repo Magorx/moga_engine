@@ -37,7 +37,7 @@ to_subrender(true)
     e_mouse_press.set_event_affector([this](const Event::MousePress &event)     { return Event::MousePress   {event.position - this->body.position, event.button}; } );
     e_mouse_release.set_event_affector([this](const Event::MouseRelease &event) { return Event::MouseRelease {event.position - this->body.position, event.button}; } );
     e_mouse_move.set_event_affector([this](const Event::MouseMove &event)       { return Event::MouseMove    {event.from - this->body.position, event.to - this->body.position}; } );
-    e_scroll.set_event_affector([this](const Event::Scroll &event) { return Event::Scroll {event.delta, event.position - this->body.position}; } );
+    e_scroll.set_event_affector([this](const Event::Scroll &event)              { return Event::Scroll {event.delta, event.position - this->body.position}; } );
 
 
     if (parent) {
@@ -59,7 +59,7 @@ to_subrender(true)
 
 AbstractView::~AbstractView() {
     if (parent) {
-        parent->delete_subview(this);
+        // parent->delete_subview(this); // FIXME idk if its a bug or not, nvm
     }
 }
 
@@ -375,7 +375,7 @@ EventAccResult AVCloseAcceptor::operator()(const Event::Close &, const EventAccR
 AVCoveredPressBlocker::AVCoveredPressBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredPressBlocker::operator()(const Event::MousePress &event, const EventAccResult *prev_res) {
-    if (!acceptor->is_active()) return EventAccResult::none;
+    if (!acceptor->is_active()) return EventAccResult::stop;
 
     if (acceptor->is_inside(event.position) && ((prev_res && (*prev_res & EventAccResult::cont)) || acceptor->covering_block)) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
@@ -387,7 +387,7 @@ EventAccResult AVCoveredPressBlocker::operator()(const Event::MousePress &event,
 AVCoveredReleaseBlocker::AVCoveredReleaseBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredReleaseBlocker::operator()(const Event::MouseRelease &event, const EventAccResult *prev_res) {
-    if (!acceptor->is_active()) return EventAccResult::none;
+    if (!acceptor->is_active()) return EventAccResult::stop;
 
     if (acceptor->is_inside(event.position) && ((prev_res && (*prev_res & EventAccResult::cont)) || acceptor->covering_block)) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
@@ -399,7 +399,7 @@ EventAccResult AVCoveredReleaseBlocker::operator()(const Event::MouseRelease &ev
 AVCoveredMoveBlocker::AVCoveredMoveBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, const EventAccResult *prev_res) {
-    if (!acceptor->is_active()) return EventAccResult::none;
+    if (!acceptor->is_active()) return EventAccResult::stop;
 
     if (acceptor->is_inside(event.to)) {
         acceptor->cursor_inside = true;
@@ -417,7 +417,7 @@ EventAccResult AVCoveredMoveBlocker::operator()(const Event::MouseMove &event, c
 AVCoveredScrollBlocker::AVCoveredScrollBlocker(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCoveredScrollBlocker::operator()(const Event::Scroll &event, const EventAccResult *prev_res) {
-    if (!acceptor->is_active()) return EventAccResult::none;
+    if (!acceptor->is_active()) return EventAccResult::stop;
 
     if (acceptor->is_inside(event.position) && ((prev_res && (*prev_res & EventAccResult::cont)) || acceptor->covering_block)) {
         return (EventAccResult) (EventAccResult::cont | EventAccResult::prevent_siblings_dispatch);
