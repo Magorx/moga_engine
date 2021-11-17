@@ -5,7 +5,7 @@
 
 #include "visual/renderer/renderer.h"
 
-#include "engine/device/keyboard.h"
+#include "device/keyboard.h"
 
 class Canvas;
 
