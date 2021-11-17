@@ -3,6 +3,7 @@
 
 template <typename SUCC_T>
 class AbstractEventSystem {
+    SUCC_T *self;
 protected:
     SUCC_T *es_parent;
 
@@ -12,7 +13,8 @@ public:
     int index_in_parent;
     bool to_delete;
 
-    AbstractEventSystem() :
+    AbstractEventSystem(SUCC_T *self) :
+    self(self),
     es_parent(nullptr),
     index_in_parent(0),
     to_delete(false)
@@ -20,7 +22,7 @@ public:
 
     virtual ~AbstractEventSystem() {
         for (size_t i = 0; i < sub_es.size(); ++i) {
-            sub_es[i]->set_es_parent(nullptr);
+            if (sub_es[i]) sub_es[i]->set_es_parent(nullptr);
             delete sub_es[i];
         }
         delete_from_parent();
@@ -32,7 +34,7 @@ public:
         if (!sub_system) return;
 
         sub_system->delete_from_parent();
-        sub_system->set_es_parent((SUCC_T*) this); //!!!
+        sub_system->set_es_parent(self);
         sub_system->index_in_parent = sub_es.size();
         sub_es.push_back(sub_system);
     }
