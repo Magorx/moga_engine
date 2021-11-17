@@ -269,12 +269,20 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
             break;
 
         case Keyboard::Key::left :
-            acceptor->line.cursor_l();
+            if (Keyboard::is_pressed_ctrl()) {
+                acceptor->line.cursor_word_l();
+            } else {
+                acceptor->line.cursor_l();
+            }
             acceptor->display();
             break;
 
         case Keyboard::Key::right :
-            acceptor->line.cursor_r();
+            if (Keyboard::is_pressed_ctrl()) {
+                acceptor->line.cursor_word_r();
+            } else {
+                acceptor->line.cursor_r();
+            }
             acceptor->display();
             break;
 
@@ -329,6 +337,7 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
         
         case Keyboard::Key::enter :
             acceptor->deselect_text_field(true);
+
         
         default:
             break;

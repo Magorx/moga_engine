@@ -48,6 +48,62 @@ void Cursor::move_l() {
     pull_anchor();
 }
 
+//  let oldIsWhitespace = this.isWhitespace(this.value[this.cursorPosition])
+
+//         while(this.cursorPosition > 0) {
+//             this.cursorPosition--;
+//             let currentIsWhitespace = this.isWhitespace(this.value[this.cursorPosition])
+
+//             if(currentIsWhitespace && !oldIsWhitespace) {
+//                 break;
+//             }
+
+//             oldIsWhitespace = this.isWhitespace(this.value[this.cursorPosition])
+//         }
+
+//         this.cursorMoved()
+
+void Cursor::word_l() {
+    if (pos.is_home()) return;
+
+    pull_anchor();
+
+    move_l();
+
+    bool prev_whitespace = is_space();
+
+    while (!pos.is_home()) {
+        pos.move_l();
+        bool cur_whitespce = is_space();
+
+        if (cur_whitespce && !prev_whitespace) { pos.move_r(); break; }
+
+        prev_whitespace = cur_whitespce;
+    }
+
+    pull_anchor();
+}
+
+
+void Cursor::word_r() {
+    if (pos.is_end()) return;
+
+    pull_anchor();
+
+    bool prev_whitespace = is_space();
+
+    while (!pos.is_end()) {
+        pos.move_r();
+        bool cur_whitespce = is_space();
+
+        if (cur_whitespce && !prev_whitespace) break;
+
+        prev_whitespace = cur_whitespce;
+    }
+
+    pull_anchor();
+}
+    
 void Cursor::move_home() {
     pos.move_home();
     pull_anchor();

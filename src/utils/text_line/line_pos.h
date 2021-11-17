@@ -19,8 +19,13 @@ public:
     void move_r();
     void move_l();
 
+    bool is_home() const;
+    bool is_end()  const;
+
     void move_home();
     void move_end();
+
+    char get_c() const;
 
     inline int operator()() const {
         return pos;

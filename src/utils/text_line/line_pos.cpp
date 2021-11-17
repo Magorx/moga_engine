@@ -44,3 +44,14 @@ void LinePos::move_end() {
     pos = pos < 0 ? 0 : pos;
 }
 
+bool LinePos::is_home() const {
+    return pos == 0;
+}
+
+bool LinePos::is_end()  const {
+    return line->len() == pos + 1;
+}
+
+char LinePos::get_c() const {
+    return line->get_c(pos);
+}

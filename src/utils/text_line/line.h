@@ -36,8 +36,11 @@ public:
     void cursor_l() { cursor.move_l(); }
     void cursor_r() { cursor.move_r(); }
     void cursor_home() { cursor.move_home(); }
-    void cursor_end()  { cursor.move_end(); }
+    void cursor_end()  { cursor.move_end();  }
     void select_all(bool to_fix_anchor) { cursor.select_all(to_fix_anchor); }
+
+    void cursor_word_r() { cursor.word_r(); }
+    void cursor_word_l() { cursor.word_l(); }
 
     bool cursor_mag() { return cursor.anchor_magnet(); }
 
@@ -47,8 +50,13 @@ public:
     int cursor_pos() { return cursor.pos(); }
     int anchor_pos() { return cursor.anchor(); }
 
+    char get_c(size_t idx) const { if (idx >= data.size()) return '\0'; else return data[idx]; }
+
     void fix_anchors();
     void free_anchors();
+
+    void shift_selection_r() { cursor.shift_selection_r(); }
+    void shift_selection_l() { cursor.shift_selection_l(); }
 
     inline const char *c_str() const { return &data[0]; }
     inline char *c_str() { return &data[0]; }
