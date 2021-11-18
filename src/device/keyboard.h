@@ -248,20 +248,20 @@ namespace Keyboard {
         return keymap_pressed[(int) key];
     }
 
-    inline bool is_pressed_ctrl() {
-        return is_pressed(Key::lctrl) || is_pressed(Key::rctrl);
+    inline int is_pressed_ctrl() {
+        return is_pressed(Key::lctrl) + is_pressed(Key::rctrl);
     }
 
-    inline bool is_pressed_shift() {
-        return is_pressed(Key::lshift) || is_pressed(Key::rshift);
+    inline int is_pressed_shift() {
+        return is_pressed(Key::lshift) + is_pressed(Key::rshift);
     }
 
-    inline bool is_pressed_alt() {
-        return is_pressed(Key::lalt) || is_pressed(Key::ralt);
+    inline int is_pressed_alt() {
+        return is_pressed(Key::lalt) + is_pressed(Key::ralt);
     }
 
-    inline bool is_pressed_system() {
-        return is_pressed(Key::lsuper) || is_pressed(Key::rsuper);
+    inline int is_pressed_system() {
+        return is_pressed(Key::lsuper) + is_pressed(Key::rsuper);
     }
 
     #define TRANSLATE_SPEC_KEY_BIT_(key) keymap_pressed[(int) Key::key] << SpecKey::KeyIndex::key 

@@ -274,7 +274,7 @@ v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
     
     auto f_width  = dw->add_field("Width", 100, "px");
     auto f_height = dw->add_field("Height", 100, "px");
-    auto f_name   = dw->add_field("Name", 1999);
+    auto f_name   = dw->add_field("Name");
     auto b_create = dw->add_accept_button("Create");
 
     auto reaction = new NewCanvasReaction(engine);

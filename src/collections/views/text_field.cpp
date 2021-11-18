@@ -270,7 +270,11 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
 
         case Keyboard::Key::left :
             if (Keyboard::is_pressed_ctrl()) {
-                acceptor->line.cursor_word_l();
+                if (Keyboard::is_pressed_ctrl() == 2) {
+                    acceptor->line.shift_selection_l();
+                } else {
+                    acceptor->line.cursor_word_l();
+                }
             } else {
                 acceptor->line.cursor_l();
             }
@@ -279,7 +283,11 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
 
         case Keyboard::Key::right :
             if (Keyboard::is_pressed_ctrl()) {
-                acceptor->line.cursor_word_r();
+                if (Keyboard::is_pressed_ctrl() == 2) {
+                    acceptor->line.shift_selection_r();
+                } else {
+                    acceptor->line.cursor_word_r();
+                }
             } else {
                 acceptor->line.cursor_r();
             }
