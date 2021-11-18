@@ -33,6 +33,7 @@ add_executable(moga
         src/utils/text_line/line.cpp
         src/utils/text_line/line_pos.cpp
         src/utils/text_line/cursor.cpp
+        src/utils/text_line/line_history.cpp
 
         src/utils/state_history/history.cpp
 

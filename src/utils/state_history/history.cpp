@@ -30,6 +30,7 @@ void History::add(HistoryState *state) {
     prev_states.push_back(state);
 
     while (prev_states.size() > max_states_cnt) {
+        delete prev_states.front();
         prev_states.pop_front();
     }
 }

@@ -62,6 +62,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     // ==================================================================================
 
     // open_img_button->e_clicked.emit({});
+    new_canvas_button->e_clicked.emit({});
 
     // const char *str = "author.jpg";
     // for (const char *c = str; *c; ++c) {
