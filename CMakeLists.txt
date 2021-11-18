@@ -34,6 +34,8 @@ add_executable(moga
         src/utils/text_line/line_pos.cpp
         src/utils/text_line/cursor.cpp
 
+        src/utils/state_history/history.cpp
+
         # event
 
         # interface

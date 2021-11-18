@@ -12,16 +12,12 @@ int main(int argc, char*[]) {
     if (argc > 1) window = MogaEngine::create_window("MOGADACTOR", true);
     else          window = MogaEngine::create_window("MOGADACTOR", {1200, 800});
 
-    window->setActive(true);
-
     RedactorEngine moga(window, "MOGADACTOR");
     Resources.init(&moga);
 
     initialize_photoshop(moga);
 
     moga.everlasting_loop();
-
-    window->setActive(false);
 
 	return 0;
 }

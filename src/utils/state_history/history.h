@@ -7,5 +7,16 @@
 
 
 class History {
-    // std::deque prev_state;
+    std::deque<HistoryState*> prev_states;
+    std::deque<HistoryState*> next_states;
+
+    size_t max_states_cnt;
+
+public:
+    History(size_t max_states_cnt);
+
+    void undo();
+    void redo();
+
+    void add(HistoryState *state);
 };
