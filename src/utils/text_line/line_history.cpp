@@ -4,15 +4,15 @@
 
 LineHisotryState::LineHisotryState(Line *line, int from, int to) : 
 line(line),
-str(nullptr),
+str(),
 from(from),
 to(to)
 {
-    printf("init from %d to %d\n", from, to);
-    if (line->c_str()) {
-        str = (char*) calloc(to - from + 2, sizeof(char));
-        memcpy(str, line->c_str() + from, to - from);
+    str.reserve(from - to + 1);
+    for (int i = from; i < to; ++i) {
+        str.push_back(line->c_str()[i]);
     }
+    str.push_back('\0');
 }
 
 
@@ -32,7 +32,7 @@ void LineHisotryStateInsertion::undo() {
 void LineHisotryStateInsertion::redo() {
     line->free_anchors();
     line->cursor_set(from);
-    line->insert_str(str);
+    line->insert_str(&str[0]);
 }
 
 
@@ -44,7 +44,7 @@ right(right)
 void LineHisotryStateDeletion::undo() {
     line->free_anchors();
     line->cursor_set(from);
-    line->insert_str(str);
+    line->insert_str(&str[0]);
 
     if (!right) {
         line->cursor_set(from);
