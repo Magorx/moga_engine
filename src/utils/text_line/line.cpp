@@ -23,8 +23,6 @@ void Line::cut(bool include_border) {
         std::swap(from, to);
     }
 
-    if (from == to + include_border) return;
-
     history.add(new LineHisotryStateDeletion(this, from, to));
 
     for (int w = from, r = to + include_border; r < len(); ++w, ++r) {
