@@ -13,6 +13,15 @@ void History::update_cur() {
     }
 }
 
+History::~History() {
+    while (prev_states.size()) {
+        pop_prev();
+    }
+    while (next_states.size()) {
+        pop_next();
+    }
+}
+
 void History::undo() {
     if (!prev_states.size()) return;
 
@@ -38,6 +47,10 @@ void History::redo() {
 }
 
 void History::add(HistoryState *state) {
+    if (!state || block_add) return;
+
+    state->set_history(this);
+
     next_states.clear();
     prev_states.push_back(state);
 
@@ -47,4 +60,18 @@ void History::add(HistoryState *state) {
     }
 
     update_cur();
+}
+
+void History::pop_prev() {
+    if (prev_states.size()) {
+        delete prev_states.back();
+        prev_states.pop_back();
+    }
+}
+
+void History::pop_next() {
+    if (next_states.size()) {
+        delete next_states.front();
+        next_states.pop_front();
+    }
 }

@@ -39,8 +39,9 @@ public:
 };
 
 class LineHisotryStateDeletion : public LineHisotryState {
+    bool right;
 public:
-    LineHisotryStateDeletion(Line *line, int pos, int len);
+    LineHisotryStateDeletion(Line *line, int pos, int len, bool right = true);
 
     void undo() override final;
     void redo() override final;
