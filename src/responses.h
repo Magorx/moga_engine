@@ -272,7 +272,7 @@ public:
 v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
     auto dw = new v_DialogWindow("New canvas", 250, 5, -30);
     
-    auto f_width  = dw->add_field("Width", 100, "px");
+    auto f_width  = dw->add_field("Width", 500, "px");
     auto f_height = dw->add_field("Height", 100, "px");
     auto f_name   = dw->add_field("Name");
     auto b_create = dw->add_accept_button("Create");

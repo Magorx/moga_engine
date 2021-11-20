@@ -5,6 +5,14 @@ History::History(size_t max_states_cnt) :
 max_states_cnt(max_states_cnt)
 {}
 
+void History::update_cur() {
+    if (!prev_states.size()) {
+        cur_state = nullptr;
+    } else {
+        cur_state = prev_states.back();
+    }
+}
+
 void History::undo() {
     if (!prev_states.size()) return;
 
@@ -13,6 +21,8 @@ void History::undo() {
     next_states.push_front(state);
 
     state->undo();
+
+    update_cur();
 }
 
 void History::redo() {
@@ -23,6 +33,8 @@ void History::redo() {
     prev_states.push_back(state);
 
     state->redo();
+
+    update_cur();
 }
 
 void History::add(HistoryState *state) {
@@ -33,4 +45,6 @@ void History::add(HistoryState *state) {
         delete prev_states.front();
         prev_states.pop_front();
     }
+
+    update_cur();
 }

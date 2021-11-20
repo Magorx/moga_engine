@@ -219,7 +219,7 @@ void v_TextField::paste_from_clipboard() {
     char *data = (char*) calloc(len + 1, sizeof(char));
     convert(data, sf::Clipboard::getString().getData(), len);
 
-    line.put_str(data);
+    line.insert_str(data);
     display();
 
     logger.info("text_field", "pasted [%s] to the clipboard", data);
@@ -322,6 +322,20 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
             if (CHECK_CTRL_PRESS) {
                 acceptor->copy_to_clipboard();
                 acceptor->line.cut();
+                acceptor->display();
+            }
+            break;
+        
+        case Keyboard::Key::z :
+            if (CHECK_CTRL_PRESS) {
+                acceptor->line.undo();
+                acceptor->display();
+            }
+            break;
+        
+        case Keyboard::Key::y :
+            if (CHECK_CTRL_PRESS) {
+                acceptor->line.redo();
                 acceptor->display();
             }
             break;

@@ -7,6 +7,8 @@
 #include "line_pos.h"
 #include "cursor.h"
 
+#include "line_history.h"
+
 /*
 [some_sting ]
            ^ cursor.pos()
@@ -16,6 +18,12 @@ class Line {
     std::vector<char> data;
     Cursor cursor;
 
+    History history;
+    LineHisotryStateInsertion *cur_ins_state;
+    LineHisotryStateDeletion  *cur_del_state;
+
+    void flush_history_states();
+
 public:
     Line(size_t to_reserve = 10);
 
@@ -24,7 +32,7 @@ public:
     void insert_char(char c);
     void put_char(char c);
 
-    void put_str(const char *str);
+    void insert_str(const char *str);
     void set_str(const char *str);
 
     void erase_next();
@@ -57,6 +65,9 @@ public:
 
     void shift_selection_r() { cursor.shift_selection_r(); }
     void shift_selection_l() { cursor.shift_selection_l(); }
+
+    void undo();
+    void redo();
 
     inline const char *c_str() const { return &data[0]; }
     inline char *c_str() { return &data[0]; }

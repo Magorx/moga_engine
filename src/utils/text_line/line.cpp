@@ -3,7 +3,10 @@
 
 Line::Line(size_t to_reserve) :
 data(),
-cursor(LinePos(this, 0))
+cursor(LinePos(this, 0)),
+history(25),
+cur_ins_state(nullptr),
+cur_del_state(nullptr)
 {
     data.resize(to_reserve, 0);
     data.resize(1);
@@ -19,6 +22,10 @@ void Line::cut(bool include_border) {
     if (from > to) {
         std::swap(from, to);
     }
+
+    if (from == to + include_border) return;
+
+    history.add(new LineHisotryStateDeletion(this, from, to));
 
     for (int w = from, r = to + include_border; r < len(); ++w, ++r) {
         data[w] = data[r];
@@ -46,7 +53,7 @@ void Line::put_char(char c) {
     // cursor.move_r();
 }
 
-void Line::put_str(const char *str) {
+void Line::insert_str(const char *str) {
     if (cursor.is_selection()) {
         cut();
     }
@@ -96,35 +103,57 @@ void Line::free_anchors() {
 }
 
 void Line::dump(char endline) const {
-        int pos = cursor.pos();
-        int anc = cursor.anchor();
+    int pos = cursor.pos();
+    int anc = cursor.anchor();
 
-        if (anc == pos) {
-            printf("[");
-            for (int i = 0; i < pos; ++i) {
-                printf("%c", data[i]);
-            }
-            printf("|");
-            for (int i = pos; i < len(); ++i) {
-                printf("%c", data[i]);
-            }
-            printf("]%c", endline);
-        } else {
-            int mn = std::min(pos, anc);
-            int mx = std::max(pos, anc);
-
-            printf("[");
-            for (int i = 0; i < mn; ++i) {
-                printf("%c", data[i]);
-            }
-            printf("%c", mn == anc ? '{' : '|');
-            for (int i = mn; i < mx; ++i) {
-                printf("%c", data[i]);
-            }
-            printf("%c", mn == anc ? '|' : '}');
-            for (int i = mx; i < len(); ++i) {
-                printf("%c", data[i]);
-            }
-            printf("]%c", endline);
+    if (anc == pos) {
+        printf("[");
+        for (int i = 0; i < pos; ++i) {
+            printf("%c", data[i]);
         }
+        printf("|");
+        for (int i = pos; i < len(); ++i) {
+            printf("%c", data[i]);
+        }
+        printf("]%c", endline);
+    } else {
+        int mn = std::min(pos, anc);
+        int mx = std::max(pos, anc);
+
+        printf("[");
+        for (int i = 0; i < mn; ++i) {
+            printf("%c", data[i]);
+        }
+        printf("%c", mn == anc ? '{' : '|');
+        for (int i = mn; i < mx; ++i) {
+            printf("%c", data[i]);
+        }
+        printf("%c", mn == anc ? '|' : '}');
+        for (int i = mx; i < len(); ++i) {
+            printf("%c", data[i]);
+        }
+        printf("]%c", endline);
     }
+}
+
+void Line::flush_history_states() {
+    if (cur_ins_state) {
+        history.add(cur_ins_state);
+        cur_ins_state = nullptr;
+    }
+
+    if (cur_del_state) {
+        history.add(cur_ins_state);
+        cur_ins_state = nullptr;
+    }
+}
+
+void Line::undo() {
+    flush_history_states();
+    history.undo();
+}
+
+void Line::redo() {
+    flush_history_states();
+    history.redo();
+}

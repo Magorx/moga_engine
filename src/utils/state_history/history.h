@@ -12,6 +12,8 @@ class History {
 
     size_t max_states_cnt;
 
+    HistoryState *cur_state;
+
 public:
     History(size_t max_states_cnt);
 
@@ -19,4 +21,7 @@ public:
     void redo();
 
     void add(HistoryState *state);
+
+    void update_cur();
+    HistoryState *cur() { return cur_state; }
 };
