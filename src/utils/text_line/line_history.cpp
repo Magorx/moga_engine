@@ -8,7 +8,7 @@ str(),
 from(from),
 to(to)
 {
-    str.reserve(from - to + 1);
+    str.reserve(std::max(0, from - to + 5));
     for (int i = from; i < to; ++i) {
         str.push_back(line->c_str()[i]);
     }
