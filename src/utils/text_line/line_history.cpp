@@ -21,8 +21,6 @@ LineHisotryState(line, from, to)
 {}
 
 void LineHisotryStateInsertion::undo() {
-    ScopeHistoryAdditionBlocker add_blocker(*history);
-
     line->free_anchors();
     line->cursor_set(from);
     line->fix_anchors();
@@ -32,8 +30,6 @@ void LineHisotryStateInsertion::undo() {
 }
 
 void LineHisotryStateInsertion::redo() {
-    ScopeHistoryAdditionBlocker add_blocker(*history);
-
     line->free_anchors();
     line->cursor_set(from);
     line->insert_str(str);
@@ -46,8 +42,6 @@ right(right)
 {}
 
 void LineHisotryStateDeletion::undo() {
-    ScopeHistoryAdditionBlocker add_blocker(*history);
-
     line->free_anchors();
     line->cursor_set(from);
     line->insert_str(str);
@@ -58,8 +52,6 @@ void LineHisotryStateDeletion::undo() {
 }
 
 void LineHisotryStateDeletion::redo() {
-    ScopeHistoryAdditionBlocker add_blocker(*history);
-
     line->free_anchors();
     line->cursor_set(from);
     line->fix_anchors();

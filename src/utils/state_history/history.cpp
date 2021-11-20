@@ -25,6 +25,8 @@ History::~History() {
 void History::undo() {
     if (!prev_states.size()) return;
 
+    ScopeHistoryAdditionBlocker add_blocker(*this);
+
     HistoryState *state = prev_states.back();
     prev_states.pop_back();
     next_states.push_front(state);
@@ -36,6 +38,8 @@ void History::undo() {
 
 void History::redo() {
     if (!next_states.size()) return;
+
+    ScopeHistoryAdditionBlocker add_blocker(*this);
 
     HistoryState *state = next_states.front();
     next_states.pop_front();
