@@ -21,6 +21,6 @@
 
 7) Enter fullscreen mode by running app with any cmd options
 
-8) Ctrl+[Left] / Ctrl+[Right] in text input work as they should
+8) [Ctrl]+[Left] / [Ctrl]+[Right] in text input work as they should
 
-
+9) [Ctrl]+[Z] work for canvas!
