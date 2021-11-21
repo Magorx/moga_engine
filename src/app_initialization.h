@@ -49,7 +49,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     bip_button->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
     // ==================================================================================
 
-    spawn_canvas_window(&moga, {{800, 100}, {200, 300}});
+    spawn_canvas_window(&moga, {{800, 100}, {300, 400}});
 
     spawn_color_picker_window(&moga, {{550, 100}, {200, 240}});
 

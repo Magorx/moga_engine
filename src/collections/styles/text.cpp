@@ -7,7 +7,7 @@ namespace Text {
 
     TextStyle *basic() {
         return new TextStyle {
-            20,
+            Resources.font.size.basic,
             Resources.font.basic,
             Resources.font.color.basic_header,
             {0, 0, 0, 0}
@@ -16,7 +16,7 @@ namespace Text {
 
     TextStyle *header() {
         return new TextStyle {
-            15,
+            Resources.font.size.basic_header,
             Resources.font.basic,
             Resources.font.color.basic_header,
             {0, 0, 0, 0}
@@ -25,7 +25,7 @@ namespace Text {
 
     TextStyle *menu() {
         return new TextStyle {
-            15,
+            Resources.font.size.basic_menu,
             Resources.font.basic,
             Resources.font.color.basic_menu,
             {0, 0, 0, 0}

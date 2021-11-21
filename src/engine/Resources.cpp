@@ -70,13 +70,15 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 #define IMG(path) RES("image/" path)
 #define BUTTON_IMG(name, path) IMG("button/" name "/" path)
 
+#define FNT(path) RES("font/" path)
+
 #define ANM(path) RES("animation/") path "/"
 
 #define SHDR(path) RES("shader/") path
 
 
 void ResourcesHolder::init(MogaEngine *engine_) {
-    shader.name.rgb_mapping = "resources/shader/" "rgb_mapping.glsl";
+    shader.name.rgb_mapping = SHDR("rgb_mapping.glsl");
 
     engine = engine_;
 
@@ -86,39 +88,56 @@ void ResourcesHolder::init(MogaEngine *engine_) {
 
     texture.transparency_squares = load_texture(IMG("transparency_squares.png"));
 
-    texture.button.basic.idle    = load_texture(BUTTON_IMG("basic", "idle.png"));
+    texture.button.basic.idle    = load_texture(BUTTON_IMG("basic", "idle.png"   ));
     texture.button.basic.hovered = load_texture(BUTTON_IMG("basic", "hovered.png"));
     texture.button.basic.pressed = load_texture(BUTTON_IMG("basic", "pressed.png"));
 
-    texture.button.close.idle    = load_texture(BUTTON_IMG("close", "idle.png"));
+    texture.button.close.idle    = load_texture(BUTTON_IMG("close", "idle.png"   ));
     texture.button.close.hovered = load_texture(BUTTON_IMG("close", "hovered.png"));
     texture.button.close.pressed = load_texture(BUTTON_IMG("close", "pressed.png"));
 
-    texture.button.hide.idle    = load_texture(BUTTON_IMG("hide", "idle.png"));
+    texture.button.hide.idle    = load_texture(BUTTON_IMG("hide", "idle.png"   ));
     texture.button.hide.hovered = load_texture(BUTTON_IMG("hide", "hovered.png"));
     texture.button.hide.pressed = load_texture(BUTTON_IMG("hide", "pressed.png"));
 
-    texture.button.arrow.right.idle    = load_texture(BUTTON_IMG("arrow/right", "idle.png"));
+    texture.button.arrow.right.idle    = load_texture(BUTTON_IMG("arrow/right", "idle.png"   ));
     texture.button.arrow.right.hovered = load_texture(BUTTON_IMG("arrow/right", "hovered.png"));
     texture.button.arrow.right.pressed = load_texture(BUTTON_IMG("arrow/right", "pressed.png"));
 
-    texture.button.plus.idle    = load_texture(BUTTON_IMG("plus", "idle.png"));
+    texture.button.plus.idle    = load_texture(BUTTON_IMG("plus", "idle.png"   ));
     texture.button.plus.hovered = load_texture(BUTTON_IMG("plus", "hovered.png"));
     texture.button.plus.pressed = load_texture(BUTTON_IMG("plus", "pressed.png"));
 
-    texture.button.save.idle    = load_texture(BUTTON_IMG("save", "idle.png"));
+    texture.button.save.idle    = load_texture(BUTTON_IMG("save", "idle.png"   ));
     texture.button.save.hovered = load_texture(BUTTON_IMG("save", "hovered.png"));
     texture.button.save.pressed = load_texture(BUTTON_IMG("save", "pressed.png"));
 
-    texture.button.rgb.idle    = load_texture(BUTTON_IMG("rgb", "idle.png"));
+    texture.button.rgb.idle    = load_texture(BUTTON_IMG("rgb", "idle.png"   ));
     texture.button.rgb.hovered = load_texture(BUTTON_IMG("rgb", "hovered.png"));
     texture.button.rgb.pressed = load_texture(BUTTON_IMG("rgb", "pressed.png"));
 
-    font.arial = load_font("resources/font/arial.ttf");
-    font.montserrat = load_font("resources/font/Montserrat.ttf");
-    font.aseprite = load_font("resources/font/AsepriteFont.ttf");
+    font.arial         = load_font(FNT("Arial.ttf"        ));
+    font.montserrat    = load_font(FNT("Montserrat.ttf"   ));
+    font.lunchtime     = load_font(FNT("Lunchtime.ttf"    ));
+    font.raster        = load_font(FNT("Raster.ttf"       ));
+    font.gothic_pixels = load_font(FNT("GothicPixels.ttf" ));
+    font.pxlxxl        = load_font(FNT("pxlxxl.ttf"       ));
+    font.orange_kid    = load_font(FNT("OrangeKid.ttf"    ));
+    font.adventurer    = load_font(FNT("Adventurer.ttf"   ));
+    font.tight_pixel   = load_font(FNT("TightPixel.ttf"   ));
 
-    font.basic = font.aseprite;
+    font.basic = font.tight_pixel;
+
+    font.color.basic_header = {255, 255, 255, 255};
+    font.color.basic_menu   = {15, 15, 15, 255};
+
+    const int font_size_delta = 7;
+    font.size.basic        = 25 + font_size_delta;
+    font.size.basic_header = 25 + font_size_delta;
+    font.size.basic_menu   = 30 + font_size_delta;
+
+    font.smart_color.basic_header = new SmartColor(font.color.basic_header);
+    font.smart_color.basic_menu = new SmartColor(font.color.basic_menu);
 
     color.spectrum = load_texture("resources/image/color/spectrum.png");
 
@@ -180,20 +199,14 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     texture.util_bar.basic.l_corner = load_texture(IMG("util_bar/basic/corner.png"));
     texture.util_bar.basic.r_corner = load_texture(IMG("util_bar/basic/corner.png"));
 
-    texture.window.basic.util_bar = &texture.util_bar.basic;
-    texture.window.color.basic_frame = {203, 219, 252, 220};
-    texture.window.basic.frame = generate_color_texture(texture.window.color.basic_frame);
-
-    font.color.basic_header = {255, 255, 255, 255};
-    font.color.basic_menu   = {15, 15, 15, 255};
-
     color.text_field.basic.frame     = {177, 188, 255};
     color.text_field.basic.content   = {126, 158, 255};
     color.text_field.basic.cursor    = {20, 20, 20, 200};
     color.text_field.basic.selection = {120, 100, 145, 220};
 
-    font.smart_color.basic_header = new SmartColor(font.color.basic_header);
-    font.smart_color.basic_menu = new SmartColor(font.color.basic_menu);
+    texture.window.basic.util_bar = &texture.util_bar.basic;
+    texture.window.color.basic_frame = {203, 219, 252, 220};
+    texture.window.basic.frame = generate_color_texture(texture.window.color.basic_frame);
 
     shader.negative = load_frag_shader(SHDR("negative.glsl"));
     shader.rgb_mapping = load_frag_shader(SHDR("rgb_mapping.glsl"));
@@ -237,8 +250,14 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.window.basic.frame;
 
     delete font.arial;
-    delete font.aseprite;
     delete font.montserrat;
+    delete font.lunchtime;
+    delete font.raster;
+    delete font.gothic_pixels;
+    delete font.pxlxxl;
+    delete font.orange_kid;
+    delete font.adventurer;
+    delete font.tight_pixel;
 
     delete color.spectrum;
 

@@ -126,7 +126,13 @@ struct ResourcesHolder {
     struct {
         RFont *arial;
         RFont *montserrat;
-        RFont *aseprite;
+        RFont *lunchtime;
+        RFont *raster;
+        RFont *gothic_pixels;
+        RFont *pxlxxl;
+        RFont *adventurer;
+        RFont *tight_pixel;
+        RFont *orange_kid;
 
         RFont *basic;
 
@@ -136,9 +142,9 @@ struct ResourcesHolder {
         } color;
 
         struct {
-            int basic = 20;
-            int basic_header = 20;
-            int basic_menu = 25;
+            int basic;
+            int basic_header;
+            int basic_menu;
         } size;
 
         struct {

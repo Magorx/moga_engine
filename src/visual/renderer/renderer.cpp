@@ -86,13 +86,16 @@ void Renderer::draw_text(const char *label, int char_size, Vec2d pos, const RGBA
     // text.setOutlineThickness(1);
 
     sf::Vector2f sf_pos(static_cast<float>(pos.x()), static_cast<float>(pos.y()));
+    // sf::Vector2f sf_pos(static_cast<float>((int) pos.x()), static_cast<float>((int) pos.y()));
 
     text.setPosition(sf_pos);
     sf::Vector2f bounds(text.getLocalBounds().width, text.getLocalBounds().height);
 
     if (to_centrize) {
-        text.setPosition(text.getPosition() - sf::Vector2f{bounds.x / 2 + 2, bounds.y / 2 + char_size / 4});
+        text.setPosition(text.getPosition() - sf::Vector2f{bounds.x / 2, (float) ((float) char_size / 1.4)});
     }
+
+    text.setPosition({(float) (int) text.getPosition().x, (float) (int) text.getPosition().y});
 
     if (to_background) {
         bounds.y *= 2;
