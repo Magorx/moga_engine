@@ -12,7 +12,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     // const double scr_height = moga.get_screen_height();
 
     auto appr_frame_box = new AppearenceTexture(Resources.texture.frame_gray);
-    v_HorizontalLayout *opt_panel = new v_HorizontalLayout({{0, 0}, {scr_width, 30}}, {{0, 0}, {1, 1}}, 0, nullptr, nullptr);
+    v_HorizontalLayout *opt_panel = new v_HorizontalLayout({{0, 0}, {scr_width, Resources.font.size.basic_menu + 4.0}}, {{0, 0}, {1, 1}}, 0, nullptr, nullptr);
     opt_panel->set_appearence(appr_frame_box);
     
     moga.add_view(opt_panel);
