@@ -28,6 +28,8 @@ public:
 
         char *cur_label = window->get_header()->get_label_text();
         std::string str = cur_label;
+        str[str.size() - 1] = '0' + ret;
+        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.color.basic_header);
 
         return EventAccResult::cont;
     }
@@ -170,7 +172,7 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canv
         canvas_name = randstr(10);
     }
 
-    canvas_name;
+    canvas_name += " - 0";
 
     auto window = new v_Window(canvas_name.c_str(), body, window_style);
 
@@ -268,11 +270,11 @@ public:
 
 
 v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
-    auto dw = new v_DialogWindow("New canvas", 250, 5, -30);
+    auto dw = new v_DialogWindow("New canvas", 350, 5, -70);
     
     auto f_width  = dw->add_field("Width", 100, "px");
     auto f_height = dw->add_field("Height", 100, "px");
-    auto f_name   = dw->add_field("Name");
+    auto f_name   = dw->add_field("Name", 200);
     auto b_create = dw->add_accept_button("Create");
 
     auto reaction = new NewCanvasReaction(engine);

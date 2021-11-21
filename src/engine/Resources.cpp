@@ -134,7 +134,7 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     const int font_size_delta = 7;
     font.size.basic        = 25 + font_size_delta;
     font.size.basic_header = 25 + font_size_delta;
-    font.size.basic_menu   = 30 + font_size_delta;
+    font.size.basic_menu   = 27 + font_size_delta;
 
     font.smart_color.basic_header = new SmartColor(font.color.basic_header);
     font.smart_color.basic_menu = new SmartColor(font.color.basic_menu);
