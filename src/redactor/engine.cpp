@@ -17,6 +17,7 @@ tool_manager(new ToolManager(visual->get_renderer()))
     tool_manager->add_tool(t_pipette, HotkeyBind::pipette);
 
     tool_manager->set_active_tool(HotkeyBind::brush);
+    tool_manager->set_size(13);
 
     auto alt_key_tool_restorer = new ToolManagerAltToolOff(tool_manager);
     main_view->e_key_up.add(alt_key_tool_restorer, false);

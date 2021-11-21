@@ -1,5 +1,5 @@
 #include "layer.h"
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 #include "visual/renderer/appearence.h"
 
 
@@ -57,6 +57,7 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
 void Layer::force_redraw() {
     effects_applied = false;
     saved_image_done = false;
+    is_cleared = false;
     if (canvas) canvas->force_redraw();
 }
 

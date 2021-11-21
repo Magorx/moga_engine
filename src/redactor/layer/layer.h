@@ -26,6 +26,8 @@ struct Layer : public Affected<Layer> {
     bool saved_image_done = false;
     bool saved_image_needed = false;
 
+    bool is_cleared = true;
+
     Layer(Renderer *renderer, Canvas *canvas, Vec2d size, int idx = 0);
 
     virtual ~Layer() {
@@ -64,9 +66,13 @@ struct Layer : public Affected<Layer> {
 
     RColor get_pixel_color(const Vec2d &position);
 
-    void clear(const RColor &color = {0, 0, 0, 0}) { target->clear(to_glib_color(color)); force_redraw(); }
+    void clear(const RColor &color = {0, 0, 0, 0}) { target->clear(to_glib_color(color)); force_redraw(); is_cleared = true; }
 
     void flush_to(Layer *layer, bool to_flip = false, bool to_apply_effects = false, RMode rmode = {});
+
+    void save_to(const char *filename) {
+        target->getTexture().copyToImage().saveToFile(filename);
+    }
 
 };
 

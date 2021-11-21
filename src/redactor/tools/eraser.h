@@ -2,7 +2,7 @@
 
 
 #include "brush.h"
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 
 
 class t_Eraser : public t_Brush {

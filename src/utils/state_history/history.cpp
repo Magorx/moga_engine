@@ -51,7 +51,7 @@ void History::redo() {
 }
 
 void History::add(HistoryState *state) {
-    if (!state || block_add) return;
+    if (!state || block_add) { delete state; return; }
 
     state->set_history(this);
 

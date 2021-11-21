@@ -5,7 +5,7 @@
 
 #include "utils.h"
 #include "redactor/layer/layer.h"
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 
 #include "view/view.h"
 #include "collections/views/spline.h"

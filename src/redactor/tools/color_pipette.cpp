@@ -1,5 +1,5 @@
 #include "color_pipett.h"
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 
 
 t_ColorPipett::t_ColorPipett(Tool *manager) :

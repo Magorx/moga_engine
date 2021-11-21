@@ -1,5 +1,5 @@
 #include "tool_manager.h"
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 
 
 ToolManager::ToolManager(Renderer *renderer):

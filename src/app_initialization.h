@@ -62,12 +62,12 @@ void initialize_photoshop(RedactorEngine &moga) {
     // ==================================================================================
 
     // open_img_button->e_clicked.emit({});
-    new_canvas_button->e_clicked.emit({});
+    // new_canvas_button->e_clicked.emit({});
 
-    const char *str = "aaaaaa asdas    asda as a";
-    for (const char *c = str; *c; ++c) {
-        moga.main_view->e_text_enter.emit({(uint32_t) *c});
-    }
+    // const char *str = "aaaaaa asdas    asda as a";
+    // for (const char *c = str; *c; ++c) {
+    //     moga.main_view->e_text_enter.emit({(uint32_t) *c});
+    // }
     // moga.main_view->e_key_down.emit({Keyboard::Key::enter});
     // moga.main_view->e_key_up.emit({Keyboard::Key::enter});
 

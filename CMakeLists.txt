@@ -50,6 +50,8 @@ add_executable(moga
         src/device/keyboard.cpp
 
         # visual
+        src/visual/renderer/gate_type_aliases.cpp
+
         src/visual/color/color.cpp
         src/visual/color/rgba.cpp
         src/visual/color/smart_color.cpp
@@ -128,7 +130,8 @@ add_executable(moga
         src/redactor/tools/brush.cpp
         src/redactor/tools/color_pipette.cpp
         src/redactor/tools/tool_manager.cpp
-        src/redactor/canvas.cpp
+        src/redactor/canvas/canvas.cpp
+        src/redactor/canvas/canvas_history.cpp
 
         src/redactor/layer/layer.cpp
 

@@ -19,8 +19,11 @@ using RWindow = sf::RenderWindow;
 using RBlendMode = sf::BlendMode;
 
 namespace RBlend {
-    const RBlendMode none = sf::BlendNone;
-    const RBlendMode add = sf::BlendAdd;
-    const RBlendMode alpha = sf::BlendAlpha;
-    const RBlendMode multiply = sf::BlendMultiply;
+    const extern RBlendMode none;
+    const extern RBlendMode add;
+    const extern RBlendMode alpha;
+    const extern RBlendMode multiply;
+    
+    const extern RBlendMode me_add;
+    const extern RBlendMode me_sub;
 }

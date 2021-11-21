@@ -2,12 +2,13 @@
 
 
 #include "utils.h"
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 #include "visual/renderer/renderer.h"
 
 class CanvasPressAcceptor;
 class CanvasReleaseAcceptor;
 class CanvasMoveAcceptor;
+class CanvasHotkeyAcceptor;
 
 
 class v_Canvas : public v_Highlighter {
@@ -16,6 +17,7 @@ class v_Canvas : public v_Highlighter {
     friend CanvasPressAcceptor;
     friend CanvasReleaseAcceptor;
     friend CanvasMoveAcceptor;
+    friend CanvasHotkeyAcceptor;
 
 public:
     v_Canvas(const ViewBody &body, Renderer *renderer, ToolManager *tool_manager);
@@ -52,4 +54,13 @@ public:
     virtual ~CanvasMoveAcceptor();
 
     EventAccResult operator()(const Event::MouseMove &event, const EventAccResult *cur_res = nullptr) override;
+};
+
+class CanvasHotkeyAcceptor : public EventAcceptor<v_Canvas, Event::KeyDown> {
+    friend v_Canvas;
+public:
+    CanvasHotkeyAcceptor(v_Canvas *button);
+    virtual ~CanvasHotkeyAcceptor();
+
+    EventAccResult operator()(const Event::KeyDown &event, const EventAccResult *cur_res = nullptr) override;
 };

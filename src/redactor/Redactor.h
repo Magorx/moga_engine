@@ -1,5 +1,5 @@
 #pragma once
 
 
-#include "canvas.h"
+#include "canvas/canvas.h"
 #include "tools/tool_manager.h"

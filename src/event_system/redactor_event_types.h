@@ -3,7 +3,7 @@
 
 #include "visual/color/rgba.h"
 
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 #include "redactor/tools/tool.h"
 
 

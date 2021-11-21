@@ -4,7 +4,8 @@
 Canvas::Canvas(Renderer *renderer, ToolManager *tool_manager, Vec2d size):
 renderer(renderer),
 tool_manager(tool_manager),
-size(size)
+size(size),
+history(25)
 {
     if (!renderer || !tool_manager) {
         printf("Canvas was created without renderer or tool_manager, luckily to crush now\n");
@@ -13,15 +14,13 @@ size(size)
     active_layer = new Layer(renderer, this, size);
     layers.push_back(active_layer);
 
+    prev_active_layer = new Layer(renderer, this, size);
+    set_active_layer(active_layer);
+
     draw_layer = new Layer(renderer, this, size);
     final_layer = new Layer(renderer, this, size);
     inter_action_layer = new Layer(renderer, this, size);
     transparency_squares_layer = new Layer(renderer, this, size);
-
-    draw_layer->saved_image_needed = false;
-    final_layer->saved_image_needed = false;
-    inter_action_layer->saved_image_needed = false;
-    transparency_squares_layer->saved_image_needed = false;
 
     transparency_squares_layer->fill_with(Resources.texture.transparency_squares);
 }
@@ -31,15 +30,28 @@ Canvas::~Canvas() {
         delete layer;
     }
 
+    delete prev_active_layer;
     delete draw_layer;
     delete inter_action_layer;
     delete transparency_squares_layer;
 }
 
+void Canvas::set_active_layer(Layer *layer) {
+    active_layer = layer;
+    upd_prev_active_layer();
+}
+
 void Canvas::flush_draw_to_active() {
-    active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
-    draw_layer->flush_to(inter_action_layer, true, false);
-    inter_action_layer->flush_to(active_layer, false, false, sf::BlendNone);
+    if (draw_mode == DrawMode::use_draw_layer) {
+        active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
+        draw_layer->flush_to(inter_action_layer, true, false);
+        inter_action_layer->flush_to(active_layer, false, false, sf::BlendNone);
+    }
+
+    if (!mouse_down) return;
+
+    history.add(new CanvasHistoryState(this, idx_by_layer(active_layer), prev_active_layer, active_layer));
+    set_active_layer(active_layer);
 }
 
 void Canvas::flush_to_final() {
@@ -62,8 +74,10 @@ void Canvas::flush_to_final() {
 }
 
 int Canvas::new_layer() {
-    active_layer = new Layer(renderer, this, size);
-    layers.push_back(active_layer);
+    Layer *new_layer = new Layer(renderer, this, size);
+    layers.push_back(new_layer);
+
+    set_active_layer(new_layer);
 
     flush_to_final();
     return layers.size() - 1;
@@ -72,7 +86,7 @@ int Canvas::new_layer() {
 int Canvas::next_layer(int delta) {
     if (!layers.size()) return -1;
     if (!active_layer) {
-        active_layer = layers[0];
+        set_active_layer(layers[0]);
         flush_to_final();
         return 0;
     }
@@ -86,7 +100,7 @@ int Canvas::next_layer(int delta) {
         return cur_idx;
     }
 
-    active_layer = layers[cur_idx + delta];
+    set_active_layer(layers[cur_idx + delta]);
     flush_to_final();
     return cur_idx + delta;
 }
@@ -97,6 +111,15 @@ int Canvas::next_layer() {
 
 int Canvas::prev_layer() {
     return next_layer(-1);
+}
+
+int Canvas::set_active_layer(int idx) {
+    if (idx < 0 || idx >= (int) layers.size()) {
+        return -1;
+    }
+
+    set_active_layer(layers[idx]);
+    return idx;
 }
 
 int Canvas::idx_by_layer(Layer *layer) {
@@ -112,6 +135,8 @@ int Canvas::idx_by_layer(Layer *layer) {
 void Canvas::grab_tool_manager_activity() { tool_manager->set_active_canvas(this); }
 
 void Canvas::on_mouse_down(const Vec2d &pos) {
+    mouse_down = true;
+
     if (draw_mode == DrawMode::use_active_layer) {
         tool_manager->on_mouse_down(flip(pos));
     } else {
@@ -120,16 +145,20 @@ void Canvas::on_mouse_down(const Vec2d &pos) {
 }
 
 void Canvas::on_mouse_up(const Vec2d &pos) {
+    if (!mouse_down) return;
+
     if (draw_mode == DrawMode::use_active_layer) {
         tool_manager->on_mouse_up(flip(pos));
     } else {
         tool_manager->on_mouse_up(pos);
     }
 
-    if (draw_mode == DrawMode::use_draw_layer) flush_draw_to_active();
+    flush_draw_to_active();
 
     draw_layer->clear({0, 0, 0, 0});
     flush_to_final();
+
+    mouse_down = false;
 }
 
 void Canvas::on_mouse_move(const Vec2d &from, const Vec2d &to) {
@@ -157,4 +186,12 @@ void Canvas::save_to_file(const char *filename) {
     final_layer->get_texture()->copyToImage().saveToFile(name);
 
     free(name);
+}
+
+void Canvas::undo() {
+    history.undo();
+}
+
+void Canvas::redo() {
+    history.redo();
 }

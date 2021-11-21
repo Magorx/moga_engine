@@ -1,6 +1,6 @@
 #include "brush.h"
 #include "tool_manager.h"
-#include "redactor/canvas.h"
+#include "redactor/canvas/canvas.h"
 
 
  void t_Brush::draw_point(const Vec2d &pos) {
@@ -9,7 +9,6 @@
     }
 
     auto target = draw_layer->get_target();
-    target->setRepeated(false);
 
     renderer->push_target(target);
 
@@ -18,8 +17,6 @@
     renderer->draw_circle(pos, size, draw_color);
 
     renderer->pop_target();
-
-    // target->setRepeated(true);
 }
 
 t_Brush::t_Brush(Tool *manager) :
@@ -65,7 +62,6 @@ void t_Brush::on_deactivate() {
 
     if (draw_layer) {
        if (Canvas *canvas = draw_layer->get_canvas()) {
-           canvas->flush_draw_to_active();
            canvas->get_draw_layer()->clear();
        }
     }

@@ -20,4 +20,7 @@ namespace HotkeyBind {
 
     const Hotkey alt_active_tool = Key::lalt;
 
+    const Hotkey undo = {Key::z, Key::lctrl};
+    const Hotkey redo = {Key::y, Key::lctrl};
+
 }
