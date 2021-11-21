@@ -28,8 +28,6 @@ public:
 
         char *cur_label = window->get_header()->get_label_text();
         std::string str = cur_label;
-        str[str.size() - 1] = '0' + ret;
-        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.color.basic_header);
 
         return EventAccResult::cont;
     }
@@ -172,7 +170,7 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canv
         canvas_name = randstr(10);
     }
 
-    canvas_name += " - 0";
+    canvas_name;
 
     auto window = new v_Window(canvas_name.c_str(), body, window_style);
 
