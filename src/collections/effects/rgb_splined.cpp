@@ -71,10 +71,11 @@ v_Window *eff_RGBSplined::create_settings_window(MogaEngine *engine) {
     Vec2d sp_size = size * (1 - coef * 2);
 
     v_Spline *spr = new v_Spline({sp_pos, sp_size}, {255, 40, 40}, {20, 20, 20, 50});
-    window->add_subview(spr);
     v_Spline *spg = new v_Spline({sp_pos, sp_size}, {40, 255, 40}, {20, 20, 20, 50});
-    window->add_subview(spg);
     v_Spline *spb = new v_Spline({sp_pos, sp_size}, {50, 50, 255}, {20, 20, 20, 50});
+    
+    window->add_subview(spr);
+    window->add_subview(spg);
     window->add_subview(spb);
 
     set_spline(0, spr);

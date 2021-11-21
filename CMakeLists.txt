@@ -143,3 +143,7 @@ add_executable(moga
 
 target_link_libraries(moga sfml-graphics sfml-window sfml-system)
 target_link_libraries(moga ${OPENGL_LIBRARIES})
+
+# add_custom_target(rebuild_plugins
+#         COMMAND convert image.ppm image.png
+#         )
