@@ -14,5 +14,7 @@ public:
     RedactorEngine(RWindow *window,
                    const char *name);
     
+    ~RedactorEngine();
+    
     inline ToolManager *get_tool_manager() { return tool_manager; }
 };

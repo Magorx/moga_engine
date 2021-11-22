@@ -21,6 +21,7 @@ class ToolManager : public Tool {
 public:
 
     ToolManager(Renderer *renderer);
+    ~ToolManager();
 
     void add_tool(Tool *tool, Hotkey hotkey = Hotkey::none);
     void set_active_tool(size_t idx);

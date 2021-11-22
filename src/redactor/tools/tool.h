@@ -39,6 +39,8 @@ public:
     draw_color(0, 0, 0, 255)
     {}
 
+    virtual ~Tool() {};
+
     inline void set_hotkey(Hotkey key) { hotkey = key; }
     inline Hotkey get_hotkey() { return hotkey; }
 

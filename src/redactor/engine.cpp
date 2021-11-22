@@ -26,3 +26,7 @@ tool_manager(new ToolManager(visual->get_renderer()))
     main_view->e_key_down.add(new ToolManagerHotkeys(tool_manager), false);
     main_view->e_scroll.add(new ToolManagerScrollShiftToolSize(tool_manager), false);
 }
+
+RedactorEngine::~RedactorEngine() {
+    delete tool_manager;
+}

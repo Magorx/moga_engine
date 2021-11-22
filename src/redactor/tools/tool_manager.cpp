@@ -8,8 +8,14 @@ active_canvas(nullptr),
 draw_color({0, 0, 0, 255}),
 tools(),
 active_tool(nullptr)
-{
-    
+{}
+
+ToolManager::~ToolManager() {
+    active_canvas = nullptr;
+    for (auto tool : tools) {
+        tool->on_update();
+        delete tool;
+    }
 }
 
 void ToolManager::add_tool(Tool *tool, Hotkey hotkey) {
@@ -116,6 +122,8 @@ void ToolManager::update_active_tool() {
         // if (active_canvas->get_draw_mode() == Canvas::DrawMode::use_draw_layer)   layer_for_tool = active_canvas->get_draw_layer();
         layer_for_tool = active_canvas->get_draw_layer();
         active_tool->set_draw_layer(layer_for_tool);
+    } else {
+        active_tool->set_draw_layer(nullptr);
     }
 
     active_tool->on_update();
