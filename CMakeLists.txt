@@ -154,6 +154,9 @@ add_executable(moga
 target_link_libraries(moga sfml-graphics sfml-window sfml-system)
 target_link_libraries(moga ${OPENGL_LIBRARIES})
 
+# aux_source_directory(src/collection/plugins ERASER_SOURCES)
+add_library(Brush SHARED src/collections/plugins/brush.cpp)
+
 # add_custom_target(rebuild_plugins
 #         COMMAND convert image.ppm image.png
 #         )

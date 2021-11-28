@@ -18,13 +18,16 @@ PluginManager::~PluginManager() {
 }
 
 RedactorPlugin *PluginManager::load(const char *filename, PAppInterface *app_interface) {
+    logger.info("PluginManager", "loading plugin, filename[%s]\n", filename);
+
     if (!filename || !app_interface) {
         logger.error("PluginManager", "bad params for plugin load: filename[%s], app_interface[%p]", filename, app_interface);
     }
 
     RedactorPlugin *plugin = new RedactorPlugin(filename, app_interface);
     if (!plugin || !plugin->is_ok()) {
-        logger.error("PluginManager", "plugin[%p] with filename[%s] was technicaly loaded, but somewhy is not ok", plugin, filename);
+        logger.error("PluginManager", "plugin[%p] with filename[%s] was technicaly loaded,", plugin, filename);
+        logger.error("PluginManager", "but somewhy is not ok, deleting it");
         delete plugin;
         return nullptr;
     }

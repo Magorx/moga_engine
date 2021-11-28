@@ -41,6 +41,10 @@ RedactorEngine::~RedactorEngine() {
     delete tool_manager;
 }
 
-void RedactorEngine::load_plugin(const char *filename) {
-    plugin_manager->load(filename, get_plugin_interface());
+bool RedactorEngine::load_plugin(const char *filename) {
+    if (plugin_manager->load(filename, get_plugin_interface())) {
+        return true;
+    } else {
+        return false;
+    }
 }

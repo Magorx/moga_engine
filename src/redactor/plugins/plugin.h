@@ -12,7 +12,7 @@ class RedactorPlugin {
     const PPluginInfo      *lib;
     const PPluginInterface *interface;
 
-    int status = 1;
+    int status;
 
 public:
     RedactorPlugin(const char *fileName, const PAppInterface *appInterface);
@@ -26,21 +26,11 @@ public:
 
     PPreviewLayerPolicy getFlushPolicy() { return interface->general.get_flush_policy(); }
 
-    void on_mouse_press(const Vec2d &position) {
-        interface->tool.on_press(to_pvec2d(position));
-    }
+    void on_mouse_press(const Vec2d &position);
+    void on_mouse_move(const Vec2d &from, const Vec2d &to);
+    void on_mouse_release(const Vec2d &position);
 
-    void on_mouse_move(const Vec2d &from, const Vec2d &to) {
-        interface->tool.on_move(to_pvec2d(from), to_pvec2d(to));
-    }
-
-    void on_mouse_release(const Vec2d &position) {
-        interface->tool.on_release(to_pvec2d(position));
-    }
-
-    void apply() {
-        interface->effect.apply();
-    }
+    void apply();
 
     bool is_ok() {
         return !status;

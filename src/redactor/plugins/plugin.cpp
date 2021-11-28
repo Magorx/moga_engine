@@ -6,9 +6,11 @@
 typedef const PPluginInterface* (*plugin_init_func)();
 
 RedactorPlugin::RedactorPlugin(const char *fileName, const PAppInterface *appInterface) {
+    status = -1;
+
     lib_handle = dlopen(fileName, RTLD_NOW);
     if (lib_handle == nullptr) {
-        logger.error("Plugin", "can't load plugin named [%s]", fileName);
+        logger.error("Plugin", "can't dlopen plugin named [%s]: %s", fileName, dlerror());
         return;
     }
 
@@ -55,7 +57,27 @@ RedactorPlugin::~RedactorPlugin() {
         status = -1;
     }
 
-    if (dlclose(lib_handle) != 0) {
-        logger.error("~Plugin", "can't close plugin: %s", dlerror());
+    if (!lib_handle) {
+        logger.error("~Plugin", "a plugin doesn't even have dl_handle");
+    } else {
+        if (dlclose(lib_handle) != 0) {
+            logger.error("~Plugin", "can't close plugin: %s", dlerror());
+        }
     }
+}
+
+void RedactorPlugin::on_mouse_press(const Vec2d &position) {
+    interface->tool.on_press(to_pvec2d(position));
+}
+
+void RedactorPlugin::on_mouse_move(const Vec2d &from, const Vec2d &to) {
+    interface->tool.on_move(to_pvec2d(from), to_pvec2d(to));
+}
+
+void RedactorPlugin::on_mouse_release(const Vec2d &position) {
+    interface->tool.on_release(to_pvec2d(position));
+}
+
+void RedactorPlugin::apply() {
+    interface->effect.apply();
 }

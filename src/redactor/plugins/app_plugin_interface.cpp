@@ -5,12 +5,27 @@
 
 namespace appintr {
 
-#define INIT_DRAW_OBJECTS_                                   \
-auto tool_manager = App.app_engine->get_tool_manager(); if (!tool_manager) return; \
-auto canvas = tool_manager->get_active_canvas();  if (!canvas) return; \
-Layer *layer = nullptr; \
-if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) layer = canvas->get_active_layer(); else canvas->get_draw_layer(); if (!layer) return;        \
-auto renderer     = App.app_engine->visual->get_renderer(); if (!renderer) return; \
+#define INIT_DRAW_OBJECTS_                                      \
+auto tool_manager = App.app_engine->get_tool_manager();         \
+    if (!tool_manager) {                                        \
+        return;                                                 \
+    }                                                           \
+    auto canvas = tool_manager->get_active_canvas();            \
+    if (!canvas) {                                              \
+        return;                                                 \
+    }                                                           \
+    Layer *layer = nullptr;                                     \
+    if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) { \
+        layer = canvas->get_active_layer();                     \
+    } else {                                                    \
+        layer = canvas->get_draw_layer();                       \
+    }                                                           \
+    if (!layer) {                                               \
+        return;                                                 \
+    }                                                           \
+    auto renderer = App.app_engine->visual->get_renderer();     \
+    if (!renderer)                                              \
+        return;                                                 \
 
 #define PROCESS_RMODE_(mode) \
 do { auto rstate = renderer->get_rstate(); \
@@ -19,7 +34,7 @@ if (mode->shader) rstate->rmode.shader = (RShader*) mode->shader; } while(0)
 
 
 void render_circle(PVec2f position, float radius, PRGBA color, const PRenderMode *render_mode) {
-    INIT_DRAW_OBJECTS_;
+    INIT_DRAW_OBJECTS_
 
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);

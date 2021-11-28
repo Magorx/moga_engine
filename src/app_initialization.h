@@ -54,29 +54,32 @@ void initialize_photoshop(RedactorEngine &moga) {
     opt_panel->layout_add(new_effect_window, 1.5);
     new_effect_window->e_clicked.add(new AddNewEffectManagerWindowReaction(&moga));
     // ==================================================================================
+    auto plugin_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
+    plugin_button->add_label("Plugin", App.font.size.basic_menu, App.font.color.basic_menu);
+
+    opt_panel->layout_add(plugin_button, 1.5);
+    plugin_button->e_clicked.add(new LoadPluginDialogReaction(&moga));
+    // ==================================================================================
+
+    plugin_button->e_clicked.emit({});
+    const char *open_plugin = "./loochek_brush.so";
+    
+    const char *c = open_plugin;
+    while (*c) {
+        moga.main_view->e_text_enter.emit({(uint32_t) *c});
+        ++c;
+    }
+
+    moga.main_view->e_key_down.emit({Keyboard::Key::enter});
+    moga.main_view->e_key_up.emit({Keyboard::Key::enter});
+
+    // ==================================================================================
 
     spawn_canvas_window(&moga, {{800, 100}, {300, 400}});
 
     spawn_color_picker_window(&moga, {{550, 100}, {200, 240}});
 
     spawn_tool_picker_window(&moga, {{200, 100}, {200, 200}});
-
-    // ==================================================================================
-
-    opt_panel->add_spaceholder(5);
-
-    // ==================================================================================
-
-    auto dialog = new v_DialogWindow("Dialogus", 300, 5, -30);
-
-    dialog->add_slider("Widht", 100);
-    dialog->add_color_picker(200);
-    dialog->add_slider("Height", 100);
-
-    dialog->toggle_close_button();
-    dialog->toggle_hide_button();
-
-    moga.add_view(dialog);
 
     // ==================================================================================
 

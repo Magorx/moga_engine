@@ -47,11 +47,11 @@ public:
     ~Canvas();
 
     Layer *get_active_layer() { return active_layer; }
-    Layer *get_final_layer() { return final_layer; }
-    Layer *get_draw_layer() { return draw_layer; }
+    Layer *get_final_layer()  { return final_layer; }
+    Layer *get_draw_layer()   { return draw_layer; }
 
     inline void force_redraw() { _to_redraw = true; }
-    inline bool to_redraw() { return _to_redraw; }
+    inline bool to_redraw()    { return _to_redraw; }
 
     inline void set_draw_mode(DrawMode draw_mode_) { draw_mode = draw_mode_; }
     inline DrawMode get_draw_mode() const { return draw_mode; }

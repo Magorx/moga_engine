@@ -456,6 +456,30 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
     return window;
 }
 
+class LoadPluginReaction : public EventReaction<Event::Clicked> {
+    RedactorEngine *engine;
+    char *path;
+
+public:
+    LoadPluginReaction(RedactorEngine *engine):
+    engine(engine),
+    path(nullptr)
+    {}
+
+    char **get_path_ptr() { return &path; }
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+        bool loaded = engine->load_plugin(path);
+
+        if (!loaded) {
+            auto error_window = v_DialogWindow::Error(200, "Can't load the plugin");
+            engine->add_view(error_window);
+        }
+
+        return EventAccResult::none;
+    }
+};
+
 v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window = new v_DialogWindow("Effects", body.size.x());
 
@@ -480,6 +504,25 @@ v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &bod
     }
 
     return window;
+}
+
+v_Window *spawn_load_plugin_dialog_window(RedactorEngine *engine) {
+    auto dw = new v_DialogWindow("Load plugin", 200);
+    engine->add_view(dw);
+
+    auto path = dw->add_field("Path");
+    auto open_button = dw->add_accept_button("Open");
+
+    auto open_reaction = new LoadPluginReaction(engine);
+    open_button->e_clicked.add(open_reaction);
+
+    path->e_text_changed.add(new TextFieldChangeStringSynchronizer(open_reaction->get_path_ptr()));
+
+    dw->make_closing_field(path, open_button);
+
+    dw->select_first_field();
+
+    return dw;
 }
 
 class AddNewCanvasReaction : public EventReaction<Event::Clicked> {
@@ -541,6 +584,22 @@ public:
     EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
 
         spawn_effect_picker_window(engine, {engine->random_screen_pos(), {200, 200}});
+
+        return EventAccResult::none;
+    }
+};
+
+class LoadPluginDialogReaction : public EventReaction<Event::Clicked> {
+    RedactorEngine *engine;
+
+public:
+    LoadPluginDialogReaction(RedactorEngine *engine):
+    engine(engine)
+    {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+
+        spawn_load_plugin_dialog_window(engine);
 
         return EventAccResult::none;
     }

@@ -12,7 +12,7 @@
 
 
 class RedactorEngine : public MogaEngine {
-    ToolManager *tool_manager;
+    ToolManager   *tool_manager;
     EffectManager *effect_manager;
     PluginManager *plugin_manager;
 
@@ -30,5 +30,5 @@ public:
 
     inline PAppInterface *get_plugin_interface() { return plugin_interface; }
 
-    void load_plugin(const char *filename);
+    bool load_plugin(const char *filename);
 };
