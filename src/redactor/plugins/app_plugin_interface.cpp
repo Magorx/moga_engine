@@ -138,7 +138,7 @@ void general_release_pixels(PRGBA *pixels) {
 void general_log(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    logger.log("@@@@", "plugin", fmt, args);
+    logger.log((int) Logger::Level::warning, "@@@@", "plugin", fmt, args);
     va_end(args);
 }
 

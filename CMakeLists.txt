@@ -155,7 +155,8 @@ target_link_libraries(moga sfml-graphics sfml-window sfml-system)
 target_link_libraries(moga ${OPENGL_LIBRARIES})
 
 # aux_source_directory(src/collection/plugins ERASER_SOURCES)
-add_library(Brush SHARED src/collections/plugins/brush.cpp)
+add_library(Edger SHARED src/collections/plugins/edger.cpp)
+add_library(Stamp SHARED src/collections/plugins/stamp.cpp)
 
 # add_custom_target(rebuild_plugins
 #         COMMAND convert image.ppm image.png

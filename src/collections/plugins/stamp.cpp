@@ -1,5 +1,9 @@
 #include "redactor/plugin_std.h"
 
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+
 static PPluginStatus init(const PAppInterface* appInterface);
 static PPluginStatus deinit();
 
@@ -52,10 +56,10 @@ const PPluginInfo gPluginInfo =
 
     &gPluginInterface,
 
-    "Brrrrh",
+    "Stamp",
     "1.0",
-    "loochek",
-    "Simple circle brush",
+    "KCTF",
+    "You have sold your soul, congratulations!",
     
     PPT_TOOL
 };
@@ -71,8 +75,10 @@ extern "C" const PPluginInterface *get_plugin_interface()
 
 static PPluginStatus init(const PAppInterface* appInterface)
 {
+    srand(time(NULL));
+
     gAppInterface = appInterface;
-    appInterface->general.log("Brush: succesful initialization!");
+    appInterface->general.log("Stamp: succesful initialization!");
     return PPS_OK; 
 }
 
@@ -99,8 +105,6 @@ static PPreviewLayerPolicy getFlushPolicy()
     return PPLP_BLEND;
 }
 
-#include <cstdio>
-
 static void onMousePressed(PVec2f mousePos)
 {
     draw(mousePos);
@@ -108,11 +112,12 @@ static void onMousePressed(PVec2f mousePos)
 
 static void onMouseMove(PVec2f mouseOldPos, PVec2f mouseNewPos)
 {
-    draw(mouseNewPos);
+    // draw(mouseNewPos);
 }
 
 static void onMouseReleased(PVec2f mousePos)
 {
+    gAppInterface->general.log("Congratulations, you have sold your soul to Max Gorishniy!");
 }
 
 static bool enableExtension(const char *name)
@@ -125,11 +130,38 @@ static void *getExtensionFunc(const char *name)
     return nullptr;
 }
 
+PRGBA negative(PRGBA col) {
+    return {(unsigned char) (255 - col.r), 
+            (unsigned char) (255 - col.g),
+            (unsigned char) (255 - col.b),
+            col.a};
+}
+
+PRGBA shift(PRGBA col) {
+    return {col.g, col.b, col.r, col.a};
+}
+
 static void draw(PVec2f mousePos)
 {
-    PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_ACTIVE, nullptr };
-    gAppInterface->render.circle(mousePos,
-                                 gAppInterface->general.get_size(),
-                                 gAppInterface->general.get_color(),
-                                 &render_mode);
+    PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, nullptr };
+
+    float size = gAppInterface->general.get_size() * 2.5;
+    PRGBA color = gAppInterface->general.get_color();
+
+    int rnd = rand();
+
+    for (int i = 1; i < 50; ++i) {
+        PRGBA col = color;
+        if ((i + (rnd % 2)) % 2) {
+            col = negative(col);
+        }
+        for (int j = 0; j < i % 7 + (rnd % 10); ++j) {
+            col = shift(col);
+        }
+
+        float frac = (float) i / 10;
+        frac = exp(frac);
+
+        gAppInterface->render.circle(mousePos, size / frac, col, &render_mode);
+    }
 }
