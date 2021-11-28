@@ -23,7 +23,7 @@ text_color(RColor{255, 255, 255})
     header->get_button_close()->e_close.add(new AVCloseAcceptor(this));
     header->get_button_hide()->e_toggle_activity.add(new HideableActivityToggleAcceptor(this));
     
-    header->add_label(name, Resources.font.size.basic_header, text_color.rgb());
+    header->add_label(name, App.font.size.basic_header, text_color.rgb());
     
     set_focuseable(true);
     selectable_blocking_node = true;
@@ -31,7 +31,7 @@ text_color(RColor{255, 255, 255})
     e_key_down.add(new AVSelectableFocuser(this), false);
 
     auto content_appr = new AppearenceColor({230, 230, 230, 255});
-    Resources.add_appr(content_appr);
+    App.add_appr(content_appr);
     content->set_appearence(content_appr);
     add_subview(content);
 
@@ -57,7 +57,7 @@ void v_Window::add_subview(AbstractView *subview) {
 
 void v_Window::set_content_color(RColor color) {
     auto content_appr = new AppearenceColor(color);
-    Resources.add_appr(content_appr);
+    App.add_appr(content_appr);
     content->set_appearence(content_appr);
 }
 

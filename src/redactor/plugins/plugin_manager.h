@@ -5,17 +5,20 @@
 
 #include <vector>
 
+
 class ToolManager;
 class Tool;
 class EffectManager;
 
 class PluginManager {
-    std::vector<PPluginInfo*> plugins;
+    std::vector<RedactorPlugin*> plugins;
     ToolManager   *tool_manager;
     EffectManager *effect_manager;
 
 public:
     PluginManager(ToolManager *mg_tool, EffectManager *mg_effect);
+    ~PluginManager();
 
-    PPluginInterface *load(const char filename);
+    RedactorPlugin *load(const char *filename, PAppInterface *app_interface);
+    void fit_plugin(RedactorPlugin *plugin);
 };

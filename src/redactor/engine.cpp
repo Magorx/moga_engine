@@ -3,12 +3,15 @@
 
 #include "overall_redactor_reactions.h"
 
+#include "redactor/plugins/app_plugin_interface.h"
+
 RedactorEngine::RedactorEngine(RWindow *window,
                                const char *name) :
 MogaEngine(window, name),
 tool_manager(new ToolManager(visual->get_renderer())),
 effect_manager(new EffectManager),
-plugin_manager(new PluginManager(tool_manager, effect_manager))
+plugin_manager(new PluginManager(tool_manager, effect_manager)),
+plugin_interface(new PAppInterface)
 {
     t_Brush *t_brush         = new t_Brush(tool_manager);
     t_Eraser *t_eraser       = new t_Eraser(tool_manager);
@@ -27,8 +30,17 @@ plugin_manager(new PluginManager(tool_manager, effect_manager))
 
     main_view->e_key_down.add(new ToolManagerHotkeys(tool_manager), false);
     main_view->e_scroll.add(new ToolManagerScrollShiftToolSize(tool_manager), false);
+
+    effect_manager->add(new PluginEffect("Pulgin"));
+    effect_manager->add(new PluginEffect("Bersu"));
+
+    appintr::init(plugin_interface);
 }
 
 RedactorEngine::~RedactorEngine() {
     delete tool_manager;
+}
+
+void RedactorEngine::load_plugin(const char *filename) {
+    plugin_manager->load(filename, get_plugin_interface());
 }

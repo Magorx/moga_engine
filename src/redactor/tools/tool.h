@@ -75,5 +75,9 @@ public:
         set_size(size + delta);
     }
 
+    double get_size() {
+        return size;
+    }
+
     inline Renderer *get_renderer() { return renderer; }
 };

@@ -16,13 +16,19 @@ class RedactorEngine : public MogaEngine {
     EffectManager *effect_manager;
     PluginManager *plugin_manager;
 
+    PAppInterface *plugin_interface;
+
 public:
     RedactorEngine(RWindow *window,
                    const char *name);
     
     ~RedactorEngine();
     
-    inline ToolManager *get_tool_manager() { return tool_manager; }
+    inline ToolManager   *get_tool_manager()   { return tool_manager; }
     inline EffectManager *get_effect_manager() { return effect_manager; }
-    inline PluginManager *get_plugin_manager() { return plugin_manager; };
+    inline PluginManager *get_plugin_manager() { return plugin_manager; }
+
+    inline PAppInterface *get_plugin_interface() { return plugin_interface; }
+
+    void load_plugin(const char *filename);
 };

@@ -31,6 +31,7 @@ public:
     inline Tool *get_active_tool() { return active_tool; }
 
     void set_active_canvas(Canvas *canvas);
+    Canvas *get_active_canvas() { return active_canvas; }
 
     virtual void set_draw_layer(Layer* layer) override;
     virtual void set_draw_color(RGBA color) override;

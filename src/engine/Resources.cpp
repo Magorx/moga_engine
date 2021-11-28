@@ -1,5 +1,7 @@
 #include "Resources.h"
+
 #include "engine/moga_engine.h"
+#include "redactor/engine.h"
 
 #include <cstring>
 
@@ -77,10 +79,11 @@ void load_animation(AnimationResourse &res, const std::vector<const char*> &fram
 #define SHDR(path) RES("shader/") path
 
 
-void ResourcesHolder::init(MogaEngine *engine_) {
+void ResourcesHolder::init(RedactorEngine *engine_) {
     shader.name.rgb_mapping = SHDR("rgb_mapping.glsl");
 
     engine = engine_;
+    app_engine = engine_;
 
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
     texture.dot = load_texture(IMG("dot.png"));
@@ -310,4 +313,4 @@ RShader *ResourcesHolder::create_frag_shader(const char *filename) {
 }
 
 
-ResourcesHolder Resources {nullptr, {}, {}, {}, {}, {}, {}, {}, {}, {}};
+ResourcesHolder App {nullptr, nullptr, {}, {}, {}, {}, {}, {}, {}, {}, {}};

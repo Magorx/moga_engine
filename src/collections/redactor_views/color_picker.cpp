@@ -22,7 +22,7 @@ v_horz_layout(new v_HorizontalLayout(
 ),
 
 appr_field(new AppearenceTexture(nullptr)),
-appr_spectrum(new AppearenceTexture(Resources.color.spectrum)),
+appr_spectrum(new AppearenceTexture(App.color.spectrum)),
 appr_alpha(new AppearenceTexture(nullptr)),
 
 v_field(new v_Magnetic({0, 0}, {0, PX_COLOR_PICKER_CIRCLE_SIZE})),
@@ -44,9 +44,9 @@ alpha_texture(nullptr)
     
     add_subview(v_vert_layout);
 
-    v_vert_layout->add_spaceholder(0.35)->set_appearence(Resources.add_appr(new AppearenceColor(Resources.texture.window.color.basic_frame)));
+    v_vert_layout->add_spaceholder(0.35)->set_appearence(App.add_appr(new AppearenceColor(App.texture.window.color.basic_frame)));
     v_vert_layout->layout_add(v_field, 8);
-    v_vert_layout->add_spaceholder(0.35)->set_appearence(Resources.add_appr(new AppearenceColor(Resources.texture.window.color.basic_frame)));
+    v_vert_layout->add_spaceholder(0.35)->set_appearence(App.add_appr(new AppearenceColor(App.texture.window.color.basic_frame)));
     v_vert_layout->layout_add(v_spectrum, 1);
     v_vert_layout->layout_add(v_alpha, 1);
 
@@ -64,12 +64,12 @@ alpha_texture(nullptr)
 
     // scaling squares to fit right in
 
-    auto appr = new AppearenceTexture(Resources.texture.transparency_squares, v_transparency->get_body().size, true);
-    auto _trs_size = Resources.texture.transparency_squares->getSize();
+    auto appr = new AppearenceTexture(App.texture.transparency_squares, v_transparency->get_body().size, true);
+    auto _trs_size = App.texture.transparency_squares->getSize();
     Vec2d trs_size = {(double) _trs_size.x, (double) _trs_size.y};
     double scale_y = trs_size.y() / v_transparency->get_body().size.y();
     appr->set_transform(appr->transform * scale_y);
-    v_transparency->set_appearence(Resources.add_appr(appr));
+    v_transparency->set_appearence(App.add_appr(appr));
     
 
     //  ======================================================================= Geometry is done

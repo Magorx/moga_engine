@@ -10,15 +10,15 @@ inline MouseReactionStyle *basic_mouse_reaction_style(
     return new MouseReactionStyle {
         new AppearenceTexture(idle, transformation),
         new AppearenceTexture(pressed, transformation),
-        Resources.create_animation({
+        App.create_animation({
             pressed,
             hovered,
         }, 0.1, false, transformation),
-        Resources.create_animation({
+        App.create_animation({
             idle,
             hovered,
         }, 0.2, false, transformation),
-        Resources.create_animation({
+        App.create_animation({
             hovered,
             idle,
         }, 0.2, false, transformation),
@@ -33,49 +33,49 @@ namespace Button {
 
     MouseReactionStyle *close() {
         return basic_mouse_reaction_style(
-            Resources.texture.button.close.idle,
-            Resources.texture.button.close.hovered,
-            Resources.texture.button.close.pressed
+            App.texture.button.close.idle,
+            App.texture.button.close.hovered,
+            App.texture.button.close.pressed
         );
     }
 
     MouseReactionStyle *hide() {
         return basic_mouse_reaction_style(
-            Resources.texture.button.hide.idle,
-            Resources.texture.button.hide.hovered,
-            Resources.texture.button.hide.pressed
+            App.texture.button.hide.idle,
+            App.texture.button.hide.hovered,
+            App.texture.button.hide.pressed
         );
     }
 
     MouseReactionStyle *basic_menu() {
         return basic_mouse_reaction_style(
-            Resources.texture.button.basic.idle,
-            Resources.texture.button.basic.hovered,
-            Resources.texture.button.basic.pressed
+            App.texture.button.basic.idle,
+            App.texture.button.basic.hovered,
+            App.texture.button.basic.pressed
         );
     }
 
     MouseReactionStyle *plus() {
         return basic_mouse_reaction_style(
-            Resources.texture.button.plus.idle,
-            Resources.texture.button.plus.hovered,
-            Resources.texture.button.plus.pressed
+            App.texture.button.plus.idle,
+            App.texture.button.plus.hovered,
+            App.texture.button.plus.pressed
         );
     }
 
     MouseReactionStyle *save() {
         return basic_mouse_reaction_style(
-            Resources.texture.button.save.idle,
-            Resources.texture.button.save.hovered,
-            Resources.texture.button.save.pressed
+            App.texture.button.save.idle,
+            App.texture.button.save.hovered,
+            App.texture.button.save.pressed
         );
     }
 
     MouseReactionStyle *rgb() {
         return basic_mouse_reaction_style(
-            Resources.texture.button.rgb.idle,
-            Resources.texture.button.rgb.hovered,
-            Resources.texture.button.rgb.pressed
+            App.texture.button.rgb.idle,
+            App.texture.button.rgb.hovered,
+            App.texture.button.rgb.pressed
         );
     }
 
@@ -84,42 +84,42 @@ namespace Button {
 
     MouseReactionStyle *red() {
         return basic_mouse_reaction_style(
-            Resources.create_color({MAIN.r, SCND.r, SCND.r}),
-            Resources.create_color({MAIN.g, SCND.g, SCND.g}),
-            Resources.create_color({MAIN.b, SCND.b, SCND.b})
+            App.create_color({MAIN.r, SCND.r, SCND.r}),
+            App.create_color({MAIN.g, SCND.g, SCND.g}),
+            App.create_color({MAIN.b, SCND.b, SCND.b})
         );
     }
 
     MouseReactionStyle *green() {
         return basic_mouse_reaction_style(
-            Resources.create_color({SCND.r, MAIN.r, SCND.r}),
-            Resources.create_color({SCND.g, MAIN.g, SCND.g}),
-            Resources.create_color({SCND.b, MAIN.b, SCND.b})
+            App.create_color({SCND.r, MAIN.r, SCND.r}),
+            App.create_color({SCND.g, MAIN.g, SCND.g}),
+            App.create_color({SCND.b, MAIN.b, SCND.b})
         );
     }
 
     MouseReactionStyle *blue() {
         return basic_mouse_reaction_style(
-            Resources.create_color({SCND.r, SCND.r, MAIN.r}),
-            Resources.create_color({SCND.g, SCND.g, MAIN.g}),
-            Resources.create_color({SCND.b, SCND.b, MAIN.b})
+            App.create_color({SCND.r, SCND.r, MAIN.r}),
+            App.create_color({SCND.g, SCND.g, MAIN.g}),
+            App.create_color({SCND.b, SCND.b, MAIN.b})
         );
     }
 
     namespace Arrow {
         MouseReactionStyle *right() {
             return basic_mouse_reaction_style(
-                Resources.texture.button.arrow.right.idle,
-                Resources.texture.button.arrow.right.hovered,
-                Resources.texture.button.arrow.right.pressed
+                App.texture.button.arrow.right.idle,
+                App.texture.button.arrow.right.hovered,
+                App.texture.button.arrow.right.pressed
             );
         }
 
         MouseReactionStyle *left() {
             return basic_mouse_reaction_style(
-                Resources.texture.button.arrow.right.idle,
-                Resources.texture.button.arrow.right.hovered,
-                Resources.texture.button.arrow.right.pressed,
+                App.texture.button.arrow.right.idle,
+                App.texture.button.arrow.right.hovered,
+                App.texture.button.arrow.right.pressed,
                 {-1, 1}
             );
         }

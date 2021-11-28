@@ -5,10 +5,10 @@
 #include "redactor/layer/layer.h"
 #include "redactor/canvas/canvas.h"
 
-#include "redactor/plugins/plugin.h"
+#include "redactor/plugin_std.h"
 #include "redactor/plugins/settings_window.h"
 
-class PluginEffect : public Effect<Layer>, public WindowSetter {
+class PluginEffect : public Effect<Layer> {
 protected:
     const char *name;
     PluginSettingsWindow *w_settings;
@@ -19,4 +19,6 @@ public:
     const char *get_name() const { return name; }
 
     virtual void apply() override;
+
+    virtual void toggle_settings();
 };

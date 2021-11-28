@@ -65,8 +65,9 @@ public:
     void draw_circle(Vec2d pos, const double rad, const RGBA &color);
     void draw_line(Vec2d p1, Vec2d p2, const RGBA &color);
     void draw_square(Vec2d pos, const double size, const RGBA &color);
+    void draw_triangle(Vec2d p1, Vec2d p2, Vec2d p3, const RGBA &color);
     void draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color, const RGBA &bounds_color = {0, 0, 0, 0});
-    void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const RFont *font = Resources.font.basic);
+    void draw_text(const char *label, int size, Vec2d pos, const RGBA &back_color, const RGBA &font_color,  bool to_background, bool to_centrize = false, const RFont *font = App.font.basic);
 
     void apr_draw_circle(Vec2d pos, double rad, int granularity);
     void apr_draw_rectangle(Vec2d pos, const Vec2d size);
@@ -76,8 +77,8 @@ public:
     inline void set_appearence(Appearence *appearence_) { state->appearence = appearence_; }
     inline void set_render_state(RState rstate) { state->rmode = rstate; }
 
-    static Vec2d get_text_size(const char *text, int char_size, const RFont *font = Resources.font.basic);
-    static Vec2d get_char_position(const char *text, int idx, int char_size, const RFont *font = Resources.font.basic);
+    static Vec2d get_text_size(const char *text, int char_size, const RFont *font = App.font.basic);
+    static Vec2d get_char_position(const char *text, int idx, int char_size, const RFont *font = App.font.basic);
     static RGBA get_pixel_color(Vec2d pos, const RTexture *texture);
 
     void push_target(sf::RenderTarget *target) {

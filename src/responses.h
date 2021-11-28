@@ -29,7 +29,7 @@ public:
         char *cur_label = window->get_header()->get_label_text();
         std::string str = cur_label;
         str[str.size() - 1] = '0' + ret;
-        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.color.basic_header);
+        window->get_header()->add_label(str.c_str(), App.font.size.basic_header, App.font.color.basic_header);
 
         return EventAccResult::cont;
     }
@@ -102,7 +102,7 @@ public:
         char *cur_label = window->get_header()->get_label_text();
         std::string str = cur_label;
         str[str.size() - 1] = '0' + ret;
-        window->get_header()->add_label(str.c_str(), Resources.font.size.basic_header, Resources.font.color.basic_header);
+        window->get_header()->add_label(str.c_str(), App.font.size.basic_header, App.font.color.basic_header);
 
         auto effect = new eff_RGBSplined(acceptor->get_active_layer());
         acceptor->get_active_layer()->add_effect(effect);
@@ -433,12 +433,12 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     slider->set_fraction({0, 0.50});
     slider->toggle_x_restriction();
-    slider->set_appearence(Resources.add_appr(new AppearenceColor({180, 160, 190})));
-    slider->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
+    slider->set_appearence(App.add_appr(new AppearenceColor({180, 160, 190})));
+    slider->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
 
-    b_brush->add_label("[b] Bruh", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
-    b_eraser->add_label("[e] Eraer", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
-    b_pipette->add_label("[q] Pipete", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    b_brush->add_label("[b] Bruh", App.font.size.basic_menu, App.font.color.basic_menu);
+    b_eraser->add_label("[e] Eraer", App.font.size.basic_menu, App.font.color.basic_menu);
+    b_pipette->add_label("[q] Pipete", App.font.size.basic_menu, App.font.color.basic_menu);
 
     b_brush->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 0));
     b_eraser->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 1));
@@ -453,11 +453,23 @@ v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &bod
     auto window = new v_DialogWindow("Effects", body.size.x());
 
     engine->add_view(window);
+    const double pd_coef = 0.1;
+    const double button_begin = body.size.x() * pd_coef;
+    const double button_width = body.size.x() * (1 - 2 * pd_coef);
 
     EffectManager *mg_effects = engine->get_effect_manager();
+    std::vector<AbstractView*> buttons;
     for (auto effect : mg_effects->get_effects()) {
         const char *name = effect->get_name();
-        window->add_text_button(name);
+        auto button = window->add_text_button(name, true);
+        buttons.push_back(button);
+    }
+
+    for (auto button : buttons) {
+        button->get_body().position.content[0] = button_begin;
+        button->get_body().size.content[0] = button_width;
+        button->recalculate_fit_body();
+        button->refit();
     }
 
     return window;

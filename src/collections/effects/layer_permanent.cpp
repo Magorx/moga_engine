@@ -10,3 +10,7 @@ w_settings(nullptr)
 void PluginEffect::apply() {
 
 }
+
+void PluginEffect::toggle_settings() {
+    // if ()
+}

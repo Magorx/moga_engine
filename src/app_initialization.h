@@ -11,8 +11,8 @@ void initialize_photoshop(RedactorEngine &moga) {
     const double scr_width = moga.get_screen_width();
     // const double scr_height = moga.get_screen_height();
 
-    auto appr_frame_box = new AppearenceTexture(Resources.texture.frame_gray);
-    v_HorizontalLayout *opt_panel = new v_HorizontalLayout({{0, 0}, {scr_width, Resources.font.size.basic_menu + 4.0}}, {{0, 0}, {1, 1}}, 0, nullptr, nullptr);
+    auto appr_frame_box = new AppearenceTexture(App.texture.frame_gray);
+    v_HorizontalLayout *opt_panel = new v_HorizontalLayout({{0, 0}, {scr_width, App.font.size.basic_menu + 4.0}}, {{0, 0}, {1, 1}}, 0, nullptr, nullptr);
     opt_panel->set_appearence(appr_frame_box);
     
     moga.add_view(opt_panel);
@@ -21,7 +21,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto new_canvas_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     new_canvas_button->e_clicked.add(new AddNewCanvasReaction(&moga));
-    new_canvas_button->add_label("Canvas", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    new_canvas_button->add_label("Canvas", App.font.size.basic_menu, App.font.color.basic_menu);
 
     opt_panel->layout_add(new_canvas_button);
     
@@ -29,7 +29,7 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto new_picker_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     new_picker_button->e_clicked.add(new AddNewColorPickerReaction(&moga));
-    new_picker_button->add_label("Color Picker", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    new_picker_button->add_label("Color Picker", App.font.size.basic_menu, App.font.color.basic_menu);
 
     opt_panel->layout_add(new_picker_button, 1.5);
 
@@ -37,19 +37,19 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto open_img_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
     open_img_button->e_clicked.add(new OpenImage(&moga));
-    open_img_button->add_label("Open Image", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    open_img_button->add_label("Open Image", App.font.size.basic_menu, App.font.color.basic_menu);
 
     opt_panel->layout_add(open_img_button, 1.5);
 
     // ==================================================================================
     auto new_tool_window = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    new_tool_window->add_label("Tools", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    new_tool_window->add_label("Tools", App.font.size.basic_menu, App.font.color.basic_menu);
 
     opt_panel->layout_add(new_tool_window, 1.5);
     new_tool_window->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
     // ==================================================================================
     auto new_effect_window = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    new_effect_window->add_label("Effects", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    new_effect_window->add_label("Effects", App.font.size.basic_menu, App.font.color.basic_menu);
 
     opt_panel->layout_add(new_effect_window, 1.5);
     new_effect_window->e_clicked.add(new AddNewEffectManagerWindowReaction(&moga));
@@ -69,9 +69,9 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     auto dialog = new v_DialogWindow("Dialogus", 300, 5, -30);
 
-    auto sld = dialog->add_slider("Widht", 100);
-    auto pkr = dialog->add_color_picker(200);
-    auto hg = dialog->add_slider("Height", 100);
+    dialog->add_slider("Widht", 100);
+    dialog->add_color_picker(200);
+    dialog->add_slider("Height", 100);
 
     dialog->toggle_close_button();
     dialog->toggle_hide_button();

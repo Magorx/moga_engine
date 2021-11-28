@@ -8,6 +8,7 @@
 
 
 class MogaEngine;
+class RedactorEngine;
 
 
 struct AnimationResourse {
@@ -50,6 +51,7 @@ struct res_WindowResources {
 
 struct ResourcesHolder {
     MogaEngine *engine;
+    RedactorEngine *app_engine;
 
     std::vector<RTexture*> created_textures;
     std::vector<Appearence*>  created_apprs;
@@ -168,7 +170,7 @@ struct ResourcesHolder {
 
     ~ResourcesHolder();
 
-    void init(MogaEngine *engine_);
+    void init(RedactorEngine *engine_);
 
     AppearenceAnimation *create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped = false, Vec2d transform = {1, 1}, double time_coef = 1);
     RTexture *create_color(RGBA color);
@@ -176,4 +178,4 @@ struct ResourcesHolder {
     RShader *create_frag_shader(const char *filename);
 };
 
-extern ResourcesHolder Resources;
+extern ResourcesHolder App;

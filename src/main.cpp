@@ -13,7 +13,7 @@ int main(int argc, char*[]) {
     else          window = MogaEngine::create_window("MOGADACTOR", {1200, 800});
 
     RedactorEngine moga(window, "MOGADACTOR");
-    Resources.init(&moga);
+    App.init(&moga);
 
     initialize_photoshop(moga);
 

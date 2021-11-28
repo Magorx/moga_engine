@@ -4,7 +4,7 @@
 #include "collections/views/dialog_window.h"
 class MogaEngine;
 
-#include "plugin.h"
+#include "redactor/plugin_std.h"
 
 
 extern const double PST_COLOR_PICKER_HEIGHT;

@@ -22,7 +22,7 @@ history(25)
     inter_action_layer = new Layer(renderer, this, size);
     transparency_squares_layer = new Layer(renderer, this, size);
 
-    transparency_squares_layer->fill_with(Resources.texture.transparency_squares);
+    transparency_squares_layer->fill_with(App.texture.transparency_squares);
 }
 
 Canvas::~Canvas() {

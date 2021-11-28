@@ -264,7 +264,7 @@ public:
 
     inline Appearence *get_appearence() { return appearence; }
 
-    inline MogaEngine *get_engine() { return Resources.engine; }
+    inline MogaEngine *get_engine() { return App.engine; }
 
     inline void centrize(ViewBody &other_body) {
         other_body.position = body.size / 2 - other_body.size / 2;

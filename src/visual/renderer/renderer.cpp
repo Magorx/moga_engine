@@ -52,6 +52,22 @@ void Renderer::draw_square(Vec2d pos, const double size, const RGBA &color) {
     state->target->draw(rect, state->rmode);
 }
 
+void Renderer::draw_triangle(Vec2d p1, Vec2d p2, Vec2d p3, const RGBA &color) {
+    p1 += state->offset;
+    p2 += state->offset;
+    p3 += state->offset;
+
+    sf::Color sf_color(color.r, color.g, color.b, color.a);
+
+    sf::Vertex buffer[3] = {
+        sf::Vertex({static_cast<float>(p1.x()), static_cast<float>(p1.y())}, sf_color),
+        sf::Vertex({static_cast<float>(p2.x()), static_cast<float>(p2.y())}, sf_color),
+        sf::Vertex({static_cast<float>(p3.x()), static_cast<float>(p3.y())}, sf_color),
+    };
+
+    state->target->draw(buffer, 3, sf::Triangles, state->rmode);
+}
+
 void Renderer::draw_rectangle(Vec2d pos, const Vec2d size, const RGBA &color, const RGBA &bounds_color) {
     pos += state->offset;
 

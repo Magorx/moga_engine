@@ -6,7 +6,7 @@ const int RGB_MAPPING_CNT = 3;
 
 
 eff_RGBSplined::eff_RGBSplined(Layer *layer) :
-ShaderEffect(layer, Resources.shader.name.rgb_mapping)
+ShaderEffect(layer, App.shader.name.rgb_mapping)
 {
     for (int i = 0; i < RGB_MAPPING_CNT; ++i) {
         mapping[i].resize(255);
@@ -15,7 +15,7 @@ ShaderEffect(layer, Resources.shader.name.rgb_mapping)
         }
     }
 
-    shader = Resources.create_frag_shader(Resources.shader.name.rgb_mapping);
+    shader = App.create_frag_shader(App.shader.name.rgb_mapping);
 
     shader->setUniformArray("red",   &mapping[0][0], mapping[0].size());
     shader->setUniformArray("green", &mapping[1][0], mapping[1].size());

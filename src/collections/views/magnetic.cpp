@@ -20,9 +20,9 @@ mag_radius(mag_radius)
     e_scroll.add(new AVMagneticScrollAcceptor(this));
 
     add_subview(dot);
-    auto appr = new AppearenceTexture(Resources.texture.dot);
+    auto appr = new AppearenceTexture(App.texture.dot);
     appr->set_screen_shift(-body.size/ 2);
-    dot->set_appearence(Resources.add_appr(appr));
+    dot->set_appearence(App.add_appr(appr));
 }
 
 void v_Magnetic::render(Renderer *renderer) {

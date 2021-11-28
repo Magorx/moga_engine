@@ -11,7 +11,7 @@ dots({
 }),
 output(this->body.size.x(), 0),
 
-dot_appr(new AppearenceTexture(Resources.texture.dot)),
+dot_appr(new AppearenceTexture(App.texture.dot)),
 
 curve_color(curve_color),
 mag_radius(mag_radius)
@@ -19,7 +19,7 @@ mag_radius(mag_radius)
     if (!(mag_radius == mag_radius)) e_mouse_press.add(new AVMissPressBlocker(this));
 
     auto appr = new AppearenceColor(background_color);
-    Resources.created_apprs.push_back(appr);
+    App.created_apprs.push_back(appr);
     set_appearence(appr);
     
     for (auto dot : dots) {

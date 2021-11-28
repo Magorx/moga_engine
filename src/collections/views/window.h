@@ -20,7 +20,7 @@ class v_Window : public v_Highlighter {
     SmartColor text_color;
 public:
     // v_Window(const char *name, const ViewBody &body, SmartColor *header_color, bool draggable = true, double header_size = PX_UTIL_HEADER_SIZE, AbstractView *parent = nullptr, double highlight_coef = 0);
-    v_Window(const char *name, const ViewBody &body, WindowStyle *style = Resources.add_style(StdStyle::Window::basic()), bool draggable = true, double header_size = PX_UTIL_HEADER_SIZE, AbstractView *parent = nullptr);
+    v_Window(const char *name, const ViewBody &body, WindowStyle *style = App.add_style(StdStyle::Window::basic()), bool draggable = true, double header_size = PX_UTIL_HEADER_SIZE, AbstractView *parent = nullptr);
 
     virtual void add_subview(AbstractView *subview) override;
 

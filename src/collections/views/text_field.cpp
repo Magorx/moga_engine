@@ -24,7 +24,7 @@ redactable(redactable)
     e_key_down.add(new AVSelectableFocuser(this));
     // e_mouse_press.add(new AVSelectablePressDefocuser(this));
 
-    set_appearence(Resources.add_appr(new AppearenceColor(frame_color)));
+    set_appearence(App.add_appr(new AppearenceColor(frame_color)));
 
     e_key_down.add(new KeyDownTextFieldAcceptor(this));
     e_key_up.add(new KeyUpTextFieldAcceptor(this));
@@ -36,17 +36,17 @@ redactable(redactable)
     display();
 
     v_cursor->set_appearence(
-        Resources.create_animation(
-            {Resources.create_color(Resources.color.text_field.basic.cursor), 
-             Resources.create_color({0, 0, 0, 0})},
+        App.create_animation(
+            {App.create_color(App.color.text_field.basic.cursor), 
+             App.create_color({0, 0, 0, 0})},
              SC_TF_BLINK, true
         )
     );
 
-    v_selection->set_appearence(Resources.add_appr(new AppearenceColor(Resources.color.text_field.basic.selection)));
+    v_selection->set_appearence(App.add_appr(new AppearenceColor(App.color.text_field.basic.selection)));
 
     add_subview(v_content);
-    v_content->set_appearence(Resources.add_appr(new AppearenceColor(content_color)));
+    v_content->set_appearence(App.add_appr(new AppearenceColor(content_color)));
 }
 
 v_TextField::~v_TextField() {

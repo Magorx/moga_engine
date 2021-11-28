@@ -2,6 +2,6 @@
 
 
 #include "tool.h"
-#include "redactor/plugins/plugin.h"
+#include "redactor/plugin_std.h"
 
 

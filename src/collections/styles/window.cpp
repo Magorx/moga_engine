@@ -9,7 +9,7 @@ namespace Window {
         return new WindowStyle {
             StdStyle::UtilBar::basic(),
             
-            new AppearenceTexture(Resources.texture.window.basic.frame)
+            new AppearenceTexture(App.texture.window.basic.frame)
         };
     }
 

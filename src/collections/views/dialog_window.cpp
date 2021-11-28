@@ -12,7 +12,7 @@ center_offset(center_offset),
 padding(padding),
 first_selectable(nullptr)
 {
-    Resources.engine->centrize_view_body(body);
+    App.engine->centrize_view_body(body);
     toggle_hide_button();
 
     get_content()->add_subview(v_stretcher);
@@ -101,14 +101,14 @@ v_Button *v_DialogWindow::add_text_button(const char *button_name,
 v_Button *v_DialogWindow::add_accept_button (const char *button_name, bool to_centrize, TextStyle *text_style) {
     return add_text_button(button_name,
                            to_centrize,
-                           Resources.add_style(StdStyle::Button::green()),
+                           App.add_style(StdStyle::Button::green()),
                            text_style);
 }
 
 v_Button *v_DialogWindow::add_decline_button(const char *button_name, bool to_centrize, TextStyle *text_style) {
     return add_text_button(button_name,
                            to_centrize,
-                           Resources.add_style(StdStyle::Button::red()),
+                           App.add_style(StdStyle::Button::red()),
                            text_style);
 }
 
@@ -138,9 +138,9 @@ v_Magnetic *v_DialogWindow::add_slider(const char *name, double length, RColor c
         {{field->get_body().size.x(), field->get_body().size.y() / 2}, {length, PX_MAG_DOT}},
         {0, Vec2d{PX_MAG_DOT, PX_MAG_DOT} + Vec2d{0, STICK_BOUND}}
     );
-    answer->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, {-answer->get_dot()->get_body().size.x() / 2, -STICK_BOUND / 2})));
+    answer->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick, {1, 1}, {-answer->get_dot()->get_body().size.x() / 2, -STICK_BOUND / 2})));
     answer->toggle_x_restriction();
-    answer->set_appearence(Resources.add_appr(new AppearenceColor(color)));
+    answer->set_appearence(App.add_appr(new AppearenceColor(color)));
     
     v_Highlighter *rect = new v_Highlighter({rect_pos, {field->get_body().size.x() + answer->get_body().size.x(), field->get_body().size.y()}});
     rect->add_subview(field);

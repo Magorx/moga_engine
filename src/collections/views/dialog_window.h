@@ -30,7 +30,7 @@ class v_DialogWindow : public v_Window {
     AbstractView *first_selectable;
 
 public:
-    v_DialogWindow(const char *name, double width, double padding = 5, double center_offset = 0, WindowStyle *style = Resources.add_style(StdStyle::Window::dialog()));
+    v_DialogWindow(const char *name, double width, double padding = 5, double center_offset = 0, WindowStyle *style = App.add_style(StdStyle::Window::dialog()));
 
     static v_DialogWindow *Error(double width, const char *message, const char *name = "Error", const char *button_text = "Dismiss");
 
@@ -40,16 +40,16 @@ public:
 
     v_Button *add_text_button(const char *button_name,
                               bool to_centrize = false,
-                              MouseReactionStyle *button_style = Resources.add_style(StdStyle::Button::blue()),
-                              TextStyle *text_style = Resources.add_style(StdStyle::Text::basic()));
+                              MouseReactionStyle *button_style = App.add_style(StdStyle::Button::blue()),
+                              TextStyle *text_style = App.add_style(StdStyle::Text::basic()));
 
-    v_Button *add_accept_button (const char *button_name, bool to_centrize = false, TextStyle *style = Resources.add_style(StdStyle::Text::basic()->negative()));
-    v_Button *add_decline_button(const char *button_name, bool to_centrize = false, TextStyle *style = Resources.add_style(StdStyle::Text::basic()->negative()));
+    v_Button *add_accept_button (const char *button_name, bool to_centrize = false, TextStyle *style = App.add_style(StdStyle::Text::basic()->negative()));
+    v_Button *add_decline_button(const char *button_name, bool to_centrize = false, TextStyle *style = App.add_style(StdStyle::Text::basic()->negative()));
 
     void make_closing_button(v_Button *closer);
     void make_closing_field(v_TextField *field, v_Button *acception_button = nullptr);
 
-    v_Magnetic *add_slider(const char *name, double length = 100, RColor color = Resources.color.slider.basic);
+    v_Magnetic *add_slider(const char *name, double length = 100, RColor color = App.color.slider.basic);
 
     v_ColorPicker *add_color_picker(const double height);
 
