@@ -8,7 +8,7 @@
 const double PST_COLOR_PICKER_HEIGHT = 100;
 
 
-PluginSettingsWindow::PluginSettingsWindow(const char *name, double width, double) :
+PluginSettingsWindow::PluginSettingsWindow(const char *name, double width, double height) :
 v_DialogWindow(name, width),
 width(width),
 height(height)

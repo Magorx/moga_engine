@@ -38,4 +38,7 @@ public:
     void set_content_color(RColor color);
 
     void fit_frame_to_content();
+
+    void toggle_hide_button();
+    void toggle_close_button();
 };

@@ -49,10 +49,10 @@ void initialize_photoshop(RedactorEngine &moga) {
     new_tool_window->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
     // ==================================================================================
     auto new_effect_window = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    new_effect_window->add_label("Tools", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    new_effect_window->add_label("Effects", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
     opt_panel->layout_add(new_effect_window, 1.5);
-    new_effect_window->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
+    new_effect_window->e_clicked.add(new AddNewEffectManagerWindowReaction(&moga));
     // ==================================================================================
 
     spawn_canvas_window(&moga, {{800, 100}, {300, 400}});

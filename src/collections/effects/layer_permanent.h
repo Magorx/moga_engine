@@ -10,10 +10,13 @@
 
 class PluginEffect : public Effect<Layer>, public WindowSetter {
 protected:
+    const char *name;
     PluginSettingsWindow *w_settings;
 
 public:
-    PluginEffect();
+    PluginEffect(const char *name);
+
+    const char *get_name() const { return name; }
 
     virtual void apply() override;
 };

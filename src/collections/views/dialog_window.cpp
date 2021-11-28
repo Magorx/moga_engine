@@ -21,14 +21,6 @@ first_selectable(nullptr)
     v_stretcher->add_placehodler(padding);
 }
 
-void v_DialogWindow::toggle_hide_button() {
-    get_header()->get_button_hide()->toggle();
-}
-
-void v_DialogWindow::toggle_close_button() {
-    get_header()->get_button_close()->toggle();
-}
-
 void v_DialogWindow::fit_content_to_fields() {
     get_content()->get_body().size.content[1] = v_stretcher->get_body().size[1];
     fit_frame_to_content();

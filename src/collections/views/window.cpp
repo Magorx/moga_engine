@@ -39,6 +39,14 @@ text_color(RColor{255, 255, 255})
     content->focus();
 }
 
+void v_Window::toggle_hide_button() {
+    get_header()->get_button_hide()->toggle();
+}
+
+void v_Window::toggle_close_button() {
+    get_header()->get_button_close()->toggle();
+}
+
 void v_Window::add_subview(AbstractView *subview) {
     if (!subview) return;
 

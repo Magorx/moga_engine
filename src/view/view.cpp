@@ -195,6 +195,10 @@ AbstractView *AbstractView::traverse_for_selectable(int idx, int direction, bool
     while ((next = next_by_idx(idx, direction))) {
         idx += direction;
 
+        if (!next->is_active()) {
+            continue;
+        }
+
         if (next->is_selectable()) {
             return next;
         }

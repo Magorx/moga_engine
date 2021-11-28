@@ -199,7 +199,7 @@ EventAccResult ButtonKeyDownAcceptor::operator()(const Event::KeyDown &event, co
         acceptor->press();
     }
 
-    return EventAccResult::cont;
+    return EventAccResult::done;
 }
 
 ButtonKeyUpAcceptor::ButtonKeyUpAcceptor(v_Button *button, Keyboard::Key key) :
@@ -216,5 +216,5 @@ EventAccResult ButtonKeyUpAcceptor::operator()(const Event::KeyUp &event, const 
         acceptor->key_pressed = false;
     }
 
-    return EventAccResult::cont;
+    return EventAccResult::done;
 }

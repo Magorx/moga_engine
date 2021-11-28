@@ -450,38 +450,15 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 }
 
 v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &body) {
-    auto window = new v_Window("Effects", body);
+    auto window = new v_DialogWindow("Effects", body.size.x());
 
     engine->add_view(window);
 
-    v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95}, 5);
-    window->get_content()->add_subview(layout);
-
-    v_Button *b_brush   = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    v_Button *b_eraser  = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    v_Button *b_pipette = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-
-    layout->layout_add(b_brush,  3);
-    layout->layout_add(b_eraser, 3);
-    layout->layout_add(b_pipette, 3);
-
-    auto slider = new v_Magnetic({0, 0}, {0, PX_MAG_DOT});
-    layout->layout_add(slider);
-
-    slider->set_fraction({0, 0.50});
-    slider->toggle_x_restriction();
-    slider->set_appearence(Resources.add_appr(new AppearenceColor(Resources.color.slider.basic)));
-    slider->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
-
-    b_brush->add_label("[b] Bruh", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
-    b_eraser->add_label("[e] Eraer", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
-    b_pipette->add_label("[q] Pipete", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
-
-    b_brush->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 0));
-    b_eraser->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 1));
-    b_pipette->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 2));
-
-    slider->e_fraction_changed.add(new ToolManagerSetToolSize(engine->get_tool_manager()));
+    EffectManager *mg_effects = engine->get_effect_manager();
+    for (auto effect : mg_effects->get_effects()) {
+        const char *name = effect->get_name();
+        window->add_text_button(name);
+    }
 
     return window;
 }

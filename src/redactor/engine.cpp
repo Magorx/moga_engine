@@ -6,7 +6,9 @@
 RedactorEngine::RedactorEngine(RWindow *window,
                                const char *name) :
 MogaEngine(window, name),
-tool_manager(new ToolManager(visual->get_renderer()))
+tool_manager(new ToolManager(visual->get_renderer())),
+effect_manager(new EffectManager),
+plugin_manager(new PluginManager(tool_manager, effect_manager))
 {
     t_Brush *t_brush         = new t_Brush(tool_manager);
     t_Eraser *t_eraser       = new t_Eraser(tool_manager);

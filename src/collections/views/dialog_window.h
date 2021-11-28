@@ -56,9 +56,6 @@ public:
     void select_first_field();
 
     void fit_content_to_fields();
-
-    void toggle_hide_button();
-    void toggle_close_button();
 };
 
 class DialogWindowCloseByInputDoneReaction : public EventAcceptor<v_DialogWindow, Event::TextChanged> {
