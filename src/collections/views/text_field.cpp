@@ -368,6 +368,10 @@ EventAccResult KeyDownTextFieldAcceptor::operator()(const Event::KeyDown &event,
     return EventAccResult::done;
 }
 
+const char *v_TextField::get_string() const {
+    return line.c_str();
+}
+
 KeyUpTextFieldAcceptor::KeyUpTextFieldAcceptor(v_TextField *acceptor) :
 EventAcceptor(acceptor)
 {}

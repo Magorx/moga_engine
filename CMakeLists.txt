@@ -134,6 +134,8 @@ add_executable(moga
         src/redactor/canvas/canvas.cpp
         src/redactor/canvas/canvas_history.cpp
 
+        src/redactor/plugins/settings_window.cpp
+
         src/redactor/layer/layer.cpp
 
         src/redactor/engine.cpp

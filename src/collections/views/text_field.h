@@ -67,6 +67,8 @@ public:
     void fit_width_to_string();
 
     void put_cursor_under_mouse(const Vec2d &mouse_pos);
+
+    const char *get_string() const;
 };
 
 

@@ -49,13 +49,16 @@ public:
     void make_closing_button(v_Button *closer);
     void make_closing_field(v_TextField *field, v_Button *acception_button = nullptr);
 
-    v_Magnetic *add_slider(const char *name, double length, RColor color = Resources.color.slider.basic);
+    v_Magnetic *add_slider(const char *name, double length = 100, RColor color = Resources.color.slider.basic);
 
     v_ColorPicker *add_color_picker(const double height);
 
     void select_first_field();
 
     void fit_content_to_fields();
+
+    void toggle_hide_button();
+    void toggle_close_button();
 };
 
 class DialogWindowCloseByInputDoneReaction : public EventAcceptor<v_DialogWindow, Event::TextChanged> {

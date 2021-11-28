@@ -13,12 +13,20 @@ padding(padding),
 first_selectable(nullptr)
 {
     Resources.engine->centrize_view_body(body);
-    get_header()->get_button_hide()->to_delete = true;
+    toggle_hide_button();
 
     get_content()->add_subview(v_stretcher);
 
     v_stretcher->set_zerify_normal_coord(false);
     v_stretcher->add_placehodler(padding);
+}
+
+void v_DialogWindow::toggle_hide_button() {
+    get_header()->get_button_hide()->toggle();
+}
+
+void v_DialogWindow::toggle_close_button() {
+    get_header()->get_button_close()->toggle();
 }
 
 void v_DialogWindow::fit_content_to_fields() {
@@ -146,7 +154,6 @@ v_Magnetic *v_DialogWindow::add_slider(const char *name, double length, RColor c
     rect->add_subview(field);
     rect->add_subview(answer);
 
-    // rect->set_appearence(new AppearenceColor({100, 100, 200, 200}));
     v_stretcher->add_subview(rect);
     v_stretcher->add_placehodler(padding);
 
@@ -167,7 +174,6 @@ v_ColorPicker *v_DialogWindow::add_color_picker(const double height) {
     v_Highlighter *rect = new v_Highlighter({rect_pos, {answer->get_body().size.x() + answer->get_body().size.x(), answer->get_body().size.y()}});
     rect->add_subview(answer);
 
-    // rect->set_appearence(new AppearenceColor({100, 100, 200, 200}));
     v_stretcher->add_subview(rect);
     v_stretcher->add_placehodler(padding);
 
@@ -178,8 +184,6 @@ v_ColorPicker *v_DialogWindow::add_color_picker(const double height) {
     }
 
     return answer;
-
-    return nullptr;
 }
 
 v_DialogWindow *v_DialogWindow::Error(double width, const char *message, const char *name, const char *button_text) {

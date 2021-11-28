@@ -73,6 +73,9 @@ void initialize_photoshop(RedactorEngine &moga) {
     auto pkr = dialog->add_color_picker(200);
     auto hg = dialog->add_slider("Height", 100);
 
+    dialog->toggle_close_button();
+    dialog->toggle_hide_button();
+
     moga.add_view(dialog);
 
     // ==================================================================================
