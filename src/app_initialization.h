@@ -61,10 +61,8 @@ void initialize_photoshop(RedactorEngine &moga) {
     plugin_button->e_clicked.add(new LoadPluginDialogReaction(&moga));
     // ==================================================================================
 
-    moga.load_plugin("./libEdger.so");
-    moga.load_plugin("./libStamp.so");
-    moga.load_plugin("./loochek_brush.so");
-    moga.load_plugin("./loochek_eraser.so");
+    moga.load_plugin("./kctf_sharpy.so");
+    moga.load_plugin("./kctf_rainbow_stamp.so");
 
     // ==================================================================================
 

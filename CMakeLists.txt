@@ -156,7 +156,10 @@ target_link_libraries(moga ${OPENGL_LIBRARIES})
 
 # aux_source_directory(src/collection/plugins ERASER_SOURCES)
 add_library(Edger SHARED src/collections/plugins/edger.cpp)
+set_target_properties(Edger PROPERTIES PREFIX "" OUTPUT_NAME "kctf_sharpy")
+
 add_library(Stamp SHARED src/collections/plugins/stamp.cpp)
+set_target_properties(Stamp PROPERTIES PREFIX "" OUTPUT_NAME "kctf_rainbow_stamp")
 
 # add_custom_target(rebuild_plugins
 #         COMMAND convert image.ppm image.png

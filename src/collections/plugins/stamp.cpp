@@ -56,10 +56,10 @@ const PPluginInfo gPluginInfo =
 
     &gPluginInterface,
 
-    "Stamp",
-    "1.0",
+    "Rainbow Stamp",
+    "version",
     "KCTF",
-    "You have sold your soul, congratulations!",
+    "Cute and NOT harmful",
     
     PPT_TOOL
 };

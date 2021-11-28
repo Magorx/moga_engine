@@ -56,8 +56,8 @@ const PPluginInfo gPluginInfo =
 
     &gPluginInterface,
 
-    "Edger",
-    "1.0",
+    "Sharpy",
+    "version",
     "KCTF",
     "Spawns random triangles in a circle, blends them on active layer",
     
