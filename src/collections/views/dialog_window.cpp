@@ -127,16 +127,20 @@ void v_DialogWindow::select_first_field() {
     }
 }
 
-v_Magnetic *v_DialogWindow::add_slider(const char *name, double length) {
+v_Magnetic *v_DialogWindow::add_slider(const char *name, double length, RColor color) {
     v_TextField *field  = new v_TextField({0, 0}, StdStyle::Text::basic()->negative(), 0, 0, true, false);
     field->set_string(name, true);
     Vec2d rect_pos = {get_content()->get_body().size.x() / 2 - field->get_body().size.x() + center_offset, 0};
 
+    const double STICK_BOUND = 4;
+
     v_Magnetic *answer = new v_Magnetic(
-        {{field->get_body().size.x(), 10}, length},
-        {5, 5}
+        {{field->get_body().size.x(), field->get_body().size.y() / 2}, {length, PX_MAG_DOT}},
+        {0, Vec2d{PX_MAG_DOT, PX_MAG_DOT} + Vec2d{0, STICK_BOUND}}
     );
-    answer->toggle_y_restriction();
+    answer->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, {-answer->get_dot()->get_body().size.x() / 2, -STICK_BOUND / 2})));
+    answer->toggle_x_restriction();
+    answer->set_appearence(Resources.add_appr(new AppearenceColor(color)));
     
     v_Highlighter *rect = new v_Highlighter({rect_pos, {field->get_body().size.x() + answer->get_body().size.x(), field->get_body().size.y()}});
     rect->add_subview(field);
@@ -156,6 +160,25 @@ v_Magnetic *v_DialogWindow::add_slider(const char *name, double length) {
 }
 
 v_ColorPicker *v_DialogWindow::add_color_picker(const double height) {
+    v_ColorPicker *answer = new v_ColorPicker({0, {v_stretcher->get_body().size.x(), height}}, nullptr);
+
+    Vec2d rect_pos = {0, 0};
+
+    v_Highlighter *rect = new v_Highlighter({rect_pos, {answer->get_body().size.x() + answer->get_body().size.x(), answer->get_body().size.y()}});
+    rect->add_subview(answer);
+
+    // rect->set_appearence(new AppearenceColor({100, 100, 200, 200}));
+    v_stretcher->add_subview(rect);
+    v_stretcher->add_placehodler(padding);
+
+    fit_content_to_fields();
+
+    if (!first_selectable && answer->is_selectable()) {
+        first_selectable = answer;
+    }
+
+    return answer;
+
     return nullptr;
 }
 

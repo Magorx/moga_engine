@@ -41,6 +41,7 @@ class v_ColorPicker : public v_Highlighter {
     Vec2d &alpha_size;
     RColor *alpha;
     RTexture *alpha_texture;
+    RColor cur_color;
 
     void update_colors();
 
@@ -50,10 +51,9 @@ class v_ColorPicker : public v_Highlighter {
 
 public:
     v_ColorPicker(const ViewBody &body, ToolManager *tool_manager);
-
-    // virtual void render(Renderer *renderer) override;
-
     virtual ~v_ColorPicker();
+
+    RColor get_color();
 };
 
 class ColorPickerSpectrumChangeAcceptor : public EventAcceptor<v_ColorPicker, Event::FractionChanged> {

@@ -67,15 +67,13 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    // open_img_button->e_clicked.emit({});
-    // new_canvas_button->e_clicked.emit({});
+    auto dialog = new v_DialogWindow("Dialogus", 300, 5, -30);
 
-    // const char *str = "aaaaaa asdas    asda as a";
-    // for (const char *c = str; *c; ++c) {
-    //     moga.main_view->e_text_enter.emit({(uint32_t) *c});
-    // }
-    // moga.main_view->e_key_down.emit({Keyboard::Key::enter});
-    // moga.main_view->e_key_up.emit({Keyboard::Key::enter});
+    auto sld = dialog->add_slider("Widht", 100);
+    auto pkr = dialog->add_color_picker(200);
+    auto hg = dialog->add_slider("Height", 100);
+
+    moga.add_view(dialog);
 
     // ==================================================================================
 

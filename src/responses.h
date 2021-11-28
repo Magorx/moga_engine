@@ -470,7 +470,7 @@ v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &bod
 
     slider->set_fraction({0, 0.50});
     slider->toggle_x_restriction();
-    slider->set_appearence(Resources.add_appr(new AppearenceColor({180, 160, 190})));
+    slider->set_appearence(Resources.add_appr(new AppearenceColor(Resources.color.slider.basic)));
     slider->get_dot()->set_appearence(Resources.add_appr(new AppearenceTexture(Resources.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
 
     b_brush->add_label("[b] Bruh", Resources.font.size.basic_menu, Resources.font.color.basic_menu);

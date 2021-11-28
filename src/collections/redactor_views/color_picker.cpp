@@ -167,7 +167,9 @@ void v_ColorPicker::update_tool_manager_color() {
     px_coord = v_alpha->get_fraction() * v_alpha->get_body().size;
     color.a = v_alpha->get_appearence()->get_px_color(px_coord).a;
 
-    tool_manager->set_draw_color(color);
+    cur_color = color;
+
+    if (tool_manager) tool_manager->set_draw_color(cur_color);
 }
 
 v_ColorPicker::~v_ColorPicker() {
@@ -177,6 +179,10 @@ v_ColorPicker::~v_ColorPicker() {
 
     delete[] field;
 };
+
+RColor v_ColorPicker::get_color() {
+    return cur_color;
+}
 
 
 ColorPickerSpectrumChangeAcceptor::ColorPickerSpectrumChangeAcceptor(v_ColorPicker *color_picker) : 

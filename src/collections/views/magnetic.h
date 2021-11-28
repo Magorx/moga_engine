@@ -66,7 +66,7 @@ class v_Magnetic : public v_Highlighter {
     bool y_shift_banned = false;
 
 public:
-    v_Magnetic(const ViewBody &bounds, const ViewBody &body = {0, 0}, double mag_radius = NAN, bool press_respects_bound = true, bool to_be_pressed = true);
+    v_Magnetic(const ViewBody &bounds, const ViewBody &body = {PX_MAG_DOT, PX_MAG_DOT}, double mag_radius = NAN, bool press_respects_bound = true, bool to_be_pressed = true);
 
     virtual void render(Renderer *renderer) override;
     virtual void refit() override;

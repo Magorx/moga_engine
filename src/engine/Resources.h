@@ -115,6 +115,10 @@ struct ResourcesHolder {
                 RColor selection;
             } basic;
         } text_field;
+
+        struct {
+            RColor basic;
+        } slider;
     } color;
 
     struct {

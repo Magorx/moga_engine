@@ -204,6 +204,8 @@ void ResourcesHolder::init(MogaEngine *engine_) {
     color.text_field.basic.cursor    = {20, 20, 20, 200};
     color.text_field.basic.selection = {120, 100, 145, 220};
 
+    color.slider.basic = {180, 160, 190};
+
     texture.window.basic.util_bar = &texture.util_bar.basic;
     texture.window.color.basic_frame = {203, 219, 252, 220};
     texture.window.basic.frame = generate_color_texture(texture.window.color.basic_frame);

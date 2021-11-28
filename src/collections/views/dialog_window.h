@@ -49,7 +49,7 @@ public:
     void make_closing_button(v_Button *closer);
     void make_closing_field(v_TextField *field, v_Button *acception_button = nullptr);
 
-    v_Magnetic *add_slider(const char *name, double length);
+    v_Magnetic *add_slider(const char *name, double length, RColor color = Resources.color.slider.basic);
 
     v_ColorPicker *add_color_picker(const double height);
 
