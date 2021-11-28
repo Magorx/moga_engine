@@ -3,8 +3,9 @@
 
 #include "utils/effect.h"
 #include "collections/views/window.h"
-#include "engine/moga_engine.h"
+// #include "engine/moga_engine.h"
 
+class MogaEngine;
 
 class WindowSetter {
 public:

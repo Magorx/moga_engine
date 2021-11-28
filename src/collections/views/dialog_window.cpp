@@ -1,6 +1,9 @@
 #include "dialog_window.h"
 #include "engine/moga_engine.h"
 
+#include "collections/views/magnetic.h"
+#include "collections/redactor_views/color_picker.h"
+
 
 v_DialogWindow::v_DialogWindow(const char *name, double width, double padding, double center_offset, WindowStyle *style) :
 v_Window(name, {0, {width, 0}}, style, true),
@@ -122,6 +125,38 @@ void v_DialogWindow::select_first_field() {
     if (first_selectable) {
         first_selectable->select(true);
     }
+}
+
+v_Magnetic *v_DialogWindow::add_slider(const char *name, double length) {
+    v_TextField *field  = new v_TextField({0, 0}, StdStyle::Text::basic()->negative(), 0, 0, true, false);
+    field->set_string(name, true);
+    Vec2d rect_pos = {get_content()->get_body().size.x() / 2 - field->get_body().size.x() + center_offset, 0};
+
+    v_Magnetic *answer = new v_Magnetic(
+        {{field->get_body().size.x(), 10}, length},
+        {5, 5}
+    );
+    answer->toggle_y_restriction();
+    
+    v_Highlighter *rect = new v_Highlighter({rect_pos, {field->get_body().size.x() + answer->get_body().size.x(), field->get_body().size.y()}});
+    rect->add_subview(field);
+    rect->add_subview(answer);
+
+    // rect->set_appearence(new AppearenceColor({100, 100, 200, 200}));
+    v_stretcher->add_subview(rect);
+    v_stretcher->add_placehodler(padding);
+
+    fit_content_to_fields();
+
+    if (!first_selectable && answer->is_selectable()) {
+        first_selectable = answer;
+    }
+
+    return answer;
+}
+
+v_ColorPicker *v_DialogWindow::add_color_picker(const double height) {
+    return nullptr;
 }
 
 v_DialogWindow *v_DialogWindow::Error(double width, const char *message, const char *name, const char *button_text) {

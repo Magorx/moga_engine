@@ -1,4 +1,5 @@
 #include "rgb_splined.h"
+#include "engine/moga_engine.h"
 
 
 const int RGB_MAPPING_CNT = 3;

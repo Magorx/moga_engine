@@ -42,11 +42,17 @@ void initialize_photoshop(RedactorEngine &moga) {
     opt_panel->layout_add(open_img_button, 1.5);
 
     // ==================================================================================
-    auto bip_button = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    bip_button->add_label("Tools", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+    auto new_tool_window = new v_Button({0, 0}, StdStyle::Button::basic_menu());
+    new_tool_window->add_label("Tools", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
 
-    opt_panel->layout_add(bip_button, 1.5);
-    bip_button->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
+    opt_panel->layout_add(new_tool_window, 1.5);
+    new_tool_window->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
+    // ==================================================================================
+    auto new_effect_window = new v_Button({0, 0}, StdStyle::Button::basic_menu());
+    new_effect_window->add_label("Tools", Resources.font.size.basic_menu, Resources.font.color.basic_menu);
+
+    opt_panel->layout_add(new_effect_window, 1.5);
+    new_effect_window->e_clicked.add(new AddNewToolManagerWindowReaction(&moga));
     // ==================================================================================
 
     spawn_canvas_window(&moga, {{800, 100}, {300, 400}});

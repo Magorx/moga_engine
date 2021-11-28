@@ -5,6 +5,10 @@
 #include "text_field.h"
 #include "stretcher.h"
 
+// #include "magnetic.h"
+class v_Magnetic;
+class v_ColorPicker;
+
 #include "collections/styles/window.h"
 #include "collections/styles/button.h"
 
@@ -44,6 +48,10 @@ public:
 
     void make_closing_button(v_Button *closer);
     void make_closing_field(v_TextField *field, v_Button *acception_button = nullptr);
+
+    v_Magnetic *add_slider(const char *name, double length);
+
+    v_ColorPicker *add_color_picker(const double height);
 
     void select_first_field();
 

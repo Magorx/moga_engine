@@ -116,6 +116,7 @@ add_executable(moga
         # effects
 
         src/collections/effects/rgb_splined.cpp
+        src/collections/effects/layer_permanent.cpp
 
         # components
         src/visual/visual_engine.cpp
