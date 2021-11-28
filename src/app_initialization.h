@@ -61,17 +61,9 @@ void initialize_photoshop(RedactorEngine &moga) {
     plugin_button->e_clicked.add(new LoadPluginDialogReaction(&moga));
     // ==================================================================================
 
-    plugin_button->e_clicked.emit({});
-    const char *open_plugin = "./loochek_brush.so";
-    
-    const char *c = open_plugin;
-    while (*c) {
-        moga.main_view->e_text_enter.emit({(uint32_t) *c});
-        ++c;
-    }
-
-    moga.main_view->e_key_down.emit({Keyboard::Key::enter});
-    moga.main_view->e_key_up.emit({Keyboard::Key::enter});
+    moga.load_plugin("./libBrush.so");
+    moga.load_plugin("./loochek_brush.so");
+    moga.load_plugin("./loochek_eraser.so");
 
     // ==================================================================================
 

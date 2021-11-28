@@ -36,36 +36,68 @@ if (mode->shader) rstate->rmode.shader = (RShader*) mode->shader; } while(0)
 void render_circle(PVec2f position, float radius, PRGBA color, const PRenderMode *render_mode) {
     INIT_DRAW_OBJECTS_
 
+    Vec2d pos = {position.x, position.y};
+
+    if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) {
+        pos = canvas->flip(pos);
+    }
+
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);
-    renderer->draw_circle({position.x, position.y}, radius, color.ui32);
+    renderer->draw_circle(pos, radius, color.ui32);
     renderer->pop_target();
 }
 
 void render_line(PVec2f start, PVec2f end, PRGBA color, const PRenderMode *render_mode) {
     INIT_DRAW_OBJECTS_
 
+    Vec2d from = {start.x, start.y};
+    Vec2d to   = {end.x  , end.y  };
+
+    if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) {
+        from = canvas->flip(from);
+        to = canvas->flip(to);
+    }
+
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);
-    renderer->draw_line({start.x, start.y}, {end.x, end.y}, color.ui32);
+    renderer->draw_line(from, to, color.ui32);
     renderer->pop_target();
 }
 
-void render_triangle(PVec2f p1, PVec2f p2, PVec2f p3, PRGBA color, const PRenderMode *render_mode) {
+void render_triangle(PVec2f p1_, PVec2f p2_, PVec2f p3_, PRGBA color, const PRenderMode *render_mode) {
     INIT_DRAW_OBJECTS_
+
+    Vec2d p1 = {p1_.x, p1_.y};
+    Vec2d p2 = {p2_.x, p2_.y};
+    Vec2d p3 = {p3_.x, p3_.y};
+
+    if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) {
+        p1 = canvas->flip(p1);
+        p2 = canvas->flip(p2);
+        p3 = canvas->flip(p3);
+    }
 
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);
-    renderer->draw_triangle({p1.x, p1.y}, {p2.x, p2.y}, {p3.x, p3.y}, color.ui32);
+    renderer->draw_triangle(p1, p2, p3, color.ui32);
     renderer->pop_target();
 }
 
-void render_rectangle(PVec2f p1, PVec2f p2, PRGBA color, const PRenderMode *render_mode) {
+void render_rectangle(PVec2f p1_, PVec2f p2_, PRGBA color, const PRenderMode *render_mode) {
     INIT_DRAW_OBJECTS_
+
+    Vec2d p1 = {p1_.x, p1_.y};
+    Vec2d p2 = {p2_.x, p2_.y};
+
+    if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) {
+        p1 = canvas->flip(p1);
+        p2 = canvas->flip(p2);
+    }
 
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);
-    renderer->draw_rectangle({p1.x, p1.y}, {p2.x - p1.x, p2.y - p1.y}, color.ui32);
+    renderer->draw_rectangle(p1, p2 - p1, color.ui32);
     renderer->pop_target();
 }
 

@@ -24,7 +24,7 @@ public:
 
     void dump() { interface->general.dump(); }
 
-    PPreviewLayerPolicy getFlushPolicy() { return interface->general.get_flush_policy(); }
+    PPreviewLayerPolicy get_flush_policy() { return interface->general.get_flush_policy(); }
 
     void on_mouse_press(const Vec2d &position);
     void on_mouse_move(const Vec2d &from, const Vec2d &to);

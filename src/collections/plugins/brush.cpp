@@ -52,7 +52,7 @@ const PPluginInfo gPluginInfo =
 
     &gPluginInterface,
 
-    "Brush",
+    "Brrrrh",
     "1.0",
     "loochek",
     "Simple circle brush",
@@ -127,7 +127,7 @@ static void *getExtensionFunc(const char *name)
 
 static void draw(PVec2f mousePos)
 {
-    PRenderMode render_mode = { PPBM_COPY, PPDP_PREVIEW, nullptr };
+    PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_ACTIVE, nullptr };
     gAppInterface->render.circle(mousePos,
                                  gAppInterface->general.get_size(),
                                  gAppInterface->general.get_color(),
