@@ -47,6 +47,7 @@ public:
     }
 
     const PPluginInterface *get_inteface() const { return interface; }
+    const PPluginInfo *get_lib() const { return lib; }
     PPluginType get_type() const { return lib->type; }
 
     static PVec2f  to_pvec2d(const Vec2d  &vec) { return PVec2f(vec.x(), vec.y()); }

@@ -7,7 +7,9 @@
 
 class t_Eraser : public t_Brush {
 public:
-    t_Eraser(Tool *manager) : t_Brush(manager) {}
+    t_Eraser(Tool *manager) : t_Brush(manager) {
+        name = "[e] Eraer";
+    }
 
     virtual void on_activate() override {
         if (draw_layer) draw_layer->get_canvas()->set_draw_mode(Canvas::DrawMode::use_active_layer);

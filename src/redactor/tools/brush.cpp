@@ -20,10 +20,8 @@
 }
 
 t_Brush::t_Brush(Tool *manager) :
-Tool(manager)
-{
-
-}
+Tool(manager, "[b] Bruh")
+{}
 
 void t_Brush::on_mouse_down(const Vec2d &pos) {
     Tool::on_mouse_down(pos);

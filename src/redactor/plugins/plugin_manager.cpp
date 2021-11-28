@@ -32,13 +32,15 @@ RedactorPlugin *PluginManager::load(const char *filename, PAppInterface *app_int
     plugins.push_back(plugin);
 
     fit_plugin(plugin);
+
+    return plugin;
 }
 
 void PluginManager::fit_plugin(RedactorPlugin *plugin) {
     if (!plugin) return;
 
     if (plugin->get_type() == PPluginType::PPT_TOOL) {
-        // tool_manager->add_tool(new )
+        tool_manager->add_tool(new t_Plugin(tool_manager, plugin));
     } else if (plugin->get_type() == PPluginType::PPT_EFFECT) {
         
     }

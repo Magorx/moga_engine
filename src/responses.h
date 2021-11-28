@@ -417,34 +417,41 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     engine->add_view(window);
 
-    v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {0.05, 0.95}, 5);
+    const double pd_coef = 0.05;
+    const double b_up = body.size.y() * pd_coef;
+    const double b_left = body.size.x() * pd_coef;
+    const double b_size = body.size.x() * (1 - 2 * pd_coef);
+
+    // v_VerticalLayout *layout = new v_VerticalLayout({0, body.size}, {pd_coef, 1 - pd_coef}, 5);
+    v_Stretcher *layout = v_Stretcher::Y({{b_left, b_up}, {b_size, 0}});
     window->get_content()->add_subview(layout);
 
-    v_Button *b_brush   = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    v_Button *b_eraser  = new v_Button({0, 0}, StdStyle::Button::basic_menu());
-    v_Button *b_pipette = new v_Button({0, 0}, StdStyle::Button::basic_menu());
+    auto tools = engine->get_tool_manager()->get_tools();
+    for (size_t i = 0; i < tools.size(); ++i) {
+        Tool *tool = tools[i];
+        if (!tool->get_name()) continue;
+        const char *tool_name = tool->get_name();
 
-    layout->layout_add(b_brush,  3);
-    layout->layout_add(b_eraser, 3);
-    layout->layout_add(b_pipette, 3);
+        v_Button *button = new v_Button(tool_name, StdStyle::Button::basic_menu(), StdStyle::Text::menu());
+        button->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), i));
 
-    auto slider = new v_Magnetic({0, 0}, {0, PX_MAG_DOT});
-    layout->layout_add(slider);
+        layout->add_subview(button);
+        layout->add_placehodler(2);
+    }
+    auto slider = new v_Magnetic({{0, 0}, {b_size, 10}}, {0, PX_MAG_DOT});
+    layout->add_subview(slider);
+    layout->add_placehodler(slider->get_body().size.y() + b_up);
+
+    layout->normal_stretch();
 
     slider->set_fraction({0, 0.50});
     slider->toggle_x_restriction();
     slider->set_appearence(App.add_appr(new AppearenceColor({180, 160, 190})));
     slider->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
-
-    b_brush->add_label("[b] Bruh", App.font.size.basic_menu, App.font.color.basic_menu);
-    b_eraser->add_label("[e] Eraer", App.font.size.basic_menu, App.font.color.basic_menu);
-    b_pipette->add_label("[q] Pipete", App.font.size.basic_menu, App.font.color.basic_menu);
-
-    b_brush->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 0));
-    b_eraser->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 1));
-    b_pipette->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), 2));
-
     slider->e_fraction_changed.add(new ToolManagerSetToolSize(engine->get_tool_manager()));
+
+    window->get_content()->get_body().size.content[1] = layout->get_body().size.y();
+    window->fit_frame_to_content();
 
     return window;
 }

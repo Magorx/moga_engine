@@ -23,13 +23,15 @@ protected:
     double size = 1;
 
     Hotkey hotkey = Hotkey::none;
+    const char *name = nullptr;
 
 public:
-    Tool(Tool *manager) :
+    Tool(Tool *manager, const char *name = nullptr) :
     renderer(manager ? manager->get_renderer() : nullptr),
     tool_manager(manager),
     draw_layer(nullptr),
-    draw_color(0, 0, 0, 255)
+    draw_color(0, 0, 0, 255),
+    name(name)
     {}
 
     Tool(Renderer *renderer) :
@@ -80,4 +82,6 @@ public:
     }
 
     inline Renderer *get_renderer() { return renderer; }
+
+    const char *get_name() { return name; }
 };

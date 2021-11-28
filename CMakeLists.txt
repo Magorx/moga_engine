@@ -130,6 +130,7 @@ add_executable(moga
 
         src/redactor/tools/brush.cpp
         src/redactor/tools/color_pipette.cpp
+        src/redactor/tools/plugin_tool.cpp
         src/redactor/tools/tool_manager.cpp
         src/redactor/canvas/canvas.cpp
         src/redactor/canvas/canvas_history.cpp

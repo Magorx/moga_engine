@@ -3,7 +3,7 @@
 
 
 t_ColorPipett::t_ColorPipett(Tool *manager) :
-Tool(manager)
+Tool(manager, "[q] Pipete")
 {
     if (!manager) {
         logger.warning("ColorPipette", "nullptr manager, luckily to crush now");
