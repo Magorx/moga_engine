@@ -1,56 +1,77 @@
 #include "redactor/plugin_std.h"
+#include "utils.h"
+
+#include <cstdlib>
+#include <ctime>
+#include <cmath>
+
+
+const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
+
+void *shader = nullptr;
+
 
 static PPluginStatus init(const PAppInterface* appInterface);
 static PPluginStatus deinit();
 
 static void dump();
-static void onUpdate(double elapsedTime);
+static void on_tick(double dt);
+static void on_update();
 
-static const PPluginInfo  *getInfo();
-static PPreviewLayerPolicy getFlushPolicy();
+static const PPluginInfo  *get_info();
+static PPreviewLayerPolicy get_flush_policy();
 
-static void onMousePressed(PVec2f mousePos);
-static void onMouseMove(PVec2f mouseOldPos, PVec2f mouseNewPos);
-static void onMouseReleased(PVec2f mousePos);
+static void on_mouse_down(PVec2f pos);
+static void on_mouse_move(PVec2f from, PVec2f to);
+static void on_mouse_up  (PVec2f pos);
+static void apply();
 
-static bool enableExtension(const char *name);
-static void *getExtensionFunc(const char *name);
+static bool  enable_extension  (const char *name);
+static void *get_extension_func(const char *name);
 
-static void draw(PVec2f mousePos);
+static void draw(PVec2f pos);
 
 
-const PPluginInterface gPluginInterface =
+const PPluginInterface PINTERFACE =
 {
     0, // std_version
     0, // reserved
     
-    enableExtension,
-    getExtensionFunc,
+    {
+        enable_extension,
+        get_extension_func,
+    },
 
     // general
-    getInfo,
-    init,
-    deinit,
-    dump,
-    onUpdate,
-    nullptr,
-    getFlushPolicy,
+    {
+        get_info,
+        init,
+        deinit,
+        dump,
+        on_tick,
+        on_update,
+        get_flush_policy,
+    },
 
     // effect
-    nullptr,
+    {
+        apply,
+    },
 
     // tool
-    onMousePressed,
-    onMouseReleased,
-    onMouseMove
+    {
+        on_mouse_down,
+        on_mouse_up  ,
+        on_mouse_move,
+    },
 };
 
-const PPluginInfo gPluginInfo =
+const PPluginInfo PINFO =
 {
     0, // std_version
     0, // reserved
 
-    &gPluginInterface,
+    &PINTERFACE,
 
     "Neg.Brush",
     "version",
@@ -60,84 +81,81 @@ const PPluginInfo gPluginInfo =
     PPT_TOOL
 };
 
+const PAppInterface *APPI = nullptr;
 
-const PAppInterface *gAppInterface = nullptr;
 
-
-extern "C" const PPluginInterface *get_plugin_interface()
-{
-    return &gPluginInterface;
+extern "C" const PPluginInterface *get_plugin_interface() {
+    return &PINTERFACE;
 }
 
-void *shader = nullptr;
+static PPluginStatus init(const PAppInterface *app_interface) {
+    srand(time(NULL));
 
-static PPluginStatus init(const PAppInterface* appInterface)
-{
-    gAppInterface = appInterface;
+    APPI = app_interface;
 
-    if (appInterface->general.feature_level & PFL_SHADER_SUPPORT) {
+    if (APPI->general.feature_level & PFL_SHADER_SUPPORT) {
 
-        shader = appInterface->shader.compile("uniform sampler2D texture; uniform float r; uniform float g; uniform float b; void main() \
-    {\
-        vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);\
-        vec4 color = vec4(1.0 - r, 1.0 - g, 1.0 - b, pixel.w);\
-        gl_FragColor = color;\
-    }\
-    ", PST_FRAGMENT);
+        shader = APPI->shader.compile(
+           "uniform sampler2D texture;                                  \
+            uniform float r;                                            \
+            uniform float g;                                            \
+            uniform float b;                                            \
+            void main() {                                               \
+                vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);     \
+                vec4 color = vec4(1.0 - r, 1.0 - g, 1.0 - b, pixel.w);  \
+                gl_FragColor = color;                                   \
+            }                                                           \
+           ", PST_FRAGMENT);
     }
 
     if (!shader) {
-        appInterface->general.log("I WONT WORK WITHOUT SHADERS (i will)");
+        APPI->general.log("I WONT WORK WITHOUT SHADERS (i will)");
     }
 
-    appInterface->general.log("shdr: succesful initialization!");
-    return PPS_OK; 
-}
-
-static PPluginStatus deinit()
-{
+    APPI->general.log("[plugin](%s) inited", PINFO.name);
     return PPS_OK;
 }
 
-static void dump()
-{
+static PPluginStatus deinit() {
+    APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
+    return PPS_OK;
 }
 
-static const PPluginInfo *getInfo()
-{
-    return &gPluginInfo;
+static void dump() {
+    APPI->general.log("[plugin](%s) is active", PINFO.name);
 }
 
-static void onUpdate(double elapsedTime)
-{
+static const PPluginInfo *get_info() {
+    return &PINFO;
 }
 
-static PPreviewLayerPolicy getFlushPolicy()
-{
-    return PPLP_BLEND;
+static void on_tick(double /*dt*/) {
 }
 
-static void onMousePressed(PVec2f mousePos)
-{
-    draw(mousePos);
+static void on_update() {
 }
 
-static void onMouseMove(PVec2f mouseOldPos, PVec2f mouseNewPos)
-{
-    draw(mouseNewPos);
+static PPreviewLayerPolicy get_flush_policy() {
+    return FLUSH_POLICY;
 }
 
-static void onMouseReleased(PVec2f mousePos)
-{
+static void on_mouse_down(PVec2f pos) {
+    draw(pos);
 }
 
-static bool enableExtension(const char *name)
-{
+static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
+    draw(to);
+}
+
+static void on_mouse_up(PVec2f /*pos*/) {}
+
+static void apply() {}
+
+static bool enable_extension(const char * /*name*/) {
     return false;
 }
 
-static void *getExtensionFunc(const char *name)
-{
+static void *get_extension_func(const char * /*name*/) {
     return nullptr;
 }
 
@@ -148,29 +166,22 @@ PRGBA negative(PRGBA col) {
             col.a};
 }
 
-PRGBA shift(PRGBA col) {
-    return {col.g, col.b, col.r, col.a};
-}
-
-static void draw(PVec2f mousePos)
-{
-    float size = gAppInterface->general.get_size();
-    PRGBA color = gAppInterface->general.get_color();
+static void draw(PVec2f pos) {
+    float size = APPI->general.get_size();
+    PRGBA color = APPI->general.get_color();
 
 
     if (!shader) {
         PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, nullptr };
 
-        gAppInterface->render.circle(mousePos, size, negative(color), &render_mode);
+        APPI->render.circle(pos, size, negative(color), &render_mode);
 
-        gAppInterface->general.log("you are bad");
+        APPI->general.log("you are bad");
     } else {
         PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, shader };
-        gAppInterface->shader.set_uniform_float(shader, "r", (float) color.r / 255);
-        gAppInterface->shader.set_uniform_float(shader, "g", (float) color.g / 255);
-        gAppInterface->shader.set_uniform_float(shader, "b", (float) color.b / 255);
-        gAppInterface->render.circle(mousePos, size, color, &render_mode);
-
-        // gAppInterface->general.log("you are bad");
+        APPI->shader.set_uniform_float(shader, "r", (float) color.r / 255);
+        APPI->shader.set_uniform_float(shader, "g", (float) color.g / 255);
+        APPI->shader.set_uniform_float(shader, "b", (float) color.b / 255);
+        APPI->render.circle(pos, size, color, &render_mode);
     }
 }

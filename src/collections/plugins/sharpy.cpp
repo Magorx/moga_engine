@@ -1,148 +1,156 @@
 #include "redactor/plugin_std.h"
+#include "utils.h"
 
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
 
+
+const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
+
+
 static PPluginStatus init(const PAppInterface* appInterface);
 static PPluginStatus deinit();
 
 static void dump();
-static void onUpdate(double elapsedTime);
+static void on_tick(double dt);
+static void on_update();
 
-static const PPluginInfo  *getInfo();
-static PPreviewLayerPolicy getFlushPolicy();
+static const PPluginInfo  *get_info();
+static PPreviewLayerPolicy get_flush_policy();
 
-static void onMousePressed(PVec2f mousePos);
-static void onMouseMove(PVec2f mouseOldPos, PVec2f mouseNewPos);
-static void onMouseReleased(PVec2f mousePos);
+static void on_mouse_down(PVec2f pos);
+static void on_mouse_move(PVec2f from, PVec2f to);
+static void on_mouse_up  (PVec2f pos);
+static void apply();
 
-static bool enableExtension(const char *name);
-static void *getExtensionFunc(const char *name);
+static bool  enable_extension  (const char *name);
+static void *get_extension_func(const char *name);
 
-static void draw(PVec2f mousePos);
+static void draw(PVec2f pos);
 
 
-const PPluginInterface gPluginInterface =
+const PPluginInterface PINTERFACE =
 {
     0, // std_version
     0, // reserved
     
-    enableExtension,
-    getExtensionFunc,
+    {
+        enable_extension,
+        get_extension_func,
+    },
 
     // general
-    getInfo,
-    init,
-    deinit,
-    dump,
-    onUpdate,
-    nullptr,
-    getFlushPolicy,
+    {
+        get_info,
+        init,
+        deinit,
+        dump,
+        on_tick,
+        on_update,
+        get_flush_policy,
+    },
 
     // effect
-    nullptr,
+    {
+        apply,
+    },
 
     // tool
-    onMousePressed,
-    onMouseReleased,
-    onMouseMove
+    {
+        on_mouse_down,
+        on_mouse_up  ,
+        on_mouse_move,
+    },
 };
 
-const PPluginInfo gPluginInfo =
+const PPluginInfo PINFO =
 {
     0, // std_version
     0, // reserved
 
-    &gPluginInterface,
+    &PINTERFACE,
 
     "Sharpy",
-    "version",
+    "1.0",
     "KCTF",
     "Spawns random triangles in a circle, blends them on active layer",
     
     PPT_TOOL
 };
 
+const PAppInterface *APPI = nullptr;
 
-const PAppInterface *gAppInterface = nullptr;
 
-
-extern "C" const PPluginInterface *get_plugin_interface()
-{
-    return &gPluginInterface;
+extern "C" const PPluginInterface *get_plugin_interface() {
+    return &PINTERFACE;
 }
 
-static PPluginStatus init(const PAppInterface* appInterface)
-{
+static PPluginStatus init(const PAppInterface *app_interface) {
     srand(time(NULL));
 
-    gAppInterface = appInterface;
-    appInterface->general.log("Edger: succesful initialization!");
-    return PPS_OK; 
-}
+    APPI = app_interface;
 
-static PPluginStatus deinit()
-{
+    APPI->general.log("[plugin](%s) inited", PINFO.name);
     return PPS_OK;
 }
 
-static void dump()
-{
+static PPluginStatus deinit() {
+    APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
+    return PPS_OK;
 }
 
-static const PPluginInfo *getInfo()
-{
-    return &gPluginInfo;
+static void dump() {
+    APPI->general.log("[plugin](%s) is active", PINFO.name);
 }
 
-static void onUpdate(double elapsedTime)
-{
+static const PPluginInfo *get_info() {
+    return &PINFO;
 }
 
-static PPreviewLayerPolicy getFlushPolicy()
-{
-    return PPLP_BLEND;
+static void on_tick(double /*dt*/) {
 }
 
-static void onMousePressed(PVec2f mousePos)
-{
-    draw(mousePos);
+static void on_update() {
 }
 
-static void onMouseMove(PVec2f mouseOldPos, PVec2f mouseNewPos)
-{
-    draw(mouseNewPos);
+static PPreviewLayerPolicy get_flush_policy() {
+    return FLUSH_POLICY;
 }
 
-static void onMouseReleased(PVec2f mousePos)
-{
+static void on_mouse_down(PVec2f pos) {
+    draw(pos);
 }
 
-static bool enableExtension(const char *name)
-{
+static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
+    draw(to);
+}
+
+static void on_mouse_up(PVec2f /*pos*/) {}
+
+static void apply() {}
+
+static bool enable_extension(const char * /*name*/) {
     return false;
 }
 
-static void *getExtensionFunc(const char *name)
-{
+static void *get_extension_func(const char * /*name*/) {
     return nullptr;
 }
 
-static void draw(PVec2f mousePos)
-{
-    float size = gAppInterface->general.get_size();
+static void draw(PVec2f pos) {
+    float size = APPI->general.get_size();
 
     float a1 = rand();
     float a2 = rand();
 
-    PVec2f p0 = mousePos;
+    PVec2f p0 = pos;
 
-    PVec2f p1 = {(float) (mousePos.x + cos(a1) * size), (float) (mousePos.y + sin(a2) * size)};
-    PVec2f p2 = {(float) (mousePos.x + cos(a2) * size), (float) (mousePos.y + sin(a1) * size)};
+    PVec2f p1 = {(float) (pos.x + cos(a1) * size), (float) (pos.y + sin(a2) * size)};
+    PVec2f p2 = {(float) (pos.x + cos(a2) * size), (float) (pos.y + sin(a1) * size)};
 
     PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_ACTIVE, nullptr };
-    gAppInterface->render.triangle( p0, p1, p2,
-                                    gAppInterface->general.get_color(),
-                                    &render_mode);
+    APPI->render.triangle(p0, p1, p2,
+                          APPI->general.get_color(),
+                          &render_mode);
 }
