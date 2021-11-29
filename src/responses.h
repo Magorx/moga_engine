@@ -161,6 +161,21 @@ public:
     }
 };
 
+class RemoveActiveCanvas : public EventReaction<Event::Close> {
+    ToolManager *tool_manager;
+
+public:
+    RemoveActiveCanvas(ToolManager *tool_manager):
+    tool_manager(tool_manager)
+    {}
+
+    EventAccResult operator()(const Event::Close &, const EventAccResult*) override {
+        printf("done\n");
+        tool_manager->set_active_canvas(nullptr);
+
+        return EventAccResult::none;
+    }
+};
 
 v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canvas **out_canvas = nullptr, char *name = nullptr) {
     auto window_style = StdStyle::Window::basic();
@@ -226,6 +241,8 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canv
     canvas->get_canvas()->get_active_layer()->add_effect(effect);
 
     effects_opener->update_effects(effect);
+
+    window->e_close.add(new RemoveActiveCanvas(engine->get_tool_manager()));
 
     return window;
 }
