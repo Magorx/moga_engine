@@ -61,8 +61,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     plugin_button->e_clicked.add(new LoadPluginDialogReaction(&moga));
     // ==================================================================================
 
-    moga.load_plugin("./kctf_sharpy.so");
-    moga.load_plugin("./kctf_rainbow_stamp.so");
+    moga.load_plugin("resources/plugin/tool", true);
 
     // ==================================================================================
 
@@ -74,4 +73,12 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
+//     auto dw = new v_DialogWindow("Dialogus", 200, 5, -30);
+//     dw->add_slider("Width");
+//     dw->add_slider("Height");
+//     dw->add_color_picker(150);
+
+//     dw->add_accept_button("Apply");
+
+//     moga.add_view(dw);
 }

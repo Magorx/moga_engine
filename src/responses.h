@@ -507,11 +507,12 @@ v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &bod
 }
 
 v_Window *spawn_load_plugin_dialog_window(RedactorEngine *engine) {
-    auto dw = new v_DialogWindow("Load plugin", 200);
+    auto dw = new v_DialogWindow("Load plugin", 400, 5, -100);
     engine->add_view(dw);
 
-    auto path = dw->add_field("Path");
+    auto path = dw->add_field("Path", 250);
     auto open_button = dw->add_accept_button("Open");
+    dw->make_closing_button(open_button);
 
     auto open_reaction = new LoadPluginReaction(engine);
     open_button->e_clicked.add(open_reaction);

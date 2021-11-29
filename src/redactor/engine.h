@@ -30,5 +30,6 @@ public:
 
     inline PAppInterface *get_plugin_interface() { return plugin_interface; }
 
-    bool load_plugin(const char *filename);
+    bool load_plugin(const char *path);
+    bool load_plugin(const char *path, bool directory);
 };

@@ -81,9 +81,9 @@ v_Button *v_DialogWindow::add_text_button(const char *button_name,
     v_Button *button = new v_Button(button_name, button_style, text_style, PX_BUTTON_SIZE_PADDING);
 
     if (to_centrize) {
-        button->get_body().position.content[0] = get_content()->get_body().size.x() / 2 - button->get_body().size.x() / 2 + center_offset;
+        button->get_body().position.content[0] = get_content()->get_body().size.x() / 2 - button->get_body().size.x() / 2;
     } else {
-        button->get_body().position.content[0] = (get_content()->get_body().size.x() / 2) + center_offset;
+        button->get_body().position.content[0] = (get_content()->get_body().size.x() / 2 - button->get_body().size.x() / 2);
     }
 
     v_stretcher->add_subview(button);

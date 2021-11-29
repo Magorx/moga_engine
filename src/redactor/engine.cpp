@@ -5,6 +5,9 @@
 
 #include "redactor/plugins/app_plugin_interface.h"
 
+#include <string>
+#include <filesystem>
+
 RedactorEngine::RedactorEngine(RWindow *window,
                                const char *name) :
 MogaEngine(window, name),
@@ -41,10 +44,24 @@ RedactorEngine::~RedactorEngine() {
     delete tool_manager;
 }
 
-bool RedactorEngine::load_plugin(const char *filename) {
-    if (plugin_manager->load(filename, get_plugin_interface())) {
+bool RedactorEngine::load_plugin(const char *path) {
+    if (plugin_manager->load(path, get_plugin_interface())) {
         return true;
     } else {
         return false;
     }
+}
+
+bool RedactorEngine::load_plugin(const char *path, bool is_dir) {
+    if (!is_dir) return load_plugin(path);
+
+    try {
+        for (const auto & entry : std::filesystem::directory_iterator(path)) {
+            load_plugin(entry.path().string().c_str());
+        }
+    } catch (const std::filesystem::filesystem_error &err) {
+        logger.warning("load_plugin", "fs error: %s", err.what());
+    }
+
+    return true;
 }

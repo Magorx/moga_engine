@@ -104,9 +104,20 @@ void render_rectangle(PVec2f p1_, PVec2f p2_, PRGBA color, const PRenderMode *re
 void render_pixels(PVec2f position, const PRGBA *data, size_t width, size_t height, const PRenderMode *render_mode) {
     INIT_DRAW_OBJECTS_
 
+    bool to_flip = false;
+    Vec2d pos = {position.x, position.y};
+    if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) {
+        pos = canvas->flip(pos);
+        to_flip ^= true;
+    }
+
+    RTexture texture;
+    texture.create(width, height);
+    texture.update((uint8_t*) data);
+
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);
-    renderer->draw_circle({position.x, position.y}, 50, {255, 0, 0});
+    renderer->draw_texture({position.x, position.y}, &texture, to_flip);
     renderer->pop_target();
 }
 
@@ -152,7 +163,12 @@ PRGBA *target_get_pixels() {
     auto size = img.getSize();
 
     PRGBA *pixels = new PRGBA[size.x * size.y];
-    memcpy(pixels, img_pixels, size.x * size.y);
+    memcpy(pixels, img_pixels, size.x * size.y * sizeof(PRGBA));
+
+    RTexture texture;
+    texture.create(size.x, size.y);
+    texture.update((uint8_t*) pixels);
+
 
     return pixels;
 }
