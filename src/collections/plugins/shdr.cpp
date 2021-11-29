@@ -1,9 +1,5 @@
 #include "redactor/plugin_std.h"
 
-#include <cstdlib>
-#include <ctime>
-#include <cmath>
-
 static PPluginStatus init(const PAppInterface* appInterface);
 static PPluginStatus deinit();
 
@@ -75,12 +71,8 @@ extern "C" const PPluginInterface *get_plugin_interface()
 
 void *shader = nullptr;
 
-#include <cstdio>
-
 static PPluginStatus init(const PAppInterface* appInterface)
 {
-    srand(time(NULL));
-
     gAppInterface = appInterface;
 
     if (appInterface->general.feature_level & PFL_SHADER_SUPPORT) {
