@@ -155,11 +155,11 @@ target_link_libraries(moga sfml-graphics sfml-window sfml-system)
 target_link_libraries(moga ${OPENGL_LIBRARIES})
 
 # aux_source_directory(src/collection/plugins ERASER_SOURCES)
-add_library(Edger SHARED src/collections/plugins/edger.cpp)
-set_target_properties(Edger PROPERTIES PREFIX "" OUTPUT_NAME "kctf_sharpy")
+add_library(sharpy SHARED src/collections/plugins/sharpy.cpp)
+set_target_properties(sharpy PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharpy")
 
-add_library(Stamp SHARED src/collections/plugins/stamp.cpp)
-set_target_properties(Stamp PROPERTIES PREFIX "" OUTPUT_NAME "kctf_rainbow_stamp")
+add_library(rainbow_stamp SHARED src/collections/plugins/rainbow_stamp.cpp)
+set_target_properties(rainbow_stamp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_rainbow_stamp")
 
 # add_custom_target(rebuild_plugins
 #         COMMAND convert image.ppm image.png

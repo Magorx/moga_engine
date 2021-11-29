@@ -196,6 +196,36 @@ void* extensions_get_func(const char *) {
     return nullptr;
 }
 
+void shader_apply(void *shader, const PRenderMode *render_mode) {
+    
+}
+
+void *shader_compile(const char *code) {
+    RShader *shader = new RShader;
+    // shader->loadFromMemory(code);
+}
+
+void shader_release(void *shader) {
+
+}
+
+void shader_set_uniform_int(const char *name, int  val) {
+
+}
+
+void shader_set_uniform_int_arr(const char *name, int *val, size_t cnt) {
+
+}
+
+void shader_set_uniform_float(const char *name, float  val) {
+
+}
+
+void shader_set_uniform_float_arr(const char *name, float *val, size_t cnt) {
+
+}
+
+
 void init(PAppInterface *interface) {
     if (!interface) {
         return;
@@ -222,6 +252,14 @@ void init(PAppInterface *interface) {
     
     interface->target.get_pixels = &target_get_pixels;
     interface->target.get_size   = &target_get_size;
+
+    interface->shader.apply                 = &shader_apply;
+    interface->shader.compile               = &shader_compile;
+    interface->shader.release               = &shader_release;
+    interface->shader.set_uniform_float     = &shader_set_uniform_float;
+    interface->shader.set_uniform_float_arr = &shader_set_uniform_float_arr;
+    interface->shader.set_uniform_int       = &shader_set_uniform_int;
+    interface->shader.set_uniform_int_arr   = &shader_set_uniform_int_arr;
 }
 
 }
