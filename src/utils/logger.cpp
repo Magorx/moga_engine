@@ -167,6 +167,12 @@ void Logger::log(int override_log_level, const char* code, const char* announcer
     va_end(args);
 }
 
+void Logger::logv(int override_log_level, const char* code, const char* announcer, const char *message, va_list args) {
+    if (override_log_level < verb_level) return;
+
+    _log(true, code, announcer, message, args);
+}
+
 void Logger::error(const char* announcer, const char *message, ...) {
     int prev_log_level = log_level;
     set_log_level(Level::error);

@@ -5,32 +5,32 @@
 
 namespace appintr {
 
-#define INIT_DRAW_OBJECTS_                                      \
-auto tool_manager = App.app_engine->get_tool_manager();         \
-    if (!tool_manager) {                                        \
-        return;                                                 \
-    }                                                           \
-    auto canvas = tool_manager->get_active_canvas();            \
-    if (!canvas) {                                              \
-        return;                                                 \
-    }                                                           \
-    Layer *layer = nullptr;                                     \
-    if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) { \
-        layer = canvas->get_active_layer();                     \
-    } else {                                                    \
-        layer = canvas->get_draw_layer();                       \
-    }                                                           \
-    if (!layer) {                                               \
-        return;                                                 \
-    }                                                           \
-    auto renderer = App.app_engine->visual->get_renderer();     \
-    if (!renderer)                                              \
-        return;                                                 \
+#define INIT_DRAW_OBJECTS_                                  \
+auto tool_manager = App.app_engine->get_tool_manager();     \
+if (!tool_manager) {                                        \
+    return;                                                 \
+}                                                           \
+auto canvas = tool_manager->get_active_canvas();            \
+if (!canvas) {                                              \
+    return;                                                 \
+}                                                           \
+Layer *layer = nullptr;                                     \
+if (render_mode->draw_policy == PDrawPolicy::PPDP_ACTIVE) { \
+    layer = canvas->get_active_layer();                     \
+} else {                                                    \
+    layer = canvas->get_draw_layer();                       \
+}                                                           \
+if (!layer) {                                               \
+    return;                                                 \
+}                                                           \
+auto renderer = App.app_engine->visual->get_renderer();     \
+if (!renderer)                                              \
+    return;                                                 \
 
 #define PROCESS_RMODE_(mode) \
 do { auto rstate = renderer->get_rstate(); \
 if (mode->blend == PBlendMode::PPBM_COPY) rstate->rmode.blendMode = RBlend::none; \
-if (mode->shader) rstate->rmode.shader = (RShader*) mode->shader; } while(0)
+if (mode->shader) {rstate->rmode.shader = (RShader*) mode->shader;} } while(0)
 
 
 void render_circle(PVec2f position, float radius, PRGBA color, const PRenderMode *render_mode) {
@@ -149,7 +149,7 @@ void general_release_pixels(PRGBA *pixels) {
 void general_log(const char *fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    logger.log((int) Logger::Level::warning, "@@@@", "plugin", fmt, args);
+    logger.logv((int) Logger::Level::warning, "@@@@", "plugin", fmt, args);
     va_end(args);
 }
 
@@ -200,29 +200,70 @@ void shader_apply(void *shader, const PRenderMode *render_mode) {
     
 }
 
-void *shader_compile(const char *code) {
+void *shader_compile(const char *code, PShaderType type) {
     RShader *shader = new RShader;
-    // shader->loadFromMemory(code);
+    RShader::Type rtype = RShader::Type::Fragment;
+
+    switch (type) {
+        case PShaderType::PST_FRAGMENT:
+            rtype = RShader::Type::Fragment;
+            break;
+        
+        case PShaderType::PST_VERTEX:
+            rtype = RShader::Type::Vertex;
+            break;
+        
+        case PShaderType::PST_COMPUTE:
+        default:
+            return nullptr;
+    }
+    if (!shader->loadFromMemory(code, rtype)) {
+        delete shader;
+        return nullptr;
+    }
+
+    shader->setUniform("texture", sf::Shader::CurrentTexture);
+    return shader;
 }
 
 void shader_release(void *shader) {
-
+    delete (RShader*) shader;
 }
 
-void shader_set_uniform_int(const char *name, int  val) {
+void shader_set_uniform_int(void *shader, const char *name, int  val) {
+    if (!shader) return;
 
+    RShader *rshader = (RShader*) shader;
+    rshader->setUniform(name, val);
 }
 
-void shader_set_uniform_int_arr(const char *name, int *val, size_t cnt) {
+void shader_set_uniform_int_arr(void *shader, const char *name, int *val, size_t cnt) {
+    if (!shader) return;
 
+    for (size_t i = 0; i < cnt; ++i) {
+        ((float*)val)[i] = (float) val[i];
+    }
+
+    RShader *rshader = (RShader*) shader;
+    rshader->setUniformArray(name, (float*) val, cnt);
+
+    for (size_t i = 0; i < cnt; ++i) {
+        val[i] = (int) ((float*)val)[i];
+    }
 }
 
-void shader_set_uniform_float(const char *name, float  val) {
+void shader_set_uniform_float(void *shader, const char *name, float  val) {
+    if (!shader) return;
 
+    RShader *rshader = (RShader*) shader;
+    rshader->setUniform(name, val);
 }
 
-void shader_set_uniform_float_arr(const char *name, float *val, size_t cnt) {
+void shader_set_uniform_float_arr(void *shader, const char *name, float *val, size_t cnt) {
+    if (!shader) return;
 
+    RShader *rshader = (RShader*) shader;
+    rshader->setUniformArray(name, val, cnt);
 }
 
 
@@ -234,7 +275,7 @@ void init(PAppInterface *interface) {
     interface->std_version = 0;
     interface->reserved = nullptr;
 
-    interface->general.feature_level = (PFeatureLevel) 0;
+    interface->general.feature_level     = PFL_SHADER_SUPPORT;
     interface->general.get_absolute_time = &general_get_absolute_time;
     interface->general.get_color         = &general_get_color; 
     interface->general.get_size          = &general_get_size;
@@ -256,9 +297,9 @@ void init(PAppInterface *interface) {
     interface->shader.apply                 = &shader_apply;
     interface->shader.compile               = &shader_compile;
     interface->shader.release               = &shader_release;
+    interface->shader.set_uniform_int       = &shader_set_uniform_int;
     interface->shader.set_uniform_float     = &shader_set_uniform_float;
     interface->shader.set_uniform_float_arr = &shader_set_uniform_float_arr;
-    interface->shader.set_uniform_int       = &shader_set_uniform_int;
     interface->shader.set_uniform_int_arr   = &shader_set_uniform_int_arr;
 }
 

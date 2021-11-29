@@ -15,8 +15,6 @@ ShaderEffect(layer, App.shader.name.rgb_mapping)
         }
     }
 
-    shader = App.create_frag_shader(App.shader.name.rgb_mapping);
-
     shader->setUniformArray("red",   &mapping[0][0], mapping[0].size());
     shader->setUniformArray("green", &mapping[1][0], mapping[1].size());
     shader->setUniformArray("blue",  &mapping[2][0], mapping[2].size());

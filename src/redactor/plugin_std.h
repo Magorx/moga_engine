@@ -166,6 +166,12 @@ struct PColorPickerSetting {
     PRGBA color;
 };
 
+enum PShaderType {
+    PST_VERTEX,
+    PST_FRAGMENT,
+    PST_COMPUTE,
+};
+
 struct PAppInterface {
     uint32_t std_version;
     void *reserved;
@@ -176,7 +182,7 @@ struct PAppInterface {
     } extensions;
 
     struct {
-        PFeatureLevel feature_level;
+        int feature_level;
 
         void (*log)(const char *fmt, ...);
         double (*get_absolute_time)();
@@ -213,14 +219,14 @@ struct PAppInterface {
     struct {
         void (*apply)(void *shader, const PRenderMode *render_mode);
 
-        void *(*compile)(const char *code);
+        void *(*compile)(const char *code, PShaderType type);
         void  (*release)(void *);
 
-        void (*set_uniform_int)    (const char *name, int  val);
-        void (*set_uniform_int_arr)(const char *name, int *val, size_t cnt);
+        void (*set_uniform_int)      (void *shader, const char *name, int  val);
+        void (*set_uniform_int_arr)  (void *shader, const char *name, int *val, size_t cnt);
 
-        void (*set_uniform_float)    (const char *name, float  val);
-        void (*set_uniform_float_arr)(const char *name, float *val, size_t cnt);
+        void (*set_uniform_float)    (void *shader, const char *name, float  val);
+        void (*set_uniform_float_arr)(void *shader, const char *name, float *val, size_t cnt);
     } shader;
 };
 

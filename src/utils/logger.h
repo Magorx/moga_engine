@@ -59,6 +59,7 @@ public:
 
     void log(const char* code, const char* announcer, const char *message, ...); // normal logging
     void log(int override_log_level, const char* code, const char* announcer, const char *message, ...);
+    void logv(int override_log_level, const char* code, const char* announcer, const char *message, va_list args);
     void logr(const char* code, const char* announcer, const char *message, ...); // reset maxlens and lasts
     
     void error   (const char* announcer, const char *message, ...);
