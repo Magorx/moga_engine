@@ -63,6 +63,13 @@ AbstractView::~AbstractView() {
     }
 }
 
+void AbstractView::set_to_delete(bool to_delete_, bool to_supress_delete_event) {
+    to_delete = to_delete_;
+    if (to_delete_ && !to_supress_delete_event) {
+        e_close.emit({}, false, true);
+    }
+}
+
 void AbstractView::render(Renderer *renderer) {
     subrender(renderer);
 }
@@ -372,7 +379,7 @@ EventAccResult AVPressFocuser::operator()(const Event::MousePress &event, const 
 AVCloseAcceptor::AVCloseAcceptor(AbstractView *av) : EventAcceptor(av) {}
 
 EventAccResult AVCloseAcceptor::operator()(const Event::Close &, const EventAccResult *) {  
-    acceptor->to_delete = true;
+    acceptor->set_to_delete(true);
     return EventAccResult::none;
 }
 

@@ -222,6 +222,8 @@ public:
     void delete_subview(AbstractView *view);
     void delete_subview(size_t index);
 
+    virtual void set_to_delete(bool to_delete_, bool to_supress_delete_event = false) override;
+
     virtual void render(Renderer *renderer) override;
     virtual void subrender(Renderer *renderer);
 

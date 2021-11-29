@@ -28,7 +28,7 @@ public:
         delete_from_parent();
     }
 
-    void set_to_delete(bool to_delete_) { to_delete = to_delete_; }
+    virtual void set_to_delete(bool to_delete_, bool = false) { to_delete = to_delete_; }
 
     void add_es(SUCC_T *sub_system) {
         if (!sub_system) return;

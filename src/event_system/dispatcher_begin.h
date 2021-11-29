@@ -40,12 +40,12 @@ public:
         else observers_after.push_back(observer);
     }
 
-    virtual EventAccResult emit(const EVENT_T &event, bool sub_es_reverse = false) {
+    virtual EventAccResult emit(const EVENT_T &event, bool sub_es_reverse = false, bool is_signal = false) {
         if (event_affector) {
             EVENT_T affected_event = event_affector(event);
-            return clear_sub_result(dispatch(affected_event, sub_es_reverse));
+            return clear_sub_result(dispatch(affected_event, sub_es_reverse, is_signal));
         } else {
-            return clear_sub_result(dispatch(event, sub_es_reverse));
+            return clear_sub_result(dispatch(event, sub_es_reverse, is_signal));
         }
     }
 
@@ -67,7 +67,7 @@ public:
     void process_acc_result(EventAccResult &res, EventAccResult &sub_res);
     EventAccResult clear_sub_result(EventAccResult sub_res);
 
-    EventAccResult dispatch(const EVENT_T &event, bool sub_es_reverse) {
+    EventAccResult dispatch(const EVENT_T &event, bool sub_es_reverse, bool is_signal = false) {
         EventAccResult sub_res = EventAccResult::none;
 
         EventAccResult res = dispatch_to_observers(event);
@@ -77,14 +77,19 @@ public:
         }
         sub_res = clear_sub_result(sub_res);
 
-        EventAccResult sub_sys_res = dispatch_to_sub_es(event, sub_es_reverse);
-        process_acc_result(sub_sys_res, sub_res);
-        if (sub_res & EventAccResult::done) {
-            return sub_res;
-        }
-        sub_res = clear_sub_result(sub_res);
+        if (!is_signal) {
+            EventAccResult sub_sys_res = dispatch_to_sub_es(event, sub_es_reverse);
+            process_acc_result(sub_sys_res, sub_res);
+            if (sub_res & EventAccResult::done) {
+                return sub_res;
+            }
+            sub_res = clear_sub_result(sub_res);
 
-        res = dispatch_to_observers(event, false, &sub_sys_res);
+            res = dispatch_to_observers(event, false, &sub_sys_res);
+        } else {
+            res = dispatch_to_observers(event, false, nullptr);
+        }
+
         process_acc_result(res, sub_res);
         if ((res & EventAccResult::done) || (res & EventAccResult::stop)) {
             return sub_res;

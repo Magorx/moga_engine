@@ -81,7 +81,7 @@ v_Window *eff_RGBSplined::create_settings_window(MogaEngine *engine) {
     set_spline(1, spg);
     set_spline(2, spb);
 
-    window->get_header()->get_button_close()->to_delete = true;
+    window->get_header()->get_button_close()->set_to_delete(true, true);
 
     window->set_content_color({60, 60, 60});
 

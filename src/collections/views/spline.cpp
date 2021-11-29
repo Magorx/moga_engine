@@ -136,7 +136,7 @@ bool v_Spline::try_delete_dot(const Vec2d &pos) {
             dots.erase(dots.begin() + i);
             recalculate_output();
 
-            dot->to_delete = true;  
+            dot->set_to_delete(true);
             return true;
         }
     }
