@@ -5,8 +5,22 @@
 #include <ctime>
 #include <cmath>
 
+// ============================================================================ Info
+
+const uint32_t PSTDVERSION = 0;
+
+const char *PNAME    = "Rainbow Stamp";
+const char *PVERSION = "1.0";
+const char *PAUTHOR  = "KCTF";
+const char *PDESCR   = "Cute and NOT harmful";
+
+// ============================================================================ Flush policy
 
 const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
+
+// ============================================================================ Resources
+
+// ============================================================================
 
 
 static PPluginStatus init(const PAppInterface* appInterface);
@@ -66,15 +80,15 @@ const PPluginInterface PINTERFACE =
 
 const PPluginInfo PINFO =
 {
-    0, // std_version
-    0, // reserved
+    PSTDVERSION, // std_version
+    nullptr,     // reserved
 
     &PINTERFACE,
 
-    "Rainbow Stamp",
-    "1.0",
-    "KCTF",
-    "Cute and NOT harmful",
+    PNAME,
+    PVERSION,
+    PAUTHOR,
+    PDESCR,
     
     PPT_TOOL
 };
@@ -122,7 +136,7 @@ static void on_mouse_down(PVec2f pos) {
     draw(pos);
 }
 
-static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
+static void on_mouse_move(PVec2f /*from*/, PVec2f /*to*/) {
 }
 
 static void on_mouse_up(PVec2f /*pos*/) {}

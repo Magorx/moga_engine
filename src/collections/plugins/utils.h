@@ -61,6 +61,116 @@ struct Vec2 {
     }
 };
 
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator+(const Vec2<T, neutral, eps> &first) {
+    return first;
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator-(const Vec2<T, neutral, eps> &first) {
+    return {-1 * first.x, -1 * first.y};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator+(const Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    return {first.x + second.x, first.y + second.y};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator-(const Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    return {first.x - second.x, first.y - second.y};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator*(const Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    return {first.x * second.x, first.y * second.y};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator/(const Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    return {first.x / second.x, first.y / second.y};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator*(const Vec2<T, neutral, eps> &first, const double k) {
+    return {static_cast<T>(k * first.x), static_cast<T>(k * first.y)};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator*(const double k, const Vec2<T, neutral, eps> &first) {
+    return {static_cast<T>(k * first.x), static_cast<T>(k * first.y)};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> operator/(const Vec2<T, neutral, eps> &first, const double k) {
+    return {static_cast<T>(first.x / k), static_cast<T>(first.y / k)};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> &operator+=(Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    first.x += second.x;
+    first.y += second.y;
+    return first;
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> &operator-=(Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    first.x -= second.x;
+    first.y -= second.y;
+    return first;
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> &operator*=(Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    first.x *= second.x;
+    first.y *= second.y;
+    return first;
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> &operator/=(Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    first.x /= second.x;
+    first.y /= second.y;
+    return first;
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> &operator*=(Vec2<T, neutral, eps> &first, const double k) {
+    first.x *= k;
+    first.y *= k;
+    return first;
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> &operator/=(Vec2<T, neutral, eps> &first, const double k) {
+    first.x /= k;
+    first.y /= k;
+    return first;
+}
+
+template <typename T, int neutral, int eps>
+inline bool operator==(const Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    return abs(first.x - second.x) < first.EPS && abs(first.y - second.y) < first.EPS;
+}
+
+template <typename T, int neutral, int eps>
+inline bool operator<(const Vec2<T, neutral, eps> &first, const Vec2<T, neutral, eps> &second) {
+    return first.x - second.x < first.EPS && first.y - second.y < first.EPS;
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> sqrt(const Vec2<T, neutral, eps> &first) {
+    return {sqrt(first.x),
+            sqrt(first.y)};
+}
+
+template <typename T, int neutral, int eps>
+inline Vec2<T, neutral, eps> pow(const Vec2<T, neutral, eps> &first, const double power) {
+    return {pow(first.x, power),
+            pow(first.y, power)};
+}
+
 using Vec2i = Vec2<int,    0, 0>;
 using Vec2f = Vec2<float,  0, 1>;
 using Vec2d = Vec2<double, 0, 1>;

@@ -9,10 +9,10 @@
 
 const uint32_t PSTDVERSION = 0;
 
-const char *PNAME    = "Sharpy";
-const char *PVERSION = "1.0";
-const char *PAUTHOR  = "KCTF";
-const char *PDESCR   = "Spawns random triangles in a circle, blends them on active layer";
+const char *PNAME    = "A name";
+const char *PVERSION = "0.1";
+const char *PAUTHOR  = "An author";
+const char *PDESCR   = "A discription";
 
 // ============================================================================ Flush policy
 

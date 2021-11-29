@@ -5,10 +5,24 @@
 #include <ctime>
 #include <cmath>
 
+// ============================================================================ Info
+
+const uint32_t PSTDVERSION = 0;
+
+const char *PNAME    = "Neg.Brush";
+const char *PVERSION = "version";
+const char *PAUTHOR  = "KCTF";
+const char *PDESCR   = "NOT cute and harmful";
+
+// ============================================================================ Flush policy
 
 const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
 
-void *shader = nullptr;
+// ============================================================================ Resources
+
+void *r_shader = nullptr;
+
+// ============================================================================
 
 
 static PPluginStatus init(const PAppInterface* appInterface);
@@ -68,15 +82,15 @@ const PPluginInterface PINTERFACE =
 
 const PPluginInfo PINFO =
 {
-    0, // std_version
-    0, // reserved
+    PSTDVERSION, // std_version
+    nullptr,     // reserved
 
     &PINTERFACE,
 
-    "Neg.Brush",
-    "version",
-    "KCTF",
-    "NOT cute and harmful",
+    PNAME,
+    PVERSION,
+    PAUTHOR,
+    PDESCR,
     
     PPT_TOOL
 };
@@ -95,7 +109,7 @@ static PPluginStatus init(const PAppInterface *app_interface) {
 
     if (APPI->general.feature_level & PFL_SHADER_SUPPORT) {
 
-        shader = APPI->shader.compile(
+        r_shader = APPI->shader.compile(
            "uniform sampler2D texture;                                  \
             uniform float r;                                            \
             uniform float g;                                            \
@@ -108,8 +122,8 @@ static PPluginStatus init(const PAppInterface *app_interface) {
            ", PST_FRAGMENT);
     }
 
-    if (!shader) {
-        APPI->general.log("I WONT WORK WITHOUT SHADERS (i will)");
+    if (!r_shader) {
+        APPI->general.log("It is sad that you don't support shaders...");
     }
 
     APPI->general.log("[plugin](%s) inited", PINFO.name);
@@ -170,18 +184,14 @@ static void draw(PVec2f pos) {
     float size = APPI->general.get_size();
     PRGBA color = APPI->general.get_color();
 
-
-    if (!shader) {
+    if (!r_shader) {
         PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, nullptr };
-
         APPI->render.circle(pos, size, negative(color), &render_mode);
-
-        APPI->general.log("you are bad");
     } else {
-        PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, shader };
-        APPI->shader.set_uniform_float(shader, "r", (float) color.r / 255);
-        APPI->shader.set_uniform_float(shader, "g", (float) color.g / 255);
-        APPI->shader.set_uniform_float(shader, "b", (float) color.b / 255);
+        PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, r_shader };
+        APPI->shader.set_uniform_float(r_shader, "r", (float) color.r / 255);
+        APPI->shader.set_uniform_float(r_shader, "g", (float) color.g / 255);
+        APPI->shader.set_uniform_float(r_shader, "b", (float) color.b / 255);
         APPI->render.circle(pos, size, color, &render_mode);
     }
 }
