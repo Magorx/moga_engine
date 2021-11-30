@@ -13,6 +13,7 @@ effect_manager(mg_effect)
 
 PluginManager::~PluginManager() {
     for (auto plugin : plugins) {
+        delete plugin_map[plugin->get_inteface()];
         delete plugin;
     }
 }
@@ -24,7 +25,7 @@ RedactorPlugin *PluginManager::load(const char *filename, PAppInterface *app_int
         logger.error("PluginManager", "bad params for plugin load: filename[%s], app_interface[%p]", filename, app_interface);
     }
 
-    RedactorPlugin *plugin = new RedactorPlugin(filename, app_interface);
+    RedactorPlugin *plugin = new RedactorPlugin(filename, app_interface, this);
     if (!plugin || !plugin->is_ok()) {
         logger.error("PluginManager", "plugin[%p] with filename[%s] was technicaly loaded,", plugin, filename);
         logger.error("PluginManager", "but somewhy is not ok, deleting it");
@@ -46,5 +47,18 @@ void PluginManager::fit_plugin(RedactorPlugin *plugin) {
         tool_manager->add_tool(new t_Plugin(tool_manager, plugin));
     } else if (plugin->get_type() == PPluginType::PPT_EFFECT) {
         
+    }
+}
+
+void PluginManager::set_plugin(const PPluginInterface *plugin_self, RedactorPlugin *plugin) {
+    plugin_map[plugin_self] = plugin;
+}
+
+RedactorPlugin *PluginManager::get_plugin(const PPluginInterface *plugin_self) {
+    if (!plugin_map.count(plugin_self)) {
+        logger.error("plugin_manager", "plugin with interface [%p] is not registered in manager [%p], returning nullptr for request", plugin_self, this);
+        return nullptr;
+    } else {
+        return plugin_map[plugin_self];
     }
 }

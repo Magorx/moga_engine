@@ -196,6 +196,8 @@ void* extensions_get_func(const char *) {
     return nullptr;
 }
 
+// ============================================================================ Shaders
+
 void shader_apply(void *shader, const PRenderMode *render_mode) {
     
 }
@@ -266,6 +268,43 @@ void shader_set_uniform_float_arr(void *shader, const char *name, float *val, si
     rshader->setUniformArray(name, val, cnt);
 }
 
+// ============================================================================ Settings
+
+#define INIT_SETTINGS_ \
+auto manager = App.app_engine->get_plugin_manager();\
+auto plugin = manager->get_plugin(self);\
+auto settings = plugin->get_settings();\
+
+void settings_create_surface(const PPluginInterface *self, size_t width, size_t height) {
+    INIT_SETTINGS_
+    if (settings) return;
+
+    auto window = new PluginSettingsWindow(plugin->get_lib()->name, width, height);
+    plugin->set_settings(window);
+
+    window->set_active(false);
+    App.app_engine->add_view(window);
+}
+
+void settings_destroy_surface(const PPluginInterface *self) {
+}
+
+
+void *settings_add(const PPluginInterface *self, PSettingType type, const char *name) {
+    INIT_SETTINGS_
+
+    return settings->add_setting(type, name);
+}
+
+void settings_get(const PPluginInterface *self, void *handle, void *answer) {
+    INIT_SETTINGS_
+
+    settings->get_setting(handle, answer);
+}
+
+#undef INIT_SETTINGS_
+
+// ============================================================================
 
 void init(PAppInterface *interface) {
     if (!interface) {
@@ -275,7 +314,7 @@ void init(PAppInterface *interface) {
     interface->std_version = 0;
     interface->reserved = nullptr;
 
-    interface->general.feature_level     = PFL_SHADER_SUPPORT;
+    interface->general.feature_level     = (PFeatureLevel) (PFL_SETTINGS_SUPPORT | PFL_SHADER_SUPPORT);
     interface->general.get_absolute_time = &general_get_absolute_time;
     interface->general.get_color         = &general_get_color; 
     interface->general.get_size          = &general_get_size;
@@ -301,6 +340,11 @@ void init(PAppInterface *interface) {
     interface->shader.set_uniform_float     = &shader_set_uniform_float;
     interface->shader.set_uniform_float_arr = &shader_set_uniform_float_arr;
     interface->shader.set_uniform_int_arr   = &shader_set_uniform_int_arr;
+
+    interface->settings.create_surface  = settings_create_surface;
+    interface->settings.destroy_surface = settings_destroy_surface;
+    interface->settings.add             = settings_add;
+    interface->settings.get             = settings_get;
 }
 
 }

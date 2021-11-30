@@ -5,6 +5,10 @@
 #include "utils/vec2d.h"
 #include "visual/color/rgba.h"
 
+#include "redactor/plugins/settings_window.h"
+
+
+class PluginManager;
 
 class RedactorPlugin {
     void *lib_handle;
@@ -12,13 +16,13 @@ class RedactorPlugin {
     const PPluginInfo      *lib;
     const PPluginInterface *interface;
 
+    PluginSettingsWindow *settings;
+
     int status;
 
 public:
-    RedactorPlugin(const char *fileName, const PAppInterface *appInterface);
+    RedactorPlugin(const char *fileName, const PAppInterface *appInterface, PluginManager *manager = nullptr);
     ~RedactorPlugin();
-
-    const PPluginInfo *getInfo() { return lib; }
 
     void on_tick(double dt) { interface->general.on_tick(dt); }
 
@@ -39,6 +43,9 @@ public:
     const PPluginInterface *get_inteface() const { return interface; }
     const PPluginInfo *get_lib() const { return lib; }
     PPluginType get_type() const { return lib->type; }
+
+    PluginSettingsWindow *get_settings() { return settings; }
+    void set_settings(PluginSettingsWindow *settings_) { settings = settings_; }
 
     static PVec2f  to_pvec2d(const Vec2d  &vec) { return PVec2f(vec.x(), vec.y()); }
     static Vec2d from_pvec2d(const PVec2f &vec) { return Vec2d (vec.x  , vec.y  ); }

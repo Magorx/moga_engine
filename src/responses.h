@@ -170,7 +170,6 @@ public:
     {}
 
     EventAccResult operator()(const Event::Close &, const EventAccResult*) override {
-        printf("done\n");
         tool_manager->set_active_canvas(nullptr);
 
         return EventAccResult::none;
@@ -429,6 +428,22 @@ public:
 };
 
 
+class ToolOptionsOpen : public EventAcceptor<Tool, Event::MousePress> {
+public:
+    ToolOptionsOpen(Tool *tool) :
+    EventAcceptor(tool)
+    {}
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult*) override {
+        if (event.button != Event::MouseButton::right) return EventAccResult::none;
+
+        acceptor->open_settings();
+
+        return EventAccResult::done;
+    }
+};
+
+
 v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window = new v_Window("Tools", body);
 
@@ -450,6 +465,7 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
         const char *tool_name = tool->get_name();
 
         v_Button *button = new v_Button(tool_name, StdStyle::Button::basic_menu(), StdStyle::Text::menu());
+        button->e_mouse_press.add(new ToolOptionsOpen(tool));
         button->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), i));
 
         layout->add_subview(button);

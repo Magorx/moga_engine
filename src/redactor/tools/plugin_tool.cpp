@@ -29,3 +29,10 @@ void t_Plugin::on_update() {
     }
 }
 
+void t_Plugin::open_settings() {
+    auto settings = plugin->get_settings();
+    if (!settings) return;
+
+    settings->e_toggle_activity.emit({});
+}
+

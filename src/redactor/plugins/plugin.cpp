@@ -3,11 +3,20 @@
 #include "plugin.h"
 #include "utils/logger.h"
 
+#include "plugin_manager.h"
+
 typedef const PPluginInterface* (*plugin_init_func)();
 
-RedactorPlugin::RedactorPlugin(const char *fileName, const PAppInterface *appInterface) {
-    status = -1;
+RedactorPlugin::RedactorPlugin(const char *fileName, const PAppInterface *appInterface, PluginManager *manager) :
+lib_handle(nullptr),
 
+lib(nullptr),
+interface(nullptr),
+
+settings(nullptr),
+
+status(-1)
+{
     lib_handle = dlopen(fileName, RTLD_NOW);
     if (lib_handle == nullptr) {
         logger.error("Plugin", "can't dlopen plugin named [%s]: %s", fileName, dlerror());
@@ -23,21 +32,23 @@ RedactorPlugin::RedactorPlugin(const char *fileName, const PAppInterface *appInt
     
     interface = plugin_init();
     if (!interface) {
-        logger.error("Plugin", "plugin [%s] returned empty interface", fileName);
+        logger.error("Plugin", "plugin [%s] returned nullptr interface", fileName);
         dlclose(lib_handle);
         return;
     }
 
-    PPluginStatus init_status = interface->general.init(appInterface);
-    if (init_status != PPS_OK) {
-        logger.error("Plugin", "initialization of plugin [%s] failed", fileName);
+    lib = interface->general.get_info();
+    if (!lib) {
+        logger.error("Plugin", "plugin [%s] returned nullptr information", fileName);
         dlclose(lib_handle);
         return;
     }
-    
-    lib = interface->general.get_info();
-    if (!lib) {
-        logger.error("Plugin", "plugin [%s] returned empty information", fileName);
+
+    if (manager) manager->set_plugin(interface, this);
+
+    PPluginStatus init_status = interface->general.init(appInterface);
+    if (init_status != PPS_OK) {
+        logger.error("Plugin", "initialization of plugin [%s] failed", fileName);
         dlclose(lib_handle);
         return;
     }

@@ -9,7 +9,7 @@ const double PST_COLOR_PICKER_HEIGHT = 100;
 
 
 PluginSettingsWindow::PluginSettingsWindow(const char *name, double width, double height) :
-v_DialogWindow(name, width),
+v_DialogWindow(name, width, 5, -30),
 width(width),
 height(height)
 {
@@ -26,13 +26,13 @@ void *PluginSettingsWindow::add_setting(PSettingType type, const char *name) {
     void *ret = nullptr;
     SettingType stype = SettingType::none;
 
-    if (strcmp(type, PST_TEXT_LINE)) {
+    if (strcmp(type, PST_TEXT_LINE) == 0) {
         ret = add_field(name, width / 2);
         stype = SettingType::text_line;
-    } else if (strcmp(type, PST_COLOR_PICKER)) {
+    } else if (strcmp(type, PST_COLOR_PICKER) == 0) {
         ret = add_color_picker(PST_COLOR_PICKER_HEIGHT);
         stype = SettingType::color_picker;
-    } else if (strcmp(type, PST_SLIDER_1D)) {
+    } else if (strcmp(type, PST_SLIDER_1D) == 0) {
         ret = add_slider(name);
         stype = SettingType::slider1d;
     }

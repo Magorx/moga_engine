@@ -84,4 +84,6 @@ public:
     inline Renderer *get_renderer() { return renderer; }
 
     const char *get_name() { return name; }
+
+    virtual void open_settings() {}
 };
