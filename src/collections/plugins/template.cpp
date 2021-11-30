@@ -134,12 +134,10 @@ static PPreviewLayerPolicy get_flush_policy() {
     return FLUSH_POLICY;
 }
 
-static void on_mouse_down(PVec2f pos) {
-    draw(pos);
+static void on_mouse_down(PVec2f /*pos*/) {
 }
 
-static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
-    draw(to);
+static void on_mouse_move(PVec2f /*from*/, PVec2f /*to*/) {
 }
 
 static void on_mouse_up(PVec2f /*pos*/) {}

@@ -185,6 +185,11 @@ inline unsigned long long read_next_long_long(const char **buffer) {
     return l;
 }
 
+unsigned long long read(const char *text) {
+    unsigned long long wanted_size = read_next_long_long(&text);
+    return wanted_size;
+}
+
 static void draw(PVec2f pos) {
     float size = APPI->general.get_size();
     PRGBA color = APPI->general.get_color();
@@ -193,8 +198,7 @@ static void draw(PVec2f pos) {
     if (r_max_size_setting) {
         PTextFieldSetting text;
         APPI->settings.get(&PINTERFACE, r_max_size_setting, &text);
-        const char *buffer = text.text;
-        unsigned long long wanted_size = read_next_long_long(&buffer);
+        unsigned long long wanted_size = read(text.text);
         if (wanted_size) {
             max_size = wanted_size;
         }

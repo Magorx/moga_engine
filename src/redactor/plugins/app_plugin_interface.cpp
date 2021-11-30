@@ -293,7 +293,7 @@ void settings_create_surface(const PPluginInterface *self, size_t width, size_t 
     App.app_engine->add_view(window);
 }
 
-void settings_destroy_surface(const PPluginInterface *self) {
+void settings_destroy_surface(const PPluginInterface */*self*/) {
 }
 
 
@@ -323,7 +323,7 @@ void init(PAppInterface *interface) {
     interface->std_version = 0;
     interface->reserved = nullptr;
 
-    interface->general.feature_level     = (PFeatureLevel) (PFL_SETTINGS_SUPPORT);
+    interface->general.feature_level     = (PFeatureLevel) (PFL_SETTINGS_SUPPORT | PFL_SHADER_SUPPORT);
     interface->general.get_absolute_time = &general_get_absolute_time;
     interface->general.get_color         = &general_get_color; 
     interface->general.get_size          = &general_get_size;
