@@ -121,9 +121,6 @@ void render_pixels(PVec2f position, const PRGBA *data, size_t width, size_t heig
     renderer->pop_target();
 }
 
-#undef INIT_DRAW_OBJECTS_
-#undef PROCESS_RMODE_
-
 double general_get_absolute_time() {
     return App.engine->get_cur_time();
 }
@@ -198,10 +195,6 @@ void* extensions_get_func(const char *) {
 
 // ============================================================================ Shaders
 
-void shader_apply(void *shader, const PRenderMode *render_mode) {
-    
-}
-
 void *shader_compile(const char *code, PShaderType type) {
     RShader *shader = new RShader;
     RShader::Type rtype = RShader::Type::Fragment;
@@ -230,6 +223,20 @@ void *shader_compile(const char *code, PShaderType type) {
 
 void shader_release(void *shader) {
     delete (RShader*) shader;
+}
+
+void shader_apply(const PRenderMode *render_mode) {
+    INIT_DRAW_OBJECTS_
+
+    renderer->push_target(layer->get_target());
+    PROCESS_RMODE_(render_mode);
+
+    auto texture = &layer->get_target()->getTexture();
+
+    renderer->get_rstate()->rmode.blendMode = RBlend::none;
+    renderer->get_rstate()->rmode.texture   = texture;
+    renderer->draw_texture({0, 0}, texture, true);
+    renderer->pop_target();
 }
 
 void shader_set_uniform_int(void *shader, const char *name, int  val) {
@@ -303,6 +310,8 @@ void settings_get(const PPluginInterface *self, void *handle, void *answer) {
 }
 
 #undef INIT_SETTINGS_
+#undef INIT_DRAW_OBJECTS_
+#undef PROCESS_RMODE_
 
 // ============================================================================
 

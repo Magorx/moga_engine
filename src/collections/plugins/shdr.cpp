@@ -20,7 +20,8 @@ const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
 
 // ============================================================================ Resources
 
-void *r_shader = nullptr;
+void *r_shader_brush_neg = nullptr;
+void *r_shader_neg = nullptr;
 
 // ============================================================================
 
@@ -109,7 +110,7 @@ static PPluginStatus init(const PAppInterface *app_interface) {
 
     if (APPI->general.feature_level & PFL_SHADER_SUPPORT) {
 
-        r_shader = APPI->shader.compile(
+        r_shader_brush_neg = APPI->shader.compile(
            "uniform sampler2D texture;                                  \
             uniform float r;                                            \
             uniform float g;                                            \
@@ -120,9 +121,18 @@ static PPluginStatus init(const PAppInterface *app_interface) {
                 gl_FragColor = color;                                   \
             }                                                           \
            ", PST_FRAGMENT);
+
+        r_shader_neg = APPI->shader.compile(
+           "uniform sampler2D texture;                                                  \
+            void main() {                                                               \
+                vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);                     \
+                vec4 color = vec4(1.0 - pixel.r, 1.0 - pixel.g, 1.0 - pixel.b, pixel.w);\
+                gl_FragColor = color;                                                   \
+            }                                                                           \
+           ", PST_FRAGMENT);
     }
 
-    if (!r_shader) {
+    if (!r_shader_brush_neg) {
         APPI->general.log("It is sad that you don't support shaders...");
     }
 
@@ -155,6 +165,8 @@ static PPreviewLayerPolicy get_flush_policy() {
 
 static void on_mouse_down(PVec2f pos) {
     draw(pos);
+    PRenderMode render_mode = { PPBM_COPY, PPDP_ACTIVE, r_shader_neg };
+    APPI->shader.apply(&render_mode);
 }
 
 static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
@@ -184,14 +196,14 @@ static void draw(PVec2f pos) {
     float size = APPI->general.get_size();
     PRGBA color = APPI->general.get_color();
 
-    if (!r_shader) {
+    if (!r_shader_brush_neg) {
         PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, nullptr };
         APPI->render.circle(pos, size, negative(color), &render_mode);
     } else {
-        PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, r_shader };
-        APPI->shader.set_uniform_float(r_shader, "r", (float) color.r / 255);
-        APPI->shader.set_uniform_float(r_shader, "g", (float) color.g / 255);
-        APPI->shader.set_uniform_float(r_shader, "b", (float) color.b / 255);
+        PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_PREVIEW, r_shader_brush_neg };
+        APPI->shader.set_uniform_float(r_shader_brush_neg, "r", (float) color.r / 255);
+        APPI->shader.set_uniform_float(r_shader_brush_neg, "g", (float) color.g / 255);
+        APPI->shader.set_uniform_float(r_shader_brush_neg, "b", (float) color.b / 255);
         APPI->render.circle(pos, size, color, &render_mode);
     }
 }
