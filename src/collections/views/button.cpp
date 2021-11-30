@@ -131,7 +131,7 @@ EventAccResult ButtonPressAcceptor::operator()(const Event::MousePress &event, c
     v_Button *button = acceptor;
     if (!button->is_inside(event.position)) return EventAccResult::stop;
 
-    if (!button->pressed) {
+    if (event.button == Event::MouseButton::left && !button->pressed) {
         button->press();
     }
 

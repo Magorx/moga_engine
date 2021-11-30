@@ -21,7 +21,6 @@ const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
 // ============================================================================ Resources
 
 void *r_shader_brush_neg = nullptr;
-void *r_shader_neg = nullptr;
 
 // ============================================================================
 
@@ -121,15 +120,6 @@ static PPluginStatus init(const PAppInterface *app_interface) {
                 gl_FragColor = color;                                   \
             }                                                           \
            ", PST_FRAGMENT);
-
-        r_shader_neg = APPI->shader.compile(
-           "uniform sampler2D texture;                                                  \
-            void main() {                                                               \
-                vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);                     \
-                vec4 color = vec4(1.0 - pixel.r, 1.0 - pixel.g, 1.0 - pixel.b, pixel.w);\
-                gl_FragColor = color;                                                   \
-            }                                                                           \
-           ", PST_FRAGMENT);
     }
 
     if (!r_shader_brush_neg) {
@@ -141,6 +131,9 @@ static PPluginStatus init(const PAppInterface *app_interface) {
 }
 
 static PPluginStatus deinit() {
+    if (r_shader_brush_neg) {
+        APPI->shader.release(r_shader_brush_neg);
+    }
     APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
     return PPS_OK;
 }
@@ -165,8 +158,6 @@ static PPreviewLayerPolicy get_flush_policy() {
 
 static void on_mouse_down(PVec2f pos) {
     draw(pos);
-    PRenderMode render_mode = { PPBM_COPY, PPDP_ACTIVE, r_shader_neg };
-    APPI->shader.apply(&render_mode);
 }
 
 static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
@@ -175,7 +166,8 @@ static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
 
 static void on_mouse_up(PVec2f /*pos*/) {}
 
-static void apply() {}
+static void apply() {
+}
 
 static bool enable_extension(const char * /*name*/) {
     return false;

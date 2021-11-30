@@ -3,22 +3,20 @@
 
 #include "utils.h"
 #include "redactor/layer/layer.h"
-#include "redactor/canvas/canvas.h"
 
-#include "redactor/plugin_std.h"
-#include "redactor/plugins/settings_window.h"
+
+class RedactorPlugin;
 
 class PluginEffect : public Effect<Layer> {
 protected:
-    const char *name;
-    PluginSettingsWindow *w_settings;
+    RedactorPlugin *plugin;
 
 public:
-    PluginEffect(const char *name);
+    PluginEffect(RedactorPlugin *plugin);
 
-    const char *get_name() const { return name; }
+    const char *get_name() const;
 
     virtual void apply() override;
 
-    virtual void toggle_settings();
+    void open_settings();
 };

@@ -34,14 +34,16 @@ plugin_interface(new PAppInterface)
     main_view->e_key_down.add(new ToolManagerHotkeys(tool_manager), false);
     main_view->e_scroll.add(new ToolManagerScrollShiftToolSize(tool_manager), false);
 
-    effect_manager->add(new PluginEffect("Pulgin"));
-    effect_manager->add(new PluginEffect("Bersu"));
+    // effect_manager->add(new PluginEffect("Pulgin"));
+    // effect_manager->add(new PluginEffect("Bersu"));
 
     appintr::init(plugin_interface);
 }
 
 RedactorEngine::~RedactorEngine() {
     delete tool_manager;
+    delete effect_manager;
+    delete plugin_manager;
 }
 
 bool RedactorEngine::load_plugin(const char *path) {

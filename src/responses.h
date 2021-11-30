@@ -513,6 +513,35 @@ public:
     }
 };
 
+
+class ApplyEffect : public EventAcceptor<PluginEffect, Event::Clicked> {
+public:
+    ApplyEffect(PluginEffect *effect):
+    EventAcceptor(effect)
+    {}
+
+    EventAccResult operator()(const Event::Clicked &, const EventAccResult*) override {
+        acceptor->apply();
+
+        return EventAccResult::none;
+    }
+};
+
+class EffectOptionsOpen : public EventAcceptor<PluginEffect, Event::MousePress> {
+public:
+    EffectOptionsOpen(PluginEffect *effect) :
+    EventAcceptor(effect)
+    {}
+
+    EventAccResult operator()(const Event::MousePress &event, const EventAccResult*) override {
+        if (event.button != Event::MouseButton::right) return EventAccResult::none;
+
+        acceptor->open_settings();
+
+        return EventAccResult::done;
+    }
+};
+
 v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &body) {
     auto window = new v_DialogWindow("Effects", body.size.x());
 
@@ -527,6 +556,9 @@ v_Window *spawn_effect_picker_window(RedactorEngine *engine, const ViewBody &bod
         const char *name = effect->get_name();
         auto button = window->add_text_button(name, true);
         buttons.push_back(button);
+
+        button->e_clicked.add(new ApplyEffect(effect));
+        button->e_mouse_press.add(new EffectOptionsOpen(effect));
     }
 
     for (auto button : buttons) {

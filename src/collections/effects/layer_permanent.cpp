@@ -1,16 +1,24 @@
 #include "layer_permanent.h"
-#include "collections/views/dialog_window.h"
+#include "redactor/plugins/plugin.h"
 
-PluginEffect::PluginEffect(const char *name) :
+PluginEffect::PluginEffect(RedactorPlugin *plugin) :
 Effect(nullptr),
-name(name),
-w_settings(nullptr)
+plugin(plugin)
 {}
 
-void PluginEffect::apply() {
-
+const char *PluginEffect::get_name() const {
+    if (!plugin) return "NOPLUGIN"; 
+    else return plugin->get_lib()->name;
 }
 
-void PluginEffect::toggle_settings() {
-    // if ()
+void PluginEffect::apply() {
+    plugin->get_inteface()->effect.apply();
+}
+
+void PluginEffect::open_settings() {
+    if (!plugin) return;
+    auto settings = plugin->get_settings();
+    if (!settings) return;
+
+    settings->e_toggle_activity.emit({});
 }

@@ -13,7 +13,6 @@ effect_manager(mg_effect)
 
 PluginManager::~PluginManager() {
     for (auto plugin : plugins) {
-        delete plugin_map[plugin->get_inteface()];
         delete plugin;
     }
 }
@@ -46,7 +45,7 @@ void PluginManager::fit_plugin(RedactorPlugin *plugin) {
     if (plugin->get_type() == PPluginType::PPT_TOOL) {
         tool_manager->add_tool(new t_Plugin(tool_manager, plugin));
     } else if (plugin->get_type() == PPluginType::PPT_EFFECT) {
-        
+        effect_manager->add(new PluginEffect(plugin));
     }
 }
 

@@ -164,6 +164,9 @@ set_target_properties(rainbow_stamp PROPERTIES PREFIX "" OUTPUT_NAME "resources/
 add_library(shdr SHARED src/collections/plugins/shdr.cpp)
 set_target_properties(shdr PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_shdr")
 
+add_library(negative SHARED src/collections/plugins/negative.cpp)
+set_target_properties(negative PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_negative")
+
 # add_custom_target(rebuild_plugins
 #         COMMAND convert image.ppm image.png
 #         )

@@ -9,18 +9,20 @@
 
 const uint32_t PSTDVERSION = 0;
 
-const PPluginType PTYPE = PPT_TOOL; // PPT_EFFECT
+const PPluginType PTYPE = PPT_EFFECT;
 
-const char *PNAME    = "A name";
-const char *PVERSION = "0.1";
-const char *PAUTHOR  = "An author";
-const char *PDESCR   = "A discription";
+const char *PNAME    = "Negator";
+const char *PVERSION = "1.0";
+const char *PAUTHOR  = "KCTF";
+const char *PDESCR   = "Negotiates with you colors";
 
 // ============================================================================ Flush policy
 
 const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
 
 // ============================================================================ Resources
+
+void *r_shader_neg = nullptr;
 
 // ============================================================================
 
@@ -42,8 +44,6 @@ static void apply();
 
 static bool  enable_extension  (const char *name);
 static void *get_extension_func(const char *name);
-
-static void draw(PVec2f pos);
 
 
 const PPluginInterface PINTERFACE =
@@ -107,11 +107,26 @@ static PPluginStatus init(const PAppInterface *app_interface) {
 
     APPI = app_interface;
 
+    if (APPI->general.feature_level & PFL_SHADER_SUPPORT) {
+        r_shader_neg = APPI->shader.compile(
+           "uniform sampler2D texture;                                                  \
+            void main() {                                                               \
+                vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);                     \
+                vec4 color = vec4(1.0 - pixel.r, 1.0 - pixel.g, 1.0 - pixel.b, pixel.w);\
+                gl_FragColor = color;                                                   \
+            }                                                                           \
+           ", PST_FRAGMENT);
+    }
+
     APPI->general.log("[plugin](%s) inited", PINFO.name);
     return PPS_OK;
 }
 
 static PPluginStatus deinit() {
+    if (r_shader_neg) {
+        APPI->shader.release(r_shader_neg);
+    }
+
     APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
     return PPS_OK;
 }
@@ -134,17 +149,40 @@ static PPreviewLayerPolicy get_flush_policy() {
     return FLUSH_POLICY;
 }
 
-static void on_mouse_down(PVec2f pos) {
-    draw(pos);
+static void on_mouse_down(PVec2f /*pos*/) {
 }
 
-static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
-    draw(to);
+static void on_mouse_move(PVec2f /*from*/, PVec2f /*to*/) {
 }
 
 static void on_mouse_up(PVec2f /*pos*/) {}
 
-static void apply() {}
+static void apply() {
+    if (r_shader_neg) {
+        PRenderMode render_mode = { PPBM_COPY, PPDP_ACTIVE, r_shader_neg };
+        APPI->shader.apply(&render_mode);
+        return;
+    }
+
+    auto pixels = APPI->target.get_pixels();
+    size_t w = 0;
+    size_t h = 0;
+    APPI->target.get_size(&w, &h);
+    size_t sz = w * h;
+    for (size_t i = 0; i < sz; ++i) {
+        PRGBA c = pixels[i];
+        pixels[i] = {
+            (unsigned char) (255 - c.r),
+            (unsigned char) (255 - c.g),
+            (unsigned char) (255 - c.b),
+            c.a,
+        };
+    }
+
+    PRenderMode rmode = {PPBM_COPY, PPDP_ACTIVE, nullptr};
+    APPI->render.pixels({0, 0}, pixels, w, h, &rmode);
+    APPI->general.release_pixels(pixels);
+}
 
 static bool enable_extension(const char * /*name*/) {
     return false;
@@ -152,12 +190,4 @@ static bool enable_extension(const char * /*name*/) {
 
 static void *get_extension_func(const char * /*name*/) {
     return nullptr;
-}
-
-static void draw(PVec2f pos) {
-    float size  = APPI->general.get_size() ;
-    PRGBA color = APPI->general.get_color();
-
-    PRenderMode render_mode = { PPBM_COPY, PPDP_PREVIEW, nullptr }; 
-    APPI->render.circle(pos, size, color, &render_mode);
 }
