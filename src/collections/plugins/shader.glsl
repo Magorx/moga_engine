@@ -125,7 +125,7 @@ void main() {
     vec3 blur_color = sum_color / sum_weight;
     vec3 init_color = rgb2hsl(texture2D(texture, gl_TexCoord[0].xy).xyz);
 
-    vec3 color = blur_color - (blur_color - init_color) * 0.1;
+    vec3 color = init_color - (blur_color - init_color) * 0.1;
 
     vec3 final = vec3(init_color.xy, color.z);
 

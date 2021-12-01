@@ -11,7 +11,7 @@ name = args[1]
 with open(name, "r") as fin:
     lines = fin.readlines()
 
-lines = list(map(lambda x: x.rstrip(), lines))
+lines = list(map(lambda x: x.rstrip().replace('\t', '    '), lines))
 maxlen = max(map(len, lines))
 for i in range(len(lines)):
     lines[i] = f' {lines[i]: <{maxlen}} \\'

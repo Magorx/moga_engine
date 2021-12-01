@@ -11,10 +11,10 @@ const uint32_t PSTDVERSION = 0;
 
 const PPluginType PTYPE = PPT_EFFECT;
 
-const char *PNAME    = "Bloor";
+const char *PNAME    = "Shurp";
 const char *PVERSION = "1.0";
 const char *PAUTHOR  = "KCTF";
-const char *PDESCR   = "Blurrrz an image";
+const char *PDESCR   = "un_Blurrrz an image";
 
 // ============================================================================ Flush policy
 
@@ -253,11 +253,11 @@ static PPluginStatus init(const PAppInterface *app_interface) {
      vec3 blur_color = sum_color / sum_weight;                                     \
      vec3 init_color = texture2D(texture, gl_TexCoord[0].xy).xyz;                  \
                                                                                    \
-     vec3 color = blur_color - (blur_color - init_color) * 0.1;                    \
+     vec3 color = init_color - (blur_color - init_color) * 0.1;                    \
                                                                                    \
-     vec3 final = vec3(init_color.xy, color.z);                                    \
+     vec3 final = vec3(color);                                                     \
                                                                                    \
-     gl_FragColor = vec4(blur_color, texture2D(texture, gl_TexCoord[0].xy).w);     \
+     gl_FragColor = vec4(final, texture2D(texture, gl_TexCoord[0].xy).w);          \
  }                                                                                 \
 "
         , PST_FRAGMENT);
