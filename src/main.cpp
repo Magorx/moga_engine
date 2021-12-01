@@ -7,6 +7,10 @@ int main(int argc, char*[]) {
     srand(time(nullptr));
     logger.set_verb_level(Logger::Level::warning);
 
+    // RShader shader;
+    // shader.loadFromFile("src/collections/plugins/shader.glsl", sf::Shader::Fragment);
+    // return 0;
+
     RWindow *window = nullptr;
     
     if (argc > 1) window = MogaEngine::create_window("MOGADACTOR", true);

@@ -228,15 +228,27 @@ void shader_release(void *shader) {
 void shader_apply(const PRenderMode *render_mode) {
     INIT_DRAW_OBJECTS_
 
-    renderer->push_target(layer->get_target());
-    PROCESS_RMODE_(render_mode);
+    layer->get_target()->setRepeated(false);
 
     auto texture = &layer->get_target()->getTexture();
 
+    RRendTexture new_tx;
+    new_tx.create(texture->getSize().x, texture->getSize().y);
+    renderer->push_target(&new_tx);
+    PROCESS_RMODE_(render_mode);
     renderer->get_rstate()->rmode.blendMode = RBlend::none;
     renderer->get_rstate()->rmode.texture   = texture;
     renderer->draw_texture({0, 0}, texture, true);
     renderer->pop_target();
+
+    renderer->push_target(layer->get_target());
+
+    renderer->get_rstate()->rmode.blendMode = RBlend::none;
+    renderer->get_rstate()->rmode.texture   = &new_tx.getTexture();
+    renderer->draw_texture({0, 0}, &new_tx.getTexture(), true);
+    renderer->pop_target();
+
+    layer->get_target()->setRepeated(true);
 }
 
 void shader_set_uniform_int(void *shader, const char *name, int  val) {
