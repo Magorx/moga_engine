@@ -24,3 +24,9 @@
 8) [Ctrl]+[Left] / [Ctrl]+[Right] in text input work as they should
 
 9) [Ctrl]+[Z] work for canvas!
+
+//=============================================================================
+[0.2] Plugins are alive with std_v = 1 ========================================
+
+1) You can use plugin_std.h to programm you own a) Tools and b) Effects with ability to draw on chosen layer. See collections/plugins for examples and a small template.
+
