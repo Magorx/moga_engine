@@ -189,7 +189,7 @@ bool  extensions_enable(const char *) {
     return false;
 }
 
-void* extensions_get_func(const char *) {
+void* extensions_get_func(const char */*ext*/, const char */*name*/) {
     return nullptr;
 }
 

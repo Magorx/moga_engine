@@ -46,7 +46,7 @@ static void on_mouse_up  (PVec2f pos);
 static void apply();
 
 static bool  enable_extension  (const char *name);
-static void *get_extension_func(const char *name);
+static void *get_extension_func(const char *ext, const char *name);
 
 const PPluginInterface PINTERFACE =
 {
@@ -385,6 +385,6 @@ static bool enable_extension(const char * /*name*/) {
     return false;
 }
 
-static void *get_extension_func(const char * /*name*/) {
+static void *get_extension_func(const char */*ext*/, const char */*name*/) {
     return nullptr;
 }
