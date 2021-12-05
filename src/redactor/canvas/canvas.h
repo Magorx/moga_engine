@@ -82,6 +82,7 @@ public:
 
     void undo();
     void redo();
+    void push_history();
 
     inline Vec2d flip(const Vec2d &p) { return {p.x(), size.y() - p.y()}; }
 };

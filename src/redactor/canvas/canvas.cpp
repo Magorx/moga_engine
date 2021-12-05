@@ -41,6 +41,11 @@ void Canvas::set_active_layer(Layer *layer) {
     upd_prev_active_layer();
 }
 
+void Canvas::push_history() {
+    history.add(new CanvasHistoryState(this, idx_by_layer(active_layer), prev_active_layer, active_layer));
+    set_active_layer(active_layer);
+}
+
 void Canvas::flush_draw_to_active() {
     if (draw_mode == DrawMode::use_draw_layer) {
         active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
@@ -50,8 +55,7 @@ void Canvas::flush_draw_to_active() {
 
     if (!mouse_down) return;
 
-    history.add(new CanvasHistoryState(this, idx_by_layer(active_layer), prev_active_layer, active_layer));
-    set_active_layer(active_layer);
+    push_history();
 }
 
 void Canvas::flush_to_final() {
