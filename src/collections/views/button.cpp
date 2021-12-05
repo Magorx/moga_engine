@@ -14,6 +14,8 @@ pos_delta(0, 0)
     e_mouse_press.add(new ButtonPressAcceptor(this));
     e_mouse_move.add(new ButtonMoveAcceptor(this));
     e_mouse_release.add(new ButtonReleaseAcceptor(this));
+
+    covering_block = true;
 }
 
 v_Button::v_Button(const ViewBody &body, MouseReactionStyle *style, AbstractView *parent) :
@@ -36,6 +38,8 @@ style(style)
     e_mouse_press.add(new ButtonPressAcceptor(this));
     e_mouse_release.add(new ButtonReleaseAcceptor(this));
     e_mouse_move.add(new ButtonMoveAcceptor(this));
+
+    covering_block = true;
 }
 
 v_Button::v_Button(const char *label_name, MouseReactionStyle *style, TextStyle *label_style, const Vec2d &padding) :
@@ -60,6 +64,8 @@ style(style)
     e_mouse_move.add(new ButtonMoveAcceptor(this));
 
     add_label(label_name, label_style->size, label_style->foreground, label_style->background, true);
+
+    covering_block = true;
 }
 
 v_Button::~v_Button() {

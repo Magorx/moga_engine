@@ -23,6 +23,8 @@ mag_radius(mag_radius)
     auto appr = new AppearenceTexture(App.texture.dot);
     appr->set_screen_shift(-body.size/ 2);
     dot->set_appearence(App.add_appr(appr));
+
+    covering_block = true;
 }
 
 void v_Magnetic::render(Renderer *renderer) {

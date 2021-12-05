@@ -70,7 +70,6 @@ alpha_texture(nullptr)
     double scale_y = trs_size.y() / v_transparency->get_body().size.y();
     appr->set_transform(appr->transform * scale_y);
     v_transparency->set_appearence(App.add_appr(appr));
-    
 
     //  ======================================================================= Geometry is done
 
@@ -98,6 +97,8 @@ alpha_texture(nullptr)
     v_field->set_fraction({0, 1});
     v_spectrum->set_fraction({0, 0.5});
     v_alpha->set_fraction({1, 0.5});
+
+    covering_block = true;
 }
 
 // void v_ColorPicker::render(Renderer *renderer) {

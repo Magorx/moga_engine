@@ -37,6 +37,8 @@ text_color(RColor{255, 255, 255})
 
     header->focus();
     content->focus();
+    header->set_focuseable(true);
+    content->set_focuseable(true);
 }
 
 void v_Window::toggle_hide_button() {
