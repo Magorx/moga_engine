@@ -249,8 +249,6 @@ void shader_apply(const PRenderMode *render_mode) {
     renderer->pop_target();
 
     layer->get_target()->setRepeated(true);
-
-    canvas->push_history();
 }
 
 void shader_set_uniform_int(void *shader, const char *name, int  val) {

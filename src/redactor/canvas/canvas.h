@@ -56,7 +56,7 @@ public:
     inline void set_draw_mode(DrawMode draw_mode_) { draw_mode = draw_mode_; }
     inline DrawMode get_draw_mode() const { return draw_mode; }
 
-    void flush_draw_to_active();
+    void flush_draw_to_active(bool to_copy = false);
     void flush_to_final();
 
     int new_layer();

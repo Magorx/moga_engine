@@ -1,6 +1,8 @@
 #include "layer_permanent.h"
 #include "redactor/plugins/plugin.h"
 
+#include "redactor/engine.h"
+
 PluginEffect::PluginEffect(RedactorPlugin *plugin) :
 Effect(nullptr),
 plugin(plugin)
@@ -13,6 +15,14 @@ const char *PluginEffect::get_name() const {
 
 void PluginEffect::apply() {
     plugin->get_inteface()->effect.apply();
+
+    auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
+    auto canvas = tm->get_active_canvas(); if(!canvas) return;
+
+    auto policy = plugin->get_inteface()->general.get_flush_policy();
+    canvas->flush_draw_to_active(policy == PPLP_COPY);
+
+    canvas->push_history();
 }
 
 void PluginEffect::open_settings() {

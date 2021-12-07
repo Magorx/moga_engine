@@ -157,35 +157,35 @@ struct SpecKey {
     void add(Keyboard::Key key) {
         switch (key) {
             case Keyboard::Key::lctrl:
-                content |= 1 << KeyIndex::lctrl;
+                content |= (1 << KeyIndex::lctrl);
                 break;
             
             case Keyboard::Key::rctrl:
-                content |= 1 << KeyIndex::rctrl;
+                content |= (1 << KeyIndex::rctrl);
                 break;
             
             case Keyboard::Key::lshift:
-                content |= 1 << KeyIndex::lshift;
+                content |= (1 << KeyIndex::lshift);
                 break;
 
             case Keyboard::Key::rshift:
-                content |= 1 << KeyIndex::rshift;
+                content |= (1 << KeyIndex::rshift);
                 break;
             
             case Keyboard::Key::lalt:
-                content |= 1 << KeyIndex::lalt;
+                content |= (1 << KeyIndex::lalt);
                 break;
             
             case Keyboard::Key::ralt:
-                content |= 1 << KeyIndex::ralt;
+                content |= (1 << KeyIndex::ralt);
                 break;
 
             case Keyboard::Key::lsuper:
-                content |= 1 << KeyIndex::lsuper;
+                content |= (1 << KeyIndex::lsuper);
                 break;
             
             case Keyboard::Key::rsuper:
-                content |= 1 << KeyIndex::rsuper;
+                content |= (1 << KeyIndex::rsuper);
                 break;
 
             default:

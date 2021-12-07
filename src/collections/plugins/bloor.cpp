@@ -119,9 +119,9 @@ static PPluginStatus init(const PAppInterface *app_interface) {
     if (APPI->general.feature_level & PFL_SETTINGS_SUPPORT) {
 
         APPI->settings.create_surface(SELF, 200, 200);
-        r_setting_radius = APPI->settings.add(SELF, PST_TEXT_LINE, "Radius");
-        r_setting_power = APPI->settings.add(SELF, PST_TEXT_LINE, "Power");
-        r_setting_coef = APPI->settings.add(SELF, PST_TEXT_LINE, "Coef");
+        r_setting_radius = APPI->settings.add(SELF, PST_TEXT_LINE, "Kernel");
+        r_setting_power = APPI->settings.add(SELF, PST_TEXT_LINE, "Radius");
+        r_setting_coef = APPI->settings.add(SELF, PST_TEXT_LINE, "Amount");
     }
 
     r_shader_blur = APPI->shader.compile(
@@ -327,31 +327,37 @@ static void apply() {
     size_t w = 0, h = 0;
     APPI->target.get_size(&w, &h);
     
-    int size = 3;
-    float power = 1.3;
-    float coef = 1.2;
+    int size = 2;
+    float power = 1;
+    float coef = 100;
 
     PTextFieldSetting field;
     if (r_setting_radius) {
         APPI->settings.get(SELF, r_setting_radius, &field);
-        size = read(field.text);
+        long long opt_size = read(field.text);
+        if (opt_size > 0) {
+            size = opt_size;
+        }
     }
 
     if (r_setting_power) {
         APPI->settings.get(SELF, r_setting_power, &field);
-        power = read_float(field.text);
-        if (power < 0.01) {
-            power = 1;
+        auto opt_power = read_float(field.text);
+        if (opt_power > 0.01) {
+            power = opt_power;
         }
     }
 
     if (r_setting_coef) {
         APPI->settings.get(SELF, r_setting_coef, &field);
-        coef = read_float(field.text);
-        if (coef < 0.01) {
-            coef = 1;
+        auto opt_coef = read_float(field.text);
+        if (opt_coef > 0.01) {
+            coef = opt_coef;
         }
     }
+
+    coef /= 100;
+    power = 1 / power;
 
     int ker_size = size * 2 + 1;
 

@@ -46,11 +46,19 @@ void Canvas::push_history() {
     set_active_layer(active_layer);
 }
 
-void Canvas::flush_draw_to_active() {
+void Canvas::flush_draw_to_active(bool to_copy) {
+    if (to_copy) {
+        draw_layer->flush_to(inter_action_layer, true, false, RBlend::none);
+        inter_action_layer->flush_to(active_layer, false, false, RBlend::none);
+        draw_layer->clear({0, 0, 0, 0});
+        return;
+    }
+
     if (draw_mode == DrawMode::use_draw_layer) {
-        active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
+        active_layer->flush_to(inter_action_layer, false, false, RBlend::none);
         draw_layer->flush_to(inter_action_layer, true, false);
-        inter_action_layer->flush_to(active_layer, false, false, sf::BlendNone);
+        inter_action_layer->flush_to(active_layer, false, false, RBlend::none);
+        draw_layer->clear({0, 0, 0, 0});
     }
 
     if (!mouse_down) return;
@@ -64,7 +72,7 @@ void Canvas::flush_to_final() {
     for (auto layer : layers) {
         if (layer == active_layer) {
             inter_action_layer->clear();
-            active_layer->flush_to(inter_action_layer, false, false, sf::BlendNone);
+            active_layer->flush_to(inter_action_layer, false, false, RBlend::none);
             draw_layer->flush_to(inter_action_layer, true, false);
 
             inter_action_layer->set_effects(active_layer->get_effects());
@@ -158,8 +166,6 @@ void Canvas::on_mouse_up(const Vec2d &pos) {
     }
 
     flush_draw_to_active();
-
-    draw_layer->clear({0, 0, 0, 0});
     flush_to_final();
 
     mouse_down = false;

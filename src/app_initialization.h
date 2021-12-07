@@ -62,6 +62,7 @@ void initialize_photoshop(RedactorEngine &moga) {
     // ==================================================================================
 
     moga.load_plugin("resources/plugin/tool", true);
+    moga.load_plugin("resources/plugin/effect", true);
 
     // ==================================================================================
 
