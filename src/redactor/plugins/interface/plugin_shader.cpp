@@ -13,11 +13,11 @@ PluginShader::PluginShader(const char *code, RShader::Type type, bool is_code) {
     }
 }
 
-void PluginShader::shader_set_uniform_int(const char *name, int  val) {
+void PluginShader::set_uniform_int(const char *name, int  val) {
     rshader.setUniform(name, val);
 }
 
-void PluginShader::shader_set_uniform_int_arr(const char *name, int *val, size_t cnt) {
+void PluginShader::set_uniform_int_arr(const char *name, int *val, size_t cnt) {
     for (size_t i = 0; i < cnt; ++i) {
         ((float*)val)[i] = (float) val[i];
     }
@@ -30,11 +30,11 @@ void PluginShader::shader_set_uniform_int_arr(const char *name, int *val, size_t
 }
 
 
-void PluginShader::shader_set_uniform_float(const char *name, float  val) {
+void PluginShader::set_uniform_float(const char *name, float  val) {
     rshader.setUniform(name, val);
 }
 
-void PluginShader::shader_set_uniform_float_arr(const char *name, float *val, size_t cnt) {
+void PluginShader::set_uniform_float_arr(const char *name, float *val, size_t cnt) {
     rshader.setUniformArray(name, val, cnt);
 }
 

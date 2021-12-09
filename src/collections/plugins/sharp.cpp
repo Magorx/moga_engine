@@ -7,86 +7,51 @@
 
 // ============================================================================ Info
 
-const uint32_t PSTDVERSION = 0;
-
-const PPluginType PTYPE = PPT_EFFECT;
+const auto PTYPE = P::EFFECT;
 
 const char *PNAME    = "Shurp";
-const char *PVERSION = "1.0";
+const char *PVERSION = "2.0";
 const char *PAUTHOR  = "KCTF";
 const char *PDESCR   = "un_Blurrrz an image";
 
-// ============================================================================ Flush policy
-
-const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
-
 // ============================================================================ Resources
 
-void *r_shader_blur;
-void *r_setting_radius;
-void *r_setting_power;
-void *r_setting_coef;
+P::Shader *r_shader_blur;
 
-// ============================================================================
+// ============================================================================ General
 
+struct MyPluginInterface : public P::PluginInterface {
+    bool  enable        (const char */*name*/)                            const override { return false;   }
+    void *get_func      (const char */*extension*/, const char */*func*/) const override { return nullptr; }
+    void *get_interface (const char */*extension*/, const char */*name*/) const override { return nullptr; }
 
-static PPluginStatus init(const PAppInterface* appInterface);
-static PPluginStatus deinit();
+    const P::PluginInfo *get_info() const override;
 
-static void dump();
-static void on_tick(double dt);
-static void on_update();
+    P::Status init   (const P::AppInterface*) const override;
+    P::Status deinit ()                       const override;
 
-static const PPluginInfo  *get_info();
-static PPreviewLayerPolicy get_flush_policy();
+    void dump() const override;
 
-static void on_mouse_down(PVec2f pos);
-static void on_mouse_move(PVec2f from, PVec2f to);
-static void on_mouse_up  (PVec2f pos);
-static void apply();
+    void on_tick(double dt) const override;
 
-static bool  enable_extension  (const char *name);
-static void *get_extension_func(const char *ext, const char *name);
+// effect
+    void effect_apply() const override;
 
-const PPluginInterface PINTERFACE =
-{
-    0, // std_version
-    0, // reserved
-    
-    {
-        enable_extension,
-        get_extension_func,
-    },
+// tool
+    void tool_on_press  (P::Vec2f position)          const override;
+    void tool_on_release(P::Vec2f position)          const override;
+    void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
-    // general
-    {
-        get_info,
-        init,
-        deinit,
-        dump,
-        on_tick,
-        on_update,
-        get_flush_policy,
-    },
-
-    // effect
-    {
-        apply,
-    },
-
-    // tool
-    {
-        on_mouse_down,
-        on_mouse_up  ,
-        on_mouse_move,
-    },
+// additional
+    void draw(P::Vec2f position) const;
 };
 
-const PPluginInterface *SELF = &PINTERFACE;
 
-const PPluginInfo PINFO =
+const MyPluginInterface PINTERFACE {};
+
+const P::PluginInfo PINFO =
 {
-    PSTDVERSION, // std_version
+    PSTD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,
@@ -95,36 +60,39 @@ const PPluginInfo PINFO =
     PVERSION,
     PAUTHOR,
     PDESCR,
+    nullptr, // icon
     
     PTYPE
 };
 
-const PAppInterface *APPI = nullptr;
+const P::AppInterface *APPI = nullptr;
 
 
-extern "C" const PPluginInterface *get_plugin_interface() {
+extern "C" const P::PluginInterface *get_plugin_interface() {
     return &PINTERFACE;
 }
+ 
+// ============================================================================ Logic
 
-static PPluginStatus init(const PAppInterface *app_interface) {
+P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
     srand(time(NULL));
 
     APPI = app_interface;
 
-    if (!(APPI->general.feature_level & PFL_SHADER_SUPPORT)) {
-        APPI->general.log("[plugin](%s) can't work without shaders and settings support, I'm sorry", PINFO.name);
-        return PPS_ERR;
+    if (!(APPI->feature_level & P::SHADER_SUPPORT)) {
+        APPI->log("[plugin](%s) can't work without shaders and settings support, I'm sorry", PINFO.name);
+        return P::ERR;
     }
     
-    if (APPI->general.feature_level & PFL_SETTINGS_SUPPORT) {
+    // if (APPI->general.feature_level & PFL_SETTINGS_SUPPORT) {
 
-        APPI->settings.create_surface(SELF, 200, 200);
-        r_setting_radius = APPI->settings.add(SELF, PST_TEXT_LINE, "Radius");
-        r_setting_power = APPI->settings.add(SELF, PST_TEXT_LINE, "Power");
-        r_setting_coef = APPI->settings.add(SELF, PST_TEXT_LINE, "Coef");
-    }
+    //     APPI->settings.create_surface(SELF, 200, 200);
+    //     r_setting_radius = APPI->settings.add(SELF, PST_TEXT_LINE, "Kernel");
+    //     r_setting_power = APPI->settings.add(SELF, PST_TEXT_LINE, "Radius");
+    //     r_setting_coef = APPI->settings.add(SELF, PST_TEXT_LINE, "Amount");
+    // }
 
-    r_shader_blur = APPI->shader.compile(
+    r_shader_blur = APPI->factory.shader->compile(
 "                                                                                  \
  uniform sampler2D texture;                                                        \
                                                                                    \
@@ -260,101 +228,76 @@ static PPluginStatus init(const PAppInterface *app_interface) {
      gl_FragColor = vec4(final, texture2D(texture, gl_TexCoord[0].xy).w);          \
  }                                                                                 \
 "
-        , PST_FRAGMENT);
+        , P::FRAGMENT);
 
-    APPI->general.log("[plugin](%s) inited", PINFO.name);
-    return PPS_OK;
+    APPI->log("[plugin](%s) inited", PINFO.name);
+    return P::OK;
 }
 
-static PPluginStatus deinit() {
-    APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
-    return PPS_OK;
+P::Status MyPluginInterface::deinit() const {
+    if (r_shader_blur) {
+        APPI->factory.shader->release(r_shader_blur);
+    }
+    APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
+    return P::OK;
 }
 
-static void dump() {
-    APPI->general.log("[plugin](%s) is active", PINFO.name);
+void MyPluginInterface::dump() const {
+    APPI->log("[plugin](%s) is active", PINFO.name);
 }
 
-static const PPluginInfo *get_info() {
+const P::PluginInfo *MyPluginInterface::get_info() const {
     return &PINFO;
 }
 
-static void on_tick(double /*dt*/) {
+void MyPluginInterface::on_tick(double /*dt*/) const {
 }
 
-static void on_update() {
+void MyPluginInterface::tool_on_press(P::Vec2f pos) const {
+    draw(pos);
 }
 
-static PPreviewLayerPolicy get_flush_policy() {
-    return FLUSH_POLICY;
+void MyPluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f to) const {
+    draw(to);
 }
 
-static void on_mouse_down(PVec2f /*pos*/) {
-}
+void MyPluginInterface::tool_on_release(P::Vec2f /*pos*/) const {}
 
-static void on_mouse_move(PVec2f /*from*/, PVec2f /*to*/) {
-}
+void MyPluginInterface::effect_apply() const {
+    auto target = APPI->get_target();
 
-static void on_mouse_up(PVec2f /*pos*/) {}
-
-inline unsigned long long read_next_long_long(const char **buffer) {
-    const char *c = *buffer;
-    while (c && (*c == ' ' || *c == '\n')) ++c;
- 
-    unsigned long long l = 0;
-    while (*c >= '0' && *c <= '9') {
-        l = l * 10 + *c - '0';
-        ++c;
-    }
- 
-    *buffer = c;
-    return l;
-}
-
-unsigned long long read(const char *text) {
-    unsigned long long wanted_size = read_next_long_long(&text);
-    return wanted_size;
-}
-#include <cstdio>
-float read_float(const char *text) {
-    float val = 0;
-    int symbs_read = 0;
-    sscanf(text, "%g%n", &val, &symbs_read);
-    return val;
-}
-
-static void apply() {
     size_t w = 0, h = 0;
-    APPI->target.get_size(&w, &h);
+    w = target->get_size().x;
+    h = target->get_size().y;
     
     int size = 2;
     float power = 1;
-    float coef = 100;
+    float coef = 300;
 
-    PTextFieldSetting field;
-    if (r_setting_radius) {
-        APPI->settings.get(SELF, r_setting_radius, &field);
-        long long opt_size = read(field.text);
-        if (opt_size > 0) {
-            size = opt_size;
-        }
-    }
+    // PTextFieldSetting field;
+    // if (r_setting_radius) {
+    //     APPI->settings.get(SELF, r_setting_radius, &field);
+    //     long long opt_size = read(field.text);
+    //     if (opt_size > 0) {
+    //         size = opt_size;
+    //     }
+    // }
 
-    if (r_setting_power) {
-        APPI->settings.get(SELF, r_setting_power, &field);
-        auto opt_power = read_float(field.text);
-        if (opt_power > 0.01) {
-            power = opt_power;
-        }
-    }
+    // if (r_setting_power) {
+    //     APPI->settings.get(SELF, r_setting_power, &field);
+    //     auto opt_power = read_float(field.text);
+    //     if (opt_power > 0.01) {
+    //         power = opt_power;
+    //     }
+    // }
 
-    if (r_setting_coef) {
-        APPI->settings.get(SELF, r_setting_coef, &field);
-        auto opt_coef = read_float(field.text);
-        if (opt_coef > 0.01) {
-            coef = opt_coef;
-        }
-    }
+    // if (r_setting_coef) {
+    //     APPI->settings.get(SELF, r_setting_coef, &field);
+    //     auto opt_coef = read_float(field.text);
+    //     if (opt_coef > 0.01) {
+    //         coef = opt_coef;
+    //     }
+    // }
 
     coef /= 100;
     power = 1 / power;
@@ -376,21 +319,25 @@ static void apply() {
         }
     }
     
-    APPI->shader.set_uniform_int(r_shader_blur, "ker_size", (int) size);
-    APPI->shader.set_uniform_float_arr(r_shader_blur, "kernel", kernel, ker_size * ker_size);
-    APPI->shader.set_uniform_float(r_shader_blur, "tx_w", (float) w);
-    APPI->shader.set_uniform_float(r_shader_blur, "tx_h", (float) h);
+    r_shader_blur->set_uniform_int("ker_size", (int) size);
+    r_shader_blur->set_uniform_float_arr("kernel", kernel, ker_size * ker_size);
+    r_shader_blur->set_uniform_float("tx_w", (float) w);
+    r_shader_blur->set_uniform_float("tx_h", (float) h);
 
-    PRenderMode render_mode = { PPBM_COPY, PPDP_ACTIVE, r_shader_blur };
-    APPI->shader.apply(&render_mode);
+    target->apply_shader(r_shader_blur);
 
     delete[] kernel;
+    APPI->factory.target->release(target);
 }
 
-static bool enable_extension(const char * /*name*/) {
-    return false;
-}
+void MyPluginInterface::draw(P::Vec2f pos) const {
+    float    size = APPI->get_size();
+    P::RGBA color = APPI->get_color();
 
-static void *get_extension_func(const char */*ext*/, const char */*name*/) {
-    return nullptr;
+    P::RenderMode rmode = { P::COPY, nullptr };
+    auto preview = APPI->get_preview();
+
+    preview->render_circle(pos, size, color, &rmode);
+
+    APPI->factory.target->release(preview);
 }
