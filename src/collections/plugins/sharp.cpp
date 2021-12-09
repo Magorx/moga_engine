@@ -12,7 +12,7 @@ const auto PTYPE = P::EFFECT;
 const char *PNAME    = "Shurp";
 const char *PVERSION = "2.0";
 const char *PAUTHOR  = "KCTF";
-const char *PDESCR   = "un_Blurrrz an image";
+const char *PDESCR   = "Edges pointy enough to make you bleed";
 
 // ============================================================================ Resources
 
