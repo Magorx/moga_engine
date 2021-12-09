@@ -1,4 +1,4 @@
-#include "redactor/plugin_std.h"
+#include "redactor/plugin_std/std.hpp"
 #include "utils.h"
 
 #include <cstdlib>

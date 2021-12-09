@@ -173,8 +173,6 @@ set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/t
 add_library(sharp SHARED src/collections/plugins/sharp.cpp)
 set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharp")
 
-add_library(chroma SHARED src/collections/plugins/chroma.cpp)
-set_target_properties(chroma PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_chroma")
 
 # add_custom_target(rebuild_plugins
 #         COMMAND convert image.ppm image.png
