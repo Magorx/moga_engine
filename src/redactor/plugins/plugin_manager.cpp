@@ -17,7 +17,7 @@ PluginManager::~PluginManager() {
     }
 }
 
-RedactorPlugin *PluginManager::load(const char *filename, PAppInterface *app_interface) {
+RedactorPlugin *PluginManager::load(const char *filename, P::AppInterface *app_interface) {
     logger.info("PluginManager", "loading plugin, filename[%s]\n", filename);
 
     if (!filename || !app_interface) {
@@ -42,22 +42,22 @@ RedactorPlugin *PluginManager::load(const char *filename, PAppInterface *app_int
 void PluginManager::fit_plugin(RedactorPlugin *plugin) {
     if (!plugin) return;
 
-    if (plugin->get_type() == PPluginType::PPT_TOOL) {
+    if (plugin->get_type() == P::PluginType::PPT_TOOL) {
         tool_manager->add_tool(new t_Plugin(tool_manager, plugin));
-    } else if (plugin->get_type() == PPluginType::PPT_EFFECT) {
+    } else if (plugin->get_type() == P::PluginType::PPT_EFFECT) {
         effect_manager->add(new PluginEffect(plugin));
     }
 }
 
-void PluginManager::set_plugin(const PPluginInterface *plugin_self, RedactorPlugin *plugin) {
-    plugin_map[plugin_self] = plugin;
-}
+// void PluginManager::set_plugin(const PPluginInterface *plugin_self, RedactorPlugin *plugin) {
+//     plugin_map[plugin_self] = plugin;
+// }
 
-RedactorPlugin *PluginManager::get_plugin(const PPluginInterface *plugin_self) {
-    if (!plugin_map.count(plugin_self)) {
-        logger.error("plugin_manager", "plugin with interface [%p] is not registered in manager [%p], returning nullptr for request", plugin_self, this);
-        return nullptr;
-    } else {
-        return plugin_map[plugin_self];
-    }
-}
+// RedactorPlugin *PluginManager::get_plugin(const PPluginInterface *plugin_self) {
+//     if (!plugin_map.count(plugin_self)) {
+//         logger.error("plugin_manager", "plugin with interface [%p] is not registered in manager [%p], returning nullptr for request", plugin_self, this);
+//         return nullptr;
+//     } else {
+//         return plugin_map[plugin_self];
+//     }
+// }

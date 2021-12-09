@@ -84,7 +84,6 @@ struct PluginInterface {
     virtual void   dump()                    const = 0;
 
     virtual void on_tick(double dt)   const = 0;
-    virtual void on_settings_update() const = 0;
 
     virtual PreviewLayerPolicy get_flush_policy() const = 0;
 

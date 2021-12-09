@@ -47,6 +47,25 @@ struct Layer : public Affected<Layer> {
         renderer->pop_target();
     }
 
+    void copy_from(RImage *img) {
+        RTexture texture;
+        texture.create(img->getSize().x, img->getSize().y);
+        texture.update(*img);
+        copy_from(&texture);
+    }
+
+    Layer *copy() {
+        Layer *ret = new Layer(renderer, nullptr, size);
+        flush_to(ret);
+        return ret;
+    }
+
+    RImage *copy_to_image() {
+        auto img = new RImage;
+        *img = target->getTexture().copyToImage();
+        return img;
+    }
+
     void fill_with(RTexture *img);
     
     void force_redraw();
@@ -73,6 +92,8 @@ struct Layer : public Affected<Layer> {
     void save_to(const char *filename) {
         target->getTexture().copyToImage().saveToFile(filename);
     }
+
+    inline Vec2d flip(const Vec2d &p) { return {p.x(), size.y() - p.y()}; }
 
 };
 

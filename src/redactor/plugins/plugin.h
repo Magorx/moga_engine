@@ -5,30 +5,26 @@
 #include "utils/vec2d.h"
 #include "visual/color/rgba.h"
 
-#include "redactor/plugins/settings_window.h"
-
 
 class PluginManager;
 
 class RedactorPlugin {
     void *lib_handle;
 
-    const PPluginInfo      *lib;
-    const PPluginInterface *interface;
-
-    PluginSettingsWindow *settings;
-
     int status;
 
 public:
-    RedactorPlugin(const char *fileName, const PAppInterface *appInterface, PluginManager *manager = nullptr);
+    const P::PluginInfo      *lib;
+    const P::PluginInterface *interface;
+
+    RedactorPlugin(const char *fileName, const P::AppInterface *appInterface, PluginManager *manager = nullptr);
     ~RedactorPlugin();
 
-    void on_tick(double dt) { interface->general.on_tick(dt); }
+    void on_tick(double dt) { interface->on_tick(dt); }
 
-    void dump() { interface->general.dump(); }
+    void dump() { interface->dump(); }
 
-    PPreviewLayerPolicy get_flush_policy() { return interface->general.get_flush_policy(); }
+    P::PreviewLayerPolicy get_flush_policy() { return interface->get_flush_policy(); }
 
     void on_mouse_press(const Vec2d &position);
     void on_mouse_move(const Vec2d &from, const Vec2d &to);
@@ -40,17 +36,14 @@ public:
         return !status;
     }
 
-    const PPluginInterface *get_inteface() const { return interface; }
-    const PPluginInfo *get_lib() const { return lib; }
-    PPluginType get_type() const { return lib->type; }
+    const P::PluginInterface *get_inteface() const { return interface; }
+    const P::PluginInfo *get_lib() const { return lib; }
+    P::PluginType get_type() const { return lib->type; }
 
-    PluginSettingsWindow *get_settings() { return settings; }
-    void set_settings(PluginSettingsWindow *settings_) { settings = settings_; }
+    static P::Vec2f  to_pvec2d(const Vec2d  &vec)   { return P::Vec2f(vec.x(), vec.y()); }
+    static Vec2d   from_pvec2d(const P::Vec2f &vec) { return    Vec2d(vec.x  , vec.y  ); }
 
-    static PVec2f  to_pvec2d(const Vec2d  &vec) { return PVec2f(vec.x(), vec.y()); }
-    static Vec2d from_pvec2d(const PVec2f &vec) { return Vec2d (vec.x  , vec.y  ); }
-
-    static PRGBA  to_pcolor(const RGBA  &col) { return col.ui32; }
-    static RGBA from_pcolor(const PRGBA &col) { return col.ui32; }
+    static P::RGBA  to_pcolor(const RGBA  &col)   { return col.ui32; }
+    static RGBA   from_pcolor(const P::RGBA &col) { return col.ui32; }
         
 };

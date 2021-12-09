@@ -7,9 +7,11 @@
 
 class Target : public P::RenderTarget {
     Layer *layer;
+    bool to_delete_layer = false;
+    bool to_flip = false;
 
 public:
-    Target(Layer *layer);
+    Target(Layer *layer, bool to_delete_layer = false, bool to_flip = false);
     Target(Vec2d size);
     ~Target();
 

@@ -5,15 +5,13 @@
 
 #include "plugin_manager.h"
 
-typedef const PPluginInterface* (*plugin_init_func)();
+typedef const P::PluginInterface* (*plugin_init_func)();
 
-RedactorPlugin::RedactorPlugin(const char *fileName, const PAppInterface *appInterface, PluginManager *manager) :
+RedactorPlugin::RedactorPlugin(const char *fileName, const P::AppInterface *appInterface, PluginManager *manager) :
 lib_handle(nullptr),
 
 lib(nullptr),
 interface(nullptr),
-
-settings(nullptr),
 
 status(-1)
 {
@@ -37,17 +35,15 @@ status(-1)
         return;
     }
 
-    lib = interface->general.get_info();
+    lib = interface->get_info();
     if (!lib) {
         logger.error("Plugin", "plugin [%s] returned nullptr information", fileName);
         dlclose(lib_handle);
         return;
     }
 
-    if (manager) manager->set_plugin(interface, this);
-
-    PPluginStatus init_status = interface->general.init(appInterface);
-    if (init_status != PPS_OK) {
+    P::Status init_status = interface->init(appInterface);
+    if (init_status != P::PPS_OK) {
         logger.error("Plugin", "initialization of plugin [%s] failed", fileName);
         dlclose(lib_handle);
         return;
@@ -60,11 +56,7 @@ status(-1)
 
 RedactorPlugin::~RedactorPlugin() {
     if (status >= 0) {
-        if (!interface->general.deinit) {
-            logger.error("~Plugin", "plugin [%s] doesn't have deinit() func somewhy, could wasted some resourses", lib->name);
-        }
-
-        interface->general.deinit();
+        interface->deinit();
         status = -1;
     }
 
@@ -78,17 +70,17 @@ RedactorPlugin::~RedactorPlugin() {
 }
 
 void RedactorPlugin::on_mouse_press(const Vec2d &position) {
-    interface->tool.on_press(to_pvec2d(position));
+    interface->tool_on_press(to_pvec2d(position));
 }
 
 void RedactorPlugin::on_mouse_move(const Vec2d &from, const Vec2d &to) {
-    interface->tool.on_move(to_pvec2d(from), to_pvec2d(to));
+    interface->tool_on_move(to_pvec2d(from), to_pvec2d(to));
 }
 
 void RedactorPlugin::on_mouse_release(const Vec2d &position) {
-    interface->tool.on_release(to_pvec2d(position));
+    interface->tool_on_release(to_pvec2d(position));
 }
 
 void RedactorPlugin::apply() {
-    interface->effect.apply();
+    interface->effect_apply();
 }

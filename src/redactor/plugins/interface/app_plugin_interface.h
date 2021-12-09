@@ -10,6 +10,11 @@
 
 
 class RedactorPluginInterface : public P::AppInterface {
+
+public:
+    RedactorPluginInterface();
+    ~RedactorPluginInterface();
+
 // extension
     virtual bool  enable        (std::string_view name)                             const override;
     virtual void *get_func      (std::string_view extension, std::string_view func) const override;
@@ -23,7 +28,7 @@ class RedactorPluginInterface : public P::AppInterface {
     virtual float get_size()    const override;
 
 // target
-    virtual P::RenderTarget *get_target()  const;
-    virtual P::RenderTarget *get_preview() const;
+    virtual P::RenderTarget *get_target()  const override;
+    virtual P::RenderTarget *get_preview() const override;
     virtual void flush_preview()           const override;
 };

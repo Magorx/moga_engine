@@ -135,10 +135,16 @@ add_executable(moga
         src/redactor/canvas/canvas.cpp
         src/redactor/canvas/canvas_history.cpp
 
+        # plugins
+
         src/redactor/plugins/plugin.cpp
-        src/redactor/plugins/settings_window.cpp
         src/redactor/plugins/plugin_manager.cpp
-        src/redactor/plugins/app_plugin_interface.cpp
+        
+        src/redactor/plugins/interface/app_plugin_interface.cpp
+        src/redactor/plugins/interface/target.cpp
+        src/redactor/plugins/interface/target_factory.cpp
+        src/redactor/plugins/interface/widget_factory.cpp
+        src/redactor/plugins/interface/shader_factory.cpp
 
         src/redactor/layer/layer.cpp
 
@@ -154,24 +160,24 @@ add_executable(moga
 target_link_libraries(moga sfml-graphics sfml-window sfml-system)
 target_link_libraries(moga ${OPENGL_LIBRARIES})
 
-# aux_source_directory(src/collection/plugins ERASER_SOURCES)
+aux_source_directory(src/collection/plugins ERASER_SOURCES)
 add_library(sharpy SHARED src/collections/plugins/sharpy.cpp)
 set_target_properties(sharpy PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharpy")
 
-add_library(rainbow_stamp SHARED src/collections/plugins/rainbow_stamp.cpp)
-set_target_properties(rainbow_stamp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_rainbow_stamp")
+# add_library(rainbow_stamp SHARED src/collections/plugins/rainbow_stamp.cpp)
+# set_target_properties(rainbow_stamp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_rainbow_stamp")
 
-add_library(shdr SHARED src/collections/plugins/shdr.cpp)
-set_target_properties(shdr PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_shdr")
+# add_library(shdr SHARED src/collections/plugins/shdr.cpp)
+# set_target_properties(shdr PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_shdr")
 
-add_library(negative SHARED src/collections/plugins/negative.cpp)
-set_target_properties(negative PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_negative")
+# add_library(negative SHARED src/collections/plugins/negative.cpp)
+# set_target_properties(negative PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_negative")
 
-add_library(bloor SHARED src/collections/plugins/bloor.cpp)
-set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_bloor")
+# add_library(bloor SHARED src/collections/plugins/bloor.cpp)
+# set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_bloor")
 
-add_library(sharp SHARED src/collections/plugins/sharp.cpp)
-set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharp")
+# add_library(sharp SHARED src/collections/plugins/sharp.cpp)
+# set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharp")
 
 
 # add_custom_target(rebuild_plugins

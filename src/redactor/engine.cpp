@@ -3,7 +3,7 @@
 
 #include "overall_redactor_reactions.h"
 
-#include "redactor/plugins/app_plugin_interface.h"
+#include "redactor/plugins/interface/app_plugin_interface.h"
 
 #include <string>
 #include <filesystem>
@@ -13,8 +13,7 @@ RedactorEngine::RedactorEngine(RWindow *window,
 MogaEngine(window, name),
 tool_manager(new ToolManager(visual->get_renderer())),
 effect_manager(new EffectManager),
-plugin_manager(new PluginManager(tool_manager, effect_manager)),
-plugin_interface(new PAppInterface)
+plugin_manager(new PluginManager(tool_manager, effect_manager))
 {
     t_Brush *t_brush         = new t_Brush(tool_manager);
     t_Eraser *t_eraser       = new t_Eraser(tool_manager);
@@ -36,8 +35,6 @@ plugin_interface(new PAppInterface)
 
     // effect_manager->add(new PluginEffect("Pulgin"));
     // effect_manager->add(new PluginEffect("Bersu"));
-
-    appintr::init(plugin_interface);
 }
 
 RedactorEngine::~RedactorEngine() {
@@ -67,3 +64,5 @@ bool RedactorEngine::load_plugin(const char *path, bool is_dir) {
 
     return true;
 }
+
+inline P::AppInterface *RedactorEngine::get_plugin_interface() { return new RedactorPluginInterface; }

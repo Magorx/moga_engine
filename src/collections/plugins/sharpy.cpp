@@ -16,7 +16,7 @@ const char *PDESCR   = "Spawns random triangles in a circle, blends them on acti
 
 // ============================================================================ Flush policy
 
-const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
+const P::PreviewLayerPolicy FLUSH_POLICY = P::PPLP_BLEND;
 
 // ============================================================================ Resources
 
@@ -24,65 +24,36 @@ void *r_max_size_setting = nullptr;
 void *r_size_setting = nullptr;
 void *r_color_setting = nullptr;
 
-// ============================================================================
+// ============================================================================ General
 
+struct PluginInterface : public P::PluginInterface {
+    bool  enable        (const char *name)                        const override { return false;   }
+    void *get_func      (const char *extension, const char *func) const override { return nullptr; }
+    void *get_interface (const char *extension, const char *name) const override { return nullptr; }
 
-static PPluginStatus init(const PAppInterface* appInterface);
-static PPluginStatus deinit();
+    const P::PluginInfo *get_info() const override;
 
-static void dump();
-static void on_tick(double dt);
-static void on_update();
+    P::Status init   (const P::AppInterface*) const override;
+    P::Status deinit ()                       const override;
+    void      dump   ()                       const override;
 
-static const PPluginInfo  *get_info();
-static PPreviewLayerPolicy get_flush_policy();
+    void on_tick(double dt)   const override;
 
-static void on_mouse_down(PVec2f pos);
-static void on_mouse_move(PVec2f from, PVec2f to);
-static void on_mouse_up  (PVec2f pos);
-static void apply();
+    P::PreviewLayerPolicy get_flush_policy() const override;
 
-static bool  enable_extension  (const char *name);
-static void *get_extension_func(const char *ext, const char *name);
+    void effect_apply() const override;
 
-static void draw(PVec2f pos);
+    void tool_on_press  (P::Vec2f position)          const override;
+    void tool_on_release(P::Vec2f position)          const override;
+    void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
-
-const PPluginInterface PINTERFACE =
-{
-    0, // std_version
-    0, // reserved
-    
-    {
-        enable_extension,
-        get_extension_func,
-    },
-
-    // general
-    {
-        get_info,
-        init,
-        deinit,
-        dump,
-        on_tick,
-        on_update,
-        get_flush_policy,
-    },
-
-    // effect
-    {
-        apply,
-    },
-
-    // tool
-    {
-        on_mouse_down,
-        on_mouse_up  ,
-        on_mouse_move,
-    },
+    void draw(P::Vec2f position) const;
 };
 
-const PPluginInfo PINFO =
+
+const PluginInterface PINTERFACE {};
+
+const P::PluginInfo PINFO =
 {
     PSTDVERSION, // std_version
     nullptr,     // reserved
@@ -93,83 +64,75 @@ const PPluginInfo PINFO =
     PVERSION,
     PAUTHOR,
     PDESCR,
+    nullptr, // icon
     
-    PPT_TOOL
+    P::PPT_TOOL
 };
 
-const PAppInterface *APPI = nullptr;
+const P::AppInterface *APPI = nullptr;
 
 
-extern "C" const PPluginInterface *get_plugin_interface() {
+extern "C" const P::PluginInterface *get_plugin_interface() {
     return &PINTERFACE;
 }
+ 
+// ============================================================================ Logic
 
-static PPluginStatus init(const PAppInterface *app_interface) {
+P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
     srand(time(NULL));
 
     APPI = app_interface;
 
-    if (APPI->general.feature_level & PFL_SETTINGS_SUPPORT) {
-        APPI->settings.create_surface(&PINTERFACE, 200, 200);
-        r_max_size_setting = APPI->settings.add(&PINTERFACE, PST_TEXT_LINE, "Max");
-        r_size_setting = APPI->settings.add(&PINTERFACE, PST_SLIDER_1D, "Size");
-        r_color_setting = APPI->settings.add(&PINTERFACE, PST_COLOR_PICKER, "Color");
+    if (APPI->feature_level & P::PFL_SETTINGS_SUPPORT) {
+        // APPI->settings.create_surface(&PINTERFACE, 200, 200);
+        // r_max_size_setting = APPI->settings.add(&PINTERFACE, PST_TEXT_LINE, "Max");
+        // r_size_setting = APPI->settings.add(&PINTERFACE, PST_SLIDER_1D, "Size");
+        // r_color_setting = APPI->settings.add(&PINTERFACE, PST_COLOR_PICKER, "Color");
 
-        APPI->general.log("[plugin](%s) is happy for your settings support!", PINFO.name);
+        APPI->log("[plugin](%s) is happy for your settings support!", PINFO.name);
     } else {
-        APPI->general.log("[plugin](%s) is NOT happy for you not supporting settings!", PINFO.name);
+        APPI->log("[plugin](%s) is NOT happy for you not supporting settings!", PINFO.name);
     }
 
-    APPI->general.log("[plugin](%s) inited", PINFO.name);
-    return PPS_OK;
+    APPI->log("[plugin](%s) inited", PINFO.name);
+    return P::PPS_OK;
 }
 
-static PPluginStatus deinit() {
-    if (APPI->general.feature_level & PFL_SETTINGS_SUPPORT) {
-        APPI->settings.destroy_surface(&PINTERFACE);
+P::Status PluginInterface::deinit() const {
+    if (APPI->feature_level & P::PFL_SETTINGS_SUPPORT) {
+        // APPI->settings.destroy_surface(&PINTERFACE);
     }
 
-    APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
-    return PPS_OK;
+    APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
+    return P::PPS_OK;
 }
 
-static void dump() {
-    APPI->general.log("[plugin](%s) is active", PINFO.name);
+void PluginInterface::dump() const {
+    APPI->log("[plugin](%s) is active", PINFO.name);
 }
 
-static const PPluginInfo *get_info() {
+const P::PluginInfo *PluginInterface::get_info() const {
     return &PINFO;
 }
 
-static void on_tick(double /*dt*/) {
+void PluginInterface::on_tick(double /*dt*/) const {
 }
 
-static void on_update() {
-}
-
-static PPreviewLayerPolicy get_flush_policy() {
+P::PreviewLayerPolicy PluginInterface::get_flush_policy() const {
     return FLUSH_POLICY;
 }
 
-static void on_mouse_down(PVec2f pos) {
+void PluginInterface::tool_on_press(P::Vec2f pos) const {
     draw(pos);
 }
 
-static void on_mouse_move(PVec2f /*from*/, PVec2f to) {
+void PluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f to) const {
     draw(to);
 }
 
-static void on_mouse_up(PVec2f /*pos*/) {}
+void PluginInterface::tool_on_release(P::Vec2f /*pos*/) const {}
 
-static void apply() {}
-
-static bool enable_extension(const char * /*name*/) {
-    return false;
-}
-
-static void *get_extension_func(const char */*ext*/, const char */*name*/) {
-    return nullptr;
-}
+void PluginInterface::effect_apply() const {}
 
 inline unsigned long long read_next_long_long(const char **buffer) {
     const char *c = *buffer;
@@ -190,41 +153,20 @@ unsigned long long read(const char *text) {
     return wanted_size;
 }
 
-static void draw(PVec2f pos) {
-    float size = APPI->general.get_size();
-    PRGBA color = APPI->general.get_color();
+void PluginInterface::draw(P::Vec2f pos) const {
+    float size = APPI->get_size();
+    P::RGBA color = APPI->get_color();
     float max_size = 50;
-
-    if (r_max_size_setting) {
-        PTextFieldSetting text;
-        APPI->settings.get(&PINTERFACE, r_max_size_setting, &text);
-        unsigned long long wanted_size = read(text.text);
-        if (wanted_size) {
-            max_size = wanted_size;
-        }
-    }
-
-    if (r_size_setting) {
-        PSlider1dSetting slider;
-        APPI->settings.get(&PINTERFACE, r_size_setting, &slider);
-        size = 2 + max_size * slider.frac;
-    }
-    if (r_color_setting) {
-        PColorPickerSetting color_picker;
-        APPI->settings.get(&PINTERFACE, r_color_setting, &color_picker);
-        color = color_picker.color;
-    }
 
     float a1 = rand();
     float a2 = rand();
 
-    PVec2f p0 = pos;
+    P::Vec2f p0 = pos;
  
-    PVec2f p1 = {(float) (pos.x + cos(a1) * size), (float) (pos.y + sin(a2) * size)};
-    PVec2f p2 = {(float) (pos.x + cos(a2) * size), (float) (pos.y + sin(a1) * size)};
+    P::Vec2f p1 = {(float) (pos.x + cos(a1) * size), (float) (pos.y + sin(a2) * size)};
+    P::Vec2f p2 = {(float) (pos.x + cos(a2) * size), (float) (pos.y + sin(a1) * size)};
 
-    PRenderMode render_mode = { PPBM_ALPHA_BLEND, PPDP_ACTIVE, nullptr };
-    APPI->render.triangle(p0, p1, p2,
-                          color,
-                          &render_mode);
+    P::RenderMode rmode = { P::PPBM_COPY, nullptr };
+
+    APPI->get_target()->render_triangle(p0, p1, p2, color, &rmode);
 }

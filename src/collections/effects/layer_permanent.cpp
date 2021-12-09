@@ -14,21 +14,21 @@ const char *PluginEffect::get_name() const {
 }
 
 void PluginEffect::apply() {
-    plugin->get_inteface()->effect.apply();
+    plugin->get_inteface()->effect_apply();
 
     auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
     auto canvas = tm->get_active_canvas(); if(!canvas) return;
 
-    auto policy = plugin->get_inteface()->general.get_flush_policy();
-    canvas->flush_draw_to_active(policy == PPLP_COPY);
+    auto policy = plugin->get_inteface()->get_flush_policy();
+    canvas->flush_draw_to_active(policy == P::PPLP_COPY);
 
     canvas->push_history();
 }
 
 void PluginEffect::open_settings() {
-    if (!plugin) return;
-    auto settings = plugin->get_settings();
-    if (!settings) return;
+    // if (!plugin) return;
+    // auto settings = plugin->get_settings();
+    // if (!settings) return;
 
-    settings->e_toggle_activity.emit({});
+    // settings->e_toggle_activity.emit({});
 }
