@@ -18,6 +18,18 @@ layer(nullptr)
     
     layer = new Layer(renderer, nullptr, size);
     to_delete_layer = true;
+    to_flip = true;
+}
+
+Target::Target(const char *path) :
+layer(nullptr)
+{
+    auto renderer = App.engine->visual->get_renderer();
+    if (!renderer) return;
+    
+    layer = new Layer(renderer, path);
+    to_delete_layer = true;
+    to_flip = true;
 }
 
 Target::~Target() {
@@ -135,7 +147,23 @@ void Target::render_rectangle(P::Vec2f p1_, P::Vec2f p2_, P::RGBA color, const P
 
 
 void Target::render_texture(P::Vec2f position, const RenderTarget *texture, const P::RenderMode *render_mode) {
+    INIT_DRAW_OBJECTS_
+    auto target = dynamic_cast<const Target*>(texture);
+    auto to_draw = target->get_layer();
 
+    bool to_flip = false;
+    Vec2d pos = {position.x, position.y};
+    if (this->to_flip ^ to_flip) {
+        pos = layer->flip(pos);
+        to_flip ^= true;
+    }
+
+    Vec2d shift = {(double) 0, - (double) target->get_size().y};
+    
+    renderer->push_target(layer->get_target());
+    PROCESS_RMODE_(render_mode);
+    renderer->draw_texture(pos + shift, &to_draw->target->getTexture());
+    renderer->pop_target();
 }
 
 void Target::render_pixels(P::Vec2f position, const P::RGBA *data, size_t width, size_t height, const P::RenderMode *render_mode) {
@@ -143,7 +171,7 @@ void Target::render_pixels(P::Vec2f position, const P::RGBA *data, size_t width,
 
     bool to_flip = false;
     Vec2d pos = {position.x, position.y};
-    if (to_flip) {
+    if (this->to_flip ^ to_flip) {
         pos = layer->flip(pos);
         to_flip ^= true;
     }
@@ -152,9 +180,11 @@ void Target::render_pixels(P::Vec2f position, const P::RGBA *data, size_t width,
     texture.create(width, height);
     texture.update((uint8_t*) data);
 
+    Vec2d shift = {(double) 0, - (double) height};
+
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);
-    renderer->draw_texture({position.x, position.y}, &texture, to_flip);
+    renderer->draw_texture(pos + shift, &texture, to_flip);
     renderer->pop_target();
 }
 
@@ -162,3 +192,6 @@ void Target::apply_shader(const P::Shader *shader) {
 
 }
 
+void Target::update(const P::RGBA *data) {
+    layer->copy_from((RGBA*) data);
+}

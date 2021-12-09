@@ -29,9 +29,11 @@ struct Layer : public Affected<Layer> {
     bool is_cleared = true;
 
     Layer(Renderer *renderer, Canvas *canvas, Vec2d size, int idx = 0);
+    Layer(Renderer *renderer, const char *path);
 
     virtual ~Layer() {
         delete target;
+        delete final_target;
     }
 
     inline void set_canvas(Canvas *canvas_) {
@@ -40,17 +42,33 @@ struct Layer : public Affected<Layer> {
 
     inline Canvas* get_canvas() { return canvas; }
 
-    void copy_from(RTexture *img) {
+    void copy_from(const RTexture *img) {
         renderer->push_target(get_target());
         renderer->set_render_state(sf::BlendNone);
         renderer->draw_texture({0, 0}, img, true);
         renderer->pop_target();
     }
 
-    void copy_from(RImage *img) {
+    void copy_from(const RImage *img) {
         RTexture texture;
         texture.create(img->getSize().x, img->getSize().y);
         texture.update(*img);
+        copy_from(&texture);
+    }
+
+    void copy_from(const RGBA *data) {
+        RTexture texture;
+        texture.create(size.x(), size.y());
+        texture.update((uint8_t*) data);
+        copy_from(&texture);
+    }
+
+    void copy_from(const char *path) {
+        RTexture texture;
+        if (!texture.loadFromFile(path)) {
+            logger.error("Layer", "can't open file [%s]", path);
+            return;
+        }
         copy_from(&texture);
     }
 
@@ -88,6 +106,7 @@ struct Layer : public Affected<Layer> {
     void clear(const RColor &color = {0, 0, 0, 0}) { target->clear(to_glib_color(color)); force_redraw(); is_cleared = true; }
 
     void flush_to(Layer *layer, bool to_flip = false, bool to_apply_effects = false, RMode rmode = {});
+    void flush_to(Layer *layer, bool to_flip = false, bool to_apply_effects = false, RMode rmode = {}) const;
 
     void save_to(const char *filename) {
         target->getTexture().copyToImage().saveToFile(filename);

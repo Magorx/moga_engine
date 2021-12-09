@@ -7,13 +7,14 @@
 
 typedef const P::PluginInterface* (*plugin_init_func)();
 
-RedactorPlugin::RedactorPlugin(const char *fileName, const P::AppInterface *appInterface, PluginManager *manager) :
+RedactorPlugin::RedactorPlugin(const char *fileName, const P::AppInterface *appInterface, PluginManager *) :
 lib_handle(nullptr),
 
-lib(nullptr),
-interface(nullptr),
+status(-1),
 
-status(-1)
+lib(nullptr),
+interface(nullptr)
+
 {
     lib_handle = dlopen(fileName, RTLD_NOW);
     if (lib_handle == nullptr) {

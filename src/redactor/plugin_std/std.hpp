@@ -111,9 +111,10 @@ struct ShaderFactory {
 
 struct RenderTargetFactory {
     virtual RenderTarget *spawn(Vec2s size, RGBA color = {0, 0, 0, 255}) const = 0; // color -> fill with it
-    virtual RenderTarget *from_pixels(Vec2s size, RGBA *data) const = 0;
+    virtual RenderTarget *from_pixels(Vec2s size, const RGBA *data) const = 0;
     virtual RenderTarget *from_file(const char *path) const = 0;
     virtual void release(RenderTarget *target) const = 0;
+    virtual void release(RGBA *data) const = 0;
 };
 
 struct AppInterface {

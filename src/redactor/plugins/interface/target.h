@@ -13,7 +13,12 @@ class Target : public P::RenderTarget {
 public:
     Target(Layer *layer, bool to_delete_layer = false, bool to_flip = false);
     Target(Vec2d size);
-    ~Target();
+    Target(const char *path);
+    virtual ~Target();
+
+    const Layer *get_layer() const { return layer; }
+    Layer *get_layer() { return layer; }
+    void update(const P::RGBA *data);
 
     virtual P::RenderTarget *get_copy() const override;
 

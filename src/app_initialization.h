@@ -83,7 +83,8 @@ void initialize_photoshop(RedactorEngine &moga) {
     moga.main_view->e_key_down.emit({Keyboard::Key::enter});
     moga.main_view->e_key_up.emit({Keyboard::Key::enter});
 
-    new_effect_window->e_clicked.emit({});
+    // new_effect_window->e_clicked.emit({});
+    new_tool_window->e_clicked.emit({});
 
 //     auto dw = new v_DialogWindow("Dialogus", 200, 5, -30);
 //     dw->add_slider("Width");

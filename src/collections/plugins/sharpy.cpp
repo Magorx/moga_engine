@@ -27,9 +27,9 @@ void *r_color_setting = nullptr;
 // ============================================================================ General
 
 struct PluginInterface : public P::PluginInterface {
-    bool  enable        (const char *name)                        const override { return false;   }
-    void *get_func      (const char *extension, const char *func) const override { return nullptr; }
-    void *get_interface (const char *extension, const char *name) const override { return nullptr; }
+    bool  enable        (const char */*name*/)                            const override { return false;   }
+    void *get_func      (const char */*extension*/, const char */*func*/) const override { return nullptr; }
+    void *get_interface (const char */*extension*/, const char */*name*/) const override { return nullptr; }
 
     const P::PluginInfo *get_info() const override;
 
@@ -156,7 +156,6 @@ unsigned long long read(const char *text) {
 void PluginInterface::draw(P::Vec2f pos) const {
     float size = APPI->get_size();
     P::RGBA color = APPI->get_color();
-    float max_size = 50;
 
     float a1 = rand();
     float a2 = rand();
@@ -168,5 +167,9 @@ void PluginInterface::draw(P::Vec2f pos) const {
 
     P::RenderMode rmode = { P::PPBM_COPY, nullptr };
 
-    APPI->get_target()->render_triangle(p0, p1, p2, color, &rmode);
+    auto target  = APPI->get_target();
+    
+    target->render_triangle(p0, p1, p2, color, &rmode);
+    
+    APPI->factory.target->release(target);
 }

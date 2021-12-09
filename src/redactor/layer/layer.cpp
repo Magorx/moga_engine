@@ -25,6 +25,43 @@ idx(idx)
     add_effect(new FlushToFinalTexture(this));
 }
 
+Layer::Layer(Renderer *renderer, const char *path):
+Affected(this),
+renderer(renderer),
+canvas(nullptr),
+target(nullptr),
+final_target(nullptr),
+size(0),
+idx(0)
+{
+    RTexture texture;
+    if (!texture.loadFromFile(path)) {
+        logger.error("Layer", "can't open file [%s]", path);
+        return;
+    }
+
+    size = {(double) texture.getSize().x, (double) texture.getSize().y};
+
+    target = new RRendTexture;
+    target->create((float) size.x(), (float) size.y());
+    target->setRepeated(true);
+    target->clear({0, 0, 0, 0});
+
+    final_target = new RRendTexture;
+    final_target->create((float) size.x(), (float) size.y());
+    final_target->setRepeated(true);
+    final_target->clear({0, 0, 0, 0});
+
+    // Layer l(renderer, nullptr, size);
+    // l.copy_from(&texture);
+    // l.flush_to(this);
+    // target->getTexture().copyToImage().saveToFile("a.png");
+    copy_from(&texture);
+    
+
+    add_effect(new FlushToFinalTexture(this));
+}
+
 void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rmode) {
     if (to_apply_effects && !effects_applied) {
         apply_effects();
@@ -40,6 +77,21 @@ void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rm
         saved_image = inter.target->getTexture().copyToImage();
     }
 
+    if (!layer || !renderer) return;
+
+    renderer->push_target(layer->get_target());
+    renderer->set_render_state(rmode);
+
+    if (to_apply_effects) {
+        renderer->draw_texture({0, 0}, &final_target->getTexture(), to_flip);
+    } else {
+        renderer->draw_texture({0, 0}, &target->getTexture(), to_flip);
+    }
+
+    renderer->pop_target();
+}
+
+void Layer::flush_to(Layer *layer, bool to_flip, bool to_apply_effects, RMode rmode) const {
     if (!layer || !renderer) return;
 
     renderer->push_target(layer->get_target());

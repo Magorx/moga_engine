@@ -71,7 +71,7 @@ void shader_set_uniform_float_arr(void *shader, const char *name, float *val, si
 // ============================================================================
 
 RedactorPluginInterface::RedactorPluginInterface() {
-
+    factory.target = new TargetFactory;
 }
 
 RedactorPluginInterface::~RedactorPluginInterface() {
