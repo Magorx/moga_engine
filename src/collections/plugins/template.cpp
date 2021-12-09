@@ -93,8 +93,7 @@ const P::PluginInfo *MyPluginInterface::get_info() const {
     return &PINFO;
 }
 
-void MyPluginInterface::on_tick(double /*dt*/) const {
-}
+void MyPluginInterface::on_tick(double /*dt*/) const {}
 
 void MyPluginInterface::tool_on_press(P::Vec2f pos) const {
     draw(pos);

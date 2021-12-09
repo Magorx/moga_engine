@@ -12,9 +12,6 @@ public:
     void set_handler(HandlerType &handler_) { handler = handler_; }
     HandlerType &get_handler() { return handler; }
 
-    virtual void hide() = 0;
-    virtual void show() = 0;
-
 protected:
     HandlerType handler;
 };

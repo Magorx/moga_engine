@@ -124,11 +124,9 @@ void MyPluginInterface::effect_apply() const {
     auto target = APPI->get_target();
 
     if (r_shader_neg) {
-        APPI->log("awasome shaders!");
         target->apply_shader(r_shader_neg);
         return;
     } else {
-        APPI->log("NOT awasome shaders!");
         auto pixels = target->get_pixels();
         size_t w = target->get_size().x;
         size_t h = target->get_size().y;

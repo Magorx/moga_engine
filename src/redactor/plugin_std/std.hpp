@@ -23,6 +23,8 @@ namespace P {
 
 class RenderTarget {
 public:
+    virtual ~RenderTarget() {}
+
     virtual RenderTarget *get_copy() const = 0;
 
     virtual Vec2s get_size() const = 0;
@@ -83,7 +85,7 @@ struct PluginInterface {
     virtual Status deinit()                  const = 0;
     virtual void   dump()                    const = 0;
 
-    virtual void on_tick(double dt)   const = 0;
+    virtual void on_tick(double dt) const = 0;
 
     virtual void effect_apply() const = 0;
 

@@ -18,12 +18,14 @@ class RenderTarget;
 
 class Widget {
 public:
+    Widget(): body({{0, 0}, {0, 0}}), parent(nullptr), texture(nullptr) {}
     Widget(const WBody &body, Widget *parent = nullptr) : body(body), parent(parent), texture(nullptr) {}
+    virtual ~Widget() {}
 
     void set_position(const Vec2f &position_) { body.position = position_; }
     void set_size(const Vec2f &size_) { body.size = size_; }
 
-    WBody &get_body() { return body; };
+    WBody &get_body() { return body; }
     void set_body(const WBody &body_) { body = body_; }
 
     Widget *get_parent() const { return parent; }
@@ -49,11 +51,13 @@ public:
     virtual void on_key_up          (Widget *self, const Event::KeyUp           &event) = 0;
     virtual void on_text_enter      (Widget *self, const Event::TextEnter       &event) = 0;
     virtual void on_scroll          (Widget *self, const Event::Scroll          &event) = 0;
+    virtual void on_hide            (Widget *self, const Event::Hide            &event) = 0;
+    virtual void on_show            (Widget *self, const Event::Show            &event) = 0;
 
-    virtual void add_label(const char *text, size_t font_size, const Vec2f *pos = nullptr);
+    virtual void hide() = 0;
+    virtual void show() = 0;
 
-    // virtual void on_hover_begin     (Widget *self, const Event:: &event);
-    // virtual void on_hover_end       (Widget *self, const Event:: &event);
+    virtual void set_caption(const char *text, size_t font_size, const Vec2f *pos = nullptr) = 0;
 
 protected:
     WBody body;
