@@ -1,5 +1,5 @@
 #include "redactor/plugin_std/std.hpp"
-// #include "utils.h"
+#include "utils.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -7,82 +7,47 @@
 
 // ============================================================================ Info
 
-const uint32_t PSTDVERSION = 0;
-
-const PPluginType PTYPE = PPT_EFFECT;
+const auto PTYPE = P::EFFECT;
 
 const char *PNAME    = "Negator";
-const char *PVERSION = "1.0";
+const char *PVERSION = "2.0";
 const char *PAUTHOR  = "KCTF";
 const char *PDESCR   = "Negotiates with you colors";
 
-// ============================================================================ Flush policy
-
-const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
-
 // ============================================================================ Resources
 
-void *r_shader_neg = nullptr;
+P::Shader *r_shader_neg = nullptr;
 
-// ============================================================================
+// ============================================================================ General
 
+struct MyPluginInterface : public P::PluginInterface {
+    bool  enable        (const char */*name*/)                            const override { return false;   }
+    void *get_func      (const char */*extension*/, const char */*func*/) const override { return nullptr; }
+    void *get_interface (const char */*extension*/, const char */*name*/) const override { return nullptr; }
 
-static PPluginStatus init(const PAppInterface* appInterface);
-static PPluginStatus deinit();
+    const P::PluginInfo *get_info() const override;
 
-static void dump();
-static void on_tick(double dt);
-static void on_update();
+    P::Status init   (const P::AppInterface*) const override;
+    P::Status deinit ()                       const override;
+    void      dump   ()                       const override;
 
-static const PPluginInfo  *get_info();
-static PPreviewLayerPolicy get_flush_policy();
+    void on_tick(double dt)   const override;
 
-static void on_mouse_down(PVec2f pos);
-static void on_mouse_move(PVec2f from, PVec2f to);
-static void on_mouse_up  (PVec2f pos);
-static void apply();
+    void effect_apply() const override;
 
-static bool  enable_extension  (const char *name);
-static void *get_extension_func(const char *ext, const char *name);
+    void tool_on_press  (P::Vec2f position)          const override;
+    void tool_on_release(P::Vec2f position)          const override;
+    void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
-
-const PPluginInterface PINTERFACE =
-{
-    0, // std_version
-    0, // reserved
-    
-    {
-        enable_extension,
-        get_extension_func,
-    },
-
-    // general
-    {
-        get_info,
-        init,
-        deinit,
-        dump,
-        on_tick,
-        on_update,
-        get_flush_policy,
-    },
-
-    // effect
-    {
-        apply,
-    },
-
-    // tool
-    {
-        on_mouse_down,
-        on_mouse_up  ,
-        on_mouse_move,
-    },
+    void draw(P::Vec2f position) const;
 };
 
-const PPluginInfo PINFO =
+
+const MyPluginInterface PINTERFACE {};
+
+const P::PluginInfo PINFO =
 {
-    PSTDVERSION, // std_version
+    PSTD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,
@@ -91,103 +56,110 @@ const PPluginInfo PINFO =
     PVERSION,
     PAUTHOR,
     PDESCR,
+    nullptr, // icon
     
     PTYPE
 };
 
-const PAppInterface *APPI = nullptr;
+const P::AppInterface *APPI = nullptr;
 
 
-extern "C" const PPluginInterface *get_plugin_interface() {
+extern "C" const P::PluginInterface *get_plugin_interface() {
     return &PINTERFACE;
 }
+ 
+// ============================================================================ Logic
 
-static PPluginStatus init(const PAppInterface *app_interface) {
+P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
     srand(time(NULL));
 
     APPI = app_interface;
 
-    if (APPI->general.feature_level & PFL_SHADER_SUPPORT) {
-        r_shader_neg = APPI->shader.compile(
+    if (APPI->feature_level & P::SHADER_SUPPORT) {
+        r_shader_neg = APPI->factory.shader->compile(
            "uniform sampler2D texture;                                                  \
             void main() {                                                               \
                 vec4 pixel = texture2D(texture, gl_TexCoord[0].xy);                     \
                 vec4 color = vec4(1.0 - pixel.r, 1.0 - pixel.g, 1.0 - pixel.b, pixel.w);\
                 gl_FragColor = color;                                                   \
             }                                                                           \
-           ", PST_FRAGMENT);
+           ", P::FRAGMENT);
     }
 
-    APPI->general.log("[plugin](%s) inited", PINFO.name);
-    return PPS_OK;
+    APPI->log("[plugin](%s) inited", PINFO.name);
+    return P::OK;
 }
 
-static PPluginStatus deinit() {
+P::Status MyPluginInterface::deinit() const {
     if (r_shader_neg) {
-        APPI->shader.release(r_shader_neg);
+        APPI->factory.shader->release(r_shader_neg);
     }
 
-    APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
-    return PPS_OK;
+    APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
+    return P::OK;
 }
 
-static void dump() {
-    APPI->general.log("[plugin](%s) is active", PINFO.name);
+void MyPluginInterface::dump() const {
+    APPI->log("[plugin](%s) is active", PINFO.name);
 }
 
-static const PPluginInfo *get_info() {
+const P::PluginInfo *MyPluginInterface::get_info() const {
     return &PINFO;
 }
 
-static void on_tick(double /*dt*/) {
+void MyPluginInterface::on_tick(double /*dt*/) const {
 }
 
-static void on_update() {
+void MyPluginInterface::tool_on_press(P::Vec2f pos) const {
+    draw(pos);
 }
 
-static PPreviewLayerPolicy get_flush_policy() {
-    return FLUSH_POLICY;
+void MyPluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f to) const {
+    draw(to);
 }
 
-static void on_mouse_down(PVec2f /*pos*/) {
-}
+void MyPluginInterface::tool_on_release(P::Vec2f /*pos*/) const {}
 
-static void on_mouse_move(PVec2f /*from*/, PVec2f /*to*/) {
-}
+void MyPluginInterface::effect_apply() const {
+    auto target = APPI->get_target();
 
-static void on_mouse_up(PVec2f /*pos*/) {}
-
-static void apply() {
     if (r_shader_neg) {
-        PRenderMode render_mode = { PPBM_COPY, PPDP_ACTIVE, r_shader_neg };
-        APPI->shader.apply(&render_mode);
+        APPI->log("awasome shaders!");
+        target->apply_shader(r_shader_neg);
         return;
+    } else {
+        APPI->log("NOT awasome shaders!");
+        auto pixels = target->get_pixels();
+        size_t w = target->get_size().x;
+        size_t h = target->get_size().y;
+        size_t sz = w * h;
+        for (size_t i = 0; i < sz; ++i) {
+            P::RGBA c = pixels[i];
+            pixels[i] = {
+                (unsigned char) (255 - c.r),
+                (unsigned char) (255 - c.g),
+                (unsigned char) (255 - c.b),
+                c.a,
+            };
+        }
+
+        P::RenderMode rmode = {P::COPY, nullptr};
+        target->render_pixels({0, 0}, pixels, w, h, &rmode);
+        APPI->factory.target->release(pixels);
     }
 
-    auto pixels = APPI->target.get_pixels();
-    size_t w = 0;
-    size_t h = 0;
-    APPI->target.get_size(&w, &h);
-    size_t sz = w * h;
-    for (size_t i = 0; i < sz; ++i) {
-        PRGBA c = pixels[i];
-        pixels[i] = {
-            (unsigned char) (255 - c.r),
-            (unsigned char) (255 - c.g),
-            (unsigned char) (255 - c.b),
-            c.a,
-        };
-    }
-
-    PRenderMode rmode = {PPBM_COPY, PPDP_ACTIVE, nullptr};
-    APPI->render.pixels({0, 0}, pixels, w, h, &rmode);
-    APPI->general.release_pixels(pixels);
+    APPI->factory.target->release(target);
 }
 
-static bool enable_extension(const char * /*name*/) {
-    return false;
-}
 
-static void *get_extension_func(const char */*ext*/, const char */*name*/) {
-    return nullptr;
+void MyPluginInterface::draw(P::Vec2f pos) const {
+    float    size = APPI->get_size();
+    P::RGBA color = APPI->get_color();
+
+    P::RenderMode rmode = { P::COPY, nullptr };
+    auto preview = APPI->get_preview();
+
+    preview->render_circle(pos, size, color, &rmode);
+
+    APPI->factory.target->release(preview);
 }

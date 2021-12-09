@@ -1,4 +1,5 @@
 #include "target.h"
+#include "plugin_shader.h"
 
 #include "engine/Resources.h"
 #include "engine/moga_engine.h"
@@ -189,7 +190,30 @@ void Target::render_pixels(P::Vec2f position, const P::RGBA *data, size_t width,
 }
 
 void Target::apply_shader(const P::Shader *shader) {
+    INIT_DRAW_OBJECTS_;
 
+    auto *rshader = dynamic_cast<const PluginShader*>(shader)->get_shader();
+
+    layer->get_target()->setRepeated(false);
+    auto texture = &layer->get_target()->getTexture();
+
+    RRendTexture new_tx;
+    new_tx.create(texture->getSize().x, texture->getSize().y);
+    renderer->push_target(&new_tx);
+    renderer->get_rstate()->rmode.blendMode = RBlend::none;
+    renderer->get_rstate()->rmode.texture   = texture;
+    renderer->get_rstate()->rmode.shader    = rshader;
+    renderer->draw_texture({0, 0}, texture, true);
+    renderer->pop_target();
+
+    renderer->push_target(layer->get_target());
+
+    renderer->get_rstate()->rmode.blendMode = RBlend::none;
+    renderer->get_rstate()->rmode.texture   = &new_tx.getTexture();
+    renderer->draw_texture({0, 0}, &new_tx.getTexture(), true);
+    renderer->pop_target();
+
+    layer->get_target()->setRepeated(true);
 }
 
 void Target::update(const P::RGBA *data) {

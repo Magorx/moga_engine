@@ -72,6 +72,9 @@ void shader_set_uniform_float_arr(void *shader, const char *name, float *val, si
 
 RedactorPluginInterface::RedactorPluginInterface() {
     factory.target = new TargetFactory;
+    factory.shader = new ShaderFactory;
+
+    feature_level = P::SHADER_SUPPORT;
 }
 
 RedactorPluginInterface::~RedactorPluginInterface() {

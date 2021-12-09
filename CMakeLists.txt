@@ -142,6 +142,7 @@ add_executable(moga
         
         src/redactor/plugins/interface/app_plugin_interface.cpp
         src/redactor/plugins/interface/target.cpp
+        src/redactor/plugins/interface/plugin_shader.cpp
         src/redactor/plugins/interface/target_factory.cpp
         src/redactor/plugins/interface/widget_factory.cpp
         src/redactor/plugins/interface/shader_factory.cpp
@@ -170,8 +171,8 @@ set_target_properties(sharpy PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/
 # add_library(shdr SHARED src/collections/plugins/shdr.cpp)
 # set_target_properties(shdr PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_shdr")
 
-# add_library(negative SHARED src/collections/plugins/negative.cpp)
-# set_target_properties(negative PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_negative")
+add_library(negative SHARED src/collections/plugins/negative.cpp)
+set_target_properties(negative PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_negative")
 
 # add_library(bloor SHARED src/collections/plugins/bloor.cpp)
 # set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_bloor")
