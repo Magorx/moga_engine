@@ -19,8 +19,7 @@ void PluginEffect::apply() {
     auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
     auto canvas = tm->get_active_canvas(); if(!canvas) return;
 
-    auto policy = plugin->get_inteface()->get_flush_policy();
-    canvas->flush_draw_to_active(policy == P::PPLP_COPY);
+    canvas->flush_draw_to_active();
 
     canvas->push_history();
 }

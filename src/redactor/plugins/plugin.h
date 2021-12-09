@@ -24,8 +24,6 @@ public:
 
     void dump() { interface->dump(); }
 
-    P::PreviewLayerPolicy get_flush_policy() { return interface->get_flush_policy(); }
-
     void on_mouse_press(const Vec2d &position);
     void on_mouse_move(const Vec2d &from, const Vec2d &to);
     void on_mouse_release(const Vec2d &position);

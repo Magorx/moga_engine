@@ -42,9 +42,9 @@ RedactorPlugin *PluginManager::load(const char *filename, P::AppInterface *app_i
 void PluginManager::fit_plugin(RedactorPlugin *plugin) {
     if (!plugin) return;
 
-    if (plugin->get_type() == P::PluginType::PPT_TOOL) {
+    if (plugin->get_type() == P::PluginType::TOOL) {
         tool_manager->add_tool(new t_Plugin(tool_manager, plugin));
-    } else if (plugin->get_type() == P::PluginType::PPT_EFFECT) {
+    } else if (plugin->get_type() == P::PluginType::EFFECT) {
         effect_manager->add(new PluginEffect(plugin));
     }
 }

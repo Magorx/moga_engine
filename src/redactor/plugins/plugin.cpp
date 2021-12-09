@@ -44,7 +44,7 @@ interface(nullptr)
     }
 
     P::Status init_status = interface->init(appInterface);
-    if (init_status != P::PPS_OK) {
+    if (init_status != P::OK) {
         logger.error("Plugin", "initialization of plugin [%s] failed", fileName);
         dlclose(lib_handle);
         return;

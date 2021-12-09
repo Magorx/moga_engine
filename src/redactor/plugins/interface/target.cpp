@@ -75,7 +75,7 @@ auto renderer = layer->renderer; \
 
 #define PROCESS_RMODE_(mode) \
 do { auto rstate = renderer->get_rstate(); \
-if (mode->blend == P::BlendMode::PPBM_COPY) rstate->rmode.blendMode = RBlend::none; \
+if (mode->blend == P::BlendMode::COPY) rstate->rmode.blendMode = RBlend::none; \
 if (mode->shader) {rstate->rmode.shader = (RShader*) mode->shader;} } while(0)
 
 void Target::render_circle(P::Vec2f position, float radius, P::RGBA color, const P::RenderMode *render_mode) {

@@ -14,10 +14,6 @@ const char *PVERSION = "1.0";
 const char *PAUTHOR  = "KCTF";
 const char *PDESCR   = "Spawns random triangles in a circle, blends them on active layer";
 
-// ============================================================================ Flush policy
-
-const P::PreviewLayerPolicy FLUSH_POLICY = P::PPLP_BLEND;
-
 // ============================================================================ Resources
 
 void *r_max_size_setting = nullptr;
@@ -38,8 +34,6 @@ struct PluginInterface : public P::PluginInterface {
     void      dump   ()                       const override;
 
     void on_tick(double dt)   const override;
-
-    P::PreviewLayerPolicy get_flush_policy() const override;
 
     void effect_apply() const override;
 
@@ -66,7 +60,7 @@ const P::PluginInfo PINFO =
     PDESCR,
     nullptr, // icon
     
-    P::PPT_TOOL
+    P::TOOL
 };
 
 const P::AppInterface *APPI = nullptr;
@@ -83,7 +77,7 @@ P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
 
     APPI = app_interface;
 
-    if (APPI->feature_level & P::PFL_SETTINGS_SUPPORT) {
+    if (APPI->feature_level & P::SETTINGS_SUPPORT) {
         // APPI->settings.create_surface(&PINTERFACE, 200, 200);
         // r_max_size_setting = APPI->settings.add(&PINTERFACE, PST_TEXT_LINE, "Max");
         // r_size_setting = APPI->settings.add(&PINTERFACE, PST_SLIDER_1D, "Size");
@@ -95,16 +89,16 @@ P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
     }
 
     APPI->log("[plugin](%s) inited", PINFO.name);
-    return P::PPS_OK;
+    return P::OK;
 }
 
 P::Status PluginInterface::deinit() const {
-    if (APPI->feature_level & P::PFL_SETTINGS_SUPPORT) {
+    if (APPI->feature_level & P::SETTINGS_SUPPORT) {
         // APPI->settings.destroy_surface(&PINTERFACE);
     }
 
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
-    return P::PPS_OK;
+    return P::OK;
 }
 
 void PluginInterface::dump() const {
@@ -116,10 +110,6 @@ const P::PluginInfo *PluginInterface::get_info() const {
 }
 
 void PluginInterface::on_tick(double /*dt*/) const {
-}
-
-P::PreviewLayerPolicy PluginInterface::get_flush_policy() const {
-    return FLUSH_POLICY;
 }
 
 void PluginInterface::tool_on_press(P::Vec2f pos) const {
@@ -165,9 +155,9 @@ void PluginInterface::draw(P::Vec2f pos) const {
     P::Vec2f p1 = {(float) (pos.x + cos(a1) * size), (float) (pos.y + sin(a2) * size)};
     P::Vec2f p2 = {(float) (pos.x + cos(a2) * size), (float) (pos.y + sin(a1) * size)};
 
-    P::RenderMode rmode = { P::PPBM_COPY, nullptr };
+    P::RenderMode rmode = { P::COPY, nullptr };
 
-    auto target  = APPI->get_target();
+    auto target = APPI->get_target();
     
     target->render_triangle(p0, p1, p2, color, &rmode);
     

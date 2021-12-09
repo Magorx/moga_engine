@@ -1,5 +1,5 @@
 #include "redactor/plugin_std/std.hpp"
-// #include "utils.h"
+#include "utils.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -7,82 +7,49 @@
 
 // ============================================================================ Info
 
-const uint32_t PSTDVERSION = 0;
+const auto PTYPE = P::TOOL;
 
-const PPluginType PTYPE = PPT_TOOL; // PPT_EFFECT
-
-const char *PNAME    = "A name";
-const char *PVERSION = "0.1";
-const char *PAUTHOR  = "An author";
-const char *PDESCR   = "A discription";
-
-// ============================================================================ Flush policy
-
-const PPreviewLayerPolicy FLUSH_POLICY = PPLP_BLEND;
+const char *PNAME    = "a_name";
+const char *PVERSION = "a_vesion";
+const char *PAUTHOR  = "an_author";
+const char *PDESCR   = "a_description";
 
 // ============================================================================ Resources
 
-// ============================================================================
+void *r_max_size_setting = nullptr;
+void *r_size_setting     = nullptr;
+void *r_color_setting    = nullptr;
 
+// ============================================================================ General
 
-static PPluginStatus init(const PAppInterface* appInterface);
-static PPluginStatus deinit();
+struct PluginInterface : public P::PluginInterface {
+    bool  enable        (const char */*name*/)                            const override { return false;   }
+    void *get_func      (const char */*extension*/, const char */*func*/) const override { return nullptr; }
+    void *get_interface (const char */*extension*/, const char */*name*/) const override { return nullptr; }
 
-static void dump();
-static void on_tick(double dt);
-static void on_update();
+    const P::PluginInfo *get_info() const override;
 
-static const PPluginInfo  *get_info();
-static PPreviewLayerPolicy get_flush_policy();
+    P::Status init   (const P::AppInterface*) const override;
+    P::Status deinit ()                       const override;
+    void      dump   ()                       const override;
 
-static void on_mouse_down(PVec2f pos);
-static void on_mouse_move(PVec2f from, PVec2f to);
-static void on_mouse_up  (PVec2f pos);
-static void apply();
+    void on_tick(double dt)   const override;
 
-static bool  enable_extension  (const char *name);
-static void *get_extension_func(const char *ext, const char *name);
+    void effect_apply() const override;
 
-static void draw(PVec2f pos);
+    void tool_on_press  (P::Vec2f position)          const override;
+    void tool_on_release(P::Vec2f position)          const override;
+    void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
-
-const PPluginInterface PINTERFACE =
-{
-    0, // std_version
-    0, // reserved
-    
-    {
-        enable_extension,
-        get_extension_func,
-    },
-
-    // general
-    {
-        get_info,
-        init,
-        deinit,
-        dump,
-        on_tick,
-        on_update,
-        get_flush_policy,
-    },
-
-    // effect
-    {
-        apply,
-    },
-
-    // tool
-    {
-        on_mouse_down,
-        on_mouse_up  ,
-        on_mouse_move,
-    },
+    void draw(P::Vec2f position) const;
 };
 
-const PPluginInfo PINFO =
+
+const PluginInterface PINTERFACE {};
+
+const P::PluginInfo PINFO =
 {
-    PSTDVERSION, // std_version
+    PSTD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,
@@ -91,71 +58,66 @@ const PPluginInfo PINFO =
     PVERSION,
     PAUTHOR,
     PDESCR,
+    nullptr, // icon
     
     PTYPE
 };
 
-const PAppInterface *APPI = nullptr;
+const P::AppInterface *APPI = nullptr;
 
 
-extern "C" const PPluginInterface *get_plugin_interface() {
+extern "C" const P::PluginInterface *get_plugin_interface() {
     return &PINTERFACE;
 }
+ 
+// ============================================================================ Logic
 
-static PPluginStatus init(const PAppInterface *app_interface) {
+P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
     srand(time(NULL));
 
     APPI = app_interface;
 
-    APPI->general.log("[plugin](%s) inited", PINFO.name);
-    return PPS_OK;
+    APPI->log("[plugin](%s) inited", PINFO.name);
+    return P::OK;
 }
 
-static PPluginStatus deinit() {
-    APPI->general.log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
-    return PPS_OK;
+P::Status PluginInterface::deinit() const {
+    APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
+    return P::OK;
 }
 
-static void dump() {
-    APPI->general.log("[plugin](%s) is active", PINFO.name);
+void PluginInterface::dump() const {
+    APPI->log("[plugin](%s) is active", PINFO.name);
 }
 
-static const PPluginInfo *get_info() {
+const P::PluginInfo *PluginInterface::get_info() const {
     return &PINFO;
 }
 
-static void on_tick(double /*dt*/) {
+void PluginInterface::on_tick(double /*dt*/) const {
 }
 
-static void on_update() {
+void PluginInterface::tool_on_press(P::Vec2f pos) const {
+    draw(pos);
 }
 
-static PPreviewLayerPolicy get_flush_policy() {
-    return FLUSH_POLICY;
+void PluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f to) const {
+    draw(to);
 }
 
-static void on_mouse_down(PVec2f /*pos*/) {
-}
+void PluginInterface::tool_on_release(P::Vec2f /*pos*/) const {}
 
-static void on_mouse_move(PVec2f /*from*/, PVec2f /*to*/) {
-}
+void PluginInterface::effect_apply() const {}
 
-static void on_mouse_up(PVec2f /*pos*/) {}
 
-static void apply() {}
+void PluginInterface::draw(P::Vec2f pos) const {
+    float    size = APPI->get_size();
+    P::RGBA color = APPI->get_color();
 
-static bool enable_extension(const char * /*name*/) {
-    return false;
-}
+    P::RenderMode rmode = { P::COPY, nullptr };
+    auto preview = APPI->get_preview();
 
-static void *get_extension_func(const char */*ext*/, const char */*name*/) {
-    return nullptr;
-}
+    preview->render_circle(pos, size, color, &rmode);
 
-static void draw(PVec2f pos) {
-    float size  = APPI->general.get_size() ;
-    PRGBA color = APPI->general.get_color();
-
-    PRenderMode render_mode = { PPBM_COPY, PPDP_PREVIEW, nullptr }; 
-    APPI->render.circle(pos, size, color, &render_mode);
+    APPI->factory.target->release(preview);
 }
