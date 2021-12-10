@@ -1,0 +1,12 @@
+virtual void set_active(bool flag) override { 
+    if (flag) { 
+        widget->on_show({}); 
+    } else { 
+        widget->on_hide({}); 
+    }
+
+    v_Highlighter::set_active(flag);
+}
+
+P::Widget *get_widget() { return widget; }
+void set_widget(P::Widget *widget_) { widget = widget_; }

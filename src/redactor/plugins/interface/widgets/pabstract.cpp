@@ -1,11 +1,36 @@
 #include "pabstract.h"
 #include "utils/logger.h"
 #include "engine/Resources.h"
+#include "engine/moga_engine.h"
 
 
-PluginWidget::PluginWidget(const ViewBody &body, PluginWidget *parent = nullptr) :
-Widget({{body.position.x(), body.position.y()}, {body.size.x(), body.size.y()}}, parent),
-view(new v_Highlighter(body, nullptr, true))
+FWD_ALL_FOR_CLASS_(WidgetView)
+
+
+WidgetView::WidgetView(const ViewBody &body, P::Widget *widget) :
+v_Highlighter(body, nullptr, true),
+widget(widget)
+{
+    INIT_FWD_TO_WIDGET(WidgetView);
+
+    App.engine->add_view(this);
+    // set_appearence(App.add_appr(new AppearenceColor({200, 200, 100})));
+}
+
+
+PluginWidget::PluginWidget(const ViewBody &body, P::Widget *parent, bool to_spawn_widget) :
+Widget(to_wbody(body), parent),
+view(to_spawn_widget ? new WidgetView(body, this) : nullptr)
+{
+    if (parent) {
+        parent->add_child(this);
+    }
+}
+
+
+PluginWidget::PluginWidget(const ViewBody &body, PluginWidget *parent, bool to_spawn_widget) :
+Widget(to_wbody(body), parent),
+view(to_spawn_widget ? new WidgetView(body, this) : nullptr)
 {
     if (parent) {
         parent->add_child(this);
@@ -21,7 +46,7 @@ view(nullptr)
         {widget->get_body().size.x, widget->get_body().size.y}
     };
 
-    view = new v_Highlighter(body);
+    view = new WidgetView(body, widget);
 }
 
 PluginWidget::~PluginWidget() {
@@ -37,20 +62,31 @@ bool PluginWidget::is_inside(P::Vec2f pos) {
 }
 
 
-bool PluginWidget::add_child(Widget *child) {
-    if (!child) return false;
+bool PluginWidget::add_child(P::Widget *child) {
+    if (!child || !view) return false;
 
     PluginWidget *app_widget = dynamic_cast<PluginWidget*>(child);
     if (!app_widget) {
         app_widget = new PluginWidget(child);
     }
 
-    view->add_subview(app_widget->get_view());
+    return add_child(app_widget);
+}
 
+bool PluginWidget::add_child(PluginWidget *child) {
+    if (!child || !view || !child->get_view()) return false;
+
+    printf("adding %p\n", child->get_view());
+    view->add_subview(child->get_view());
+    child->get_view()->focus();
     return true;
 }
 
-bool PluginWidget::delete_child(Widget *child) {
+bool PluginWidget::delete_child(PluginWidget */*child*/) {
+    return false;
+}
+
+bool PluginWidget::delete_child(Widget */*child*/) {
     logger.error("PluginWidget", "delete_child is not implemented");
     return false;
 }
@@ -63,15 +99,17 @@ bool PluginWidget::delete_from_parent() {
 
 void PluginWidget::hide() {
     view->set_active(false);
-    on_hide(this, {});
 }
 
 void PluginWidget::show() {
     view->set_active(true);
-    on_show(this, {});
 }
 
 
-void PluginWidget::set_caption(const char *text, size_t font_size, const P::Vec2f *pos = nullptr) {
-    view->add_label(text, font_size, App.font.color.basic_header);
+void PluginWidget::set_caption(const char *text, size_t font_size, const P::Vec2f */*pos*/) {
+    view->add_label(text, font_size, App.font.color.basic_header, 0, true);
+}
+
+void PluginWidget::set_color(P::RGBA color) {
+    view->set_appearence(App.add_appr(new AppearenceColor(color.ui32)));
 }

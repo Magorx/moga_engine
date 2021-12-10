@@ -147,6 +147,9 @@ add_executable(moga
         src/redactor/plugins/interface/widget_factory.cpp
         src/redactor/plugins/interface/shader_factory.cpp
 
+        src/redactor/plugins/interface/widgets/pabstract.cpp
+        src/redactor/plugins/interface/widgets/pbutton.cpp
+
         src/redactor/layer/layer.cpp
 
         src/redactor/engine.cpp
@@ -179,6 +182,9 @@ set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/t
 
 add_library(sharp SHARED src/collections/plugins/sharp.cpp)
 set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharp")
+
+add_library(test SHARED src/collections/plugins/test.cpp)
+set_target_properties(test PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_test")
 
 
 # add_custom_target(rebuild_plugins

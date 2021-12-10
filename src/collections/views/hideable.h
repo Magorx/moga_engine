@@ -55,7 +55,7 @@ public:
     inline void activate()   { _is_active  = true;  }
     inline void toggle()     { _is_active ^= true;  }
 
-    inline void set_active(bool flag) { _is_active = flag; }
+    virtual void set_active(bool flag) { _is_active = flag; }
 
     void become_toggle_reacting();
 

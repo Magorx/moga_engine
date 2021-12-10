@@ -9,10 +9,10 @@
 
 const auto PTYPE = P::TOOL;
 
-const char *PNAME    = "Sharpy";
-const char *PVERSION = "1.0";
+const char *PNAME    = "TEST";
+const char *PVERSION = "69";
 const char *PAUTHOR  = "KCTF";
-const char *PDESCR   = "Spawns random triangles in a circle, blends them on active layer";
+const char *PDESCR   = "Performes some testing";
 
 // ============================================================================ Resources
 
@@ -116,8 +116,8 @@ void PluginInterface::tool_on_press(P::Vec2f pos) const {
     draw(pos);
 }
 
-void PluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f to) const {
-    draw(to);
+void PluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f /*to*/) const {
+    // draw(to);
 }
 
 void PluginInterface::tool_on_release(P::Vec2f /*pos*/) const {}
@@ -143,23 +143,60 @@ unsigned long long read(const char *text) {
     return wanted_size;
 }
 
+class MyWidget : public P::Widget {
+public:
+    MyWidget(const P::WBody &body, P::Widget *parent = nullptr) : Widget(body, parent) {}
+    virtual ~MyWidget() {}
+
+    virtual bool is_active() override { return true; };
+    virtual bool is_inside(P::Vec2f /*pos*/) override { return true; }
+
+    virtual bool add_child(Widget */*child*/) override { return false; }
+    virtual bool delete_child(Widget */*child*/) override { return false; }
+
+    virtual bool delete_from_parent() override { return false; }
+    
+    virtual void on_render          (const P::Event::Render          &) override {}
+    virtual void on_tick            (const P::Event::Tick            &) override {}
+
+    virtual void on_mouse_press     (const P::Event::MousePress      &event) override {
+        APPI->log("HELLO %lg %lg\n", event.position.x, event.position.y);
+    }
+
+    virtual void on_mouse_release   (const P::Event::MouseRelease    &) override {}
+    virtual void on_mouse_move      (const P::Event::MouseMove       &) override {}
+    virtual void on_key_down        (const P::Event::KeyDown         &) override {}
+    virtual void on_key_up          (const P::Event::KeyUp           &) override {}
+    virtual void on_text_enter      (const P::Event::TextEnter       &) override {}
+    virtual void on_scroll          (const P::Event::Scroll          &) override {}
+    virtual void on_hide            (const P::Event::Hide            &) override {}
+    virtual void on_show            (const P::Event::Show            &) override {}
+
+    virtual void hide() override {}
+    virtual void show() override {}
+
+    virtual void set_caption(const char */*text*/, size_t /*font_size*/, const P::Vec2f */*pos*/ = nullptr) override {}
+    virtual void set_color(P::RGBA /*color*/) override {};
+};
+
+
+void func() {
+    APPI->log("ALOLOLA");
+}
+
+
 void PluginInterface::draw(P::Vec2f pos) const {
-    float size = APPI->get_size();
-    P::RGBA color = APPI->get_color();
+    // float size = APPI->get_size();
+    // P::RGBA color = APPI->get_color();
 
-    float a1 = rand();
-    float a2 = rand();
+    auto layout = APPI->factory.widget->abstract({pos, {400, 200}});
 
-    P::Vec2f p0 = pos;
- 
-    P::Vec2f p1 = {(float) (pos.x + cos(a1) * size), (float) (pos.y + sin(a2) * size)};
-    P::Vec2f p2 = {(float) (pos.x + cos(a2) * size), (float) (pos.y + sin(a1) * size)};
+    auto b1 = APPI->factory.widget->button({0, 0}, "TOUCH ME", layout);
+    b1->set_handler(func);
 
-    P::RenderMode rmode = { P::COPY, nullptr };
+    auto b2 = APPI->factory.widget->button({0, 20}, "TOUCH ME", layout);
+    b2->set_handler(func);
 
-    auto target = APPI->get_target();
-    
-    target->render_triangle(p0, p1, p2, color, &rmode);
-    
-    APPI->factory.target->release(target);
+    // auto target = APPI->get_target();
+    // APPI->factory.target->release(target);
 }
