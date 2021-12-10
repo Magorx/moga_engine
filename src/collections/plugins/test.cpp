@@ -196,6 +196,7 @@ void PluginInterface::draw(P::Vec2f pos) const {
 
     auto b2 = APPI->factory.widget->button({0, 20}, "TOUCH ME", layout);
     b2->set_handler(func);
+    b2->set_to_delete(true);
 
     // auto target = APPI->get_target();
     // APPI->factory.target->release(target);

@@ -38,8 +38,9 @@ public:
     virtual bool is_inside(Vec2f pos) = 0;
 
     virtual bool add_child(Widget *child) = 0;
-    virtual bool delete_child(Widget *child) = 0;
 
+    virtual void set_to_delete(bool to_delete_) = 0; // set to true -> app will try to delete it as soon as possible from its side
+    virtual bool delete_child(Widget *child) = 0;
     virtual bool delete_from_parent() = 0;
     
     virtual void on_render          (const Event::Render          &event) = 0;

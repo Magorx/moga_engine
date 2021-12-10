@@ -3,17 +3,17 @@
 
 namespace P {
 
-class Window : public Widget {
+class Window : virtual public Widget {
 public:
     Window(const WBody &body, Widget *parent = nullptr) : Widget(body, parent) {}
 
-    using HandlerType = std::function<void(Vec2f)>;
+    using HandlerType = std::function<void()>;
 
-    void set_handler(HandlerType &handler_) { handler = handler_; }
-    HandlerType &get_handler() { return handler; }
+    virtual void set_show_handler(HandlerType &handler_) = 0;
+    virtual HandlerType &get_show_handler() = 0;
 
-protected:
-    HandlerType handler;
+    virtual void set_hide_handler(HandlerType &handler_) = 0;
+    virtual HandlerType &get_hide_handler() = 0;
 };
 
 }

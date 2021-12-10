@@ -149,9 +149,10 @@ public:
     virtual bool add_child(Widget *child) override;
     virtual bool delete_child(Widget *child) override;
 
+    virtual void set_to_delete(bool to_delete_) override { view->set_to_delete(to_delete_); }
+
     bool add_child(PluginWidget *child);
     bool delete_child(PluginWidget *child);
-
     virtual bool delete_from_parent() override;
     
     virtual void on_render          (const P::Event::Render          &) override {}
