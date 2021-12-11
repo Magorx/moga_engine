@@ -15,8 +15,3 @@ P::Shader *ShaderFactory::compile(const char *code, P::ShaderType type_, bool is
 
     return ret;
 }
-
-void ShaderFactory::release(P::Shader *shader) const {
-    delete dynamic_cast<PluginShader*>(shader);
-}
-

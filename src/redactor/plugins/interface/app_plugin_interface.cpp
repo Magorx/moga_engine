@@ -92,3 +92,15 @@ void RedactorPluginInterface::flush_preview() const {
 
     canvas->flush_draw_to_active();
 }
+
+void RedactorPluginInterface::set_color(P::RGBA color) const {
+    auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
+
+    tm->set_draw_color(color.ui32);
+}
+
+void RedactorPluginInterface::set_size(float size) const {
+    auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
+
+    tm->set_size(size);
+}

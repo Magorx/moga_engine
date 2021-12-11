@@ -8,5 +8,4 @@
 
 class ShaderFactory : public P::ShaderFactory {
     virtual P::Shader *compile(const char *code, P::ShaderType type, bool is_code = true) const override;
-    virtual void       release(P::Shader *)                                               const override;
 };

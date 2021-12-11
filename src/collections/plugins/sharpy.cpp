@@ -41,6 +41,10 @@ struct PluginInterface : public P::PluginInterface {
     void tool_on_release(P::Vec2f position)          const override;
     void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
+// settings
+    void show_settings() const override {}
+
+//additional
     void draw(P::Vec2f position) const;
 };
 
@@ -159,7 +163,7 @@ void PluginInterface::draw(P::Vec2f pos) const {
 
     auto target = APPI->get_target();
     
-    target->render_triangle(p0, p1, p2, color, &rmode);
+    target->render_triangle(p0, p1, p2, color, rmode);
     
     delete target;
 }

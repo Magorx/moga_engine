@@ -41,6 +41,10 @@ struct PluginInterface : public P::PluginInterface {
     void tool_on_release(P::Vec2f position)          const override;
     void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
+// settings
+    void show_settings() const override {}
+
+// additional
     void draw(P::Vec2f position) const;
 };
 

@@ -31,4 +31,7 @@ public:
     virtual P::RenderTarget *get_target()  const override;
     virtual P::RenderTarget *get_preview() const override;
     virtual void flush_preview()           const override;
+
+    virtual void set_color(P::RGBA color) const override;
+    virtual void set_size(float size) const override;
 };

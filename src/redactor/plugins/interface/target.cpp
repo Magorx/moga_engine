@@ -57,7 +57,7 @@ void Target::set_pixel(size_t x, size_t y, P::RGBA color) {
     layer->copy_from(img);
 }
 
-P::RGBA *Target::get_pixels() {
+P::RGBA *Target::get_pixels() const {
     auto img = layer->copy_to_image();
     auto size = img->getSize();
     
@@ -76,10 +76,10 @@ auto renderer = layer->renderer; \
 
 #define PROCESS_RMODE_(mode) \
 do { auto rstate = renderer->get_rstate(); \
-if (mode->blend == P::BlendMode::COPY) rstate->rmode.blendMode = RBlend::none; \
-if (mode->shader) {rstate->rmode.shader = (RShader*) mode->shader;} } while(0)
+if (mode.blend == P::BlendMode::COPY) rstate->rmode.blendMode = RBlend::none; \
+if (mode.shader) {rstate->rmode.shader = (RShader*) mode.shader;} } while(0)
 
-void Target::render_circle(P::Vec2f position, float radius, P::RGBA color, const P::RenderMode *render_mode) {
+void Target::render_circle(P::Vec2f position, float radius, P::RGBA color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_;
     Vec2d pos = {position.x, position.y};
 
@@ -93,7 +93,7 @@ void Target::render_circle(P::Vec2f position, float radius, P::RGBA color, const
     renderer->pop_target();
 }
 
-void Target::render_line(P::Vec2f start, P::Vec2f end, P::RGBA color, const P::RenderMode *render_mode) {
+void Target::render_line(P::Vec2f start, P::Vec2f end, P::RGBA color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
 
     Vec2d from = {start.x, start.y};
@@ -110,7 +110,7 @@ void Target::render_line(P::Vec2f start, P::Vec2f end, P::RGBA color, const P::R
     renderer->pop_target();
 }
 
-void Target::render_triangle(P::Vec2f p1_, P::Vec2f p2_, P::Vec2f p3_, P::RGBA color, const P::RenderMode *render_mode) {
+void Target::render_triangle(P::Vec2f p1_, P::Vec2f p2_, P::Vec2f p3_, P::RGBA color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
 
     Vec2d p1 = {p1_.x, p1_.y};
@@ -129,7 +129,7 @@ void Target::render_triangle(P::Vec2f p1_, P::Vec2f p2_, P::Vec2f p3_, P::RGBA c
     renderer->pop_target();
 }
 
-void Target::render_rectangle(P::Vec2f p1_, P::Vec2f p2_, P::RGBA color, const P::RenderMode *render_mode) {
+void Target::render_rectangle(P::Vec2f p1_, P::Vec2f p2_, P::RGBA color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
 
     Vec2d p1 = {p1_.x, p1_.y};
@@ -147,7 +147,7 @@ void Target::render_rectangle(P::Vec2f p1_, P::Vec2f p2_, P::RGBA color, const P
 }
 
 
-void Target::render_texture(P::Vec2f position, const RenderTarget *texture, const P::RenderMode *render_mode) {
+void Target::render_texture(P::Vec2f position, const RenderTarget *texture, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
     auto target = dynamic_cast<const Target*>(texture);
     auto to_draw = target->get_layer();
@@ -167,7 +167,7 @@ void Target::render_texture(P::Vec2f position, const RenderTarget *texture, cons
     renderer->pop_target();
 }
 
-void Target::render_pixels(P::Vec2f position, const P::RGBA *data, size_t width, size_t height, const P::RenderMode *render_mode) {
+void Target::render_pixels(const P::Vec2f &position, const P::Vec2s &size, const P::RGBA *data, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
 
     bool to_flip = false;
@@ -178,10 +178,10 @@ void Target::render_pixels(P::Vec2f position, const P::RGBA *data, size_t width,
     }
 
     RTexture texture;
-    texture.create(width, height);
+    texture.create(size.x, size.y);
     texture.update((uint8_t*) data);
 
-    Vec2d shift = {(double) 0, - (double) height};
+    Vec2d shift = {(double) 0, - (double) size.y};
 
     renderer->push_target(layer->get_target());
     PROCESS_RMODE_(render_mode);

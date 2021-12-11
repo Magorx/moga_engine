@@ -42,6 +42,9 @@ struct MyPluginInterface : public P::PluginInterface {
     void tool_on_release(P::Vec2f position)          const override;
     void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
+// settings
+    void show_settings() const override {}
+
 // additional
     void draw(P::Vec2f position) const;
 };
@@ -236,7 +239,7 @@ P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
 
 P::Status MyPluginInterface::deinit() const {
     if (r_shader_blur) {
-        APPI->factory.shader->release(r_shader_blur);
+        delete r_shader_blur;
     }
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
     return P::OK;
@@ -327,7 +330,7 @@ void MyPluginInterface::effect_apply() const {
     target->apply_shader(r_shader_blur);
 
     delete[] kernel;
-    APPI->factory.target->release(target);
+    delete target;
 }
 
 void MyPluginInterface::draw(P::Vec2f pos) const {
@@ -337,7 +340,7 @@ void MyPluginInterface::draw(P::Vec2f pos) const {
     P::RenderMode rmode = { P::COPY, nullptr };
     auto preview = APPI->get_preview();
 
-    preview->render_circle(pos, size, color, &rmode);
+    preview->render_circle(pos, size, color, rmode);
 
-    APPI->factory.target->release(preview);
+    delete preview;
 }

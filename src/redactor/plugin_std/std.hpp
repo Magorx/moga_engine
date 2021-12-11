@@ -32,18 +32,18 @@ public:
     virtual RGBA get_pixel(size_t x, size_t y) const = 0;
     virtual void set_pixel(size_t x, size_t y, RGBA color) = 0;
 
-    virtual RGBA *get_pixels() = 0;
+    virtual RGBA *get_pixels() const = 0;
 
     virtual void clear(RGBA color = 0) = 0; // fills the target with `color`
 
 // render
-    virtual void render_circle(Vec2f position, float radius, RGBA color, const RenderMode *render_mode) = 0;
-    virtual void render_line(Vec2f start, Vec2f end, RGBA color, const RenderMode *render_mode) = 0;
-    virtual void render_triangle(Vec2f p1, Vec2f p2, Vec2f p3, RGBA color, const RenderMode *render_mode) = 0;
-    virtual void render_rectangle(Vec2f p1, Vec2f p2, RGBA color, const RenderMode *render_mode) = 0;
+    virtual void render_circle(Vec2f position, float radius, RGBA color, const RenderMode &render_mode = {}) = 0;
+    virtual void render_line(Vec2f start, Vec2f end, RGBA color, const RenderMode &render_mode = {}) = 0;
+    virtual void render_triangle(Vec2f p1, Vec2f p2, Vec2f p3, RGBA color, const RenderMode &render_mode = {}) = 0;
+    virtual void render_rectangle(Vec2f p1, Vec2f p2, RGBA color, const RenderMode &render_mode = {}) = 0;
     
-    virtual void render_texture(Vec2f position, const RenderTarget *texture, const RenderMode *render_mode) = 0;
-    virtual void render_pixels(Vec2f position, const RGBA *data, size_t width, size_t height, const RenderMode *render_mode) = 0;
+    virtual void render_texture(Vec2f position, const RenderTarget *texture, const RenderMode &render_mode = {}) = 0;
+    virtual void render_pixels(const Vec2f &position, const Vec2s &size, const RGBA *data, const RenderMode &render_mode = {}) = 0;
 
     virtual void apply_shader(const Shader *shader) = 0;
 };
@@ -92,6 +92,8 @@ struct PluginInterface {
     virtual void tool_on_press  (Vec2f position)       const = 0;
     virtual void tool_on_release(Vec2f position)       const = 0;   
     virtual void tool_on_move   (Vec2f from, Vec2f to) const = 0;
+
+    virtual void show_settings() const = 0;
 };
 
 struct WidgetFactory {
@@ -150,8 +152,8 @@ struct AppInterface {
     virtual RGBA get_color() const = 0;
     virtual float get_size() const = 0;
 
-    virtual void set_color() const = 0;
-    virtual void set_size() const = 0;
+    virtual void set_color(RGBA color) const = 0;
+    virtual void set_size(float size) const = 0;
 
 // target
     virtual RenderTarget *get_target()  const = 0; // returns actual active  layer, drawing in it changes app's layer
