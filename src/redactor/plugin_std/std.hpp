@@ -90,11 +90,13 @@ struct PluginInterface {
     virtual void effect_apply() const = 0;
 
     virtual void tool_on_press  (Vec2f position)       const = 0;
-    virtual void tool_on_release(Vec2f position)       const = 0;
+    virtual void tool_on_release(Vec2f position)       const = 0;   
     virtual void tool_on_move   (Vec2f from, Vec2f to) const = 0;
 };
 
 struct WidgetFactory {
+    virtual ~WidgetFactory() {}
+
     virtual Button      *button       (const WBody &body, Widget *parent = nullptr) const = 0;
     virtual Button      *button       (const P::Vec2f &pos, const char *caption, P::Widget *parent = nullptr) const = 0; // button fit to contain caption
     virtual Slider      *slider       (Slider::Type type, const WBody &body, Widget *parent = nullptr) const = 0;
@@ -106,16 +108,17 @@ struct WidgetFactory {
 };
 
 struct ShaderFactory {
+    virtual ~ShaderFactory() {}
+
     virtual Shader *compile (const char *code, ShaderType type, bool is_code = true) const = 0;
-    virtual void    release (Shader *)                                               const = 0;
 };
 
 struct RenderTargetFactory {
+    virtual ~RenderTargetFactory() {}
+
     virtual RenderTarget *spawn(Vec2s size, RGBA color = {0, 0, 0, 255}) const = 0; // color -> fill with it
     virtual RenderTarget *from_pixels(Vec2s size, const RGBA *data) const = 0;
     virtual RenderTarget *from_file(const char *path) const = 0;
-    virtual void release(RenderTarget *target) const = 0;
-    virtual void release(RGBA *data) const = 0;
 };
 
 struct AppInterface {
@@ -147,10 +150,15 @@ struct AppInterface {
     virtual RGBA get_color() const = 0;
     virtual float get_size() const = 0;
 
+    virtual void set_color() const = 0;
+    virtual void set_size() const = 0;
+
 // target
     virtual RenderTarget *get_target()  const = 0; // returns actual active  layer, drawing in it changes app's layer
     virtual RenderTarget *get_preview() const = 0; // returns actual preview layer, drawing in it changes app's layer
     virtual void flush_preview()        const = 0;
+
+    virtual ~AppInterface() {}
 };
 
 }

@@ -161,5 +161,5 @@ void PluginInterface::draw(P::Vec2f pos) const {
     
     target->render_triangle(p0, p1, p2, color, &rmode);
     
-    APPI->factory.target->release(target);
+    delete target;
 }

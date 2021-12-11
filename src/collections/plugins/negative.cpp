@@ -92,7 +92,7 @@ P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
 
 P::Status MyPluginInterface::deinit() const {
     if (r_shader_neg) {
-        APPI->factory.shader->release(r_shader_neg);
+        delete r_shader_neg;
     }
 
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
@@ -143,10 +143,10 @@ void MyPluginInterface::effect_apply() const {
 
         P::RenderMode rmode = {P::COPY, nullptr};
         target->render_pixels({0, 0}, pixels, w, h, &rmode);
-        APPI->factory.target->release(pixels);
+        delete pixels;
     }
 
-    APPI->factory.target->release(target);
+    delete target;
 }
 
 
@@ -159,5 +159,5 @@ void MyPluginInterface::draw(P::Vec2f pos) const {
 
     preview->render_circle(pos, size, color, &rmode);
 
-    APPI->factory.target->release(preview);
+    delete preview;
 }
