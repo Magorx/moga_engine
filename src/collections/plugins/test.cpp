@@ -214,12 +214,9 @@ void PluginInterface::draw(P::Vec2f pos) const {
     p.x += b2->get_body().size.x;
     p.y += b2->get_body().size.y;
 
-    auto lbl = APPI->factory.widget->label(p, "HOLA", layout);
-    lbl->set_color({255, 0, 255});
+    auto lbl = APPI->factory.widget->text_field({p, {100, 50}}, layout);
 
-    b1->set_handler([lbl](){printstr(lbl->get_text().begin());});
-
-
+    lbl->set_handler([lbl](std::string_view sw){printstr(sw.begin());});
     lbl->set_text("ABOBA");
 
     // auto target = APPI->get_target();

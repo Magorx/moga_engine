@@ -44,7 +44,8 @@ public:
     v_TextField(const ViewBody &body, TextStyle *style = App.add_style(StdStyle::Text::basic()),
                RColor frame_color = App.color.text_field.basic.frame,
                RColor content_color = App.color.text_field.basic.content, 
-               bool autofit_to_text_size = true, bool redactable = true);
+               bool autofit_to_text_size = true, bool redactable = true,
+               bool autofit_text_size = false);
     virtual ~v_TextField();
 
     virtual void render(Renderer *renderer) override;

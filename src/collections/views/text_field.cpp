@@ -3,7 +3,7 @@
 
 v_TextField::v_TextField(const ViewBody &body, TextStyle *style,
                          RColor frame_color, RColor content_color,
-                         bool autofit_to_text_size, bool redactable) :
+                         bool autofit_to_text_size, bool redactable, bool autofit_text_size) :
 v_Highlighter({body.position, body.size}),
 line(10),
 style(style),
@@ -15,6 +15,8 @@ redactable(redactable)
     if (autofit_to_text_size) {
         this->body.size = Vec2d{body.size.x(), style->size + PX_TF_PADDING * 4.0};
         v_content->get_body().size = Vec2d{body.size.x() - PX_TF_PADDING * 2.0, this->body.size.y() - PX_TF_PADDING * 2.0};
+    } else if (autofit_text_size) {
+        style->size = body.size.y() - PX_TF_PADDING * 2.0;
     }
 
     set_focuseable(redactable);
@@ -118,8 +120,8 @@ void v_TextField::display() {
     pos_cursor += Vec2d{0, style->size / 5.0}; // + v_content->get_body().position;
     pos_anchor += Vec2d{0, style->size / 5.0}; // + v_content->get_body().position;
 
-    v_cursor->get_body().position = pos_cursor;
-    v_cursor->get_body().size.content[1] = style->size;
+    v_cursor->get_body().position.content[0] = pos_cursor.x();
+    v_cursor->get_body().size.content[1] = body.size.y() - PX_TF_PADDING * 2;
 
     v_selection->get_body().position = pos_cursor;
     v_selection->get_body().size = pos_anchor - pos_cursor;

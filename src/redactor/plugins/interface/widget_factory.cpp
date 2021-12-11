@@ -4,7 +4,9 @@
 #include "widgets/pwindow.h"
 #include "widgets/pbutton.h"
 #include "widgets/pslider.h"
+
 #include "widgets/plabel.h"
+#include "widgets/ptext_field.h"
 
 P::Button *WidgetFactory::button(const P::WBody &body, P::Widget *parent) const {
     return new PluginButton(to_vbody(body), parent);
@@ -19,7 +21,7 @@ P::Slider *WidgetFactory::slider(P::Slider::Type type, const P::WBody &body, P::
 }
 
 P::TextField *WidgetFactory::text_field(const P::WBody &body, P::Widget *parent) const {
-
+    return new PluginTextField(to_vbody(body), parent);
 }
 
 P::Window *WidgetFactory::window(const char *name, const P::WBody &body, P::Widget *parent) const {
