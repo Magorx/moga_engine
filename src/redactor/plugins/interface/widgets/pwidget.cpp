@@ -106,6 +106,6 @@ void PluginWidget::set_caption(const char *text, size_t font_size, const P::Vec2
     view->add_label(text, font_size, App.font.color.basic_header, 0, true);
 }
 
-void PluginWidget::set_color(P::RGBA color) {
+void PluginWidget::set_base_color(P::RGBA color) {
     view->set_appearence(App.add_appr(new AppearenceColor(color.ui32)));
 }

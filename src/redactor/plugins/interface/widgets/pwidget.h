@@ -118,9 +118,6 @@ e_render_call.pop_observer();                              \
 e_render_call.add(new FwdRenderCall<WTYPE>(this));         \
 e_render_call.add(new AVRenderCallAcceptor(this));         \
                                                            \
-e_mouse_press.add(new AVMissPressBlocker(this));           \
-e_mouse_release.add(new AVMissReleaseBlocker(this));       \
-e_mouse_move.add(new AVMissMoveBlocker(this));             \
                                                            \
 e_mouse_press.add   (new FWD_CLASS_(WTYPE, MousePress));   \
 e_mouse_release.add (new FWD_CLASS_(WTYPE, MouseRelease)); \
@@ -171,5 +168,5 @@ public:
     virtual void show() override;
 
     virtual void set_caption(const char *text, size_t font_size, const P::Vec2f *pos = nullptr) override;
-    virtual void set_color(P::RGBA color) override;
+    virtual void set_base_color(P::RGBA color) override;
 };

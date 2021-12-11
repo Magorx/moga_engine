@@ -176,7 +176,7 @@ public:
     virtual void show() override {}
 
     virtual void set_caption(const char */*text*/, size_t /*font_size*/, const P::Vec2f */*pos*/ = nullptr) override {}
-    virtual void set_color(P::RGBA /*color*/) override {};
+    virtual void set_base_color(P::RGBA /*color*/) override {};
 };
 
 
@@ -208,16 +208,18 @@ void PluginInterface::draw(P::Vec2f pos) const {
     p.y += b1->get_body().size.y;
 
     auto b2 = APPI->factory.widget->slider(P::Slider::Type::X, {p, {100, 40}}, layout);
-    b2->set_color({100, 200, 255});
+    b2->set_base_color({100, 200, 255});
     b2->set_handler(slfn);
 
     p.x += b2->get_body().size.x;
     p.y += b2->get_body().size.y;
 
-    auto lbl = APPI->factory.widget->text_field({p, {100, 50}}, layout);
+    auto picker = APPI->factory.widget->color_picker({p, {100, 100}}, layout);
 
-    lbl->set_handler([lbl](std::string_view sw){printstr(sw.begin());});
-    lbl->set_text("ABOBA");
+    picker->set_handler([](P::RGBA color){APPI->log("color %d %d %d %d", color.r, color.g, color.b, color.a);});
+
+    // lbl->set_handler([lbl](std::string_view sw){printstr(sw.begin());});
+    // lbl->set_text("ABOBA");
 
     // auto target = APPI->get_target();
     // APPI->factory.target->release(target);

@@ -25,6 +25,7 @@ public:
     EventDispatcher<EventSystem, Event::TextEnter> e_text_enter;
 
     EventDispatcher<EventSystem, Event::TextChanged> e_text_changed;
+    EventDispatcher<EventSystem, Event::ColorChanged> e_color_changed;
 
     EventDispatcher<EventSystem, Event::DataPtr> e_data_ptr;
 
@@ -42,10 +43,11 @@ public:
     e_clicked(this, "clicked"),
     e_fraction_changed(this, "fraction_changed"),
     e_vec_fraction_changed(this, "vec_fraction_changed"),
-    e_key_down(this, "key down"),
-    e_key_up(this, "key up"),
-    e_text_enter(this, "text enter"),
-    e_text_changed(this, "text changed"),
+    e_key_down(this, "key_down"),
+    e_key_up(this, "key_up"),
+    e_text_enter(this, "text_enter"),
+    e_text_changed(this, "text_changed"),
+    e_color_changed(this, "color_changed"),
     e_data_ptr(this, "data ptr")
     {}
 
@@ -131,6 +133,11 @@ inline EventDispatcher<EventSystem, Event::TextEnter> &EventSystem::get_dispatch
 template <>
 inline EventDispatcher<EventSystem, Event::TextChanged> &EventSystem::get_dispatcher() {
     return e_text_changed;
+}
+
+template <>
+inline EventDispatcher<EventSystem, Event::ColorChanged> &EventSystem::get_dispatcher() {
+    return e_color_changed;
 }
 
 template <>

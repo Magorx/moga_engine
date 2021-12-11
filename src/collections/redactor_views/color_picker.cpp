@@ -161,7 +161,14 @@ void v_ColorPicker::update_alpha() {
     appr_alpha->update_image();
 }
 
-void v_ColorPicker::update_tool_manager_color() {
+void v_ColorPicker::update_tool_manager_color(RColor *force_color) {
+    if (force_color) {
+        cur_color = *force_color;
+        if (tool_manager) tool_manager->set_draw_color(*force_color);
+        e_color_changed.emit({cur_color});
+        return;
+    }
+
     Vec2d px_coord = v_field->get_fraction() * v_field->get_body().size;
     RColor color = v_field->get_appearence()->get_px_color(px_coord);
 
@@ -171,6 +178,7 @@ void v_ColorPicker::update_tool_manager_color() {
     cur_color = color;
 
     if (tool_manager) tool_manager->set_draw_color(cur_color);
+    e_color_changed.emit({cur_color});
 }
 
 v_ColorPicker::~v_ColorPicker() {
@@ -183,6 +191,11 @@ v_ColorPicker::~v_ColorPicker() {
 
 RColor v_ColorPicker::get_color() {
     return cur_color;
+}
+
+void v_ColorPicker::set_color(RColor color) {
+    cur_color = color;
+    update_tool_manager_color(&cur_color);
 }
 
 

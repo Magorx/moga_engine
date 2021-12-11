@@ -26,7 +26,6 @@ class WidgetTextField : public v_TextField {
 
 public:
     WidgetTextField(const ViewBody &body, P::TextField *widget);
-    WidgetTextField(const Vec2d &pos, const char *caption, P::TextField *widget);
 
     WIDGET_FIX_(P::TextField)
 };

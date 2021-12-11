@@ -7,6 +7,7 @@
 
 #include "widgets/plabel.h"
 #include "widgets/ptext_field.h"
+#include "widgets/pcolor_picker.h"
 
 P::Button *WidgetFactory::button(const P::WBody &body, P::Widget *parent) const {
     return new PluginButton(to_vbody(body), parent);
@@ -29,7 +30,7 @@ P::Window *WidgetFactory::window(const char *name, const P::WBody &body, P::Widg
 }
 
 P::ColorPicker *WidgetFactory::color_picker(const P::WBody &body, P::Widget *parent) const {
-
+    return new PluginColorPicker(to_vbody(body), parent);
 }
 
 P::Label *WidgetFactory::label(const P::Vec2f &pos, const char *text, P::Widget *parent) const {

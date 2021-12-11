@@ -47,13 +47,14 @@ class v_ColorPicker : public v_Highlighter {
 
     void update_field();
     void update_alpha();
-    void update_tool_manager_color();
+    void update_tool_manager_color(RColor *force_color = nullptr);
 
 public:
     v_ColorPicker(const ViewBody &body, ToolManager *tool_manager);
     virtual ~v_ColorPicker();
 
     RColor get_color();
+    void set_color(RColor color);
 };
 
 class ColorPickerSpectrumChangeAcceptor : public EventAcceptor<v_ColorPicker, Event::FractionChanged> {

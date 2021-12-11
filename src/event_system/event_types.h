@@ -2,8 +2,9 @@
 
 #include <vector>
 #include <cstring>
-#include "utils/vec2d.h"
 
+#include "utils/vec2d.h"
+#include "visual/color/rgba.h"
 #include "device/keyboard.h"
 
 class Renderer;
@@ -141,6 +142,10 @@ struct DataPtr {
     void *data;
 
     inline bool check_receiver(void *obj) const { return !receiver || receiver == obj; }
+};
+
+struct ColorChanged {
+    RGBA color;
 };
 
 }
