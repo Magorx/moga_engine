@@ -1,9 +1,9 @@
 #include "widget_factory.h"
 
-#include "widgets/pabstract.h"
+#include "widgets/pwidget.h"
 #include "widgets/pwindow.h"
 #include "widgets/pbutton.h"
-
+#include "widgets/pslider.h"
 
 P::Button *WidgetFactory::button(const P::WBody &body, P::Widget *parent) const {
     return new PluginButton(to_vbody(body), parent);
@@ -13,8 +13,8 @@ P::Button *WidgetFactory::button(const P::Vec2f &pos, const char *caption, P::Wi
     return new PluginButton({pos.x, pos.y}, caption, parent);
 }
 
-P::Slider *WidgetFactory::slider(const P::WBody &body, P::Widget *parent) const {
-
+P::Slider *WidgetFactory::slider(P::Slider::Type type, const P::WBody &body, P::Widget *parent) const {
+    return new PluginSlider(type, to_vbody(body), parent);
 }
 
 P::TextField *WidgetFactory::text_field(const P::WBody &body, P::Widget *parent) const {

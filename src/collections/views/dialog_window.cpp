@@ -138,7 +138,7 @@ v_Magnetic *v_DialogWindow::add_slider(const char *name, double length, RColor c
         {{field->get_body().size.x(), field->get_body().size.y() / 2}, {length, PX_MAG_DOT}},
         {0, Vec2d{PX_MAG_DOT, PX_MAG_DOT} + Vec2d{0, STICK_BOUND}}
     );
-    answer->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick, {1, 1}, {-answer->get_dot()->get_body().size.x() / 2, -STICK_BOUND / 2})));
+    answer->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick_vert, {1, 1}, {-answer->get_dot()->get_body().size.x() / 2, -STICK_BOUND / 2})));
     answer->toggle_x_restriction();
     answer->set_appearence(App.add_appr(new AppearenceColor(color)));
     

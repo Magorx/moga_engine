@@ -147,9 +147,10 @@ add_executable(moga
         src/redactor/plugins/interface/widget_factory.cpp
         src/redactor/plugins/interface/shader_factory.cpp
 
-        src/redactor/plugins/interface/widgets/pabstract.cpp
+        src/redactor/plugins/interface/widgets/pwidget.cpp
         src/redactor/plugins/interface/widgets/pwindow.cpp
         src/redactor/plugins/interface/widgets/pbutton.cpp
+        src/redactor/plugins/interface/widgets/pslider.cpp
 
         src/redactor/layer/layer.cpp
 

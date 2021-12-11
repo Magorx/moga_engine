@@ -97,7 +97,7 @@ struct PluginInterface {
 struct WidgetFactory {
     virtual Button      *button       (const WBody &body, Widget *parent = nullptr) const = 0;
     virtual Button      *button       (const P::Vec2f &pos, const char *caption, P::Widget *parent = nullptr) const = 0; // button fit to contain caption
-    virtual Slider      *slider       (const WBody &body, Widget *parent = nullptr) const = 0;
+    virtual Slider      *slider       (Slider::Type type, const WBody &body, Widget *parent = nullptr) const = 0;
     virtual TextField   *text_field   (const WBody &body, Widget *parent = nullptr) const = 0;
     virtual Window      *window       (const char *name, const WBody &body, Widget *parent = nullptr) const = 0;
     virtual ColorPicker *color_picker (const WBody &body, Widget *parent = nullptr) const = 0;

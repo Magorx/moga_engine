@@ -1,4 +1,4 @@
-#include "pabstract.h"
+#include "pwidget.h"
 #include "utils/logger.h"
 #include "engine/Resources.h"
 #include "engine/moga_engine.h"

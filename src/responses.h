@@ -479,8 +479,8 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
 
     slider->set_fraction({0, 0.50});
     slider->toggle_x_restriction();
-    slider->set_appearence(App.add_appr(new AppearenceColor({180, 160, 190})));
-    slider->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick, {1, 1}, -slider->get_dot()->get_body().size / 2)));
+    slider->set_appearence(App.add_appr(new AppearenceColor(App.color.slider.basic)));
+    slider->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick_vert, {1, 1}, -slider->get_dot()->get_body().size / 2)));
     slider->e_fraction_changed.add(new ToolManagerSetToolSize(engine->get_tool_manager()));
 
     window->get_content()->get_body().size.content[1] = layout->get_body().size.y();

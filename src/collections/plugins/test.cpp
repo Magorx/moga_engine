@@ -184,12 +184,17 @@ void func() {
     APPI->log("ALOLOLA");
 }
 
+void slfn(P::Vec2f frac) {
+    printf("frac is %f %f\n", frac.x, frac.y);
+}
+
 
 void PluginInterface::draw(P::Vec2f pos) const {
     // float size = APPI->get_size();
     // P::RGBA color = APPI->get_color();
 
     auto layout = APPI->factory.widget->window("opts", {pos, {400, 200}});
+    layout->set_name("abobs");
 
     auto b1 = APPI->factory.widget->button({0, 0}, "TOUCH ME", layout);
     b1->set_handler(func);
@@ -198,14 +203,9 @@ void PluginInterface::draw(P::Vec2f pos) const {
     p.x += b1->get_body().size.x;
     p.y += b1->get_body().size.y;
 
-    auto b2 = APPI->factory.widget->button(p, "TOUCH ME", layout);
-    b2->set_handler(func);
-
-    p.x += b1->get_body().size.x;
-    p.y += b1->get_body().size.y;
-
-    auto b3 = APPI->factory.widget->button(p, "TOUCH ME", layout);
-    b3->set_handler(func);
+    auto b2 = APPI->factory.widget->slider(P::Slider::Type::D2, {p, {100, 40}}, layout);
+    b2->set_color({100, 200, 255});
+    b2->set_handler(slfn);
 
     // auto target = APPI->get_target();
     // APPI->factory.target->release(target);

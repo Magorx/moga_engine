@@ -87,7 +87,8 @@ void ResourcesHolder::init(RedactorEngine *engine_) {
 
     texture.frame_gray = load_texture(IMG("frame_gray.png"));
     texture.dot = load_texture(IMG("dot.png"));
-    texture.stick = load_texture(IMG("stick.png"));
+    texture.stick_vert = load_texture(IMG("stick_vert.png"));
+    texture.stick_horz = load_texture(IMG("stick_horz.png"));
 
     texture.transparency_squares = load_texture(IMG("transparency_squares.png"));
 
@@ -222,7 +223,8 @@ ResourcesHolder::~ResourcesHolder() {
     delete texture.frame_gray;
 
     delete texture.dot;
-    delete texture.stick;
+    delete texture.stick_vert;
+    delete texture.stick_horz;
 
     delete texture.button.basic.idle   ;
     delete texture.button.basic.hovered;
