@@ -50,16 +50,16 @@ type(type)
     if (type == P::Slider::Type::X) {
         slider->toggle_x_restriction();
 
-        
+        slider->get_dot()->get_body().size.content[1] = (slider->get_body().size - PSLIDER_DOT_PADDING).y();
         slider->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick_vert, {1, 1}, -slider->get_dot()->get_body().size / 2)));
     } else if (type == P::Slider::Type::Y) {
         slider->toggle_y_restriction();
 
-        auto slider_size = slider->get_body().size;
-
         slider->get_dot()->get_body().size.content[0] = (slider->get_body().size - PSLIDER_DOT_PADDING).x();
         slider->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick_horz, {1, 1}, -slider->get_dot()->get_body().size / 2)));
     }
+
+    set_body(to_wbody(view->get_body()));
 
     if (parent) {
         parent->add_child(this);

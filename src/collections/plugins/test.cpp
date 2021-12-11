@@ -184,6 +184,10 @@ void func() {
     APPI->log("ALOLOLA");
 }
 
+void printstr(const char *str) {
+    APPI->log(str);
+}
+
 void slfn(P::Vec2f frac) {
     printf("frac is %f %f\n", frac.x, frac.y);
 }
@@ -203,9 +207,20 @@ void PluginInterface::draw(P::Vec2f pos) const {
     p.x += b1->get_body().size.x;
     p.y += b1->get_body().size.y;
 
-    auto b2 = APPI->factory.widget->slider(P::Slider::Type::D2, {p, {100, 40}}, layout);
+    auto b2 = APPI->factory.widget->slider(P::Slider::Type::X, {p, {100, 40}}, layout);
     b2->set_color({100, 200, 255});
     b2->set_handler(slfn);
+
+    p.x += b2->get_body().size.x;
+    p.y += b2->get_body().size.y;
+
+    auto lbl = APPI->factory.widget->label(p, "HOLA", layout);
+    lbl->set_color({255, 0, 255});
+
+    b1->set_handler([lbl](){printstr(lbl->get_text().begin());});
+
+
+    lbl->set_text("ABOBA");
 
     // auto target = APPI->get_target();
     // APPI->factory.target->release(target);

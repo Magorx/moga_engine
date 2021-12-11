@@ -257,7 +257,7 @@ public:
     virtual void select(bool tabbed = false) { focus(); selected = true; tab_selected = tabbed; }
     virtual void deselect() { selected = false; }
 
-    inline void set_appearence(Appearence *appearence_, bool activate = true) { appearence = appearence_; if (appearence && activate) appearence->activate(); }
+    inline void set_appearence(Appearence *appearence_, bool activate = true) { appearenced = true; appearence = appearence_; if (appearence && activate) appearence->activate(); }
 
     inline void set_view_id(const char *view_id_) { view_id = view_id_; }
     inline const char *get_view_id() { return view_id; }

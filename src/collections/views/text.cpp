@@ -1,4 +1,5 @@
 #include "text.h"
+#include "engine/moga_engine.h"
 
 
 v_Text::v_Text(const ViewBody &body, const char *label_, int char_size, RGBA font_color, RGBA back_color, bool centrized, AbstractView *parent) :

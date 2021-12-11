@@ -4,7 +4,7 @@
 
 namespace P {
 
-class TextField : public Widget {
+class TextField : virtual public Widget {
 public:
     TextField(const WBody &body, Widget *parent = nullptr) : Widget(body, parent) {}
 

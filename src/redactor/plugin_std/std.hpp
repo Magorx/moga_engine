@@ -101,7 +101,7 @@ struct WidgetFactory {
     virtual TextField   *text_field   (const WBody &body, Widget *parent = nullptr) const = 0;
     virtual Window      *window       (const char *name, const WBody &body, Widget *parent = nullptr) const = 0;
     virtual ColorPicker *color_picker (const WBody &body, Widget *parent = nullptr) const = 0;
-    virtual Label       *label        (const WBody &body, Widget *parent = nullptr) const = 0;
+    virtual Label       *label        (const P::Vec2f &pos, const char *text, Widget *parent = nullptr) const = 0;
     virtual Widget      *abstract     (const WBody &body, Widget *parent = nullptr) const = 0;
 };
 

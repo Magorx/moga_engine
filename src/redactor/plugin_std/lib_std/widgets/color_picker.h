@@ -3,7 +3,7 @@
 
 namespace P {
 
-class ColorPicker : public Widget {
+class ColorPicker : virtual public Widget {
 public:
     ColorPicker(const WBody &body, Widget *parent = nullptr) : Widget(body, parent) {}
 

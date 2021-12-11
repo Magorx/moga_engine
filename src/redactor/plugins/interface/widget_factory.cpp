@@ -4,6 +4,7 @@
 #include "widgets/pwindow.h"
 #include "widgets/pbutton.h"
 #include "widgets/pslider.h"
+#include "widgets/plabel.h"
 
 P::Button *WidgetFactory::button(const P::WBody &body, P::Widget *parent) const {
     return new PluginButton(to_vbody(body), parent);
@@ -29,8 +30,8 @@ P::ColorPicker *WidgetFactory::color_picker(const P::WBody &body, P::Widget *par
 
 }
 
-P::Label *WidgetFactory::label(const P::WBody &body, P::Widget *parent) const {
-
+P::Label *WidgetFactory::label(const P::Vec2f &pos, const char *text, P::Widget *parent) const {
+    return new PluginLabel(text, to_vbody(P::WBody{pos, {0, 0}}), parent);
 }
 
 P::Widget *WidgetFactory::abstract(const P::WBody &body, P::Widget *parent) const {
