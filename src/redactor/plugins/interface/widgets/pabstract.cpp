@@ -12,9 +12,6 @@ v_Highlighter(body, nullptr, true),
 widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetView);
-
-    App.engine->add_view(this);
-    // set_appearence(App.add_appr(new AppearenceColor({200, 200, 100})));
 }
 
 
@@ -76,7 +73,6 @@ bool PluginWidget::add_child(P::Widget *child) {
 bool PluginWidget::add_child(PluginWidget *child) {
     if (!child || !view || !child->get_view()) return false;
 
-    printf("adding %p\n", child->get_view());
     view->add_subview(child->get_view());
     child->get_view()->focus();
     return true;

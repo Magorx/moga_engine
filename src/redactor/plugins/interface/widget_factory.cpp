@@ -1,6 +1,7 @@
 #include "widget_factory.h"
 
 #include "widgets/pabstract.h"
+#include "widgets/pwindow.h"
 #include "widgets/pbutton.h"
 
 
@@ -20,8 +21,8 @@ P::TextField *WidgetFactory::text_field(const P::WBody &body, P::Widget *parent)
 
 }
 
-P::Window *WidgetFactory::window(const P::WBody &body, P::Widget *parent) const {
-
+P::Window *WidgetFactory::window(const char *name, const P::WBody &body, P::Widget *parent) const {
+    return new PluginWindow(name, to_vbody(body), parent);
 }
 
 P::ColorPicker *WidgetFactory::color_picker(const P::WBody &body, P::Widget *parent) const {

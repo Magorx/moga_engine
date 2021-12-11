@@ -31,8 +31,6 @@ widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetButton);
     e_clicked.add(new PButtonClicked(this));
-
-    App.engine->add_view(this);
 }
 
 WidgetButton::WidgetButton(const Vec2d &pos, const char *caption, P::Button *widget) :
@@ -43,8 +41,6 @@ widget(widget)
     e_clicked.add(new PButtonClicked(this));
 
     body.position = pos;
-
-    // App.engine->add_view(this);
 }
 
 
@@ -56,12 +52,6 @@ P::Button(to_wbody(body), parent)
     if (parent) {
         parent->add_child(this);
     }
-}
-
-PluginButton::PluginButton(const ViewBody &body, P::Button *parent) :
-PluginWidget(body, parent, true),
-P::Button(to_wbody(body), parent)
-{
 }
 
 PluginButton::PluginButton(const Vec2d &pos, const char *caption, P::Widget *parent) :

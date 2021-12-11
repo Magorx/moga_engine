@@ -70,3 +70,7 @@ v_under   (new v_Repeater({{0, size.y()}, {size.x(), PX_UTIL_BUTTON_SIZE}}, styl
     b_close->e_clicked.add(new AVCloseGenerator<Event::Clicked>(b_close));
     b_hide->e_clicked.add(new AVToggleActivityGenerator<Event::Clicked>(b_hide));
 }
+
+bool v_UtilityTab::is_inside(const Vec2d &click) {
+    return body.is_inside(click) || v_under->is_inside(click - v_under->get_body().position);
+}

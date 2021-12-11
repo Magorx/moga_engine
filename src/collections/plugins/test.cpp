@@ -189,14 +189,23 @@ void PluginInterface::draw(P::Vec2f pos) const {
     // float size = APPI->get_size();
     // P::RGBA color = APPI->get_color();
 
-    auto layout = APPI->factory.widget->abstract({pos, {400, 200}});
+    auto layout = APPI->factory.widget->window("opts", {pos, {400, 200}});
 
     auto b1 = APPI->factory.widget->button({0, 0}, "TOUCH ME", layout);
     b1->set_handler(func);
+    
+    P::Vec2f p = b1->get_body().position;
+    p.x += b1->get_body().size.x;
+    p.y += b1->get_body().size.y;
 
-    auto b2 = APPI->factory.widget->button({0, 20}, "TOUCH ME", layout);
+    auto b2 = APPI->factory.widget->button(p, "TOUCH ME", layout);
     b2->set_handler(func);
-    b2->set_to_delete(true);
+
+    p.x += b1->get_body().size.x;
+    p.y += b1->get_body().size.y;
+
+    auto b3 = APPI->factory.widget->button(p, "TOUCH ME", layout);
+    b3->set_handler(func);
 
     // auto target = APPI->get_target();
     // APPI->factory.target->release(target);

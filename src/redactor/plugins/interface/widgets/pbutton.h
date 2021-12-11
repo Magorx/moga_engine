@@ -14,7 +14,6 @@ protected:
 
 public:
     PluginButton(const ViewBody &body, P::Widget *parent = nullptr);
-    PluginButton(const ViewBody &body, P::Button *parent = nullptr);
 
     PluginButton(const Vec2d &pos, const char *caption, P::Widget *parent = nullptr);
 

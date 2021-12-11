@@ -38,7 +38,7 @@ text_color(RColor{255, 255, 255})
     header->focus();
     content->focus();
     header->set_focuseable(true);
-    content->set_focuseable(true);
+    content->set_focuseable(false);
 }
 
 void v_Window::toggle_hide_button() {
@@ -85,3 +85,14 @@ AbstractView *v_Window::get_last_selectable(bool) {
     return last;
 }
 
+bool v_Window::is_inside(const Vec2d &click) {
+    return header->is_inside(click - header->get_body().position) || content->is_inside(click - content->get_body().position);
+}
+
+void v_Window::set_name(const char *name) {
+    header->add_label(name, App.font.size.basic_header, text_color.rgb());
+}
+
+const char *v_Window::get_name() {
+    return header->get_label_text();
+}
