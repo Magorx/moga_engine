@@ -9,7 +9,7 @@ plugin(nullptr)
     factory.shader = new ShaderFactory;
     factory.widget = new WidgetFactory;
 
-    feature_level = P::SHADER_SUPPORT;
+    feature_level = P::SHADER_SUPPORT | P::SETTINGS_SUPPORT;
 }
 
 RedactorPluginInterface::~RedactorPluginInterface() {
