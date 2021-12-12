@@ -174,8 +174,8 @@ aux_source_directory(src/collection/plugins ERASER_SOURCES)
 add_library(sharpy SHARED src/collections/plugins/sharpy.cpp)
 set_target_properties(sharpy PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharpy")
 
-# add_library(rainbow_stamp SHARED src/collections/plugins/rainbow_stamp.cpp)
-# set_target_properties(rainbow_stamp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_rainbow_stamp")
+add_library(rainbow_stamp SHARED src/collections/plugins/rainbow_stamp.cpp)
+set_target_properties(rainbow_stamp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_rainbow_stamp")
 
 # add_library(shdr SHARED src/collections/plugins/shdr.cpp)
 # set_target_properties(shdr PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_shdr")

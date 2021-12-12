@@ -89,19 +89,35 @@ P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
 
     APPI = app_interface;
 
-    r_settings.window = APPI->factory.widget->window("SHRPY", {{100, 100}, {200, 300}});
-    r_settings.field = APPI->factory.widget->text_field({{50, 5}, {100, 30}}, r_settings.window);
-    r_settings.slider = APPI->factory.widget->slider(P::Slider::Type::X, {{20, 40}, {160, 20}}, r_settings.window);
-    r_settings.picker = APPI->factory.widget->color_picker({{0, 70}, {200, 200}}, r_settings.window);
-    r_settings.button = APPI->factory.widget->button({{75, 275}, {50, 25}}, r_settings.window);
+    if (APPI->factory.widget) {
+        r_settings.window = APPI->factory.widget->window("SHRPY", {{100, 100}, {200, 320}});
+        r_settings.field = APPI->factory.widget->text_field({{50, 5}, {100, 30}}, r_settings.window);
+        r_settings.slider = APPI->factory.widget->slider(P::Slider::Type::X, {{20, 40}, {160, 20}}, r_settings.window);
+        r_settings.picker = APPI->factory.widget->color_picker({{0, 70}, {200, 200}}, r_settings.window);
+        
+        r_settings.button = APPI->factory.widget->button({{75, 275}, {50, 30}}, r_settings.window);
+
+        auto bl = APPI->factory.widget->button({{10, 275}, {50, 30}}, r_settings.window);
+        auto br = APPI->factory.widget->button({{140, 275}, {50, 30}}, r_settings.window);
+
+        auto size = fmax(1, r_settings.button->get_body().size.y - 5);
+        r_settings.button->set_caption("KCTF", size);
+        r_settings.button->set_handler([](){APPI->log("praise the %s", PAUTHOR);});
+
+        r_settings.field->set_text("30");
+        r_settings.slider->set_fraction(0.30);
+
+        br->set_caption("<<<", size);
+        bl->set_caption(">>>", size);
+    }
 
     APPI->log("[plugin](%s) inited", PINFO.name);
     return P::OK;
 }
 
 P::Status PluginInterface::deinit() const {
-    if (APPI->feature_level & P::SETTINGS_SUPPORT) {
-        // APPI->settings.destroy_surface(&PINTERFACE);
+    if (r_settings.window) {
+        r_settings.window->set_to_delete(true);
     }
 
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
@@ -168,11 +184,9 @@ void PluginInterface::draw(P::Vec2f pos) const {
     P::Vec2f p1 = {(float) (pos.x + cos(a1) * size), (float) (pos.y + sin(a2) * size)};
     P::Vec2f p2 = {(float) (pos.x + cos(a2) * size), (float) (pos.y + sin(a1) * size)};
 
-    P::RenderMode rmode = { P::COPY, nullptr };
-
     auto target = APPI->get_target();
     
-    target->render_triangle(p0, p1, p2, color, rmode);
+    target->render_triangle(p0, p1, p2, color, P::COPY);
     
     delete target;
 }

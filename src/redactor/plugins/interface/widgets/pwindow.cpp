@@ -31,6 +31,7 @@ widget(widget)
     INIT_FWD_TO_WIDGET(WidgetWindow);
 
     this->set_active(false);
+    get_header()->get_button_close()->set_active(false);
     
     e_toggle_activity.add(new PWindowActivity(this));
 
@@ -61,4 +62,16 @@ const char *PluginWindow::get_name() {
     if (!window) return nullptr;
 
     return window->get_name();
+}
+
+void PluginWindow::hide() {
+    view->set_active(false);
+}
+
+void PluginWindow::show() {
+    view->set_active(true);
+    auto window = dynamic_cast<v_Window*>(view);
+    if (!window) return;
+
+    return window->focus();
 }

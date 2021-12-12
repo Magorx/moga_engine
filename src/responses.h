@@ -366,6 +366,7 @@ public:
         RTexture texture;
         texture.loadFromImage(img);
         canvas->get_active_layer()->copy_from(&texture);
+        canvas->push_history();
 
         return EventAccResult::none;
     }

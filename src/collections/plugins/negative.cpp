@@ -145,8 +145,7 @@ void MyPluginInterface::effect_apply() const {
             };
         }
 
-        P::RenderMode rmode = {P::COPY, nullptr};
-        target->render_pixels({0, 0}, {w, h}, pixels, rmode);
+        target->render_pixels({0, 0}, {w, h}, pixels, P::COPY);
         delete pixels;
     }
 

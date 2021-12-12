@@ -95,7 +95,17 @@ float PluginSlider::get_fraction() {
 
 void PluginSlider::set_fraction(float frac) {
     auto slider = dynamic_cast<v_Magnetic*>(view); if (!slider) return;
+
+    slider->shift_fraction(Vec2d{frac, frac} - slider->get_fraction());
+
+    // if (type == P::Slider::Type::X) {
+    //     return (float) frac.x();
+    // } else if (type == P::Slider::Type::Y) {
+    //     return (float) frac.y();
+    // } else {
+    //     return (float) fmax(frac.x(), frac.y());
+    // }
     
-    slider->set_fraction({frac, frac});
+    // slider->set_fraction({frac, frac});
 }
 

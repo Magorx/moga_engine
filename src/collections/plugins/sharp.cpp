@@ -337,10 +337,9 @@ void MyPluginInterface::draw(P::Vec2f pos) const {
     float    size = APPI->get_size();
     P::RGBA color = APPI->get_color();
 
-    P::RenderMode rmode = { P::COPY, nullptr };
     auto preview = APPI->get_preview();
 
-    preview->render_circle(pos, size, color, rmode);
+    preview->render_circle(pos, size, color, P::COPY);
 
     delete preview;
 }

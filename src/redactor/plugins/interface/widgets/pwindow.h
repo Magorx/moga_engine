@@ -21,6 +21,9 @@ public:
 
     virtual bool set_name(const char *name) override;
     virtual const char *get_name() override;
+
+    virtual void hide() override;
+    virtual void show() override;
 };
 
 class WidgetWindow : public v_Window {

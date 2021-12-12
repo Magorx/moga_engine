@@ -49,6 +49,7 @@ PluginWidget(body, parent),
 P::Button(to_wbody(body), parent)
 {
     view = new WidgetButton(body, this);
+    set_body(to_wbody(view->get_body()));
     if (parent) {
         parent->add_child(this);
     }
