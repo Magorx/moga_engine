@@ -120,9 +120,11 @@ void MyPluginInterface::on_tick(double /*dt*/) const {
 void MyPluginInterface::tool_on_press(const P::Vec2f &pos) const {
     draw(pos);
 
-    auto fabric = (SuperWidgetFabric*) APPI->ext_get_interface("KCTFSuperWidget", "SuperWidgetFabric");
-    auto rb = fabric->radio_button({{20, 20}, {40, 40}}, r_settings.window);
-    rb->set_on(true);
+    // auto fabric = (SuperWidgetFabric*) APPI->ext_get_interface("KCTFSuperWidget", "SuperWidgetFabric");
+    // auto rb = fabric->radio_button({{20, 20}, {40, 40}}, r_settings.window);
+    // rb->set_on(true);
+
+    // rb->set_handler([rb](){ if (rb->get_on()) APPI->log("ON"); });
 }
 
 void MyPluginInterface::tool_on_move(const P::Vec2f &/*from*/, const P::Vec2f &to) const {
