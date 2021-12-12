@@ -30,7 +30,7 @@ widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetWindow);
 
-    // this->set_active(false);
+    this->set_active(false);
     
     e_toggle_activity.add(new PWindowActivity(this));
 
