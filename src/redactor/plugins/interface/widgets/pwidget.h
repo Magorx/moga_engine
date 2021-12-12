@@ -56,7 +56,7 @@ public:
             event.renderer->set_appearence(&appr);
             event.renderer->apr_draw_rectangle(acceptor->get_body().position, acceptor->get_body().size);
 
-            return EventAccResult::done;
+            return EventAccResult::stop;
         }
 
         return EventAccResult::none;

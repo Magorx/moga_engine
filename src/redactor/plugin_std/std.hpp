@@ -52,15 +52,15 @@ public:
 struct PluginInterface;
 
 struct PluginInfo {
-    uint32_t std_version;
+    const uint32_t std_version;
     void *reserved;
 
-    const PluginInterface *interface;
+    const PluginInterface *const interface;
 
-    const char *name;
-    const char *version;
-    const char *author;
-    const char *description;
+    const char *const name;
+    const char *const version;
+    const char *const author;
+    const char *const description;
     const RenderTarget *icon;
 
     const PluginType type;
@@ -68,6 +68,9 @@ struct PluginInfo {
 
 struct AppInterface;
 struct PluginInterface {
+    PluginInterface(uint32_t std_version = PSTD_VERSION, void* reserved = nullptr) :
+        std_version(std_version), reserved(reserved) {}
+
     uint32_t std_version;
     void *reserved;
 
@@ -145,6 +148,9 @@ struct AppInterface {
     // returns given interface, if it is implemented in the specified (enabled) extension
     virtual void *ext_get_interface(const char *extension, const char *name) const = 0;
 
+    // registers plugin as the holder of functions and interfaces for an extension
+    virtual void ext_register_as(const char *extension) const = 0;
+
 // general
     virtual void log(const char *fmt, ...) const = 0;
     virtual double get_absolute_time()     const = 0;
@@ -152,7 +158,7 @@ struct AppInterface {
     virtual RGBA get_color() const = 0;
     virtual float get_size() const = 0;
 
-    virtual void set_color(RGBA color) const = 0;
+    virtual void set_color(const P::RGBA &color) const = 0;
     virtual void set_size(float size) const = 0;
 
 // target

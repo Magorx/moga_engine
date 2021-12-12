@@ -1,5 +1,6 @@
 #include "redactor/plugin_std/std.hpp"
 
+
 struct MyPluginInterface : public P::PluginInterface {
     bool  ext_enable        (const char */*name*/)                            const override;
     void *ext_get_func      (const char */*extension*/, const char */*func*/) const override;

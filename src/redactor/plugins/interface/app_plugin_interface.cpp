@@ -29,6 +29,10 @@ void *RedactorPluginInterface::ext_get_interface(const char */*extension*/, cons
     return nullptr;
 }
 
+void RedactorPluginInterface::ext_register_as(const char */*extension*/) const {
+    
+}
+
 
 // general
 void RedactorPluginInterface::log(const char *fmt, ...) const {
@@ -97,7 +101,7 @@ void RedactorPluginInterface::flush_preview() const {
     canvas->flush_draw_to_active();
 }
 
-void RedactorPluginInterface::set_color(P::RGBA color) const {
+void RedactorPluginInterface::set_color(const P::RGBA &color) const {
     auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
 
     tm->set_draw_color(color.ui32);

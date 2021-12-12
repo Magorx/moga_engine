@@ -22,6 +22,7 @@ public:
     virtual bool  ext_enable        (const char *name)                        const override;
     virtual void *ext_get_func      (const char *extension, const char *func) const override;
     virtual void *ext_get_interface (const char *extension, const char *name) const override;
+    virtual void  ext_register_as(const char *extension)                      const override;
 
 // general
     virtual void log(const char *fmt, ...) const override;
@@ -35,6 +36,6 @@ public:
     virtual P::RenderTarget *get_preview() const override;
     virtual void flush_preview()           const override;
 
-    virtual void set_color(P::RGBA color) const override;
+    virtual void set_color(const P::RGBA &color) const override;
     virtual void set_size(float size) const override;
 };

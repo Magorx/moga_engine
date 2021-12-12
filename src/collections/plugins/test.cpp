@@ -122,40 +122,34 @@ unsigned long long read(const char *text) {
     return wanted_size;
 }
 
-class MyWidget : public P::Widget {
+#include "abstract_widget.h"
+
+class Radio : public AbstractWidget {
+    bool on;
+    P::RenderTarget *one;
+    P::RenderTarget *two;
+
 public:
-    MyWidget(const P::WBody &body, P::Widget *parent = nullptr) : Widget(body, parent) {}
-    virtual ~MyWidget() {}
-
-    virtual bool is_active() override { return true; };
-    virtual bool is_inside(P::Vec2f /*pos*/) override { return true; }
-
-    virtual bool add_child(Widget */*child*/) override { return false; }
-    virtual bool delete_child(Widget */*child*/) override { return false; }
-
-    virtual bool delete_from_parent() override { return false; }
-    
-    virtual void on_render          (const P::Event::Render          &) override {}
-    virtual void on_tick            (const P::Event::Tick            &) override {}
-
-    virtual void on_mouse_press     (const P::Event::MousePress      &event) override {
-        APPI->log("HELLO %lg %lg\n", event.position.x, event.position.y);
+    Radio(const P::WBody &body, P::Widget *parent = nullptr) :
+    AbstractWidget(body, parent),
+    on(false)
+    {
+        texture = one = APPI->factory.target->spawn({(size_t) body.size.x, (size_t) body.size.y}, {200, 100, 100});
+        two = APPI->factory.target->spawn({(size_t) body.size.x, (size_t) body.size.y}, {100, 200, 100});
     }
 
-    virtual void on_mouse_release   (const P::Event::MouseRelease    &) override {}
-    virtual void on_mouse_move      (const P::Event::MouseMove       &) override {}
-    virtual void on_key_down        (const P::Event::KeyDown         &) override {}
-    virtual void on_key_up          (const P::Event::KeyUp           &) override {}
-    virtual void on_text_enter      (const P::Event::TextEnter       &) override {}
-    virtual void on_scroll          (const P::Event::Scroll          &) override {}
-    virtual void on_hide            (const P::Event::Hide            &) override {}
-    virtual void on_show            (const P::Event::Show            &) override {}
+    virtual void on_mouse_press(const P::Event::MousePress &event) override {
+        if (!is_inside(event.position)) {
+            return;
+        }
 
-    virtual void hide() override {}
-    virtual void show() override {}
-
-    virtual void set_caption(const char */*text*/, size_t /*font_size*/, const P::Vec2f */*pos*/ = nullptr) override {}
-    virtual void set_base_color(P::RGBA /*color*/) override {};
+        on ^= true;
+        if (on) {
+            texture = one;
+        } else {
+            texture = two;
+        }
+    }
 };
 
 void MyPluginInterface::show_settings() const {}
@@ -195,9 +189,11 @@ void MyPluginInterface::draw(const P::Vec2f &pos) const {
     p.x += b2->get_body().size.x;
     p.y += b2->get_body().size.y;
 
-    auto picker = APPI->factory.widget->color_picker({p, {100, 100}}, layout);
+    auto picker = new Radio({p, {100, 100}}, layout);
 
-    picker->set_handler([](P::RGBA color){APPI->log("color %d %d %d %d", color.r, color.g, color.b, color.a);});
+    layout->show();
+
+    // picker->set_handler([](P::RGBA color){APPI->log("color %d %d %d %d", color.r, color.g, color.b, color.a);});
 
     // lbl->set_handler([lbl](std::string_view sw){printstr(sw.begin());});
     // lbl->set_text("ABOBA");

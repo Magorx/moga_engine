@@ -19,7 +19,7 @@ const char *PDESCR   = "a_description";
 
 #include "plugin_interface.h"
 
-const MyPluginInterface PINTERFACE {};
+const MyPluginInterface PINTERFACE;
 
 const P::PluginInfo PINFO =
 {
