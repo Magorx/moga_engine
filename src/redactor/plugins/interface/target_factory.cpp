@@ -2,14 +2,14 @@
 #include "target.h"
 
 
-P::RenderTarget *TargetFactory::spawn(P::Vec2s size, P::RGBA color) const {
+P::RenderTarget *TargetFactory::spawn(const P::Vec2s &size, const P::RGBA &color) const {
     auto ret = new Target({(double) size.x, (double) size.y});
     ret->clear(color);
 
     return ret;
 }
 
-P::RenderTarget *TargetFactory::from_pixels(P::Vec2s size, const P::RGBA *data) const {
+P::RenderTarget *TargetFactory::from_pixels(const P::Vec2s &size, const P::RGBA *data) const {
     auto ret = new Target({(double) size.x, (double) size.y});
     ret->update(data);
 

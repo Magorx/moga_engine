@@ -28,36 +28,9 @@ struct {
 
 // ============================================================================ General
 
-struct PluginInterface : public P::PluginInterface {
-    bool  enable        (const char */*name*/)                            const override { return false;   }
-    void *get_func      (const char */*extension*/, const char */*func*/) const override { return nullptr; }
-    void *get_interface (const char */*extension*/, const char */*name*/) const override { return nullptr; }
+#include "plugin_interface.h"
 
-    const P::PluginInfo *get_info() const override;
-
-    P::Status init   (const P::AppInterface*) const override;
-    P::Status deinit ()                       const override;
-    void      dump   ()                       const override;
-
-    void on_tick(double dt)   const override;
-
-    void effect_apply() const override;
-
-    void tool_on_press  (P::Vec2f position)          const override;
-    void tool_on_release(P::Vec2f position)          const override;
-    void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
-
-// settings
-    void show_settings() const override {
-        r_settings.window->show();
-    }
-
-//additional
-    void draw(P::Vec2f position) const;
-};
-
-
-const PluginInterface PINTERFACE {};
+const MyPluginInterface PINTERFACE {};
 
 const P::PluginInfo PINFO =
 {
@@ -84,7 +57,7 @@ extern "C" const P::PluginInterface *get_plugin_interface() {
  
 // ============================================================================ Logic
 
-P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
+P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
     srand(time(NULL));
 
     APPI = app_interface;
@@ -115,7 +88,7 @@ P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
     return P::OK;
 }
 
-P::Status PluginInterface::deinit() const {
+P::Status MyPluginInterface::deinit() const {
     if (r_settings.window) {
         r_settings.window->set_to_delete(true);
     }
@@ -124,28 +97,32 @@ P::Status PluginInterface::deinit() const {
     return P::OK;
 }
 
-void PluginInterface::dump() const {
+void MyPluginInterface::dump() const {
     APPI->log("[plugin](%s) is active", PINFO.name);
 }
 
-const P::PluginInfo *PluginInterface::get_info() const {
+const P::PluginInfo *MyPluginInterface::get_info() const {
     return &PINFO;
 }
 
-void PluginInterface::on_tick(double /*dt*/) const {
+void MyPluginInterface::on_tick(double /*dt*/) const {
 }
 
-void PluginInterface::tool_on_press(P::Vec2f pos) const {
+void MyPluginInterface::tool_on_press(const P::Vec2f &pos) const {
     draw(pos);
 }
 
-void PluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f to) const {
+void MyPluginInterface::tool_on_move(const P::Vec2f &/*from*/, const P::Vec2f &to) const {
     draw(to);
 }
 
-void PluginInterface::tool_on_release(P::Vec2f /*pos*/) const {}
+void MyPluginInterface::tool_on_release(const P::Vec2f &/*pos*/) const {}
 
-void PluginInterface::effect_apply() const {}
+void MyPluginInterface::effect_apply() const {}
+
+void MyPluginInterface::show_settings() const {
+    r_settings.window->show();
+}
 
 inline unsigned long long read_next_long_long(const char **buffer) {
     const char *c = *buffer;
@@ -177,7 +154,7 @@ P::RGBA shift(P::RGBA col) {
     return {col.g, col.b, col.r, col.a};
 }
 
-void PluginInterface::draw(P::Vec2f pos) const {
+void MyPluginInterface::draw(const P::Vec2f &pos) const {
     auto preview = APPI->get_preview();
 
     float size = APPI->get_size();

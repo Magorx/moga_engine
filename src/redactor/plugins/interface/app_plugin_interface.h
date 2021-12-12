@@ -16,9 +16,9 @@ public:
     ~RedactorPluginInterface();
 
 // extension
-    virtual bool  enable        (std::string_view name)                             const override;
-    virtual void *get_func      (std::string_view extension, std::string_view func) const override;
-    virtual void *get_interface (const char *extension, const char *name)           const override;
+    virtual bool  ext_enable        (const char *name)                        const override;
+    virtual void *ext_get_func      (const char *extension, const char *func) const override;
+    virtual void *ext_get_interface (const char *extension, const char *name) const override;
 
 // general
     virtual void log(const char *fmt, ...) const override;

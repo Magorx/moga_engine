@@ -15,15 +15,15 @@ RedactorPluginInterface::~RedactorPluginInterface() {
 }
 
 // extension
-bool  RedactorPluginInterface::enable(std::string_view /*name*/) const {
+bool  RedactorPluginInterface::ext_enable(const char */*name*/) const {
     return false;
 }
 
-void *RedactorPluginInterface::get_func(std::string_view /*extension*/, std::string_view /*func*/) const {
+void *RedactorPluginInterface::ext_get_func(const char */*extension*/, const char */*func*/) const {
     return nullptr;
 }
 
-void *RedactorPluginInterface::get_interface(const char */*extension*/, const char */*name*/) const {
+void *RedactorPluginInterface::ext_get_interface(const char */*extension*/, const char */*name*/) const {
     return nullptr;
 }
 

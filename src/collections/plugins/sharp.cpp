@@ -20,35 +20,7 @@ P::Shader *r_shader_blur;
 
 // ============================================================================ General
 
-struct MyPluginInterface : public P::PluginInterface {
-    bool  enable        (const char */*name*/)                            const override { return false;   }
-    void *get_func      (const char */*extension*/, const char */*func*/) const override { return nullptr; }
-    void *get_interface (const char */*extension*/, const char */*name*/) const override { return nullptr; }
-
-    const P::PluginInfo *get_info() const override;
-
-    P::Status init   (const P::AppInterface*) const override;
-    P::Status deinit ()                       const override;
-
-    void dump() const override;
-
-    void on_tick(double dt) const override;
-
-// effect
-    void effect_apply() const override;
-
-// tool
-    void tool_on_press  (P::Vec2f position)          const override;
-    void tool_on_release(P::Vec2f position)          const override;
-    void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
-
-// settings
-    void show_settings() const override {}
-
-// additional
-    void draw(P::Vec2f position) const;
-};
-
+#include "plugin_interface.h"
 
 const MyPluginInterface PINTERFACE {};
 
@@ -256,15 +228,15 @@ const P::PluginInfo *MyPluginInterface::get_info() const {
 void MyPluginInterface::on_tick(double /*dt*/) const {
 }
 
-void MyPluginInterface::tool_on_press(P::Vec2f pos) const {
+void MyPluginInterface::tool_on_press(const P::Vec2f &pos) const {
     draw(pos);
 }
 
-void MyPluginInterface::tool_on_move(P::Vec2f /*from*/, P::Vec2f to) const {
+void MyPluginInterface::tool_on_move(const P::Vec2f &/*from*/, const P::Vec2f &to) const {
     draw(to);
 }
 
-void MyPluginInterface::tool_on_release(P::Vec2f /*pos*/) const {}
+void MyPluginInterface::tool_on_release(const P::Vec2f &/*pos*/) const {}
 
 void MyPluginInterface::effect_apply() const {
     auto target = APPI->get_target();
@@ -333,7 +305,9 @@ void MyPluginInterface::effect_apply() const {
     delete target;
 }
 
-void MyPluginInterface::draw(P::Vec2f pos) const {
+void MyPluginInterface::show_settings() const {}
+
+void MyPluginInterface::draw(const P::Vec2f &pos) const {
     float    size = APPI->get_size();
     P::RGBA color = APPI->get_color();
 

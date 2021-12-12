@@ -50,7 +50,7 @@ P::RGBA Target::Target::get_pixel(size_t x, size_t y) const {
     return (P::RGBA) layer->get_pixel_color({(double) x, (double) y}).ui32;
 }
 
-void Target::set_pixel(size_t x, size_t y, P::RGBA color) {
+void Target::set_pixel(size_t x, size_t y, const P::RGBA &color) {
     auto img = layer->copy_to_image();
     RGBA rgba = color.ui32;
     img->setPixel(x, y, {rgba.r, rgba.g, rgba.b, rgba.a});
@@ -67,7 +67,7 @@ P::RGBA *Target::get_pixels() const {
     return data;
 }
 
-void Target::clear(P::RGBA color) {
+void Target::clear(const P::RGBA &color) {
     layer->clear(color.ui32);
 }
 
@@ -79,7 +79,7 @@ do { auto rstate = renderer->get_rstate(); \
 if (mode.blend == P::BlendMode::COPY) rstate->rmode.blendMode = RBlend::none; \
 if (mode.shader) {rstate->rmode.shader = (RShader*) mode.shader;} } while(0)
 
-void Target::render_circle(P::Vec2f position, float radius, P::RGBA color, const P::RenderMode &render_mode) {
+void Target::render_circle(const P::Vec2f &position, float radius, const P::RGBA &color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_;
     Vec2d pos = {position.x, position.y};
 
@@ -93,7 +93,7 @@ void Target::render_circle(P::Vec2f position, float radius, P::RGBA color, const
     renderer->pop_target();
 }
 
-void Target::render_line(P::Vec2f start, P::Vec2f end, P::RGBA color, const P::RenderMode &render_mode) {
+void Target::render_line(const P::Vec2f &start, const P::Vec2f &end, const P::RGBA &color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
 
     Vec2d from = {start.x, start.y};
@@ -110,7 +110,7 @@ void Target::render_line(P::Vec2f start, P::Vec2f end, P::RGBA color, const P::R
     renderer->pop_target();
 }
 
-void Target::render_triangle(P::Vec2f p1_, P::Vec2f p2_, P::Vec2f p3_, P::RGBA color, const P::RenderMode &render_mode) {
+void Target::render_triangle(const P::Vec2f &p1_, const P::Vec2f &p2_, const P::Vec2f &p3_, const P::RGBA &color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
 
     Vec2d p1 = {p1_.x, p1_.y};
@@ -129,7 +129,7 @@ void Target::render_triangle(P::Vec2f p1_, P::Vec2f p2_, P::Vec2f p3_, P::RGBA c
     renderer->pop_target();
 }
 
-void Target::render_rectangle(P::Vec2f p1_, P::Vec2f p2_, P::RGBA color, const P::RenderMode &render_mode) {
+void Target::render_rectangle(const P::Vec2f &p1_, const P::Vec2f &p2_, const P::RGBA &color, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
 
     Vec2d p1 = {p1_.x, p1_.y};
@@ -147,7 +147,7 @@ void Target::render_rectangle(P::Vec2f p1_, P::Vec2f p2_, P::RGBA color, const P
 }
 
 
-void Target::render_texture(P::Vec2f position, const RenderTarget *texture, const P::RenderMode &render_mode) {
+void Target::render_texture(const P::Vec2f &position, const RenderTarget *texture, const P::RenderMode &render_mode) {
     INIT_DRAW_OBJECTS_
     auto target = dynamic_cast<const Target*>(texture);
     auto to_draw = target->get_layer();
