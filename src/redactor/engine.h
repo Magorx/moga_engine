@@ -8,6 +8,7 @@
 
 #include "effect_manager.h"
 
+#include "redactor/plugins/interface/app_plugin_interface.h"
 #include "plugins/plugin_manager.h"
 
 
@@ -26,7 +27,7 @@ public:
     inline EffectManager *get_effect_manager() { return effect_manager; }
     inline PluginManager *get_plugin_manager() { return plugin_manager; }
 
-    inline P::AppInterface *get_plugin_interface();
+    inline RedactorPluginInterface *get_plugin_interface();
 
     bool load_plugin(const char *path);
     bool load_plugin(const char *path, bool directory);

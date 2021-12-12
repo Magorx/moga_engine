@@ -2,7 +2,9 @@
 #include "redactor/engine.h"
 
 
-RedactorPluginInterface::RedactorPluginInterface() {
+RedactorPluginInterface::RedactorPluginInterface() :
+plugin(nullptr)
+{
     factory.target = new TargetFactory;
     factory.shader = new ShaderFactory;
     factory.widget = new WidgetFactory;
@@ -30,9 +32,11 @@ void *RedactorPluginInterface::ext_get_interface(const char */*extension*/, cons
 
 // general
 void RedactorPluginInterface::log(const char *fmt, ...) const {
+    const char *plugin_name = plugin ? plugin->lib->name : "a_plugin";
+
     va_list args;
     va_start(args, fmt);
-    logger.logv((int) Logger::Level::warning, "@@@@", "plugin", fmt, args);
+    logger.logv((int) Logger::Level::warning, "plgn", plugin_name, fmt, args);
     va_end(args);
 }
 
@@ -103,4 +107,8 @@ void RedactorPluginInterface::set_size(float size) const {
     auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
 
     tm->set_size(size);
+}
+
+void RedactorPluginInterface::set_plugin(const RedactorPlugin *plugin_) {
+    plugin = plugin_;
 }

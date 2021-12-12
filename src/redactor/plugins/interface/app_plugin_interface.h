@@ -2,6 +2,7 @@
 
 
 #include "redactor/plugin_std/std.hpp"
+#include "redactor/plugins/plugin.h"
 
 #include "redactor/plugins/interface/target.h"
 #include "redactor/plugins/interface/widget_factory.h"
@@ -10,10 +11,12 @@
 
 
 class RedactorPluginInterface : public P::AppInterface {
-
+    const RedactorPlugin *plugin;
 public:
     RedactorPluginInterface();
     ~RedactorPluginInterface();
+
+    void set_plugin(const RedactorPlugin *plugin_);
 
 // extension
     virtual bool  ext_enable        (const char *name)                        const override;

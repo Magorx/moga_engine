@@ -60,6 +60,8 @@ P::Status MyPluginInterface::deinit() const {
     return P::OK;
 }
 
+void MyPluginInterface::show_settings() const {}
+
 void MyPluginInterface::dump() const {
     APPI->log("[plugin](%s) is active", PINFO.name);
 }
@@ -81,8 +83,6 @@ void MyPluginInterface::tool_on_move(const P::Vec2f &/*from*/, const P::Vec2f &t
 void MyPluginInterface::tool_on_release(const P::Vec2f &/*pos*/) const {}
 
 void MyPluginInterface::effect_apply() const {}
-
-void MyPluginInterface::show_settings() const {}
 
 void MyPluginInterface::draw(const P::Vec2f &pos) const {
     float    size = APPI->get_size();

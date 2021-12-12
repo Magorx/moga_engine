@@ -44,9 +44,17 @@ RedactorEngine::~RedactorEngine() {
 }
 
 bool RedactorEngine::load_plugin(const char *path) {
-    if (plugin_manager->load(path, get_plugin_interface())) {
+    auto interface = get_plugin_interface();
+    if (!interface) {
+        logger.ERROR("RedactorEngine", "could't create plugin interface somewhy");
+        return false;
+    }
+
+    if (auto plugin = plugin_manager->load(path, interface)) {
+        interface->set_plugin(plugin);
         return true;
     } else {
+        delete interface;
         return false;
     }
 }
@@ -65,4 +73,4 @@ bool RedactorEngine::load_plugin(const char *path, bool is_dir) {
     return true;
 }
 
-inline P::AppInterface *RedactorEngine::get_plugin_interface() { return new RedactorPluginInterface; }
+inline RedactorPluginInterface *RedactorEngine::get_plugin_interface() { return new RedactorPluginInterface; }
