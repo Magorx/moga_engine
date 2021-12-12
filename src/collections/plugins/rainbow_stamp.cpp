@@ -10,7 +10,7 @@
 const auto PTYPE = P::TOOL;
 
 const char *PNAME    = "Rainbow Stamp";
-const char *PVERSION = "1.0";
+const char *PVERSION = "2.0";
 const char *PAUTHOR  = "KCTF";
 const char *PDESCR   = "Cute and NOT harmful";
 
