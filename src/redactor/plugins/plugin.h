@@ -43,5 +43,9 @@ public:
 
     static P::RGBA  to_pcolor(const RGBA  &col)   { return col.ui32; }
     static RGBA   from_pcolor(const P::RGBA &col) { return col.ui32; }
+
+    void show_settings() {
+        interface->show_settings();
+    }
         
 };

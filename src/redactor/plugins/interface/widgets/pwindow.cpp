@@ -29,11 +29,12 @@ v_Window(name, body),
 widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetWindow);
+
+    // this->set_active(false);
     
     e_toggle_activity.add(new PWindowActivity(this));
 
     App.engine->add_view(this);
-
 }
 
 

@@ -17,8 +17,14 @@ const char *PDESCR   = "Spawns random triangles in a circle, blends them on acti
 // ============================================================================ Resources
 
 void *r_max_size_setting = nullptr;
-void *r_size_setting = nullptr;
-void *r_color_setting = nullptr;
+
+struct {
+    P::Window *window;
+    P::TextField *field;
+    P::Slider *slider;
+    P::ColorPicker *picker;
+    P::Button *button;
+} r_settings;
 
 // ============================================================================ General
 
@@ -42,7 +48,9 @@ struct PluginInterface : public P::PluginInterface {
     void tool_on_move   (P::Vec2f from, P::Vec2f to) const override;
 
 // settings
-    void show_settings() const override {}
+    void show_settings() const override {
+        r_settings.window->show();
+    }
 
 //additional
     void draw(P::Vec2f position) const;
@@ -81,16 +89,11 @@ P::Status PluginInterface::init(const P::AppInterface *app_interface) const {
 
     APPI = app_interface;
 
-    if (APPI->feature_level & P::SETTINGS_SUPPORT) {
-        // APPI->settings.create_surface(&PINTERFACE, 200, 200);
-        // r_max_size_setting = APPI->settings.add(&PINTERFACE, PST_TEXT_LINE, "Max");
-        // r_size_setting = APPI->settings.add(&PINTERFACE, PST_SLIDER_1D, "Size");
-        // r_color_setting = APPI->settings.add(&PINTERFACE, PST_COLOR_PICKER, "Color");
-
-        APPI->log("[plugin](%s) is happy for your settings support!", PINFO.name);
-    } else {
-        APPI->log("[plugin](%s) is NOT happy for you not supporting settings!", PINFO.name);
-    }
+    r_settings.window = APPI->factory.widget->window("SHRPY", {{100, 100}, {200, 300}});
+    r_settings.field = APPI->factory.widget->text_field({{50, 5}, {100, 30}}, r_settings.window);
+    r_settings.slider = APPI->factory.widget->slider(P::Slider::Type::X, {{20, 40}, {160, 20}}, r_settings.window);
+    r_settings.picker = APPI->factory.widget->color_picker({{0, 70}, {200, 200}}, r_settings.window);
+    r_settings.button = APPI->factory.widget->button({{75, 275}, {50, 25}}, r_settings.window);
 
     APPI->log("[plugin](%s) inited", PINFO.name);
     return P::OK;
@@ -150,6 +153,12 @@ unsigned long long read(const char *text) {
 void PluginInterface::draw(P::Vec2f pos) const {
     float size = APPI->get_size();
     P::RGBA color = APPI->get_color();
+
+    if (r_settings.window) {
+        auto buffer = r_settings.field->get_text().begin();
+        auto ms = read_next_long_long(&buffer);
+        size = ms * r_settings.slider->get_fraction();
+    }
 
     float a1 = rand();
     float a2 = rand();
