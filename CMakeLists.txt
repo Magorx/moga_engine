@@ -156,6 +156,8 @@ add_executable(moga
         src/redactor/plugins/interface/widgets/ptext_field.cpp
         src/redactor/plugins/interface/widgets/pcolor_picker.cpp
 
+        src/redactor/extensions/extension_manager.cpp
+
         src/redactor/layer/layer.cpp
 
         src/redactor/engine.cpp
@@ -189,8 +191,8 @@ set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/t
 add_library(sharp SHARED src/collections/plugins/sharp.cpp)
 set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharp")
 
-add_library(test SHARED src/collections/plugins/test.cpp)
-set_target_properties(test PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_test")
+add_library(kctf_super_widget SHARED src/collections/plugins/kctf_super_widget.cpp)
+set_target_properties(kctf_super_widget PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_super_widget")
 
 
 # add_custom_target(rebuild_plugins

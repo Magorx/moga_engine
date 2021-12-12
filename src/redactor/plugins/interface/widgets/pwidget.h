@@ -35,6 +35,9 @@ class WidgetView : public v_Highlighter {
 
 public:
     WidgetView(const ViewBody &body, P::Widget *widget);
+    virtual ~WidgetView();
+
+    bool to_delete_widget = true;
 
     WIDGET_FIX_(P::Widget)
 };
@@ -146,7 +149,7 @@ public:
     virtual bool add_child(Widget *child) override;
     virtual bool delete_child(Widget *child) override;
 
-    virtual void set_to_delete(bool to_delete_) override { view->set_to_delete(to_delete_); }
+    virtual void set_to_delete() override { view->set_to_delete(true); }
 
     bool add_child(PluginWidget *child);
     bool delete_child(PluginWidget *child);

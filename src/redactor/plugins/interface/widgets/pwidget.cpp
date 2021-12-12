@@ -12,6 +12,13 @@ v_Highlighter(body, nullptr, true),
 widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetView);
+    set_focuseable(true);
+}
+
+WidgetView::~WidgetView() {
+    if (to_delete_widget) {
+        delete widget;
+    }
 }
 
 

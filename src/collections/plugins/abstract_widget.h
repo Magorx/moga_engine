@@ -20,7 +20,7 @@ public:
 
     virtual bool delete_from_parent() override { return false; }
 
-    virtual void set_to_delete(bool /*to_delete_*/) override {};
+    virtual void set_to_delete() override {};
     
     virtual void on_render          (const P::Event::Render          &) override {}
     virtual void on_tick            (const P::Event::Tick            &) override {}

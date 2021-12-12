@@ -21,7 +21,8 @@ public:
     PluginManager(ToolManager *mg_tool, EffectManager *mg_effect);
     ~PluginManager();
 
-    RedactorPlugin *load(const char *filename, P::AppInterface *app_interface);
+    RedactorPlugin *load(const char *filename, RedactorPluginInterface *app_interface);
+    void deinit();
     void fit_plugin(RedactorPlugin *plugin);
 
     // void set_plugin(const P::PluginInterface *plugin_self, RedactorPlugin *plugin);

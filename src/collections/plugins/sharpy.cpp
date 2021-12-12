@@ -1,6 +1,8 @@
 #include "redactor/plugin_std/std.hpp"
 #include "utils.h"
 
+#include "super_widget.h"
+
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -28,15 +30,15 @@ struct {
 
 // ============================================================================ General
 
-
+#define PEXT
 #include "plugin_interface.h"
+#undef PEXT
 
-
-const MyPluginInterface PINTERFACE {};
+MyPluginInterface PINTERFACE {};
 
 const P::PluginInfo PINFO =
 {
-    PSTD_VERSION, // std_version
+    P::STD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,
@@ -58,6 +60,8 @@ extern "C" const P::PluginInterface *get_plugin_interface() {
 }
  
 // ============================================================================ Logic
+
+void generate_triangle(const P::Vec2f &pos, float radius, P::Vec2f &p1, P::Vec2f &p2, P::Vec2f &p3);
 
 P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
     srand(time(NULL));
@@ -86,13 +90,16 @@ P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
         bl->set_caption(">>>", size);
     }
 
+    APPI->ext_register_as("sharpy");
+    PINTERFACE.exts.set("generate_triangle", (void*) generate_triangle);
+
     APPI->log("[plugin](%s) inited", PINFO.name);
     return P::OK;
 }
 
 P::Status MyPluginInterface::deinit() const {
     if (r_settings.window) {
-        r_settings.window->set_to_delete(true);
+        r_settings.window->set_to_delete();
     }
 
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
@@ -112,6 +119,9 @@ void MyPluginInterface::on_tick(double /*dt*/) const {
 
 void MyPluginInterface::tool_on_press(const P::Vec2f &pos) const {
     draw(pos);
+
+    auto fabric = (SuperWidgetFabric*) APPI->ext_get_interface("KCTFSuperWidget", "SuperWidgetFabric");
+    auto rb = fabric->radio_button({{20, 20}, {40, 40}}, r_settings.window);
 }
 
 void MyPluginInterface::tool_on_move(const P::Vec2f &/*from*/, const P::Vec2f &to) const {
@@ -145,6 +155,18 @@ unsigned long long read(const char *text) {
     return wanted_size;
 }
 
+typedef void (*generate_triangle_type)(const P::Vec2f &pos, float radius, P::Vec2f &p1, P::Vec2f &p2, P::Vec2f &p3);
+
+void generate_triangle(const P::Vec2f &pos, float radius, P::Vec2f &p1, P::Vec2f &p2, P::Vec2f &p3) {
+    float a1 = rand();
+    float a2 = rand();
+
+    p1 = pos;
+ 
+    p2 = {(float) (pos.x + cos(a1) * radius), (float) (pos.y + sin(a2) * radius)};
+    p3 = {(float) (pos.x + cos(a2) * radius), (float) (pos.y + sin(a1) * radius)};
+}
+
 void MyPluginInterface::draw(const P::Vec2f &pos) const {
     float size = APPI->get_size();
     P::RGBA color = APPI->get_color();
@@ -158,10 +180,8 @@ void MyPluginInterface::draw(const P::Vec2f &pos) const {
     float a1 = rand();
     float a2 = rand();
 
-    P::Vec2f p0 = pos;
- 
-    P::Vec2f p1 = {(float) (pos.x + cos(a1) * size), (float) (pos.y + sin(a2) * size)};
-    P::Vec2f p2 = {(float) (pos.x + cos(a2) * size), (float) (pos.y + sin(a1) * size)};
+    P::Vec2f p0, p1, p2;
+    generate_triangle(pos, size, p0, p1, p2);
 
     auto target = APPI->get_target();
     

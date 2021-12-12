@@ -34,7 +34,7 @@ const MyPluginInterface PINTERFACE {};
 
 const P::PluginInfo PINFO =
 {
-    PSTD_VERSION, // std_version
+    P::STD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,
@@ -90,7 +90,7 @@ P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
 
 P::Status MyPluginInterface::deinit() const {
     if (r_settings.window) {
-        r_settings.window->set_to_delete(true);
+        r_settings.window->set_to_delete();
     }
 
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);

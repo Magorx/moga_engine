@@ -17,7 +17,13 @@ PluginManager::~PluginManager() {
     }
 }
 
-RedactorPlugin *PluginManager::load(const char *filename, P::AppInterface *app_interface) {
+void PluginManager::deinit() {
+    for (auto plugin : plugins) {
+        plugin->deinit();
+    }
+}
+
+RedactorPlugin *PluginManager::load(const char *filename, RedactorPluginInterface *app_interface) {
     logger.info("PluginManager", "loading plugin, filename[%s]\n", filename);
 
     if (!filename || !app_interface) {

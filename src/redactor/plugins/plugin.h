@@ -6,6 +6,7 @@
 #include "visual/color/rgba.h"
 
 
+class RedactorPluginInterface;
 class PluginManager;
 
 class RedactorPlugin {
@@ -17,12 +18,14 @@ public:
     const P::PluginInfo      *lib;
     const P::PluginInterface *interface;
 
-    RedactorPlugin(const char *fileName, const P::AppInterface *appInterface, PluginManager *manager = nullptr);
+    RedactorPlugin(const char *fileName, RedactorPluginInterface *appInterface, PluginManager *manager = nullptr);
     ~RedactorPlugin();
 
     void on_tick(double dt) { interface->on_tick(dt); }
 
     void dump() { interface->dump(); }
+
+    void deinit() { interface->deinit(); }
 
     void on_mouse_press(const Vec2d &position);
     void on_mouse_move(const Vec2d &from, const Vec2d &to);

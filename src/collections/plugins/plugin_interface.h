@@ -25,8 +25,11 @@ struct MyPluginInterface : public P::PluginInterface {
 
 //additional
     void draw(const P::Vec2f &position) const;
+
+    P::Extensioner exts;
 };
 
-bool  MyPluginInterface::ext_enable        (const char */*name*/)                            const { return false;   }
-void *MyPluginInterface::ext_get_func      (const char */*extension*/, const char */*func*/) const { return nullptr; }
-void *MyPluginInterface::ext_get_interface (const char */*extension*/, const char */*name*/) const { return nullptr; }
+bool  MyPluginInterface::ext_enable        (const char */*name*/)                        const { return false;   }
+void *MyPluginInterface::ext_get_func      (const char */*extension*/, const char *func) const { return exts.get(func); }
+void *MyPluginInterface::ext_get_interface (const char */*extension*/, const char *name) const { return exts.get(name); }
+

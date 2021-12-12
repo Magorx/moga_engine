@@ -1,4 +1,6 @@
 #include "redactor/plugin_std/std.hpp"
+#include "plugin_interface.h"
+#include "abstract_widget.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -6,7 +8,7 @@
 
 // ============================================================================ Info
 
-const auto PTYPE = P::TOOL; // P::EFFECT
+const auto PTYPE = P::TOOL; // P::EFFECT | P::EXTENSION
 
 const char *PNAME    = "a_name";
 const char *PVERSION = "a_vesion";
@@ -17,13 +19,11 @@ const char *PDESCR   = "a_description";
 
 // ============================================================================ General
 
-#include "plugin_interface.h"
-
 const MyPluginInterface PINTERFACE;
 
 const P::PluginInfo PINFO =
 {
-    PSTD_VERSION, // std_version
+    P::STD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,

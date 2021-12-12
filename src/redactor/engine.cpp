@@ -13,7 +13,8 @@ RedactorEngine::RedactorEngine(RWindow *window,
 MogaEngine(window, name),
 tool_manager(new ToolManager(visual->get_renderer())),
 effect_manager(new EffectManager),
-plugin_manager(new PluginManager(tool_manager, effect_manager))
+plugin_manager(new PluginManager(tool_manager, effect_manager)),
+extension_manager(new ExtensionManager)
 {
     t_Brush *t_brush         = new t_Brush(tool_manager);
     t_Eraser *t_eraser       = new t_Eraser(tool_manager);
@@ -40,6 +41,13 @@ plugin_manager(new PluginManager(tool_manager, effect_manager))
 RedactorEngine::~RedactorEngine() {
     delete tool_manager;
     delete effect_manager;
+    delete extension_manager;
+
+    plugin_manager->deinit();
+
+    delete main_view;
+    main_view = nullptr;
+
     delete plugin_manager;
 }
 

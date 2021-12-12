@@ -26,7 +26,7 @@ const MyPluginInterface PINTERFACE {};
 
 const P::PluginInfo PINFO =
 {
-    PSTD_VERSION, // std_version
+    P::STD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,

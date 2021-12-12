@@ -17,20 +17,38 @@ RedactorPluginInterface::~RedactorPluginInterface() {
 }
 
 // extension
-bool  RedactorPluginInterface::ext_enable(const char */*name*/) const {
-    return false;
+bool  RedactorPluginInterface::ext_enable(const char *name) const {
+    auto manager = App.app_engine->get_extension_manager(); if (!manager) return false;
+
+    if (manager->get_extension(name)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-void *RedactorPluginInterface::ext_get_func(const char */*extension*/, const char */*func*/) const {
-    return nullptr;
+void *RedactorPluginInterface::ext_get_func(const char *extension, const char *func) const {
+    auto manager = App.app_engine->get_extension_manager(); if (!manager) return nullptr;
+
+    auto ext = manager->get_extension(extension); if (!ext) return nullptr;
+    void *function = ext->get_func(func);
+
+    return function;
 }
 
-void *RedactorPluginInterface::ext_get_interface(const char */*extension*/, const char */*name*/) const {
-    return nullptr;
+void *RedactorPluginInterface::ext_get_interface(const char *extension, const char *name) const {
+    auto manager = App.app_engine->get_extension_manager(); if (!manager) return nullptr;
+
+    auto ext = manager->get_extension(extension); if (!ext) return nullptr;
+    void *function = ext->get_interface(name);
+
+    return function;
 }
 
-void RedactorPluginInterface::ext_register_as(const char */*extension*/) const {
-    
+void RedactorPluginInterface::ext_register_as(const char *extension) const {
+    auto manager = App.app_engine->get_extension_manager(); if (!manager) return;
+
+    manager->register_extension(extension, plugin);
 }
 
 
