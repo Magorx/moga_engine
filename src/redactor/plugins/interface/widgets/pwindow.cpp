@@ -40,8 +40,8 @@ widget(widget)
 
 
 PluginWindow::PluginWindow(const char *name, const ViewBody &body, PUPPY::Widget *parent) :
-PluginWidget(body, parent),
-PUPPY::Window(to_wbody(body), parent)
+PluginWidget(body, parent)
+// PUPPY::Window(to_wbody(body), parent)
 {
     view = new WidgetWindow(name, body, this);
     if (parent) {

@@ -42,8 +42,8 @@ widget(widget)
 
 
 PluginTextField::PluginTextField(const ViewBody &body, PUPPY::Widget *parent) :
-PluginWidget(body, parent),
-PUPPY::TextField(to_wbody(body), parent)
+PluginWidget(body, parent)
+// PUPPY::TextField(to_wbody(body), parent)
 {
     view = new WidgetTextField(body, this);
     if (parent) {

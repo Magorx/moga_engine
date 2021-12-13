@@ -177,4 +177,23 @@ public:
 
     virtual void set_caption(const char *text, size_t font_size, const PUPPY::Vec2f *pos = nullptr) override;
     virtual void set_base_color(PUPPY::RGBA color) override;
+
+// ----------------
+
+    virtual void set_position(const PUPPY::Vec2f &position_) override { body.position = position_; }
+    virtual void set_size(const PUPPY::Vec2f &size_) override { body.size = size_; }
+
+    virtual PUPPY::WBody &get_body() override { return body; }
+    virtual void set_body(const PUPPY::WBody &body_) override { body = body_; }
+
+    virtual Widget *get_parent() const override { return parent; }
+    virtual void set_parent(Widget *parent_) override { parent = parent_; }
+
+    virtual PUPPY::RenderTarget *get_texture() override { return texture; }
+    virtual void set_texture(PUPPY::RenderTarget *texture_) override { texture = texture_; }
+
+protected:
+    PUPPY::WBody body;
+    Widget *parent;
+    PUPPY::RenderTarget *texture;
 };

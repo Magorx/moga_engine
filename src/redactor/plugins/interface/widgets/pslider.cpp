@@ -39,7 +39,7 @@ widget(widget)
 
 PluginSlider::PluginSlider(PUPPY::Slider::Type type, const ViewBody &body, PUPPY::Widget *parent) :
 PluginWidget(body, parent),
-PUPPY::Slider(to_wbody(body), parent),
+// PUPPY::Slider(to_wbody(body), parent),
 type(type)
 {
     auto slider = new WidgetSlider(body, this);

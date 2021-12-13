@@ -20,8 +20,8 @@ widget(widget)
 
 
 PluginLabel::PluginLabel(const char *name, const ViewBody &body, PUPPY::Widget *parent) :
-PluginWidget(body, parent),
-PUPPY::Label(to_wbody(body), parent)
+PluginWidget(body, parent)
+// PUPPY::Label(to_wbody(body), parent)
 {
     view = new WidgetLabel(name, body, this);
     set_body(to_wbody(view->get_body()));

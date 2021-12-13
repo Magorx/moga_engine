@@ -23,8 +23,9 @@ WidgetView::~WidgetView() {
 
 
 PluginWidget::PluginWidget(const ViewBody &body, PUPPY::Widget *parent, bool to_spawn_widget) :
-Widget(to_wbody(body), parent),
-view(to_spawn_widget ? new WidgetView(body, this) : nullptr)
+Widget(),
+view(to_spawn_widget ? new WidgetView(body, this) : nullptr),
+body(to_wbody(body)), parent(parent), texture(nullptr)
 {
     if (parent) {
         parent->add_child(this);
@@ -33,8 +34,9 @@ view(to_spawn_widget ? new WidgetView(body, this) : nullptr)
 
 
 PluginWidget::PluginWidget(const ViewBody &body, PluginWidget *parent, bool to_spawn_widget) :
-Widget(to_wbody(body), parent),
-view(to_spawn_widget ? new WidgetView(body, this) : nullptr)
+Widget(),
+view(to_spawn_widget ? new WidgetView(body, this) : nullptr),
+body(to_wbody(body)), parent(parent), texture(nullptr)
 {
     if (parent) {
         parent->add_child(this);
@@ -42,8 +44,9 @@ view(to_spawn_widget ? new WidgetView(body, this) : nullptr)
 }
 
 PluginWidget::PluginWidget(Widget *widget) :
-Widget(widget->get_body(), widget->get_parent()),
-view(nullptr)
+Widget(),
+view(nullptr),
+body(widget->get_body()), parent(widget->get_parent()), texture(widget->get_texture())
 {
     ViewBody body = {
         {widget->get_body().position.x, widget->get_body().position.y},

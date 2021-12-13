@@ -37,8 +37,8 @@ widget(widget)
 
 
 PluginColorPicker::PluginColorPicker(const ViewBody &body, PUPPY::Widget *parent) :
-PluginWidget(body, parent),
-PUPPY::ColorPicker(to_wbody(body), parent)
+PluginWidget(body, parent)
+// PUPPY::ColorPicker(to_wbody(body), parent)
 {
     view = new WidgetColorPicker(body, this);
     if (parent) {
