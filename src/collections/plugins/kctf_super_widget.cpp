@@ -79,7 +79,6 @@ public:
 
 MyRadioButton::MyRadioButton(const P::AppInterface *app_interface, const P::WBody &body, P::Widget *parent, P::RGBA first, P::RGBA second) :
 RadioButton(body, parent),
-// AbstractWidget(body, parent),
 on(false),
 one(nullptr),
 two(nullptr),

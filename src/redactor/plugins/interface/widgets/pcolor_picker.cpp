@@ -27,7 +27,7 @@ public:
 WidgetColorPicker::WidgetColorPicker(const ViewBody &body, P::ColorPicker *widget) :
 v_ColorPicker(
     body,
-    App.app_engine->get_tool_manager()
+    nullptr
 ),
 widget(widget)
 {

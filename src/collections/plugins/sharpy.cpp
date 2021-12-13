@@ -178,6 +178,7 @@ void MyPluginInterface::draw(const P::Vec2f &pos) const {
         auto buffer = r_settings.field->get_text().begin();
         auto ms = read_next_long_long(&buffer);
         size = ms * r_settings.slider->get_fraction();
+        color = r_settings.picker->get_color();
     }
 
     float a1 = rand();
