@@ -9,7 +9,7 @@ plugin(nullptr)
     factory.shader = new ShaderFactory;
     factory.widget = new WidgetFactory;
 
-    feature_level = P::SHADER_SUPPORT | P::SETTINGS_SUPPORT;
+    feature_level = PUPPY::SHADER_SUPPORT | PUPPY::SETTINGS_SUPPORT;
 }
 
 RedactorPluginInterface::~RedactorPluginInterface() {
@@ -67,7 +67,7 @@ double RedactorPluginInterface::get_absolute_time() const {
 }
 
 
-P::RGBA RedactorPluginInterface::get_color() const {
+PUPPY::RGBA RedactorPluginInterface::get_color() const {
     auto tool_manager = App.app_engine->get_tool_manager();
     if (!tool_manager) return {0, 0, 0, 0};
 
@@ -83,7 +83,7 @@ float RedactorPluginInterface::get_size() const {
 
 
 // target
-P::RenderTarget *RedactorPluginInterface::get_target() const {
+PUPPY::RenderTarget *RedactorPluginInterface::get_target() const {
     auto tool_manager = App.app_engine->get_tool_manager();
     if (!tool_manager) return nullptr;
 
@@ -96,7 +96,7 @@ P::RenderTarget *RedactorPluginInterface::get_target() const {
     return new Target(layer, false, true);
 }
 
-P::RenderTarget *RedactorPluginInterface::get_preview() const {
+PUPPY::RenderTarget *RedactorPluginInterface::get_preview() const {
     auto tool_manager = App.app_engine->get_tool_manager();
     if (!tool_manager) return nullptr;
 
@@ -119,7 +119,7 @@ void RedactorPluginInterface::flush_preview() const {
     canvas->flush_draw_to_active();
 }
 
-void RedactorPluginInterface::set_color(const P::RGBA &color) const {
+void RedactorPluginInterface::set_color(const PUPPY::RGBA &color) const {
     auto tm = App.app_engine->get_tool_manager(); if (!tm) return;
 
     tm->set_draw_color(color.ui32);

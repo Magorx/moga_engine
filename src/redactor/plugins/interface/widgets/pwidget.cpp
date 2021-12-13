@@ -7,7 +7,7 @@
 FWD_ALL_FOR_CLASS_(WidgetView)
 
 
-WidgetView::WidgetView(const ViewBody &body, P::Widget *widget) :
+WidgetView::WidgetView(const ViewBody &body, PUPPY::Widget *widget) :
 v_Highlighter(body, nullptr, true),
 widget(widget)
 {
@@ -22,7 +22,7 @@ WidgetView::~WidgetView() {
 }
 
 
-PluginWidget::PluginWidget(const ViewBody &body, P::Widget *parent, bool to_spawn_widget) :
+PluginWidget::PluginWidget(const ViewBody &body, PUPPY::Widget *parent, bool to_spawn_widget) :
 Widget(to_wbody(body), parent),
 view(to_spawn_widget ? new WidgetView(body, this) : nullptr)
 {
@@ -61,12 +61,12 @@ bool PluginWidget::is_active() {
     return view->is_active();
 }
 
-bool PluginWidget::is_inside(P::Vec2f pos) {
+bool PluginWidget::is_inside(PUPPY::Vec2f pos) {
     return view->is_inside({pos.x, pos.y});
 }
 
 
-bool PluginWidget::add_child(P::Widget *child) {
+bool PluginWidget::add_child(PUPPY::Widget *child) {
     if (!child || !view) return false;
 
     PluginWidget *app_widget = dynamic_cast<PluginWidget*>(child);
@@ -109,10 +109,10 @@ void PluginWidget::show() {
 }
 
 
-void PluginWidget::set_caption(const char *text, size_t font_size, const P::Vec2f */*pos*/) {
+void PluginWidget::set_caption(const char *text, size_t font_size, const PUPPY::Vec2f */*pos*/) {
     view->add_label(text, font_size, App.font.color.basic_header, 0, true);
 }
 
-void PluginWidget::set_base_color(P::RGBA color) {
+void PluginWidget::set_base_color(PUPPY::RGBA color) {
     view->set_appearence(App.add_appr(new AppearenceColor(color.ui32)));
 }

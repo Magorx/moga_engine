@@ -8,7 +8,7 @@
 FWD_ALL_FOR_CLASS_(WidgetLabel)
 
 
-WidgetLabel::WidgetLabel(const char *text, const ViewBody &body, P::Label *widget) :
+WidgetLabel::WidgetLabel(const char *text, const ViewBody &body, PUPPY::Label *widget) :
 v_Highlighter(body, nullptr, true),
 widget(widget)
 {
@@ -19,9 +19,9 @@ widget(widget)
 }
 
 
-PluginLabel::PluginLabel(const char *name, const ViewBody &body, P::Widget *parent) :
+PluginLabel::PluginLabel(const char *name, const ViewBody &body, PUPPY::Widget *parent) :
 PluginWidget(body, parent),
-P::Label(to_wbody(body), parent)
+PUPPY::Label(to_wbody(body), parent)
 {
     view = new WidgetLabel(name, body, this);
     set_body(to_wbody(view->get_body()));

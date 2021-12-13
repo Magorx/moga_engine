@@ -52,6 +52,10 @@ struct MouseDrag {
     Button button;
 };
 
+struct Tick {
+    double dt;
+};
+
 struct RenderCall {
     Renderer *renderer;
 };

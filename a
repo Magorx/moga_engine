@@ -8,5 +8,5 @@ virtual void set_active(bool flag) override {
     v_Highlighter::set_active(flag);
 }
 
-P::Widget *get_widget() { return widget; }
-void set_widget(P::Widget *widget_) { widget = widget_; }
+PUPPY::Widget *get_widget() { return widget; }
+void set_widget(PUPPY::Widget *widget_) { widget = widget_; }

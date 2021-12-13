@@ -24,7 +24,7 @@ public:
 };
 
 
-WidgetColorPicker::WidgetColorPicker(const ViewBody &body, P::ColorPicker *widget) :
+WidgetColorPicker::WidgetColorPicker(const ViewBody &body, PUPPY::ColorPicker *widget) :
 v_ColorPicker(
     body,
     nullptr
@@ -36,9 +36,9 @@ widget(widget)
 }
 
 
-PluginColorPicker::PluginColorPicker(const ViewBody &body, P::Widget *parent) :
+PluginColorPicker::PluginColorPicker(const ViewBody &body, PUPPY::Widget *parent) :
 PluginWidget(body, parent),
-P::ColorPicker(to_wbody(body), parent)
+PUPPY::ColorPicker(to_wbody(body), parent)
 {
     view = new WidgetColorPicker(body, this);
     if (parent) {
@@ -46,13 +46,13 @@ P::ColorPicker(to_wbody(body), parent)
     }
 }
 
-P::RGBA PluginColorPicker::get_color() {
+PUPPY::RGBA PluginColorPicker::get_color() {
     auto picker = dynamic_cast<v_ColorPicker*>(view); if (!picker) return {0, 0, 0, 0};
 
     return picker->get_color().ui32;
 }
 
-void PluginColorPicker::set_color(P::RGBA color) {
+void PluginColorPicker::set_color(PUPPY::RGBA color) {
     auto picker = dynamic_cast<v_ColorPicker*>(view); if (!picker) return;
 
     picker->set_color(color.ui32);

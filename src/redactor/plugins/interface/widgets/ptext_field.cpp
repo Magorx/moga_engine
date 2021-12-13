@@ -24,7 +24,7 @@ public:
 };
 
 
-WidgetTextField::WidgetTextField(const ViewBody &body, P::TextField *widget) :
+WidgetTextField::WidgetTextField(const ViewBody &body, PUPPY::TextField *widget) :
 v_TextField(
     body,
     App.add_style(StdStyle::Text::basic()),
@@ -41,9 +41,9 @@ widget(widget)
 }
 
 
-PluginTextField::PluginTextField(const ViewBody &body, P::Widget *parent) :
+PluginTextField::PluginTextField(const ViewBody &body, PUPPY::Widget *parent) :
 PluginWidget(body, parent),
-P::TextField(to_wbody(body), parent)
+PUPPY::TextField(to_wbody(body), parent)
 {
     view = new WidgetTextField(body, this);
     if (parent) {

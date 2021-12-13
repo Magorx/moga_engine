@@ -6,6 +6,6 @@
 #include "plugin_shader.h"
 
 
-class ShaderFactory : public P::ShaderFactory {
-    virtual P::Shader *compile(const char *code, P::ShaderType type, bool is_code = true) const override;
+class ShaderFactory : public PUPPY::ShaderFactory {
+    virtual PUPPY::Shader *compile(const char *code, PUPPY::ShaderType type, bool is_code = true) const override;
 };

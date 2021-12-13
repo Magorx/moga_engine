@@ -17,6 +17,11 @@ const char *PDESCR   = "a_description";
 
 // ============================================================================ Resources
 
+struct {
+    PUPPY::Window *window;
+    PUPPY::TextField *path;
+} r_settings; 
+
 // ============================================================================ General
 
 const MyPluginInterface PINTERFACE;
@@ -50,6 +55,13 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) 
     srand(time(NULL));
 
     APPI = app_interface;
+
+    if (!APPI->factory.shader || !APPI->factory.widget) {
+        APPI->log("[plugin](%s) can't work without shaders and widgets - for your own safety");
+        return PUPPY::ERR;
+    }
+
+
 
     APPI->log("[plugin](%s) inited", PINFO.name);
     return PUPPY::OK;

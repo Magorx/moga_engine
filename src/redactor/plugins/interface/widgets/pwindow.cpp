@@ -24,7 +24,7 @@ public:
 };
 
 
-WidgetWindow::WidgetWindow(const char *name, const ViewBody &body, P::Window *widget) :
+WidgetWindow::WidgetWindow(const char *name, const ViewBody &body, PUPPY::Window *widget) :
 v_Window(name, body),
 widget(widget)
 {
@@ -39,9 +39,9 @@ widget(widget)
 }
 
 
-PluginWindow::PluginWindow(const char *name, const ViewBody &body, P::Widget *parent) :
+PluginWindow::PluginWindow(const char *name, const ViewBody &body, PUPPY::Widget *parent) :
 PluginWidget(body, parent),
-P::Window(to_wbody(body), parent)
+PUPPY::Window(to_wbody(body), parent)
 {
     view = new WidgetWindow(name, body, this);
     if (parent) {

@@ -183,16 +183,16 @@ set_target_properties(rainbow_stamp PROPERTIES PREFIX "" OUTPUT_NAME "resources/
 # set_target_properties(shdr PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_shdr")
 
 add_library(negative SHARED src/collections/plugins/negative.cpp)
-set_target_properties(negative PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_negative")
+set_target_properties(negative PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/effect/kctf_negative")
 
 add_library(bloor SHARED src/collections/plugins/bloor.cpp)
-set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_bloor")
+set_target_properties(bloor PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/effect/kctf_bloor")
 
 add_library(sharp SHARED src/collections/plugins/sharp.cpp)
-set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_sharp")
+set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/effect/kctf_sharp")
 
-add_library(kctf_super_widget SHARED src/collections/plugins/kctf_super_widget.cpp)
-set_target_properties(kctf_super_widget PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/tool/kctf_super_widget")
+add_library(kctf_widget_library_extension SHARED src/collections/plugins/kctf_widget_library_extension.cpp)
+set_target_properties(kctf_widget_library_extension PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/extension/kctf_widget_library_extension")
 
 
 # add_custom_target(rebuild_plugins

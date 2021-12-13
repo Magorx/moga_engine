@@ -6,11 +6,11 @@
 #include "redactor/plugins/interface/target.h"
 
 
-inline ViewBody to_vbody(const P::WBody &body) {
+inline ViewBody to_vbody(const PUPPY::WBody &body) {
     return {{body.position.x, body.position.y}, {body.size.x, body.size.y}};
 }
 
-inline P::WBody to_wbody(const ViewBody &body) {
+inline PUPPY::WBody to_wbody(const ViewBody &body) {
     return {{(float) body.position.x(), (float) body.position.y()}, {(float) body.size.x(), (float) body.size.y()}};
 }
 
@@ -31,15 +31,15 @@ void set_widget(WTYPE *widget_) { widget = widget_; }
 
 
 class WidgetView : public v_Highlighter {
-    P::Widget *widget;
+    PUPPY::Widget *widget;
 
 public:
-    WidgetView(const ViewBody &body, P::Widget *widget);
+    WidgetView(const ViewBody &body, PUPPY::Widget *widget);
     virtual ~WidgetView();
 
     bool to_delete_widget = true;
 
-    WIDGET_FIX_(P::Widget)
+    WIDGET_FIX_(PUPPY::Widget)
 };
 
 
@@ -84,9 +84,13 @@ public:                                                                         
 #define FWD_CLASS_(WTYPE, EVENT_T) WFwd##EVENT_T##WTYPE(this)
 
 #define FWD_ALL_FOR_CLASS_(WTYPE)                             \
+FWD_TO_WIDGET_(WTYPE, Tick, on_tick, ({                       \
+    event.dt                                                  \
+}))                                                           \
+                                                              \
 FWD_TO_WIDGET_(WTYPE, MousePress, on_mouse_press, ({          \
     {(float) event.position.x(), (float) event.position.y()}, \
-    (P::MouseButton) event.button                             \
+    (PUPPY::MouseButton) event.button                         \
 }))                                                           \
                                                               \
 FWD_TO_WIDGET_(WTYPE, MouseRelease, on_mouse_release, ({      \
@@ -99,15 +103,15 @@ FWD_TO_WIDGET_(WTYPE, MouseMove, on_mouse_move, ({            \
 }))                                                           \
                                                               \
 FWD_TO_WIDGET_(WTYPE, KeyDown, on_key_down, ({                \
-    (P::Keyboard::Key) event.code                             \
+    (PUPPY::Keyboard::Key) event.code                         \
 }))                                                           \
                                                               \
 FWD_TO_WIDGET_(WTYPE, KeyUp, on_key_up, ({                    \
-    (P::Keyboard::Key) event.code                             \
+    (PUPPY::Keyboard::Key) event.code                         \
 }))                                                           \
                                                               \
 FWD_TO_WIDGET_(WTYPE, TextEnter, on_text_enter, ({            \
-    (P::Event::TextEnter) event.keycode                       \
+    (PUPPY::Event::TextEnter) event.keycode                   \
 }))                                                           \
                                                               \
 FWD_TO_WIDGET_(WTYPE, Scroll, on_scroll, ({                   \
@@ -122,6 +126,7 @@ e_render_call.add(new FwdRenderCall<WTYPE>(this));         \
 e_render_call.add(new AVRenderCallAcceptor(this));         \
                                                            \
                                                            \
+e_tick.add          (new FWD_CLASS_(WTYPE, Tick));         \
 e_mouse_press.add   (new FWD_CLASS_(WTYPE, MousePress));   \
 e_mouse_release.add (new FWD_CLASS_(WTYPE, MouseRelease)); \
 e_mouse_move.add    (new FWD_CLASS_(WTYPE, MouseMove));    \
@@ -131,12 +136,12 @@ e_text_enter.add    (new FWD_CLASS_(WTYPE, TextEnter));    \
 e_scroll.add        (new FWD_CLASS_(WTYPE, Scroll))
 
 
-class PluginWidget : virtual public P::Widget {
+class PluginWidget : virtual public PUPPY::Widget {
 protected:
     v_Highlighter *view;
 
 public:
-    PluginWidget(const ViewBody &body, P::Widget *parent = nullptr, bool to_spawn_view = false);
+    PluginWidget(const ViewBody &body, PUPPY::Widget *parent = nullptr, bool to_spawn_view = false);
     PluginWidget(const ViewBody &body, PluginWidget *parent = nullptr, bool to_spawn_view = false);
     PluginWidget(Widget *widget);
     virtual ~PluginWidget();
@@ -144,7 +149,7 @@ public:
     v_Highlighter *get_view() { return view; }
 
     virtual bool is_active() override;
-    virtual bool is_inside(P::Vec2f pos) override;
+    virtual bool is_inside(PUPPY::Vec2f pos) override;
 
     virtual bool add_child(Widget *child) override;
     virtual bool delete_child(Widget *child) override;
@@ -155,21 +160,21 @@ public:
     bool delete_child(PluginWidget *child);
     virtual bool delete_from_parent() override;
     
-    virtual void on_render          (const P::Event::Render          &) override {}
-    virtual void on_tick            (const P::Event::Tick            &) override {}
-    virtual void on_mouse_press     (const P::Event::MousePress      &) override {}
-    virtual void on_mouse_release   (const P::Event::MouseRelease    &) override {}
-    virtual void on_mouse_move      (const P::Event::MouseMove       &) override {}
-    virtual void on_key_down        (const P::Event::KeyDown         &) override {}
-    virtual void on_key_up          (const P::Event::KeyUp           &) override {}
-    virtual void on_text_enter      (const P::Event::TextEnter       &) override {}
-    virtual void on_scroll          (const P::Event::Scroll          &) override {}
-    virtual void on_hide            (const P::Event::Hide            &) override {}
-    virtual void on_show            (const P::Event::Show            &) override {}
+    virtual void on_render          (const PUPPY::Event::Render          &) override {}
+    virtual void on_tick            (const PUPPY::Event::Tick            &) override {}
+    virtual void on_mouse_press     (const PUPPY::Event::MousePress      &) override {}
+    virtual void on_mouse_release   (const PUPPY::Event::MouseRelease    &) override {}
+    virtual void on_mouse_move      (const PUPPY::Event::MouseMove       &) override {}
+    virtual void on_key_down        (const PUPPY::Event::KeyDown         &) override {}
+    virtual void on_key_up          (const PUPPY::Event::KeyUp           &) override {}
+    virtual void on_text_enter      (const PUPPY::Event::TextEnter       &) override {}
+    virtual void on_scroll          (const PUPPY::Event::Scroll          &) override {}
+    virtual void on_hide            (const PUPPY::Event::Hide            &) override {}
+    virtual void on_show            (const PUPPY::Event::Show            &) override {}
 
     virtual void hide() override;
     virtual void show() override;
 
-    virtual void set_caption(const char *text, size_t font_size, const P::Vec2f *pos = nullptr) override;
-    virtual void set_base_color(P::RGBA color) override;
+    virtual void set_caption(const char *text, size_t font_size, const PUPPY::Vec2f *pos = nullptr) override;
+    virtual void set_base_color(PUPPY::RGBA color) override;
 };

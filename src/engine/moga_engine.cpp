@@ -300,6 +300,7 @@ bool MogaEngine::add_view(AbstractView *view) {
 
 void MogaEngine::tick(const double, const double) {
 	frame_init_tick();
+	main_view->e_tick.emit({dt});
 	handle_events(*visual->get_renderer()->get_window());
 
 	if (pause_mode) {

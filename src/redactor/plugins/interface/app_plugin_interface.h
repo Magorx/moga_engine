@@ -10,7 +10,7 @@
 #include "redactor/plugins/interface/target_factory.h"
 
 
-class RedactorPluginInterface : public P::AppInterface {
+class RedactorPluginInterface : public PUPPY::AppInterface {
     const RedactorPlugin *plugin;
 public:
     RedactorPluginInterface();
@@ -28,14 +28,14 @@ public:
     virtual void log(const char *fmt, ...) const override;
     virtual double get_absolute_time()     const override;
 
-    virtual P::RGBA get_color() const override;
+    virtual PUPPY::RGBA get_color() const override;
     virtual float get_size()    const override;
 
 // target
-    virtual P::RenderTarget *get_target()  const override;
-    virtual P::RenderTarget *get_preview() const override;
+    virtual PUPPY::RenderTarget *get_target()  const override;
+    virtual PUPPY::RenderTarget *get_preview() const override;
     virtual void flush_preview()           const override;
 
-    virtual void set_color(const P::RGBA &color) const override;
+    virtual void set_color(const PUPPY::RGBA &color) const override;
     virtual void set_size(float size) const override;
 };

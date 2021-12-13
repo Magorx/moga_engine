@@ -7,6 +7,8 @@
 
 class EventSystem : public AbstractEventSystem<EventSystem> {
 public:
+    EventDispatcher<EventSystem, Event::Tick>            e_tick;
+
     EventDispatcher<EventSystem, Event::MousePress>      e_mouse_press;
     EventDispatcher<EventSystem, Event::MouseRelease>    e_mouse_release;
     EventDispatcher<EventSystem, Event::MouseMove>       e_mouse_move;
@@ -31,6 +33,7 @@ public:
 
     EventSystem() :
     AbstractEventSystem(this),
+    e_tick(this, "tick"),
     e_mouse_press(this, "mouse_press"),
     e_mouse_release(this, "mouse_release"),
     e_mouse_move(this, "mouse_move"),
@@ -143,6 +146,11 @@ inline EventDispatcher<EventSystem, Event::ColorChanged> &EventSystem::get_dispa
 template <>
 inline EventDispatcher<EventSystem, Event::Scroll> &EventSystem::get_dispatcher() {
     return e_scroll;
+}
+
+template <>
+inline EventDispatcher<EventSystem, Event::Tick> &EventSystem::get_dispatcher() {
+    return e_tick;
 }
 
 #include "dispatcher_end.h"

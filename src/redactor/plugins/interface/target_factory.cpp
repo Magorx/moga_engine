@@ -2,20 +2,20 @@
 #include "target.h"
 
 
-P::RenderTarget *TargetFactory::spawn(const P::Vec2s &size, const P::RGBA &color) const {
+PUPPY::RenderTarget *TargetFactory::spawn(const PUPPY::Vec2s &size, const PUPPY::RGBA &color) const {
     auto ret = new Target({(double) size.x, (double) size.y});
     ret->clear(color);
 
     return ret;
 }
 
-P::RenderTarget *TargetFactory::from_pixels(const P::Vec2s &size, const P::RGBA *data) const {
+PUPPY::RenderTarget *TargetFactory::from_pixels(const PUPPY::Vec2s &size, const PUPPY::RGBA *data) const {
     auto ret = new Target({(double) size.x, (double) size.y});
     ret->update(data);
 
     return ret;
 }
 
-P::RenderTarget *TargetFactory::from_file(const char *path) const {
+PUPPY::RenderTarget *TargetFactory::from_file(const char *path) const {
     return new Target(path);
 }

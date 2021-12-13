@@ -2,7 +2,7 @@
 
 class RadioButton : public AbstractWidget {
 public:
-    RadioButton(const P::WBody &body, P::Widget *parent = nullptr) : AbstractWidget(body, parent) {}
+    RadioButton(const PUPPY::WBody &body, PUPPY::Widget *parent = nullptr) : AbstractWidget(body, parent) {}
     virtual ~RadioButton() {}
 
     virtual bool get_on() const = 0;
@@ -14,7 +14,7 @@ public:
     virtual HandlerType &get_handler() = 0;
 };
 
-struct SuperWidgetFabric {
-    virtual ~SuperWidgetFabric() {}
-    virtual RadioButton *radio_button(const P::WBody &body, P::Widget *parent = nullptr, P::RGBA off = {200, 100, 100}, P::RGBA on = {100, 200, 100}) = 0;
+struct SuperWidgetFactory {
+    virtual ~SuperWidgetFactory() {}
+    virtual RadioButton *radio_button(const PUPPY::WBody &body, PUPPY::Widget *parent = nullptr, PUPPY::RGBA off = {200, 100, 100}, PUPPY::RGBA on = {100, 200, 100}) = 0;
 };

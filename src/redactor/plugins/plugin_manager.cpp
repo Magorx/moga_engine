@@ -48,9 +48,9 @@ RedactorPlugin *PluginManager::load(const char *filename, RedactorPluginInterfac
 void PluginManager::fit_plugin(RedactorPlugin *plugin) {
     if (!plugin) return;
 
-    if (plugin->get_type() == P::PluginType::TOOL) {
+    if (plugin->get_type() == PUPPY::PluginType::TOOL) {
         tool_manager->add_tool(new t_Plugin(tool_manager, plugin));
-    } else if (plugin->get_type() == P::PluginType::EFFECT) {
+    } else if (plugin->get_type() == PUPPY::PluginType::EFFECT) {
         effect_manager->add(new PluginEffect(plugin));
     }
 }

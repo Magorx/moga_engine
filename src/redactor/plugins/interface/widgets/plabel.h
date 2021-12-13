@@ -5,19 +5,19 @@
 #include "collections/views/highlighter.h"
 
 
-class PluginLabel : public PluginWidget, public P::Label {
+class PluginLabel : public PluginWidget, public PUPPY::Label {
 public:
-    PluginLabel(const char *text, const ViewBody &body, P::Widget *parent = nullptr);
+    PluginLabel(const char *text, const ViewBody &body, PUPPY::Widget *parent = nullptr);
 
     virtual std::string_view get_text() const override;
     virtual void set_text(std::string_view text) override;
 };
 
 class WidgetLabel : public v_Highlighter {
-    P::Label *widget;
+    PUPPY::Label *widget;
 
 public:
-    WidgetLabel(const char *text, const ViewBody &body, P::Label *widget);
+    WidgetLabel(const char *text, const ViewBody &body, PUPPY::Label *widget);
 
-    WIDGET_FIX_(P::Label)
+    WIDGET_FIX_(PUPPY::Label)
 };

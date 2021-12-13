@@ -15,8 +15,8 @@ class RedactorPlugin {
     int status;
 
 public:
-    const P::PluginInfo      *lib;
-    const P::PluginInterface *interface;
+    const PUPPY::PluginInfo      *lib;
+    const PUPPY::PluginInterface *interface;
 
     RedactorPlugin(const char *fileName, RedactorPluginInterface *appInterface, PluginManager *manager = nullptr);
     ~RedactorPlugin();
@@ -37,15 +37,15 @@ public:
         return !status;
     }
 
-    const P::PluginInterface *get_inteface() const { return interface; }
-    const P::PluginInfo *get_lib() const { return lib; }
-    P::PluginType get_type() const { return lib->type; }
+    const PUPPY::PluginInterface *get_inteface() const { return interface; }
+    const PUPPY::PluginInfo *get_lib() const { return lib; }
+    PUPPY::PluginType get_type() const { return lib->type; }
 
-    static P::Vec2f  to_pvec2d(const Vec2d  &vec)   { return P::Vec2f(vec.x(), vec.y()); }
-    static Vec2d   from_pvec2d(const P::Vec2f &vec) { return    Vec2d(vec.x  , vec.y  ); }
+    static PUPPY::Vec2f  to_pvec2d(const Vec2d  &vec)   { return PUPPY::Vec2f(vec.x(), vec.y()); }
+    static Vec2d   from_pvec2d(const PUPPY::Vec2f &vec) { return    Vec2d(vec.x  , vec.y  ); }
 
-    static P::RGBA  to_pcolor(const RGBA  &col)   { return col.ui32; }
-    static RGBA   from_pcolor(const P::RGBA &col) { return col.ui32; }
+    static PUPPY::RGBA  to_pcolor(const RGBA  &col)   { return col.ui32; }
+    static RGBA   from_pcolor(const PUPPY::RGBA &col) { return col.ui32; }
 
     void show_settings() {
         interface->show_settings();

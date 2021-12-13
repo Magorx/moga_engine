@@ -9,34 +9,34 @@
 #include "widgets/ptext_field.h"
 #include "widgets/pcolor_picker.h"
 
-P::Button *WidgetFactory::button(const P::WBody &body, P::Widget *parent) const {
+PUPPY::Button *WidgetFactory::button(const PUPPY::WBody &body, PUPPY::Widget *parent) const {
     return new PluginButton(to_vbody(body), parent);
 }
 
-P::Button *WidgetFactory::button(const P::Vec2f &pos, const char *caption, P::Widget *parent) const {
+PUPPY::Button *WidgetFactory::button(const PUPPY::Vec2f &pos, const char *caption, PUPPY::Widget *parent) const {
     return new PluginButton({pos.x, pos.y}, caption, parent);
 }
 
-P::Slider *WidgetFactory::slider(P::Slider::Type type, const P::WBody &body, P::Widget *parent) const {
+PUPPY::Slider *WidgetFactory::slider(PUPPY::Slider::Type type, const PUPPY::WBody &body, PUPPY::Widget *parent) const {
     return new PluginSlider(type, to_vbody(body), parent);
 }
 
-P::TextField *WidgetFactory::text_field(const P::WBody &body, P::Widget *parent) const {
+PUPPY::TextField *WidgetFactory::text_field(const PUPPY::WBody &body, PUPPY::Widget *parent) const {
     return new PluginTextField(to_vbody(body), parent);
 }
 
-P::Window *WidgetFactory::window(const char *name, const P::WBody &body, P::Widget *parent) const {
+PUPPY::Window *WidgetFactory::window(const char *name, const PUPPY::WBody &body, PUPPY::Widget *parent) const {
     return new PluginWindow(name, to_vbody(body), parent);
 }
 
-P::ColorPicker *WidgetFactory::color_picker(const P::WBody &body, P::Widget *parent) const {
+PUPPY::ColorPicker *WidgetFactory::color_picker(const PUPPY::WBody &body, PUPPY::Widget *parent) const {
     return new PluginColorPicker(to_vbody(body), parent);
 }
 
-P::Label *WidgetFactory::label(const P::Vec2f &pos, const char *text, P::Widget *parent) const {
-    return new PluginLabel(text, to_vbody(P::WBody{pos, {0, 0}}), parent);
+PUPPY::Label *WidgetFactory::label(const PUPPY::Vec2f &pos, const char *text, PUPPY::Widget *parent) const {
+    return new PluginLabel(text, to_vbody(PUPPY::WBody{pos, {0, 0}}), parent);
 }
 
-P::Widget *WidgetFactory::abstract(const P::WBody &body, P::Widget *parent) const {
+PUPPY::Widget *WidgetFactory::abstract(const PUPPY::WBody &body, PUPPY::Widget *parent) const {
     return new PluginWidget(to_vbody(body), parent, true);
 }

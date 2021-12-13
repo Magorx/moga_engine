@@ -25,7 +25,7 @@ public:
 };
 
 
-WidgetButton::WidgetButton(const ViewBody &body, P::Button *widget) :
+WidgetButton::WidgetButton(const ViewBody &body, PUPPY::Button *widget) :
 v_Button(body, StdStyle::Button::blue()),
 widget(widget)
 {
@@ -33,7 +33,7 @@ widget(widget)
     e_clicked.add(new PButtonClicked(this));
 }
 
-WidgetButton::WidgetButton(const Vec2d &pos, const char *caption, P::Button *widget) :
+WidgetButton::WidgetButton(const Vec2d &pos, const char *caption, PUPPY::Button *widget) :
 v_Button(caption, StdStyle::Button::blue(), StdStyle::Text::basic(), PBUTTON_PADDING),
 widget(widget)
 {
@@ -44,9 +44,9 @@ widget(widget)
 }
 
 
-PluginButton::PluginButton(const ViewBody &body, P::Widget *parent) :
+PluginButton::PluginButton(const ViewBody &body, PUPPY::Widget *parent) :
 PluginWidget(body, parent),
-P::Button(to_wbody(body), parent)
+PUPPY::Button(to_wbody(body), parent)
 {
     view = new WidgetButton(body, this);
     set_body(to_wbody(view->get_body()));
@@ -55,9 +55,9 @@ P::Button(to_wbody(body), parent)
     }
 }
 
-PluginButton::PluginButton(const Vec2d &pos, const char *caption, P::Widget *parent) :
+PluginButton::PluginButton(const Vec2d &pos, const char *caption, PUPPY::Widget *parent) :
 PluginWidget({pos, {0, 0}}, parent),
-P::Button(to_wbody(ViewBody{pos, 0}), parent)
+PUPPY::Button(to_wbody(ViewBody{pos, 0}), parent)
 {
     view = new WidgetButton(pos, caption, this);
     set_body(to_wbody(view->get_body()));

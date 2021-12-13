@@ -32,6 +32,8 @@ public:
 
     inline RedactorPluginInterface *get_plugin_interface();
 
+    virtual void frame_init_tick() override;
+
     bool load_plugin(const char *path);
     bool load_plugin(const char *path, bool directory);
 };

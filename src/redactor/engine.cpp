@@ -48,6 +48,14 @@ RedactorEngine::~RedactorEngine() {
     delete plugin_manager;
 }
 
+void RedactorEngine::frame_init_tick() {
+    MogaEngine::frame_init_tick();
+
+    for (auto &plugin : plugin_manager->get_plugins()) {
+        plugin->on_tick(dt);
+    }
+}
+
 bool RedactorEngine::load_plugin(const char *path) {
     auto interface = get_plugin_interface();
     if (!interface) {

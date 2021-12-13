@@ -5,14 +5,14 @@
 #include "collections/views/text_field.h"
 
 
-class PluginTextField : public PluginWidget, public P::TextField {
+class PluginTextField : public PluginWidget, public PUPPY::TextField {
 protected:
-    P::TextField::HandlerType handler;
+    PUPPY::TextField::HandlerType handler;
 
 public:
-    PluginTextField(const ViewBody &body, P::Widget *parent = nullptr);
+    PluginTextField(const ViewBody &body, PUPPY::Widget *parent = nullptr);
 
-    PluginTextField(const Vec2d &pos, const char *caption, P::Widget *parent = nullptr);
+    PluginTextField(const Vec2d &pos, const char *caption, PUPPY::Widget *parent = nullptr);
 
     virtual void set_handler(const HandlerType &handler_) override { handler = handler_; }
     virtual HandlerType &get_handler() override { return handler; }
@@ -22,10 +22,10 @@ public:
 };
 
 class WidgetTextField : public v_TextField {
-    P::TextField *widget;
+    PUPPY::TextField *widget;
 
 public:
-    WidgetTextField(const ViewBody &body, P::TextField *widget);
+    WidgetTextField(const ViewBody &body, PUPPY::TextField *widget);
 
-    WIDGET_FIX_(P::TextField)
+    WIDGET_FIX_(PUPPY::TextField)
 };

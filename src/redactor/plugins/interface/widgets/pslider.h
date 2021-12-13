@@ -8,29 +8,29 @@
 constexpr double PSLIDER_DOT_PADDING = 4;
 
 
-class PluginSlider : public PluginWidget, public P::Slider {
+class PluginSlider : public PluginWidget, public PUPPY::Slider {
 protected:
-    P::Slider::HandlerType handler;
-    P::Slider::Type type;
+    PUPPY::Slider::HandlerType handler;
+    PUPPY::Slider::Type type;
 
 public:
-    PluginSlider(P::Slider::Type type, const ViewBody &body, P::Widget *parent = nullptr);
+    PluginSlider(PUPPY::Slider::Type type, const ViewBody &body, PUPPY::Widget *parent = nullptr);
 
     virtual void set_handler(const HandlerType &handler_) override { handler = handler_; }
     virtual HandlerType &get_handler() override { return handler; }
 
-    virtual P::Vec2f get_fraction_2d() override;
-    virtual void set_fraction_2d(P::Vec2f frac) override;
+    virtual PUPPY::Vec2f get_fraction_2d() override;
+    virtual void set_fraction_2d(PUPPY::Vec2f frac) override;
 
     virtual float get_fraction() override;
     virtual void set_fraction(float frac) override;
 };
 
 class WidgetSlider : public v_Magnetic {
-    P::Slider *widget;
+    PUPPY::Slider *widget;
 
 public:
-    WidgetSlider(const ViewBody &body, P::Slider *widget);
+    WidgetSlider(const ViewBody &body, PUPPY::Slider *widget);
 
-    WIDGET_FIX_(P::Slider)
+    WIDGET_FIX_(PUPPY::Slider)
 };

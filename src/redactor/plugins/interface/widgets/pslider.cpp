@@ -24,7 +24,7 @@ public:
 };
 
 
-WidgetSlider::WidgetSlider(const ViewBody &body, P::Slider *widget) :
+WidgetSlider::WidgetSlider(const ViewBody &body, PUPPY::Slider *widget) :
 v_Magnetic(body),
 widget(widget)
 {
@@ -37,9 +37,9 @@ widget(widget)
 }
 
 
-PluginSlider::PluginSlider(P::Slider::Type type, const ViewBody &body, P::Widget *parent) :
+PluginSlider::PluginSlider(PUPPY::Slider::Type type, const ViewBody &body, PUPPY::Widget *parent) :
 PluginWidget(body, parent),
-P::Slider(to_wbody(body), parent),
+PUPPY::Slider(to_wbody(body), parent),
 type(type)
 {
     auto slider = new WidgetSlider(body, this);
@@ -47,12 +47,12 @@ type(type)
     slider->set_appearence(App.add_appr(new AppearenceColor(App.color.slider.basic)));
     slider->set_fraction({0.5, 0.5});
 
-    if (type == P::Slider::Type::X) {
+    if (type == PUPPY::Slider::Type::X) {
         slider->toggle_x_restriction();
 
         slider->get_dot()->get_body().size.content[1] = (slider->get_body().size - PSLIDER_DOT_PADDING).y();
         slider->get_dot()->set_appearence(App.add_appr(new AppearenceTexture(App.texture.stick_vert, {1, 1}, -slider->get_dot()->get_body().size / 2)));
-    } else if (type == P::Slider::Type::Y) {
+    } else if (type == PUPPY::Slider::Type::Y) {
         slider->toggle_y_restriction();
 
         slider->get_dot()->get_body().size.content[0] = (slider->get_body().size - PSLIDER_DOT_PADDING).x();
@@ -66,14 +66,14 @@ type(type)
     }
 }
 
-P::Vec2f PluginSlider::get_fraction_2d() {
+PUPPY::Vec2f PluginSlider::get_fraction_2d() {
     auto slider = dynamic_cast<v_Magnetic*>(view); if (!slider) return {0, 0};
 
     auto frac = slider->get_fraction();
     return {(float) frac.x(), (float) frac.y()};
 }
 
-void PluginSlider::set_fraction_2d(P::Vec2f frac) {
+void PluginSlider::set_fraction_2d(PUPPY::Vec2f frac) {
     auto slider = dynamic_cast<v_Magnetic*>(view); if (!slider) return;
 
     slider->set_fraction({frac.x, frac.y});
@@ -84,9 +84,9 @@ float PluginSlider::get_fraction() {
     auto slider = dynamic_cast<v_Magnetic*>(view); if (!slider) return 0;
     
     auto frac = slider->get_fraction();
-    if (type == P::Slider::Type::X) {
+    if (type == PUPPY::Slider::Type::X) {
         return (float) frac.x();
-    } else if (type == P::Slider::Type::Y) {
+    } else if (type == PUPPY::Slider::Type::Y) {
         return (float) frac.y();
     } else {
         return (float) fmax(frac.x(), frac.y());
@@ -98,9 +98,9 @@ void PluginSlider::set_fraction(float frac) {
 
     slider->shift_fraction(Vec2d{frac, frac} - slider->get_fraction());
 
-    // if (type == P::Slider::Type::X) {
+    // if (type == PUPPY::Slider::Type::X) {
     //     return (float) frac.x();
-    // } else if (type == P::Slider::Type::Y) {
+    // } else if (type == PUPPY::Slider::Type::Y) {
     //     return (float) frac.y();
     // } else {
     //     return (float) fmax(frac.x(), frac.y());

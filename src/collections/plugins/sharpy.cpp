@@ -9,7 +9,7 @@
 
 // ============================================================================ Info
 
-const auto PTYPE = P::TOOL;
+const auto PTYPE = PUPPY::TOOL;
 
 const char *PNAME    = "Sharpy";
 const char *PVERSION = "1.0";
@@ -21,11 +21,11 @@ const char *PDESCR   = "Spawns random triangles in a circle, blends them on acti
 void *r_max_size_setting = nullptr;
 
 struct {
-    P::Window *window;
-    P::TextField *field;
-    P::Slider *slider;
-    P::ColorPicker *picker;
-    P::Button *button;
+    PUPPY::Window *window;
+    PUPPY::TextField *field;
+    PUPPY::Slider *slider;
+    PUPPY::ColorPicker *picker;
+    PUPPY::Button *button;
 } r_settings;
 
 // ============================================================================ General
@@ -36,9 +36,9 @@ struct {
 
 MyPluginInterface PINTERFACE {};
 
-const P::PluginInfo PINFO =
+const PUPPY::PluginInfo PINFO =
 {
-    P::STD_VERSION, // std_version
+    PUPPY::STD_VERSION, // std_version
     nullptr,     // reserved
 
     &PINTERFACE,
@@ -52,18 +52,18 @@ const P::PluginInfo PINFO =
     PTYPE
 };
 
-const P::AppInterface *APPI = nullptr;
+const PUPPY::AppInterface *APPI = nullptr;
 
 
-extern "C" const P::PluginInterface *get_plugin_interface() {
+extern "C" const PUPPY::PluginInterface *get_plugin_interface() {
     return &PINTERFACE;
 }
  
 // ============================================================================ Logic
 
-void generate_triangle(const P::Vec2f &pos, float radius, P::Vec2f &p1, P::Vec2f &p2, P::Vec2f &p3);
+void generate_triangle(const PUPPY::Vec2f &pos, float radius, PUPPY::Vec2f &p1, PUPPY::Vec2f &p2, PUPPY::Vec2f &p3);
 
-P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
+PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) const {
     srand(time(NULL));
 
     APPI = app_interface;
@@ -71,7 +71,7 @@ P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
     if (APPI->factory.widget) {
         r_settings.window = APPI->factory.widget->window("SHRPY", {{100, 100}, {200, 320}});
         r_settings.field = APPI->factory.widget->text_field({{50, 5}, {100, 30}}, r_settings.window);
-        r_settings.slider = APPI->factory.widget->slider(P::Slider::Type::X, {{20, 40}, {160, 20}}, r_settings.window);
+        r_settings.slider = APPI->factory.widget->slider(PUPPY::Slider::Type::X, {{20, 40}, {160, 20}}, r_settings.window);
         r_settings.picker = APPI->factory.widget->color_picker({{0, 70}, {200, 200}}, r_settings.window);
         
         r_settings.button = APPI->factory.widget->button({{75, 275}, {50, 30}}, r_settings.window);
@@ -94,44 +94,53 @@ P::Status MyPluginInterface::init(const P::AppInterface *app_interface) const {
     PINTERFACE.exts.set("generate_triangle", (void*) generate_triangle);
 
     APPI->log("[plugin](%s) inited", PINFO.name);
-    return P::OK;
+    return PUPPY::OK;
 }
 
-P::Status MyPluginInterface::deinit() const {
+PUPPY::Status MyPluginInterface::deinit() const {
     if (r_settings.window) {
         r_settings.window->set_to_delete();
     }
 
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
-    return P::OK;
+    return PUPPY::OK;
 }
 
 void MyPluginInterface::dump() const {
     APPI->log("[plugin](%s) is active", PINFO.name);
 }
 
-const P::PluginInfo *MyPluginInterface::get_info() const {
+const PUPPY::PluginInfo *MyPluginInterface::get_info() const {
     return &PINFO;
 }
 
 void MyPluginInterface::on_tick(double /*dt*/) const {
 }
 
-void MyPluginInterface::tool_on_press(const P::Vec2f &pos) const {
+void MyPluginInterface::tool_on_press(const PUPPY::Vec2f &pos) const {
     draw(pos);
 
-    // auto fabric = (SuperWidgetFabric*) APPI->ext_get_interface("KCTFSuperWidget", "SuperWidgetFabric");
-    // auto rb = fabric->radio_button({{20, 20}, {40, 40}}, r_settings.window);
-    // rb->set_on(true);
+    auto factory = (SuperWidgetFactory*) APPI->ext_get_interface("KCTFSuperWidget", "SuperWidgetFactory");
+    if (!factory) {
+        APPI->log("[SuperWidgetFactory] from extension [KCTFSuperWidget] is not available, can't spawn radio button");
+        return;
+    }
 
-    // rb->set_handler([rb](){ if (rb->get_on()) APPI->log("ON"); });
+    auto rb = factory->radio_button({{20, 20}, {40, 40}}, r_settings.window);
+    if (!rb) {
+        APPI->log("[SuperWidgetFactory] from extension [KCTFSuperWidget] return nullptr on spawning radio button, why?");
+        return;
+    }
+
+    rb->set_on(true);
+    rb->set_handler([rb](){ if (rb->get_on()) APPI->log("ON"); });
 }
 
-void MyPluginInterface::tool_on_move(const P::Vec2f &/*from*/, const P::Vec2f &to) const {
+void MyPluginInterface::tool_on_move(const PUPPY::Vec2f &/*from*/, const PUPPY::Vec2f &to) const {
     draw(to);
 }
 
-void MyPluginInterface::tool_on_release(const P::Vec2f &/*pos*/) const {}
+void MyPluginInterface::tool_on_release(const PUPPY::Vec2f &/*pos*/) const {}
 
 void MyPluginInterface::show_settings() const {
     r_settings.window->show();
@@ -158,9 +167,9 @@ unsigned long long read(const char *text) {
     return wanted_size;
 }
 
-typedef void (*generate_triangle_type)(const P::Vec2f &pos, float radius, P::Vec2f &p1, P::Vec2f &p2, P::Vec2f &p3);
+typedef void (*generate_triangle_type)(const PUPPY::Vec2f &pos, float radius, PUPPY::Vec2f &p1, PUPPY::Vec2f &p2, PUPPY::Vec2f &p3);
 
-void generate_triangle(const P::Vec2f &pos, float radius, P::Vec2f &p1, P::Vec2f &p2, P::Vec2f &p3) {
+void generate_triangle(const PUPPY::Vec2f &pos, float radius, PUPPY::Vec2f &p1, PUPPY::Vec2f &p2, PUPPY::Vec2f &p3) {
     float a1 = rand();
     float a2 = rand();
 
@@ -170,9 +179,9 @@ void generate_triangle(const P::Vec2f &pos, float radius, P::Vec2f &p1, P::Vec2f
     p3 = {(float) (pos.x + cos(a2) * radius), (float) (pos.y + sin(a1) * radius)};
 }
 
-void MyPluginInterface::draw(const P::Vec2f &pos) const {
+void MyPluginInterface::draw(const PUPPY::Vec2f &pos) const {
     float size = APPI->get_size();
-    P::RGBA color = APPI->get_color();
+    PUPPY::RGBA color = APPI->get_color();
 
     if (r_settings.window) {
         auto buffer = r_settings.field->get_text().begin();
@@ -181,15 +190,12 @@ void MyPluginInterface::draw(const P::Vec2f &pos) const {
         color = r_settings.picker->get_color();
     }
 
-    float a1 = rand();
-    float a2 = rand();
-
-    P::Vec2f p0, p1, p2;
+    PUPPY::Vec2f p0, p1, p2;
     generate_triangle(pos, size, p0, p1, p2);
 
     auto target = APPI->get_target();
     
-    target->render_triangle(p0, p1, p2, color, P::COPY);
+    target->render_triangle(p0, p1, p2, color, PUPPY::COPY);
     
     delete target;
 }

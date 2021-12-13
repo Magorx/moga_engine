@@ -25,6 +25,8 @@ public:
     void deinit();
     void fit_plugin(RedactorPlugin *plugin);
 
-    // void set_plugin(const P::PluginInterface *plugin_self, RedactorPlugin *plugin);
-    // RedactorPlugin *get_plugin(const P::PluginInterface *plugin_self);
+    std::vector<RedactorPlugin*> &get_plugins() { return plugins; }
+
+    // void set_plugin(const PUPPY::PluginInterface *plugin_self, RedactorPlugin *plugin);
+    // RedactorPlugin *get_plugin(const PUPPY::PluginInterface *plugin_self);
 };

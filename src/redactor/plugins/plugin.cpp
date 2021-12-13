@@ -6,7 +6,7 @@
 #include "redactor/plugins/interface/app_plugin_interface.h"
 #include "plugin_manager.h"
 
-typedef const P::PluginInterface* (*plugin_init_func)();
+typedef const PUPPY::PluginInterface* (*plugin_init_func)();
 
 RedactorPlugin::RedactorPlugin(const char *fileName, RedactorPluginInterface *appInterface, PluginManager *) :
 lib_handle(nullptr),
@@ -23,7 +23,7 @@ interface(nullptr)
         return;
     }
 
-    plugin_init_func plugin_init = (plugin_init_func) dlsym(lib_handle, P::GET_INTERFACE_FUNC);
+    plugin_init_func plugin_init = (plugin_init_func) dlsym(lib_handle, PUPPY::GET_INTERFACE_FUNC);
     if (plugin_init == nullptr) {
         logger.error("Plugin", "can't get interface of plugin [%s]", fileName);
         dlclose(lib_handle);
@@ -45,8 +45,8 @@ interface(nullptr)
         return;
     }
 
-    P::Status init_status = interface->init(appInterface);
-    if (init_status != P::OK) {
+    PUPPY::Status init_status = interface->init(appInterface);
+    if (init_status != PUPPY::OK) {
         logger.error("Plugin", "initialization of plugin [%s] failed", fileName);
         dlclose(lib_handle);
         return;

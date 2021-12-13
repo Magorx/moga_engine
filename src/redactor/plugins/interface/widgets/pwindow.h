@@ -5,13 +5,13 @@
 #include "collections/views/window.h"
 
 
-class PluginWindow : public PluginWidget, public P::Window {
+class PluginWindow : public PluginWidget, public PUPPY::Window {
 protected:
-    P::Window::HandlerType handler_show;
-    P::Window::HandlerType handler_hide;
+    PUPPY::Window::HandlerType handler_show;
+    PUPPY::Window::HandlerType handler_hide;
 
 public:
-    PluginWindow(const char *name, const ViewBody &body, P::Widget *parent = nullptr);
+    PluginWindow(const char *name, const ViewBody &body, PUPPY::Widget *parent = nullptr);
 
     virtual void set_show_handler(HandlerType &handler_) override { handler_show = handler_; };
     virtual HandlerType &get_show_handler() override { return handler_show; };
@@ -27,10 +27,10 @@ public:
 };
 
 class WidgetWindow : public v_Window {
-    P::Window *widget;
+    PUPPY::Window *widget;
 
 public:
-    WidgetWindow(const char *name, const ViewBody &body, P::Window *widget);
+    WidgetWindow(const char *name, const ViewBody &body, PUPPY::Window *widget);
 
-    WIDGET_FIX_(P::Window)
+    WIDGET_FIX_(PUPPY::Window)
 };

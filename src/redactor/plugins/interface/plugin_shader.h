@@ -5,7 +5,7 @@
 #include "visual/renderer/gate_type_aliases.h"
 
 
-struct PluginShader : public P::Shader {
+struct PluginShader : public PUPPY::Shader {
     PluginShader(const char *code, RShader::Type type, bool is_code = true);
     virtual ~PluginShader() {}
 
