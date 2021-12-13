@@ -13,7 +13,7 @@ active_tool(nullptr)
 ToolManager::~ToolManager() {
     active_canvas = nullptr;
     for (auto tool : tools) {
-        tool->on_update();
+        // tool->on_activate();
         delete tool;
     }
 }

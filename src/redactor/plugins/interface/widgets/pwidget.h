@@ -67,18 +67,18 @@ public:
 };
 
 
-#define FWD_TO_WIDGET_(WTYPE, EVENT_T, METHOD, ARGS)                                                                   \
-class WFwd##EVENT_T##WTYPE : public EventAcceptor<WTYPE, Event::EVENT_T> {                                             \
-public:                                                                                                                \
-    WFwd##EVENT_T##WTYPE(WTYPE *widget) : EventAcceptor<WTYPE, Event::EVENT_T>(widget) {}                                                     \
-                                                                                                                       \
-    virtual EventAccResult operator()(const Event::EVENT_T &event, const EventAccResult * = nullptr) override {        \
+#define FWD_TO_WIDGET_(WTYPE, EVENT_T, METHOD, ARGS)                                                                          \
+class WFwd##EVENT_T##WTYPE : public EventAcceptor<WTYPE, Event::EVENT_T> {                                                    \
+public:                                                                                                                       \
+    WFwd##EVENT_T##WTYPE(WTYPE *widget) : EventAcceptor<WTYPE, Event::EVENT_T>(widget) {}                                     \
+                                                                                                                              \
+    virtual EventAccResult operator()(const Event::EVENT_T &event, const EventAccResult * = nullptr) override {               \
         auto widget = EventAcceptor<WTYPE, Event::EVENT_T>::acceptor->get_widget(); if (!widget) return EventAccResult::none; \
-                                                                                                                       \
-        widget->METHOD ARGS;                                                                                           \
-                                                                                                                       \
-        return EventAccResult::none;                                                                                   \
-    }                                                                                                                  \
+                                                                                                                              \
+        widget->METHOD ARGS;                                                                                                  \
+                                                                                                                              \
+        return EventAccResult::none;                                                                                          \
+    }                                                                                                                         \
 };
 
 #define FWD_CLASS_(WTYPE, EVENT_T) WFwd##EVENT_T##WTYPE(this)
