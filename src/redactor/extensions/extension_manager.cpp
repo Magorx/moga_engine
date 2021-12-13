@@ -1,4 +1,5 @@
 #include "extension_manager.h"
+#include "utils/logger.h"
 
 
 ExtensionManager::ExtensionManager() :
@@ -15,7 +16,10 @@ ExtensionManager::~ExtensionManager() {
 
 RedactorExtension *ExtensionManager::get_extension(const std::string_view &name) {
     auto ext = extensions.find(name);
-    if (ext == extensions.end()) return nullptr;
+    if (ext == extensions.end()) {
+        logger.warning("ExtensionManager", "request for extension [%s] failed", name.begin());
+        return nullptr;
+    }
 
     return (*ext).second;
 }

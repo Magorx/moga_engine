@@ -156,7 +156,10 @@ add_executable(moga
         src/redactor/plugins/interface/widgets/ptext_field.cpp
         src/redactor/plugins/interface/widgets/pcolor_picker.cpp
 
+        # extension
+
         src/redactor/extensions/extension_manager.cpp
+        src/redactor/plugins/interface/plugin_extension.cpp
 
         src/redactor/layer/layer.cpp
 

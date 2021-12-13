@@ -150,11 +150,11 @@ const PUPPY::PluginInfo *MyPluginInterface::get_info() const {
     return &PINFO;
 }
 
-void MyPluginInterface::on_tick(double dt) const {}
+void MyPluginInterface::on_tick(double /*dt*/) const {}
 
-void MyPluginInterface::tool_on_press(const PUPPY::Vec2f &pos) const {}
+void MyPluginInterface::tool_on_press(const PUPPY::Vec2f &/*pos*/) const {}
 
-void MyPluginInterface::tool_on_move(const PUPPY::Vec2f &/*from*/, const PUPPY::Vec2f &to) const {}
+void MyPluginInterface::tool_on_move(const PUPPY::Vec2f &/*from*/, const PUPPY::Vec2f &/*to*/) const {}
 
 void MyPluginInterface::tool_on_release(const PUPPY::Vec2f &/*pos*/) const {}
 
@@ -184,4 +184,4 @@ void MyPluginInterface::show_settings() const {}
 
 typedef void (*generate_triangle_type)(const PUPPY::Vec2f &pos, float radius, PUPPY::Vec2f &p1, PUPPY::Vec2f &p2, PUPPY::Vec2f &p3);
 
-void MyPluginInterface::draw(const PUPPY::Vec2f &pos) const {}
+void MyPluginInterface::draw(const PUPPY::Vec2f &/*pos*/) const {}
