@@ -1,7 +1,7 @@
-#include "redactor/plugin_std/std.hpp"
+#include "redactor/plugin_std/plugin_std.hpp"
 #include "utils.h"
 
-#include "super_widget.h"
+#include "kctf_widget_library.h"
 
 #include <cstdlib>
 #include <ctime>
@@ -126,7 +126,9 @@ void MyPluginInterface::tool_on_press(const PUPPY::Vec2f &pos) const {
         return;
     }
 
-    auto rb = factory->radio_button({{20, 20}, {40, 40}}, r_settings.window);
+    auto root = APPI->get_root_widget();
+    APPI->log("root %p", root);
+    auto rb = factory->radio_button({{70, 90}, {140, 100}}, root);
     if (!rb) {
         APPI->log("[SuperWidgetFactory] from extension [KCTFSuperWidget] return nullptr on spawning radio button, why?");
         return;

@@ -1,7 +1,7 @@
 #pragma once
 
 
-#include "redactor/plugin_std/std.hpp"
+#include "redactor/plugin_std/plugin_std.hpp"
 #include "redactor/plugins/plugin.h"
 
 #include "redactor/plugins/interface/target.h"
@@ -12,6 +12,10 @@
 
 class RedactorPluginInterface : public PUPPY::AppInterface {
     const RedactorPlugin *plugin;
+
+    std::vector<PUPPY::WBody> window_bodies;
+    PUPPY::Widget *root_widget;
+
 public:
     RedactorPluginInterface();
     ~RedactorPluginInterface();
@@ -30,6 +34,9 @@ public:
 
     virtual PUPPY::RGBA get_color() const override;
     virtual float get_size()    const override;
+
+    virtual const std::vector<PUPPY::WBody> &get_windows() const override;
+    virtual PUPPY::Widget *get_root_widget() const override;
 
 // target
     virtual PUPPY::RenderTarget *get_target()  const override;

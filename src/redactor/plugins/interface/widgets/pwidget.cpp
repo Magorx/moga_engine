@@ -32,17 +32,6 @@ body(to_wbody(body)), parent(parent), texture(nullptr)
     }
 }
 
-
-PluginWidget::PluginWidget(const ViewBody &body, PluginWidget *parent, bool to_spawn_widget) :
-Widget(),
-view(to_spawn_widget ? new WidgetView(body, this) : nullptr),
-body(to_wbody(body)), parent(parent), texture(nullptr)
-{
-    if (parent) {
-        parent->add_child(this);
-    }
-}
-
 PluginWidget::PluginWidget(Widget *widget) :
 Widget(),
 view(nullptr),
@@ -111,6 +100,9 @@ void PluginWidget::show() {
     view->set_active(true);
 }
 
+void PluginWidget::focus() {
+    view->focus();
+}
 
 void PluginWidget::set_caption(const char *text, size_t font_size, const PUPPY::Vec2f */*pos*/) {
     view->add_label(text, font_size, App.font.color.basic_header, 0, true);

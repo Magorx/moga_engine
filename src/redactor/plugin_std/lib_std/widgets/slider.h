@@ -21,9 +21,6 @@ public:
 
     virtual float get_fraction() = 0;
     virtual void set_fraction(float frac) = 0;
-
-protected:
-    HandlerType handler;
 };
 
 }

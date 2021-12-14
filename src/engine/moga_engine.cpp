@@ -247,7 +247,7 @@ MogaEngine::MogaEngine(RWindow *window,
 
 	visual(new VisualEngine(window)),
 	physics(new PhysicsEngine()),
-	main_view(new AbstractView(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))
+	main_view(new v_Highlighter(ViewBody{{0, 0}, {(double) screen_width, (double) screen_height}}))
 {
 	Keyboard::init();
 

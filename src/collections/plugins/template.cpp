@@ -1,4 +1,4 @@
-#include "redactor/plugin_std/std.hpp"
+#include "redactor/plugin_std/plugin_std.hpp"
 #include "plugin_interface.h"
 #include "abstract_widget.h"
 

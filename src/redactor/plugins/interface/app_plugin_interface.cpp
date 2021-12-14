@@ -1,19 +1,29 @@
 #include "app_plugin_interface.h"
 #include "redactor/engine.h"
 
+#include "redactor/plugins/interface/widgets/pwidget.h"
+
 
 RedactorPluginInterface::RedactorPluginInterface() :
-plugin(nullptr)
+plugin(nullptr),
+window_bodies(),
+root_widget(nullptr)
 {
     factory.target = new TargetFactory;
     factory.shader = new ShaderFactory;
     factory.widget = new WidgetFactory;
 
     feature_level = PUPPY::SHADER_SUPPORT | PUPPY::SETTINGS_SUPPORT;
+
+    auto root = App.engine->main_view;
+    auto cur_root_widget = new PluginWidget(root->get_body());
+    cur_root_widget->set_view(dynamic_cast<v_Highlighter*>(root));
+
+    root_widget = cur_root_widget;
 }
 
 RedactorPluginInterface::~RedactorPluginInterface() {
-
+    delete root_widget;
 }
 
 // extension
@@ -80,6 +90,16 @@ float RedactorPluginInterface::get_size() const {
 
     return tool_manager->get_size();
 }
+
+const std::vector<PUPPY::WBody> &RedactorPluginInterface::get_windows() const {
+    std::vector<PUPPY::WBody> bodies;
+    return bodies;
+}
+
+PUPPY::Widget *RedactorPluginInterface::get_root_widget() const {
+    return root_widget;
+}
+
 
 
 // target

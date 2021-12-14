@@ -2,7 +2,7 @@
 
 
 #include "collections/views/highlighter.h"
-#include "redactor/plugin_std/std.hpp"
+#include "redactor/plugin_std/plugin_std.hpp"
 #include "redactor/plugins/interface/target.h"
 
 
@@ -142,11 +142,11 @@ protected:
 
 public:
     PluginWidget(const ViewBody &body, PUPPY::Widget *parent = nullptr, bool to_spawn_view = false);
-    PluginWidget(const ViewBody &body, PluginWidget *parent = nullptr, bool to_spawn_view = false);
     PluginWidget(Widget *widget);
     virtual ~PluginWidget();
 
     v_Highlighter *get_view() { return view; }
+    void set_view(v_Highlighter *view_) { view = view_; }
 
     virtual bool is_active() override;
     virtual bool is_inside(PUPPY::Vec2f pos) override;
@@ -172,8 +172,9 @@ public:
     virtual void on_hide            (const PUPPY::Event::Hide            &) override {}
     virtual void on_show            (const PUPPY::Event::Show            &) override {}
 
-    virtual void hide() override;
-    virtual void show() override;
+    virtual void hide()  override;
+    virtual void show()  override;
+    virtual void focus() override;
 
     virtual void set_caption(const char *text, size_t font_size, const PUPPY::Vec2f *pos = nullptr) override;
     virtual void set_base_color(PUPPY::RGBA color) override;

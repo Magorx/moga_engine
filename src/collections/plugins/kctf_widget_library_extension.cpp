@@ -1,8 +1,8 @@
-#include "redactor/plugin_std/std.hpp"
+#include "redactor/plugin_std/plugin_std.hpp"
 #include "utils.h"
 #include "plugin_interface.h"
 
-#include "super_widget.h"
+#include "kctf_widget_library.h"
 
 #include <cstdlib>
 #include <ctime>

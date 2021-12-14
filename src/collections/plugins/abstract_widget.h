@@ -1,4 +1,4 @@
-#include "redactor/plugin_std/std.hpp"
+#include "redactor/plugin_std/plugin_std.hpp"
 
 
 class AbstractWidget : public PUPPY::Widget {
@@ -38,8 +38,9 @@ public:
     virtual void on_hide            (const PUPPY::Event::Hide            &) override {}
     virtual void on_show            (const PUPPY::Event::Show            &) override {}
 
-    virtual void hide() override {}
-    virtual void show() override {}
+    virtual void hide()  override {}
+    virtual void show()  override {}
+    virtual void focus() override {}
 
     virtual void set_caption(const char */*text*/, size_t /*font_size*/, const PUPPY::Vec2f */*pos*/ = nullptr) override {}
     virtual void set_base_color(PUPPY::RGBA /*color*/) override {};
