@@ -6,7 +6,6 @@
 
 RedactorPluginInterface::RedactorPluginInterface() :
 plugin(nullptr),
-window_bodies(),
 root_widget(nullptr)
 {
     factory.target = new TargetFactory;
@@ -15,7 +14,7 @@ root_widget(nullptr)
 
     feature_level = PUPPY::SHADER_SUPPORT | PUPPY::SETTINGS_SUPPORT;
 
-    auto root = App.engine->main_view;
+    root = App.engine->main_view;
     auto cur_root_widget = new PluginWidget(root->get_body());
     cur_root_widget->set_view(dynamic_cast<v_Highlighter*>(root));
 
@@ -91,9 +90,16 @@ float RedactorPluginInterface::get_size() const {
     return tool_manager->get_size();
 }
 
-const std::vector<PUPPY::WBody> &RedactorPluginInterface::get_windows() const {
-    std::vector<PUPPY::WBody> bodies;
-    return bodies;
+const std::vector<PUPPY::WBody> RedactorPluginInterface::get_windows() const {
+    App.app_engine->update_windows();
+    auto cur_windows = App.app_engine->get_windows();
+
+    std::vector<PUPPY::WBody> ret;
+    for (auto window : cur_windows) {
+        ret.push_back(to_wbody(window->get_body()));
+    }
+
+    return ret;
 }
 
 PUPPY::Widget *RedactorPluginInterface::get_root_widget() const {

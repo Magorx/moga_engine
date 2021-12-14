@@ -15,7 +15,7 @@ public:
     virtual ~AbstractWidget() {}
 
     virtual bool is_active() override { return true; };
-    virtual bool is_inside(PUPPY::Vec2f pos) override {
+    virtual bool is_inside(const PUPPY::Vec2f &pos) override {
         return (pos.x >= 0) && (pos.y >= 0) && (pos.x < body.size.x) && (pos.y < body.size.y);
     }
 
@@ -43,7 +43,7 @@ public:
     virtual void focus() override {}
 
     virtual void set_caption(const char */*text*/, size_t /*font_size*/, const PUPPY::Vec2f */*pos*/ = nullptr) override {}
-    virtual void set_base_color(PUPPY::RGBA /*color*/) override {};
+    virtual void set_base_color(const PUPPY::RGBA &/*color*/) override {};
 
 // ----------------
 

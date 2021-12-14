@@ -272,6 +272,10 @@ public:
         other_body.position = body.size / 2 - other_body.size / 2;
     }
 
+    std::vector<AbstractView*> &get_subviews() {
+        return subviews;
+    }
+
     ViewBody &get_body();
 
     AbstractView *get_next_selectable(bool from_parent = false);

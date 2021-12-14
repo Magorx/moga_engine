@@ -87,3 +87,14 @@ bool RedactorEngine::load_plugin(const char *path, bool is_dir) {
 }
 
 inline RedactorPluginInterface *RedactorEngine::get_plugin_interface() { return new RedactorPluginInterface; }
+
+void RedactorEngine::update_windows() {
+    windows.clear();
+
+    auto subviews = main_view->get_subviews();
+    for (auto view : subviews) {
+        if (auto w = dynamic_cast<v_Window*>(view)) {
+            windows.push_back(w);
+        }
+    }
+}

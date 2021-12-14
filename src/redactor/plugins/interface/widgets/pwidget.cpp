@@ -53,7 +53,7 @@ bool PluginWidget::is_active() {
     return view->is_active();
 }
 
-bool PluginWidget::is_inside(PUPPY::Vec2f pos) {
+bool PluginWidget::is_inside(const PUPPY::Vec2f &pos) {
     return view->is_inside({pos.x, pos.y});
 }
 
@@ -108,6 +108,6 @@ void PluginWidget::set_caption(const char *text, size_t font_size, const PUPPY::
     view->add_label(text, font_size, App.font.color.basic_header, 0, true);
 }
 
-void PluginWidget::set_base_color(PUPPY::RGBA color) {
+void PluginWidget::set_base_color(const PUPPY::RGBA &color) {
     view->set_appearence(App.add_appr(new AppearenceColor(color.ui32)));
 }

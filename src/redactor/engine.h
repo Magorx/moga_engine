@@ -12,12 +12,16 @@
 #include "plugins/plugin_manager.h"
 #include "redactor/extensions/extension_manager.h"
 
+#include <vector>
+
 
 class RedactorEngine : public MogaEngine {
     ToolManager   *tool_manager;
     EffectManager *effect_manager;
     PluginManager *plugin_manager;
     ExtensionManager *extension_manager;
+
+    std::vector<v_Window*> windows;
 
 public:
     RedactorEngine(RWindow *window,
@@ -36,4 +40,9 @@ public:
 
     bool load_plugin(const char *path);
     bool load_plugin(const char *path, bool directory);
+
+    void update_windows();
+    std::vector<v_Window*> &get_windows() {
+        return windows;
+    }
 };

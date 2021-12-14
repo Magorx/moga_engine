@@ -149,7 +149,7 @@ public:
     void set_view(v_Highlighter *view_) { view = view_; }
 
     virtual bool is_active() override;
-    virtual bool is_inside(PUPPY::Vec2f pos) override;
+    virtual bool is_inside(const PUPPY::Vec2f &pos) override;
 
     virtual bool add_child(Widget *child) override;
     virtual bool delete_child(Widget *child) override;
@@ -177,7 +177,7 @@ public:
     virtual void focus() override;
 
     virtual void set_caption(const char *text, size_t font_size, const PUPPY::Vec2f *pos = nullptr) override;
-    virtual void set_base_color(PUPPY::RGBA color) override;
+    virtual void set_base_color(const PUPPY::RGBA &color) override;
 
 // ----------------
 

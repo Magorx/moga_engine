@@ -20,7 +20,7 @@ public:
     virtual HandlerType &get_handler() override { return handler; }
 
     virtual PUPPY::Vec2f get_fraction_2d() override;
-    virtual void set_fraction_2d(PUPPY::Vec2f frac) override;
+    virtual void set_fraction_2d(const PUPPY::Vec2f &frac) override;
 
     virtual float get_fraction() override;
     virtual void set_fraction(float frac) override;

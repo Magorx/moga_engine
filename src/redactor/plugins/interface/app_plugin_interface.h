@@ -10,11 +10,13 @@
 #include "redactor/plugins/interface/target_factory.h"
 
 
+class AbstractView;
+
 class RedactorPluginInterface : public PUPPY::AppInterface {
     const RedactorPlugin *plugin;
 
-    std::vector<PUPPY::WBody> window_bodies;
     PUPPY::Widget *root_widget;
+    AbstractView *root;
 
 public:
     RedactorPluginInterface();
@@ -35,7 +37,7 @@ public:
     virtual PUPPY::RGBA get_color() const override;
     virtual float get_size()    const override;
 
-    virtual const std::vector<PUPPY::WBody> &get_windows() const override;
+    virtual const std::vector<PUPPY::WBody> get_windows() const override;
     virtual PUPPY::Widget *get_root_widget() const override;
 
 // target

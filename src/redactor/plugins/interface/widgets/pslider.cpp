@@ -73,7 +73,7 @@ PUPPY::Vec2f PluginSlider::get_fraction_2d() {
     return {(float) frac.x(), (float) frac.y()};
 }
 
-void PluginSlider::set_fraction_2d(PUPPY::Vec2f frac) {
+void PluginSlider::set_fraction_2d(const PUPPY::Vec2f &frac) {
     auto slider = dynamic_cast<v_Magnetic*>(view); if (!slider) return;
 
     slider->set_fraction({frac.x, frac.y});
