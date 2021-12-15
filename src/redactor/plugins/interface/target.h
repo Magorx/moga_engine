@@ -41,4 +41,8 @@ public:
     virtual void render_pixels      (const PUPPY::Vec2f &position, const PUPPY::Vec2s &size, const PUPPY::RGBA *data, const PUPPY::RenderMode &render_mode) override;
 
     virtual void apply_shader(const PUPPY::Shader *shader) override;
+
+    bool is_ok() const {
+        return layer;
+    }
 };

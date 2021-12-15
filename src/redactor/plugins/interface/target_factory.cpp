@@ -17,5 +17,11 @@ PUPPY::RenderTarget *TargetFactory::from_pixels(const PUPPY::Vec2s &size, const 
 }
 
 PUPPY::RenderTarget *TargetFactory::from_file(const char *path) const {
-    return new Target(path);
+    auto ret = new Target(path);
+    if (!ret || !ret->is_ok()) {
+        delete ret;
+        ret = nullptr;
+    }
+
+    return ret;
 }

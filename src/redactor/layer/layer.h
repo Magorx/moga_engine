@@ -114,6 +114,10 @@ struct Layer : public Affected<Layer> {
 
     inline Vec2d flip(const Vec2d &p) { return {p.x(), size.y() - p.y()}; }
 
+    inline bool is_ok() const {
+        return size.x() > 0 && size.y() > 0;
+    }
+
 };
 
 

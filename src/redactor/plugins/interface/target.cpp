@@ -29,6 +29,11 @@ layer(nullptr)
     if (!renderer) return;
     
     layer = new Layer(renderer, path);
+    if (!layer || !layer->is_ok()) {
+        delete layer;
+        layer = nullptr;
+        return;
+    }
     to_delete_layer = true;
     to_flip = true;
 }
