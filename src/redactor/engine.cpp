@@ -94,6 +94,8 @@ void RedactorEngine::update_windows() {
     auto subviews = main_view->get_subviews();
     for (auto view : subviews) {
         if (auto w = dynamic_cast<v_Window*>(view)) {
+            if (!w->is_active()) continue;
+
             windows.push_back(w);
         }
     }

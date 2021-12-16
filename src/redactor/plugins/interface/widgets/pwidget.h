@@ -54,7 +54,7 @@ public:
         auto texture = dynamic_cast<Target*>(widget->get_texture());
 
         if (texture) {
-            AppearenceTexture appr(texture->get_layer()->get_texture(), acceptor->get_body().size);
+            AppearenceTexture appr(texture->get_layer()->get_texture());
             appr.fit_for_size(acceptor->get_body().size);
             event.renderer->set_appearence(&appr);
             event.renderer->apr_draw_rectangle(acceptor->get_body().position, acceptor->get_body().size);
@@ -181,11 +181,11 @@ public:
 
 // ----------------
 
-    virtual void set_position(const PUPPY::Vec2f &position_) override { body.position = position_; }
-    virtual void set_size(const PUPPY::Vec2f &size_) override { body.size = size_; }
+    virtual void set_position(const PUPPY::Vec2f &position_) override { body.position = position_; view->get_body() = to_vbody(body); }
+    virtual void set_size(const PUPPY::Vec2f &size_) override { body.size = size_; view->get_body() = to_vbody(body); }
 
     virtual PUPPY::WBody &get_body() override { return body; }
-    virtual void set_body(const PUPPY::WBody &body_) override { body = body_; }
+    virtual void set_body(const PUPPY::WBody &body_) override { body = body_; view->get_body() = to_vbody(body); }
 
     virtual Widget *get_parent() const override { return parent; }
     virtual void set_parent(Widget *parent_) override { parent = parent_; }

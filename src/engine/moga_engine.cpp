@@ -6,7 +6,7 @@ void MogaEngine::frame_init_tick() {
 	current_time = (std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count()) / 1000000000.0 - init_time;
 	// printf("%g\n", current_time);
 
-    dt = prev_tick_time - current_time;
+    dt = current_time - prev_tick_time;
 
     if (!pause_mode) {
 		fps_seconds_tick = false;

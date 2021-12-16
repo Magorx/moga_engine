@@ -75,14 +75,14 @@ void initialize_photoshop(RedactorEngine &moga) {
 
     // ==================================================================================
 
-    open_img_button->e_clicked.emit({});
-    moga.main_view->e_text_enter.emit({'1'});
-    moga.main_view->e_text_enter.emit({'.'});
-    moga.main_view->e_text_enter.emit({'j'});
-    moga.main_view->e_text_enter.emit({'p'});
-    moga.main_view->e_text_enter.emit({'g'});
-    moga.main_view->e_key_down.emit({Keyboard::Key::enter});
-    moga.main_view->e_key_up.emit({Keyboard::Key::enter});
+    // open_img_button->e_clicked.emit({});
+    // moga.main_view->e_text_enter.emit({'1'});
+    // moga.main_view->e_text_enter.emit({'.'});
+    // moga.main_view->e_text_enter.emit({'j'});
+    // moga.main_view->e_text_enter.emit({'p'});
+    // moga.main_view->e_text_enter.emit({'g'});
+    // moga.main_view->e_key_down.emit({Keyboard::Key::enter});
+    // moga.main_view->e_key_up.emit({Keyboard::Key::enter});
 
     // new_effect_window->e_clicked.emit({});
     new_tool_window->e_clicked.emit({});

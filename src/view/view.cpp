@@ -58,8 +58,12 @@ to_subrender(true)
 }
 
 AbstractView::~AbstractView() {
+    for (auto &sub : subviews) {
+        sub->set_parent(nullptr);
+    }
+
     if (parent) {
-        // parent->delete_subview(this); // FIXME idk if its a bug or not, nvm
+        parent->delete_subview(this); // FIXME idk if its a bug or not, nvm
     }
 }
 

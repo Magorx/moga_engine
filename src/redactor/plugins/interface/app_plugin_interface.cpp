@@ -96,7 +96,9 @@ const std::vector<PUPPY::WBody> RedactorPluginInterface::get_windows() const {
 
     std::vector<PUPPY::WBody> ret;
     for (auto window : cur_windows) {
-        ret.push_back(to_wbody(window->get_body()));
+        auto window_body = window->get_body();
+        window_body.position += window->get_header()->get_body().position;
+        ret.push_back(to_wbody(window_body));
     }
 
     return ret;

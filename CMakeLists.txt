@@ -197,6 +197,9 @@ set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/e
 add_library(kctf_widget_library_extension SHARED src/collections/plugins/kctf_widget_library_extension.cpp)
 set_target_properties(kctf_widget_library_extension PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/extension/kctf_widget_library_extension")
 
+add_library(window_walker SHARED src/collections/plugins/window_walker.cpp)
+set_target_properties(window_walker PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/extension/window_walker")
+
 
 # add_custom_target(rebuild_plugins
 #         COMMAND convert image.ppm image.png
