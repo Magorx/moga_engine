@@ -1,3 +1,4 @@
+#include "redactor/plugin_std/plugin_std.hpp"
 #include <cmath>
 
 template <typename T, int neutral, int T_EPS>
@@ -56,8 +57,16 @@ struct Vec2 {
         return data[i];
     }
 
+    bool operator==(const Vec2 &other) const {
+        return x == other.x && y == other.y;
+    }
+
     inline Vec2 rot90(int dir = 1) const {
         return {(-1 * dir) * x, (1 * dir) * y};
+    }
+
+    operator PUPPY::Vec2f() {
+        return {x, y};
     }
 };
 

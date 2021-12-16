@@ -8,6 +8,7 @@
 #include <ctime>
 #include <cmath>
 
+#include <functional>
 #include <vector>
 
 // ============================================================================ Info
@@ -55,6 +56,60 @@ public:
     virtual void tick(double dt) = 0;
 };
 
+
+class Task : public Tickable {
+    std::function<void()> action;
+    double timer;
+
+public:
+    Task(const std::function<void()> &action, double timer):
+    action(action),
+    timer(timer)
+    {}
+
+    virtual ~Task() {}
+
+    void tick(double dt) override {
+        timer -= dt;
+    }
+
+    bool operator()() {
+        if (timer < 0) {
+            if (action) {
+                action();
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+};
+
+
+class TaskManager : public Tickable {
+    std::vector<Task*> tasks;
+public:
+    TaskManager() {}
+
+    void add(Task* task) { if (!task) return; tasks.push_back(task); }
+
+    void tick(double dt) override {
+        for (size_t i = 0; i < tasks.size(); ) {
+            tasks[i]->tick(dt);
+            if ((*tasks[i])()) {
+                delete tasks[i];
+                std::swap(tasks[i], tasks[tasks.size() - 1]);
+                tasks.pop_back();
+            } else {
+                ++i;
+            }
+        }
+    }
+
+};
+
+
 class Animation : public Tickable {
     std::vector<PUPPY::RenderTarget*> frames;
     size_t idx;
@@ -70,7 +125,7 @@ public:
     frame_time(frame_time)
     {}
 
-    void tick(double dt) {
+    void tick(double dt) override {
         time += dt;
         while (time > frame_time) {
             time -= frame_time;
@@ -83,95 +138,162 @@ public:
     }
 };
 
-
-class UnitWidget : public AbstractWidget, public Tickable {
-protected:
+struct ViewBody {
     Vec2f pos;
     Vec2f size;
+
+    ViewBody(Vec2f pos, Vec2f size) :
+    pos(pos),
+    size(size)
+    {}
+
+    ViewBody(const PUPPY::WBody &body) :
+    pos({body.position.x, body.position.y}),
+    size({body.size.x, body.size.y})
+    {}
+
+    bool operator==(const ViewBody &other) const {
+        return pos == other.pos && size == other.size;
+    }
 };
 
 
-class UFO : public AbstractWidget, public Tickable {
+class Unit : public AbstractWidget, public Tickable {
+protected:
     Animation *animation;
+    std::function<void(double)> ai;
+    ViewBody unit_body;
 
-    Vec2f pos;
-    Vec2f size;
-    Vec2f target_pos;
-    float speed;
-
-    PUPPY::WBody targeted_body;
-    UFO *cow;
+    bool face_right;
 
 public:
 
-    UFO(const PUPPY::WBody &body, PUPPY::Widget *parent = nullptr) :
-    AbstractWidget(body, parent),
+    Unit(const ViewBody &body, PUPPY::Widget *parent = nullptr) :
+    AbstractWidget({{0, 0}, {body.size.x, body.size.y}}, nullptr),
     animation(nullptr),
-    target_pos(0),
-    speed(250),
-    cow(nullptr)
+    ai(nullptr),
+    unit_body(body)
     {
-        set_holder(parent);
-        // printf("holder is %p\n", parent);
-    }
-
-    void put_cow() {
-        // if (cow) { return; }
-
-        PUPPY::WBody body = {get_body().position, 64};
-        auto cow_holder = APPI->factory.widget->abstract(body, APPI->get_root_widget());
-        cow = new UFO({0, body.size}, cow_holder);
-        cow->set_animation(new Animation{
-            {APPI->factory.target->from_file("./resources/animation/walker/cow.png")},
-            0.5
-        });
-    }
-
-    void set_animation(Animation *animation_) {
-        animation = animation_;
+        set_holder(APPI->factory.widget->abstract({{body.pos.x, body.pos.y}, {body.size.x, body.size.y}}, parent));
+        
+        set_parent(holder);
+        holder->add_child(this);
     }
 
     virtual PUPPY::RenderTarget *get_texture() override { if (animation) return animation->get_frame(); else return nullptr; }
 
-    bool is_near(Vec2f pos) {
-        return (this->pos - pos).len() < 5;
+    virtual void set_position(const PUPPY::Vec2f &position_) override { AbstractWidget::set_position(position_); unit_body.pos = {position_.x, position_.y}; }
+    virtual void set_size(const PUPPY::Vec2f &size_) override { AbstractWidget::set_size(size_); unit_body.size = {size_.x, size_.y}; }
+    virtual void set_body(const PUPPY::WBody &body_) override { AbstractWidget::set_body(body_); unit_body = body_; }
+
+    const ViewBody &ubody() { return unit_body; }
+
+    void set_ai(const std::function<void(double)> &new_ai) { ai = new_ai; }
+
+    virtual void tick(double dt) override {
+        ai(dt);
+        focus();
+    }
+};
+
+
+struct World : public Tickable {
+    std::vector<ViewBody> windows;
+    std::vector<Tickable*> ticking;
+    std::vector<Unit*> units;
+    TaskManager tasks;
+    double time;
+    
+    PUPPY::Widget *root;
+
+    World() :
+    time(0),
+    root(nullptr)
+    {
+        add(&tasks);
     }
 
-    bool is_same_target(const PUPPY::WBody target) {
-        return targeted_body.position.x == target.position.x
-               && targeted_body.position.y == target.position.y
-               && targeted_body.size.x == target.size.x
-               && targeted_body.size.y == target.size.y;
+    inline void add(Tickable *tickable) {
+        ticking.push_back(tickable);
     }
 
-    void move_to_target(double dt) {
-        Vec2f vel = (target_pos - pos).normal() * speed * dt;
-        pos += vel;
-        set_position({pos.x, pos.y});
+    inline void add(Task *task) {
+        tasks.add(task);
     }
 
-    void update_target(bool force = false) {
-        auto windows = APPI->get_windows();
-        if (!windows.size()) return;
+    inline void add(Unit *unit) {
+        units.push_back(unit);
+        ticking.push_back(unit);
+    }
 
-        for (const auto &window : windows) {
-            if (is_same_target(window) && !force) {
-                return;
-            }
+    void tick(double dt) override {
+        update();
+
+        for (auto &t : ticking) {
+            t->tick(dt);
         }
-
-        int idx = rand() % windows.size();
-        targeted_body = windows[idx];
-
-        target_pos = {targeted_body.position.x, targeted_body.position.y};
-        target_pos.y -= size.y;
     }
 
-    bool target_remains() {
-        auto windows = APPI->get_windows();
+    void update() {
+        time = APPI->get_absolute_time();
+        update_windows();
+    }
 
-        for (const auto &window : windows) {
-            if (is_same_target(window)) {
+    void update_windows() {
+        auto bodies = APPI->get_windows();
+        windows.clear();
+        for (size_t i = 0; i < bodies.size(); ++i) {
+            windows.push_back(bodies[i]);
+        }
+    }
+
+} WORLD;
+
+
+#define UNIT_AI(method_name) [this](double dt) {method_name(dt);}
+
+
+class UFO : public Unit {
+    Animation *anm_fly;
+    Animation *anm_tp_disappear;
+    Animation *anm_tp_appear;
+
+    ViewBody target;
+    Vec2f target_pos;
+    float speed;
+    bool on_ground = false;
+
+public:
+    UFO(const ViewBody &body, PUPPY::Widget *parent = nullptr) :
+    Unit(body, parent),
+    target(0, 0),
+    target_pos(0),
+    speed(200)
+    {
+        set_ai(UNIT_AI(ai_startup));
+    }
+
+    void set_speed(float speed_) { speed = speed_; }
+
+    void set_animation(std::string_view anm_name, Animation *anm) {
+        if (anm_name == "fly") {
+            anm_fly = anm;
+        } else if (anm_name == "tp_disappear") {
+            anm_tp_disappear = anm;
+        } else if (anm_name == "tp_appear") {
+            anm_tp_appear = anm;
+        }
+    }
+
+    void choose_position_on_target() {
+        for (int i = 0; i < 10 && is_near_target(true); ++i) {
+            target_pos.x = target.pos.x + (float) (abs(rand()) % ((int) target.size.x));
+        }
+    }
+
+    bool target_remains_on_place() {
+        for (const auto &window : WORLD.windows) {
+            if (target == window) {
                 return true;
             }
         }
@@ -179,27 +301,214 @@ public:
         return false;
     }
 
-    void tick(double dt) {
-        auto walker_body = get_body();
-        pos = {walker_body.position.x, walker_body.position.y};
-        size = {walker_body.size.x, walker_body.size.y};
+    bool choose_target(bool force = false) {
+        const auto &windows = WORLD.windows;
 
-        if (!is_near(target_pos) && target_remains()) {
-            move_to_target(dt);
-        } else {
-            if (is_near(target_pos) && target_pos.x) {
-                put_cow();
-                update_target();
-            } else {
-                update_target();
+        for (const auto &window : windows) {
+            if (target == window && !force) {
+                choose_position_on_target();
+                return false;
             }
         }
-        focus();
+
+        int idx = rand() % windows.size();
+        target = windows[idx];
+
+        target_pos = target.pos;
+        target_pos.y -= unit_body.size.y;
+
+        choose_position_on_target();
+
+        return true;
+    }
+
+    void move_to_target(double dt) {
+        Vec2f vel = (target_pos - unit_body.pos).normal() * speed;
+        Vec2f new_pos = unit_body.pos + vel * dt;
+        set_position(new_pos);
+    }
+
+    bool is_near_target(bool widened = false) {
+        if (!widened) return (target_pos - unit_body.pos).len() < 5;
+        
+        return (target_pos - unit_body.pos).len() < 20;
+    }
+
+// ---------------- ai
+
+    void ai_startup(double) {
+        set_ai(UNIT_AI(ai_choose_target));
+    }
+
+    void ai_nothing(double) {}
+
+    void ai_idle(double) {
+        WORLD.add(new Task([this](){ ai_startup(0); }, rand() % 2 + 2));
+        set_ai(UNIT_AI(ai_nothing));
+    }
+
+    void ai_idle_arrived(double dt) {
+        ai_idle(dt);
+    }
+
+    void ai_idle_no_ground(double dt) {
+        ai_idle(dt);
+    }
+
+    void ai_idle_near_ground(double dt) {
+        ai_idle(dt);
+    }
+
+    void ai_ground_stolen(double dt) {
+        APPI->log("give my land back you idiot");
+        ai_idle(dt);
+    }
+
+    void ai_choose_target(double dt) {
+        if (on_ground && !target_remains_on_place()) {
+            ai_ground_stolen(dt);
+            on_ground = false;
+        }
+
+        choose_target(false);
+        set_ai(UNIT_AI(ai_move_to_target));
+    }
+
+    void ai_choose_target_force(double) {
+        choose_target(true);
+    }
+
+    void ai_move_to_target(double dt) {
+        if (target_remains_on_place()) {
+            animation = anm_fly;
+            move_to_target(dt);
+
+            if (is_near_target()) {
+                on_ground = true;
+                set_ai(UNIT_AI(ai_idle_arrived));
+            }
+
+        } else {
+            if (on_ground) {
+                set_ai(UNIT_AI(ai_ground_stolen));
+            } else {
+                set_ai(UNIT_AI(ai_idle_no_ground));
+            }
+            on_ground = false;
+        }
     }
 };
 
-Animation *r_cat = nullptr;
-UFO *r_walker = nullptr;
+
+// class UFO : public AbstractWidget, public Tickable {
+//     Animation *animation;
+
+//     Vec2f pos;
+//     Vec2f size;
+//     Vec2f target_pos;
+//     float speed;
+
+//     PUPPY::WBody targeted_body;
+//     UFO *cow;
+
+// public:
+
+//     UFO(const PUPPY::WBody &body, PUPPY::Widget *parent = nullptr) :
+//     AbstractWidget(body, parent),
+//     animation(nullptr),
+//     target_pos(0),
+//     speed(250),
+//     cow(nullptr)
+//     {
+//         set_holder(parent);
+//         // printf("holder is %p\n", parent);
+//     }
+
+//     void put_cow() {
+//         // if (cow) { return; }
+
+//         PUPPY::WBody body = {get_body().position, 64};
+//         auto cow_holder = APPI->factory.widget->abstract(body, APPI->get_root_widget());
+//         cow = new UFO({0, body.size}, cow_holder);
+//         cow->set_animation(new Animation{
+//             {APPI->factory.target->from_file("./resources/animation/walker/cow.png")},
+//             0.5
+//         });
+//     }
+
+//     void set_animation(Animation *animation_) {
+//         animation = animation_;
+//     }
+
+//     virtual PUPPY::RenderTarget *get_texture() override { if (animation) return animation->get_frame(); else return nullptr; }
+
+//     bool is_near(Vec2f pos) {
+//         return (this->pos - pos).len() < 5;
+//     }
+
+//     bool is_same_target(const PUPPY::WBody target) {
+//         return targeted_body.position.x == target.position.x
+//                && targeted_body.position.y == target.position.y
+//                && targeted_body.size.x == target.size.x
+//                && targeted_body.size.y == target.size.y;
+//     }
+
+//     void move_to_target(double dt) {
+//         Vec2f vel = (target_pos - pos).normal() * speed * dt;
+//         pos += vel;
+//         set_position({pos.x, pos.y});
+//     }
+
+//     void update_target(bool force = false) {
+//         auto windows = APPI->get_windows();
+//         if (!windows.size()) return;
+
+//         for (const auto &window : windows) {
+//             if (is_same_target(window) && !force) {
+//                 return;
+//             }
+//         }
+
+//         int idx = rand() % windows.size();
+//         targeted_body = windows[idx];
+
+//         target_pos = {targeted_body.position.x, targeted_body.position.y};
+//         target_pos.y -= size.y;
+//     }
+
+//     bool target_remains() {
+//         auto windows = APPI->get_windows();
+
+//         for (const auto &window : windows) {
+//             if (is_same_target(window)) {
+//                 return true;
+//             }
+//         }
+
+//         return false;
+//     }
+
+//     void tick(double dt) {
+//         auto walker_body = get_body();
+//         pos = {walker_body.position.x, walker_body.position.y};
+//         size = {walker_body.size.x, walker_body.size.y};
+
+//         if (!is_near(target_pos) && target_remains()) {
+//             move_to_target(dt);
+//         } else {
+//             if (is_near(target_pos) && target_pos.x) {
+//                 put_cow();
+//                 update_target();
+//             } else {
+//                 update_target();
+//             }
+//         }
+//         focus();
+//     }
+// };
+
+// Animation *r_cat = nullptr;
+// UFO *r_walker = nullptr;
 
 // ============================================================================ Basics
 
@@ -207,19 +516,20 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) 
     srand(time(NULL));
 
     APPI = app_interface;
+    WORLD.root = APPI->get_root_widget();
 
-    std::vector<PUPPY::RenderTarget*> frames = {
+    std::vector<PUPPY::RenderTarget*> frm_ufo_fly = {
         APPI->factory.target->from_file("./resources/animation/walker/walker_1.png"),
         APPI->factory.target->from_file("./resources/animation/walker/walker_2.png"),
         // APPI->factory.target->from_file("./resources/animation/walker/walker_3.png"),
         // APPI->factory.target->from_file("./resources/animation/walker/walker_4.png"),
     };
-    r_cat = new Animation(frames, 0.2);
+    auto anm_ufo_fly = new Animation(frm_ufo_fly, 0.2);
+    WORLD.add(anm_ufo_fly);
 
-    PUPPY::WBody body = {100, 64};
-    auto holder = APPI->factory.widget->abstract(body, APPI->get_root_widget());
-    r_walker = new UFO({0, body.size}, holder);
-    r_walker->set_animation(r_cat);
+    auto ufo = new UFO({0, 64}, WORLD.root);
+    ufo->set_animation("fly", anm_ufo_fly);
+    WORLD.add(ufo);
 
     APPI->log("[plugin](%s) inited", PINFO.name);
     return PUPPY::OK;
@@ -241,9 +551,7 @@ const PUPPY::PluginInfo *MyPluginInterface::get_info() const {
 }
 
 void MyPluginInterface::on_tick(double dt) const {
-    r_cat->tick(dt);
-
-    r_walker->tick(dt);
+    WORLD.tick(dt);
 }
 
 void MyPluginInterface::tool_on_press(const PUPPY::Vec2f &pos) const {
