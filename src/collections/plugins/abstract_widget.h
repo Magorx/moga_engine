@@ -51,7 +51,7 @@ public:
     virtual void set_position(const PUPPY::Vec2f &position_) override { body.position = position_; if (holder) holder->set_position(position_); }
     virtual void set_size(const PUPPY::Vec2f &size_) override { body.size = size_; if (holder) holder->set_size(size_); }
 
-    virtual PUPPY::WBody &get_body() override { return body; }
+    virtual PUPPY::WBody get_body() override { return body; }
     virtual void set_body(const PUPPY::WBody &body_) override { body = body_; if (holder) holder->set_body(body_); }
 
     virtual Widget *get_parent() const override { return parent; }

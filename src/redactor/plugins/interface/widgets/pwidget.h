@@ -184,7 +184,7 @@ public:
     virtual void set_position(const PUPPY::Vec2f &position_) override { body.position = position_; view->get_body() = to_vbody(body); }
     virtual void set_size(const PUPPY::Vec2f &size_) override { body.size = size_; view->get_body() = to_vbody(body); }
 
-    virtual PUPPY::WBody &get_body() override { return body; }
+    virtual PUPPY::WBody get_body() override { return body; }
     virtual void set_body(const PUPPY::WBody &body_) override { body = body_; view->get_body() = to_vbody(body); }
 
     virtual Widget *get_parent() const override { return parent; }
