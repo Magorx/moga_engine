@@ -306,10 +306,12 @@ public:
 
 class UFO : public Unit {
     Animation *anm_fly;
+    Animation *anm_hide;
     Animation *anm_tp_disappear;
     Animation *anm_tp_appear;
 
     Animation *anm_scan_green;
+    Animation *anm_boom;
 
     ViewBody target;
     Vec2f target_pos;
@@ -317,6 +319,7 @@ class UFO : public Unit {
     bool on_ground;
 
     double idle_time;
+    bool fixed_tpos = false;
 
 public:
     UFO(const ViewBody &body, PUPPY::Widget *parent = nullptr) :
@@ -329,7 +332,7 @@ public:
     {
         set_ai(UNIT_AI(ai_startup));
 
-        auto anm_ufo_fly = new Animation({
+        anm_fly = new Animation({
                 #define folder "./resources/ufolker/ufo/fly/"
                     folder "1.png",
                     folder "2.png",
@@ -338,7 +341,16 @@ public:
                 #undef folder
         }, 0.2);
 
-        auto anm_ufo_scan_green = new Animation(std::vector<const char *>{
+        anm_hide = new Animation({
+                #define folder "./resources/ufolker/ufo/hide/"
+                    folder "1.png",
+                    folder "2.png",
+                    folder "3.png",
+                    folder "4.png"
+                #undef folder
+        }, 0.2);
+
+        anm_scan_green = new Animation(std::vector<const char *>{
                 #define folder "./resources/ufolker/ufo/scan_green/"
                     folder "1.png",
                     folder "2.png",
@@ -349,8 +361,20 @@ public:
                 #undef folder
         }, 0.1);
 
-        set_animation("fly", anm_ufo_fly);
-        set_animation("scan_green", anm_ufo_scan_green);
+        anm_boom = new Animation(std::vector<const char *>{
+                #define folder "./resources/ufolker/ufo/boom/"
+                    folder "1.png",
+                    folder "2.png",
+                    folder "3.png",
+                    folder "4.png",
+                    folder "5.png",
+                    folder "6.png",
+                    folder "7.png",
+                    folder "8.png",
+                    folder "9.png",
+                    folder "10.png"
+                #undef folder
+        }, 0.1);
     }
 
     void gen_idle_time() {
@@ -362,6 +386,8 @@ public:
     void set_animation(std::string_view anm_name, Animation *anm) {
         if (anm_name == "fly") {
             anm_fly = anm;
+        } else if (anm_name == "hide") {
+            anm_hide = anm;
         } else if (anm_name == "tp_disappear") {
             anm_tp_disappear = anm;
         } else if (anm_name == "tp_appear") {
@@ -420,10 +446,34 @@ public:
         return (target_pos - unit_body.pos).len() < 20;
     }
 
+    void set_rand_target_pos() {
+        float x = (float) randdouble(0, WORLD.root->get_body().size.x - unit_body.size.x);
+        float y = (float) randdouble(0, WORLD.root->get_body().size.y - unit_body.size.y);
+        target_pos = {x, y};
+    }
+
+    virtual void on_mouse_press(const PUPPY::Event::MousePress &event) override {
+        if (is_inside(event.position)) {
+            set_ai(UNIT_AI(ai_hide));
+        }
+    }
+
 // ---------------- ai
 
     void ai_startup(double) {
         set_ai(UNIT_AI(ai_choose_target));
+    }
+
+    void ai_hide(double) {
+        fixed_tpos = true;
+        on_ground = false;
+        target = {0, 0};
+
+        set_rand_target_pos();
+        animation = anm_hide;
+        set_ai(UNIT_AI(ai_move_to_target));
+
+        new FixedPlaceAnimation(anm_boom, anm_boom->get_length(), unit_body, WORLD.root);
     }
 
     void ai_nothing(double) {}
@@ -432,6 +482,7 @@ public:
         if (!isnan(dt)) {
             gen_idle_time();
 
+            if (on_ground)
             switch (rand() % 3) {
                 case 0:
                     set_ai(UNIT_AI(ai_scan_green));
@@ -453,6 +504,7 @@ public:
     }
 
     void ai_idle_arrived(double dt) {
+        APPI->log("a nice window to explore!");
         ai_scan_green(dt);
     }
 
@@ -465,7 +517,7 @@ public:
     }
 
     void ai_ground_stolen(double dt) {
-        APPI->log("give my land back you idiot");
+        APPI->log("give my window back you idiot");
         ai_idle(dt);
     }
 
@@ -476,6 +528,7 @@ public:
         }
 
         choose_target(false);
+        animation = anm_fly;
         set_ai(UNIT_AI(ai_move_to_target));
     }
 
@@ -484,8 +537,14 @@ public:
     }
 
     void ai_move_to_target(double dt) {
-        if (target_remains_on_place()) {
-            animation = anm_fly;
+        if (fixed_tpos) {
+            move_to_target(dt);
+            if (is_near_target()) {
+                fixed_tpos = false;
+                choose_target(true);
+                set_ai(UNIT_AI(ai_idle));
+            }
+        } else if (target_remains_on_place()) {
             move_to_target(dt);
 
             if (is_near_target()) {
