@@ -25,7 +25,7 @@ public:
 
     virtual bool delete_from_parent() override { return false; }
 
-    virtual void set_to_delete() override {};
+    virtual void set_to_delete() override {if (holder) holder->set_to_delete();};
     
     virtual void on_render          (const PUPPY::Event::Render          &) override {}
     virtual void on_tick            (const PUPPY::Event::Tick            &) override {}
