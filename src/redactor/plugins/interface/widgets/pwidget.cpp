@@ -63,7 +63,14 @@ bool PluginWidget::add_child(PUPPY::Widget *child) {
 
     PluginWidget *app_widget = dynamic_cast<PluginWidget*>(child);
     if (!app_widget) {
-        app_widget = new PluginWidget(child);
+        // app_widget = new PluginWidget(child);
+        ViewBody body = {
+            {child->get_body().position.x, child->get_body().position.y},
+            {child->get_body().size.x, child->get_body().size.y}
+        };
+        auto new_view = new WidgetView(body, child);
+        view->add_subview(new_view);
+        return true;
     }
 
     return add_child(app_widget);
