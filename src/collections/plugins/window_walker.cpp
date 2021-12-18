@@ -18,10 +18,10 @@
 
 const auto PTYPE = PUPPY::EXTENSION;
 
-const char *PNAME    = "a_name";
-const char *PVERSION = "a_vesion";
-const char *PAUTHOR  = "an_author";
-const char *PDESCR   = "a_description";
+const char *PNAME    = "INVASION";
+const char *PVERSION = "999";
+const char *PAUTHOR  = "KCTF";
+const char *PDESCR   = "WE. COME. FOR. YOUR. WINDOWS.";
 
 // ============================================================================ Resources
 
@@ -227,6 +227,12 @@ public:
         WORLD.add(this);
     }
 
+    virtual ~Animation() {
+        for (auto frame : frames) {
+            delete frame;
+        }
+    }
+
     Animation(const std::vector<const char*> &frames_, double frame_time) :
     frames(),
     idx(0),
@@ -281,13 +287,13 @@ public:
 
 
 class UFO : public Unit {
-    Animation *anm_fly;
-    Animation *anm_hide;
-    Animation *anm_tp_disappear;
-    Animation *anm_tp_appear;
+    Animation *anm_fly = nullptr;
+    Animation *anm_hide = nullptr;
+    Animation *anm_tp_disappear = nullptr;
+    Animation *anm_tp_appear = nullptr;
 
-    Animation *anm_scan_green;
-    Animation *anm_boom;
+    Animation *anm_scan_green = nullptr;
+    Animation *anm_boom = nullptr;
 
     ViewBody target;
     Vec2f target_pos;
@@ -354,6 +360,16 @@ public:
         }, 0.1);
     }
 
+    virtual ~UFO() {
+        delete anm_fly;
+        delete anm_hide;
+        delete anm_tp_disappear;
+        delete anm_tp_appear;
+
+        delete anm_scan_green;
+        delete anm_boom; 
+    }
+
     void gen_idle_time() {
         idle_time = rand() % 3 + 1.5;
     }
@@ -392,6 +408,10 @@ public:
 
     bool choose_target(bool force = false) {
         const auto &windows = WORLD.windows;
+        if (!windows.size()) {
+            set_rand_target_pos();
+            return true;
+        }
 
         for (const auto &window : windows) {
             if (target == window && !force) {
@@ -424,6 +444,7 @@ public:
     }
 
     void set_rand_target_pos() {
+        fixed_tpos = true;
         float x = (float) randdouble(0, WORLD.root->get_body().size.x - unit_body.size.x);
         float y = (float) randdouble(0, WORLD.root->get_body().size.y - unit_body.size.y);
         target_pos = {x, y};
@@ -553,8 +574,10 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, 
     WORLD.root = APPI->get_root_widget();
 
 
-    auto ufo = new UFO({{500, 100}, 64}, WORLD.root);
-    WORLD.add(ufo);
+    for (int i = 0; i < 1; ++i) {
+        auto ufo = new UFO({{500, 100}, 64}, WORLD.root);
+        WORLD.add(ufo);
+    }
 
     APPI->log("[plugin](%s) inited", PINFO.name);
     return PUPPY::OK;

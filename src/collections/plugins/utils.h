@@ -58,7 +58,7 @@ struct Vec2 {
     }
 
     bool operator==(const Vec2 &other) const {
-        return x == other.x && y == other.y;
+        return std::abs(x - other.x) <= EPS && std::abs(y - other.y) <= EPS;
     }
 
     inline Vec2 rot90(int dir = 1) const {
