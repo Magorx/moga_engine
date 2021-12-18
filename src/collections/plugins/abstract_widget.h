@@ -46,6 +46,8 @@ public:
     virtual void set_caption(const char */*text*/, size_t /*font_size*/, const PUPPY::Vec2f */*pos*/ = nullptr) override {}
     virtual void set_base_color(const PUPPY::RGBA &/*color*/) override {};
 
+    virtual void *get_extra_data(void *) override { return nullptr; }
+
 // ----------------
 
     virtual void set_position(const PUPPY::Vec2f &position_) override { body.position = position_; if (holder) holder->set_position(position_); }
