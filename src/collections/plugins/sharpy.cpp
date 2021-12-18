@@ -30,40 +30,13 @@ struct {
 
 // ============================================================================ General
 
-#define PEXT
 #include "plugin_interface.h"
-#undef PEXT
-
-MyPluginInterface PINTERFACE {};
-
-const PUPPY::PluginInfo PINFO =
-{
-    PUPPY::STD_VERSION, // std_version
-    nullptr,     // reserved
-
-    &PINTERFACE,
-
-    PNAME,
-    PVERSION,
-    PAUTHOR,
-    PDESCR,
-    nullptr, // icon
-    
-    PTYPE
-};
-
-const PUPPY::AppInterface *APPI = nullptr;
-
-
-extern "C" const PUPPY::PluginInterface *get_plugin_interface() {
-    return &PINTERFACE;
-}
  
 // ============================================================================ Logic
 
 void generate_triangle(const PUPPY::Vec2f &pos, float radius, PUPPY::Vec2f &p1, PUPPY::Vec2f &p2, PUPPY::Vec2f &p3);
 
-PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) const {
+PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, const std::filesystem::path&) {
     srand(time(NULL));
 
     APPI = app_interface;
@@ -97,7 +70,7 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) 
     return PUPPY::OK;
 }
 
-PUPPY::Status MyPluginInterface::deinit() const {
+PUPPY::Status MyPluginInterface::deinit() {
     if (r_settings.window) {
         r_settings.window->set_to_delete();
     }

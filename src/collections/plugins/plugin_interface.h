@@ -8,9 +8,10 @@ struct MyPluginInterface : public PUPPY::PluginInterface {
 
     const PUPPY::PluginInfo *get_info() const override;
 
-    PUPPY::Status init   (const PUPPY::AppInterface*) const override;
-    PUPPY::Status deinit ()                       const override;
-    void      dump   ()                       const override;
+    PUPPY::Status init   (const PUPPY::AppInterface*, const std::filesystem::path& path = std::filesystem::path("./")) override;
+    PUPPY::Status deinit ()                                                                                            override;
+    
+    void dump() const override;
 
     void on_tick(double dt)   const override;
 
@@ -33,3 +34,33 @@ bool  MyPluginInterface::ext_enable        (const char */*name*/)               
 void *MyPluginInterface::ext_get_func      (const char */*extension*/, const char *func) const { return exts.get(func); }
 void *MyPluginInterface::ext_get_interface (const char */*extension*/, const char *name) const { return exts.get(name); }
 
+
+MyPluginInterface PINTERFACE {};
+
+const PUPPY::PluginInfo PINFO =
+{
+    PUPPY::STD_VERSION, // std_version
+    nullptr,            // reserved
+
+    &PINTERFACE,
+
+    PNAME,
+    PVERSION,
+    PAUTHOR,
+    PDESCR,
+
+    #ifdef ICON // icon
+    ICON,
+    #else
+    nullptr,
+    #endif
+
+    PTYPE
+};
+
+const PUPPY::AppInterface *APPI = nullptr;
+
+
+extern "C" PUPPY::PluginInterface *get_plugin_interface() {
+    return &PINTERFACE;
+}

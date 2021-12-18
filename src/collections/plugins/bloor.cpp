@@ -21,35 +21,10 @@ PUPPY::Shader *r_shader_blur;
 // ============================================================================ General
 
 #include "plugin_interface.h"
-
-const MyPluginInterface PINTERFACE {};
-
-const PUPPY::PluginInfo PINFO =
-{
-    PUPPY::STD_VERSION, // std_version
-    nullptr,     // reserved
-
-    &PINTERFACE,
-
-    PNAME,
-    PVERSION,
-    PAUTHOR,
-    PDESCR,
-    nullptr, // icon
-    
-    PTYPE
-};
-
-const PUPPY::AppInterface *APPI = nullptr;
-
-
-extern "C" const PUPPY::PluginInterface *get_plugin_interface() {
-    return &PINTERFACE;
-}
  
 // ============================================================================ Logic
 
-PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) const {
+PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, const std::filesystem::path&) {
     srand(time(NULL));
 
     APPI = app_interface;
@@ -209,7 +184,7 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) 
     return PUPPY::OK;
 }
 
-PUPPY::Status MyPluginInterface::deinit() const {
+PUPPY::Status MyPluginInterface::deinit() {
     if (r_shader_blur) {
         delete r_shader_blur;
     }

@@ -51,7 +51,7 @@ extern "C" const PUPPY::PluginInterface *get_plugin_interface() {
  
 // ============================================================================ Logic
 
-PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) const {
+PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, const std::filesystem::path&) {
     srand(time(NULL));
 
     APPI = app_interface;
@@ -67,7 +67,7 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface) 
     return PUPPY::OK;
 }
 
-PUPPY::Status MyPluginInterface::deinit() const {
+PUPPY::Status MyPluginInterface::deinit() {
     APPI->log("[plugin](%s) deinited | %s thanks you for using it", PINFO.name, PINFO.author);
     return PUPPY::OK;
 }

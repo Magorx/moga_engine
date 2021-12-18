@@ -16,7 +16,7 @@ class RedactorPlugin {
 
 public:
     const PUPPY::PluginInfo      *lib;
-    const PUPPY::PluginInterface *interface;
+    PUPPY::PluginInterface *interface;
 
     RedactorPlugin(const char *fileName, RedactorPluginInterface *appInterface, PluginManager *manager = nullptr);
     ~RedactorPlugin();
