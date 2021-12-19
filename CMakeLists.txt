@@ -15,7 +15,7 @@ include_directories(src
                     src/collections)
 
 set(CMAKE_EXE_LINKER_FLAGS "-pthread")
-set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native -fsanitize=undefined") #-fsanitize=address
+set(CMAKE_CXX_FLAGS   "-O3 ${WARNING_FLAGS} -fdeclspec -march=native") #-fsanitize=address
 
 find_package(SFML 2 COMPONENTS system window graphics network audio REQUIRED)
 find_package(OpenGL)
@@ -197,8 +197,8 @@ set_target_properties(sharp PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/e
 add_library(kctf_widget_library_extension SHARED src/collections/plugins/kctf_widget_library_extension.cpp)
 set_target_properties(kctf_widget_library_extension PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/extension/kctf_widget_library_extension")
 
-add_library(window_walker SHARED src/collections/plugins/window_walker.cpp)
-set_target_properties(window_walker PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/extension/window_walker")
+add_library(invasion SHARED src/collections/plugins/invasion.cpp)
+set_target_properties(invasion PROPERTIES PREFIX "" OUTPUT_NAME "resources/plugin/extension/invasion")
 
 
 # add_custom_target(rebuild_plugins

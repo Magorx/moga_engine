@@ -567,7 +567,7 @@ public:
 
 // ============================================================================ Basics
 
-PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, const std::filesystem::path&) {
+PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, const std::filesystem::path& path) {
     srand(time(NULL));
 
     APPI = app_interface;
@@ -579,7 +579,7 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, 
         WORLD.add(ufo);
     }
 
-    APPI->log("[plugin](%s) inited", PINFO.name);
+    APPI->log("[plugin](%s) inited in folder [%s]", PINFO.name, path.string().c_str());
     return PUPPY::OK;
 }
 

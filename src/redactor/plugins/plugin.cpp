@@ -16,6 +16,9 @@ lib(nullptr),
 interface(nullptr)
 
 {
+    std::filesystem::path path = fileName;
+    path = path.parent_path();
+
     lib_handle = dlopen(fileName, RTLD_NOW);
     if (lib_handle == nullptr) {
         logger.error("Plugin", "can't dlopen plugin named [%s]: %s", fileName, dlerror());
@@ -44,7 +47,7 @@ interface(nullptr)
         return;
     }
 
-    PUPPY::Status init_status = interface->init(appInterface);
+    PUPPY::Status init_status = interface->init(appInterface, path);
     if (init_status != PUPPY::OK) {
         logger.error("Plugin", "initialization of plugin [%s] failed", fileName);
         dlclose(lib_handle);
