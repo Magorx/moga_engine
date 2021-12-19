@@ -16,7 +16,7 @@ lib(nullptr),
 interface(nullptr)
 
 {
-    std::filesystem::path path = fileName;
+    std::filesystem::path path = "./" + std::string(fileName);
     path = path.parent_path();
 
     lib_handle = dlopen(fileName, RTLD_NOW);

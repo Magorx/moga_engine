@@ -166,9 +166,12 @@ struct World : public Tickable {
     
     PUPPY::Widget *root;
 
+    std::filesystem::path path;
+
     World() :
     time(0),
-    root(nullptr)
+    root(nullptr),
+    path("./")
     {
         add(&tasks);
     }
@@ -245,6 +248,26 @@ public:
         WORLD.add(this);
     }
 
+    Animation(std::filesystem::path path, int frames_cnt, double frame_time) :
+    frames(),
+    idx(0),
+    time(0),
+    frame_time(frame_time)
+    {
+        auto cur_path = WORLD.path;
+        cur_path += path;
+        cur_path += "/";
+        cur_path.replace_extension(".png");
+    
+        for (int i = 1; i <= frames_cnt; ++i) {
+            cur_path.replace_filename(std::to_string(i));
+            cur_path.replace_extension(".png");
+
+            frames.push_back(APPI->factory.target->from_file(cur_path.string().c_str()));
+        }
+        WORLD.add(this);
+    }
+
     void tick(double dt) override {
         time += dt;
         while (time > frame_time) {
@@ -314,50 +337,46 @@ public:
     {
         set_ai(UNIT_AI(ai_startup));
 
-        anm_fly = new Animation({
-                #define folder "./resources/ufolker/ufo/fly/"
-                    folder "1.png",
-                    folder "2.png",
-                    folder "3.png",
-                    folder "4.png"
-                #undef folder
-        }, 0.2);
+        anm_fly = new Animation("ufo/fly", 4, 0.2);
+        anm_hide = new Animation("ufo/hide", 4, 0.2);
+        anm_scan_green = new Animation("ufo/scan_green", 7, .1);
+        anm_boom = new Animation("ufo/boom", 10, 0.1);
 
-        anm_hide = new Animation({
-                #define folder "./resources/ufolker/ufo/hide/"
-                    folder "1.png",
-                    folder "2.png",
-                    folder "3.png",
-                    folder "4.png"
-                #undef folder
-        }, 0.2);
+        // anm_hide = new Animation({
+        //         #define folder "./resources/ufolker/ufo/hide/"
+        //             folder "1.png",
+        //             folder "2.png",
+        //             folder "3.png",
+        //             folder "4.png"
+        //         #undef folder
+        // }, 0.2);
 
-        anm_scan_green = new Animation(std::vector<const char *>{
-                #define folder "./resources/ufolker/ufo/scan_green/"
-                    folder "1.png",
-                    folder "2.png",
-                    folder "3.png",
-                    folder "4.png",
-                    folder "5.png",
-                    folder "6.png",
-                    folder "7.png"
-                #undef folder
-        }, 0.1);
+        // anm_scan_green = new Animation(std::vector<const char *>{
+        //         #define folder "./resources/ufolker/ufo/scan_green/"
+        //             folder "1.png",
+        //             folder "2.png",
+        //             folder "3.png",
+        //             folder "4.png",
+        //             folder "5.png",
+        //             folder "6.png",
+        //             folder "7.png"
+        //         #undef folder
+        // }, 0.1);
 
-        anm_boom = new Animation(std::vector<const char *>{
-                #define folder "./resources/ufolker/ufo/boom/"
-                    folder "1.png",
-                    folder "2.png",
-                    folder "3.png",
-                    folder "4.png",
-                    folder "5.png",
-                    folder "6.png",
-                    folder "7.png",
-                    folder "8.png",
-                    folder "9.png",
-                    folder "10.png"
-                #undef folder
-        }, 0.1);
+        // anm_boom = new Animation(std::vector<const char *>{
+        //         #define folder "./resources/ufolker/ufo/boom/"
+        //             folder "1.png",
+        //             folder "2.png",
+        //             folder "3.png",
+        //             folder "4.png",
+        //             folder "5.png",
+        //             folder "6.png",
+        //             folder "7.png",
+        //             folder "8.png",
+        //             folder "9.png",
+        //             folder "10.png"
+        //         #undef folder
+        // }, 0.1);
     }
 
     virtual ~UFO() {
@@ -572,14 +591,16 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, 
 
     APPI = app_interface;
     WORLD.root = APPI->get_root_widget();
+    WORLD.path = path;
+    WORLD.path += "/invasion/";
 
 
-    for (int i = 0; i < 100; ++i) {
+    for (int i = 0; i < 10; ++i) {
         auto ufo = new UFO({{500, 100}, 64}, WORLD.root);
         WORLD.add(ufo);
     }
 
-    APPI->log("[plugin](%s) inited in folder [%s]", PINFO.name, path.string().c_str());
+    APPI->log("[plugin](%s) inited", PINFO.name);
     return PUPPY::OK;
 }
 

@@ -77,7 +77,9 @@ bool RedactorEngine::load_plugin(const char *path, bool is_dir) {
 
     try {
         for (const auto & entry : std::filesystem::directory_iterator(path)) {
-            load_plugin(entry.path().string().c_str());
+            if (entry.path().extension().string() == ".so") {
+                load_plugin(entry.path().string().c_str());
+            }
         }
     } catch (const std::filesystem::filesystem_error &err) {
         logger.warning("load_plugin", "fs error: %s", err.what());
