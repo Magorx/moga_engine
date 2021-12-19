@@ -574,7 +574,7 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, 
     WORLD.root = APPI->get_root_widget();
 
 
-    for (int i = 0; i < 1; ++i) {
+    for (int i = 0; i < 100; ++i) {
         auto ufo = new UFO({{500, 100}, 64}, WORLD.root);
         WORLD.add(ufo);
     }
