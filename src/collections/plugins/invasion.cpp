@@ -337,46 +337,10 @@ public:
     {
         set_ai(UNIT_AI(ai_startup));
 
-        anm_fly = new Animation("ufo/fly", 4, 0.2);
-        anm_hide = new Animation("ufo/hide", 4, 0.2);
+        anm_fly        = new Animation("ufo/fly", 4, 0.2);
+        anm_hide       = new Animation("ufo/hide", 4, 0.2);
         anm_scan_green = new Animation("ufo/scan_green", 7, .1);
-        anm_boom = new Animation("ufo/boom", 10, 0.1);
-
-        // anm_hide = new Animation({
-        //         #define folder "./resources/ufolker/ufo/hide/"
-        //             folder "1.png",
-        //             folder "2.png",
-        //             folder "3.png",
-        //             folder "4.png"
-        //         #undef folder
-        // }, 0.2);
-
-        // anm_scan_green = new Animation(std::vector<const char *>{
-        //         #define folder "./resources/ufolker/ufo/scan_green/"
-        //             folder "1.png",
-        //             folder "2.png",
-        //             folder "3.png",
-        //             folder "4.png",
-        //             folder "5.png",
-        //             folder "6.png",
-        //             folder "7.png"
-        //         #undef folder
-        // }, 0.1);
-
-        // anm_boom = new Animation(std::vector<const char *>{
-        //         #define folder "./resources/ufolker/ufo/boom/"
-        //             folder "1.png",
-        //             folder "2.png",
-        //             folder "3.png",
-        //             folder "4.png",
-        //             folder "5.png",
-        //             folder "6.png",
-        //             folder "7.png",
-        //             folder "8.png",
-        //             folder "9.png",
-        //             folder "10.png"
-        //         #undef folder
-        // }, 0.1);
+        anm_boom       = new Animation("ufo/boom", 10, 0.1);
     }
 
     virtual ~UFO() {
@@ -592,7 +556,10 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, 
     APPI = app_interface;
     WORLD.root = APPI->get_root_widget();
     WORLD.path = path;
-    WORLD.path += "/invasion/";
+    if (path.string().back() != '/') {
+        WORLD.path += "/";
+    }
+    WORLD.path += "invasion/";
 
 
     for (int i = 0; i < 10; ++i) {
