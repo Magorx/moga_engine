@@ -187,6 +187,7 @@ v_ColorPicker::~v_ColorPicker() {
     delete field_texture;
 
     delete[] field;
+    delete[] alpha;
 };
 
 RColor v_ColorPicker::get_color() {

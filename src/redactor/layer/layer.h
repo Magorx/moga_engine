@@ -144,6 +144,10 @@ public:
         shader->setUniform("texture", sf::Shader::CurrentTexture);
     }
 
+    virtual ~ShaderEffect() {
+        delete shader;
+    }
+
     virtual void apply() override {
         target->renderer->push_target(target->final_target);
         target->renderer->get_rstate()->rmode.blendMode = RBlend::none;

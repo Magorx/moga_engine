@@ -3,7 +3,7 @@
 #include "collections/styles/text.h"
 #include "utils/logger.h"
 #include "engine/Resources.h"
-#include "engine/moga_engine.h"
+#include "redactor/engine.h"
 
 
 FWD_ALL_FOR_CLASS_(WidgetButton)
@@ -26,7 +26,7 @@ public:
 
 
 WidgetButton::WidgetButton(const ViewBody &body, PUPPY::Button *widget) :
-v_Button(body, StdStyle::Button::blue()),
+v_Button(body, App.add_style(StdStyle::Button::blue())),
 widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetButton);
@@ -34,7 +34,10 @@ widget(widget)
 }
 
 WidgetButton::WidgetButton(const Vec2d &pos, const char *caption, PUPPY::Button *widget) :
-v_Button(caption, StdStyle::Button::blue(), StdStyle::Text::basic(), PBUTTON_PADDING),
+v_Button(caption, 
+         App.add_style(StdStyle::Button::blue()),
+         App.add_style(StdStyle::Text::basic()),
+         PBUTTON_PADDING),
 widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetButton);

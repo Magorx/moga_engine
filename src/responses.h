@@ -177,7 +177,7 @@ public:
 };
 
 v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canvas **out_canvas = nullptr, char *name = nullptr) {
-    auto window_style = StdStyle::Window::basic();
+    auto window_style = App.add_style(StdStyle::Window::basic());
 
     std::string canvas_name;
     if (name) {
@@ -199,15 +199,15 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canv
     auto header = window->get_header();
     auto options = header->get_options();
 
-    auto button_prev = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::Arrow::left());
+    auto button_prev = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, App.add_style(StdStyle::Button::Arrow::left()));
     options->add_subview(button_prev);
     button_prev->e_clicked.add(new CanvasNextPrevReaction(window, canvas->get_canvas(), -1));
 
     options->add_placehodler(5);
 
-    auto button_plus = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::plus());
+    auto button_plus = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, App.add_style(StdStyle::Button::plus()));
 
-    auto button_open_effects = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::rgb());
+    auto button_open_effects = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, App.add_style(StdStyle::Button::rgb()));
     auto effects_opener = new CanvasOpenEffects(engine, canvas->get_canvas(), window);
     button_open_effects->e_clicked.add(effects_opener);
 
@@ -218,13 +218,13 @@ v_Window *spawn_canvas_window(RedactorEngine *engine, const ViewBody &body, Canv
 
     options->add_placehodler(5);
 
-    auto button_next = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::Arrow::right());
+    auto button_next = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, App.add_style(StdStyle::Button::Arrow::right()));
     options->add_subview(button_next);
     button_next->e_clicked.add(new CanvasNextPrevReaction(window, canvas->get_canvas(), +1));
 
     options->add_placehodler(5);
 
-    auto button_save = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, StdStyle::Button::save());
+    auto button_save = new v_Button({0, {PX_UTIL_BUTTON_SIZE + 5, PX_UTIL_BUTTON_SIZE}}, App.add_style(StdStyle::Button::save()));
     options->add_subview(button_save);
     button_save->e_clicked.add(new SaveCanvasReaction(window, canvas->get_canvas()));
 
@@ -317,7 +317,7 @@ v_Window *spawn_canvas_window_dialog(RedactorEngine *engine) {
 }
 
 v_Window *spawn_color_picker_window(RedactorEngine *engine, const ViewBody &body) {
-    auto window_style = StdStyle::Window::basic();
+    auto window_style = App.add_style(StdStyle::Window::basic());
 
     auto window = new v_Window("ColorPicker", {body.position, {body.size.x(), body.size.y()}}, window_style);
 
@@ -465,7 +465,7 @@ v_Window *spawn_tool_picker_window(RedactorEngine *engine, const ViewBody &body)
         if (!tool->get_name()) continue;
         const char *tool_name = tool->get_name();
 
-        v_Button *button = new v_Button(tool_name, StdStyle::Button::basic_menu(), StdStyle::Text::menu());
+        v_Button *button = new v_Button(tool_name, App.add_style(StdStyle::Button::basic_menu()), App.add_style(StdStyle::Text::menu()));
         button->e_mouse_press.add(new ToolOptionsOpen(tool));
         button->e_clicked.add(new SetActiveTool(engine->get_tool_manager(), i));
 

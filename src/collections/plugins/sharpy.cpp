@@ -93,22 +93,22 @@ void MyPluginInterface::on_tick(double /*dt*/) const {
 void MyPluginInterface::tool_on_press(const PUPPY::Vec2f &pos) const {
     draw(pos);
 
-    auto factory = (SuperWidgetFactory*) APPI->ext_get_interface("KCTFSuperWidget", "SuperWidgetFactory");
-    if (!factory) {
-        APPI->log("[SuperWidgetFactory] from extension [KCTFSuperWidget] is not available, can't spawn radio button");
-        return;
-    }
+    // auto factory = (SuperWidgetFactory*) APPI->ext_get_interface("KCTFSuperWidget", "SuperWidgetFactory");
+    // if (!factory) {
+    //     APPI->log("[SuperWidgetFactory] from extension [KCTFSuperWidget] is not available, can't spawn radio button");
+    //     return;
+    // }
 
-    auto root = APPI->get_root_widget();
-    APPI->log("root %p", root);
-    auto rb = factory->radio_button({{70, 90}, {140, 100}}, root);
-    if (!rb) {
-        APPI->log("[SuperWidgetFactory] from extension [KCTFSuperWidget] return nullptr on spawning radio button, why?");
-        return;
-    }
+    // auto root = APPI->get_root_widget();
+    // APPI->log("root %p", root);
+    // auto rb = factory->radio_button({{70, 90}, {140, 100}}, root);
+    // if (!rb) {
+    //     APPI->log("[SuperWidgetFactory] from extension [KCTFSuperWidget] return nullptr on spawning radio button, why?");
+    //     return;
+    // }
 
-    rb->set_on(true);
-    rb->set_handler([rb](){ if (rb->get_on()) APPI->log("ON"); });
+    // rb->set_on(true);
+    // rb->set_handler([rb](){ if (rb->get_on()) APPI->log("ON"); });
 }
 
 void MyPluginInterface::tool_on_move(const PUPPY::Vec2f &/*from*/, const PUPPY::Vec2f &to) const {

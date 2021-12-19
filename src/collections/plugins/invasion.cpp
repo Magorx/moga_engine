@@ -136,8 +136,11 @@ public:
     {
         set_holder(APPI->factory.widget->abstract({{body.pos.x, body.pos.y}, {body.size.x, body.size.y}}, parent));
         
-        set_parent(holder);
+        // set_parent(holder);
         holder->add_child(this);
+    }
+
+    virtual ~Unit() {
     }
 
     virtual PUPPY::RenderTarget *get_texture() override;
@@ -546,6 +549,21 @@ public:
             on_ground = false;
         }
     }
+};
+
+class Station : public Unit {
+    Animation *anm_building = nullptr;
+    Animation *anm_reloading = nullptr;
+
+    // ViewBody ground;
+
+public:
+    Station(const ViewBody &body, PUPPY::Widget *parent = nullptr) :
+    Unit(body, parent)
+    {
+        // anm_building = new Animation("")
+    }
+
 };
 
 // ============================================================================ Basics

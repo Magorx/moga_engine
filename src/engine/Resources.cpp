@@ -282,6 +282,9 @@ ResourcesHolder::~ResourcesHolder() {
     for (auto style : created_styles) {
         delete style;
     }
+
+    delete shader.negative;
+    delete shader.rgb_mapping;
 }
 
 AppearenceAnimation *ResourcesHolder::create_animation(const std::vector<RTexture*> &frames, double frame_duration, bool looped, Vec2d transform, double time_coef) {

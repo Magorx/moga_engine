@@ -15,4 +15,9 @@ struct WindowStyle : public Style {
     body(body)
     {}
 
+    virtual ~WindowStyle() {
+        delete header;
+        delete body;
+    }
+
 };

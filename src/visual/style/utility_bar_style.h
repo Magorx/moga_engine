@@ -33,5 +33,8 @@ struct UtilityBarStyle : public Style {
         delete accessory;
         delete bar;
         delete underbar;
+
+        delete l_corner;
+        delete r_corner;
     }
 };
