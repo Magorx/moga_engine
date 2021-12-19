@@ -23,7 +23,15 @@ const char *PVERSION = "999";
 const char *PAUTHOR  = "KCTF";
 const char *PDESCR   = "WE. COME. FOR. YOUR. WINDOWS.";
 
-// ============================================================================ Resources
+// ============================================================================ Settings
+
+const size_t STATION_ADDITION_MAX_TIME = 5;
+const size_t STATION_MIN_IDLE_TIME = 10;
+
+const size_t UFO_MAX_ADDITIONAL_TIME = 3;
+const double UFO_MIN_IDLE_TIME = 1.5;
+const int UFO_SCANS_FOR_BUILD = 3;
+const int UFO_HIDE_CHANCE = 2;
 
 // ============================================================================ General
 
@@ -115,7 +123,27 @@ struct ViewBody {
 };
 
 
-class Animation;
+class Animation : public Tickable {
+    std::vector<PUPPY::RenderTarget*> frames;
+    size_t idx;
+
+    double time;
+    double frame_time;
+
+public:
+    Animation(const std::vector<PUPPY::RenderTarget*> &frames_, double frame_time);
+    Animation(const std::vector<const char*> &frames_, double frame_time);
+    Animation(std::filesystem::path path, int frames_cnt, double frame_time);
+
+    virtual ~Animation();
+
+    void tick(double dt) override;
+
+    PUPPY::RenderTarget *get_frame();
+    double get_length() const;
+
+    void start();
+};
 
 
 class Unit : public AbstractWidget, public Tickable {
@@ -157,6 +185,13 @@ public:
         ai(dt);
         focus();
     }
+
+    void set_animation(Animation *anm) {
+        if (!anm) return;
+
+        anm->start();
+        animation = anm;
+    }
 };
 
 
@@ -180,14 +215,20 @@ struct World : public Tickable {
     }
 
     inline void add(Tickable *tickable) {
+        if (!tickable) return;
+
         ticking.push_back(tickable);
     }
 
     inline void add(Task *task) {
+        if (!task) return;
+
         tasks.add(task);
     }
 
     inline void add(Unit *unit) {
+        if (!unit) return;
+
         units.push_back(unit);
         ticking.push_back(unit);
     }
@@ -195,8 +236,8 @@ struct World : public Tickable {
     void tick(double dt) override {
         update();
 
-        for (auto &t : ticking) {
-            t->tick(dt);
+        for (size_t i = 0; i < ticking.size(); ++i) {
+            ticking[i]->tick(dt);
         }
     }
 
@@ -213,88 +254,113 @@ struct World : public Tickable {
         }
     }
 
+    bool contains(Tickable *tickable) {
+        for (size_t i = 0; i < ticking.size(); ++i) {
+            if (ticking[i] == tickable) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    void remove(Unit *unit) {
+        for (size_t i = 0; i < units.size(); ++i) {
+            if (units[i] == unit) {
+                std::swap(units[i], units[units.size() - 1]);
+                units.pop_back();
+                break;
+            }
+        }
+
+        remove((Tickable*) unit);
+    }
+
+    void remove(Tickable *tick) {
+        for (size_t i = 0; i < ticking.size(); ++i) {
+            if (ticking[i] == tick) {
+                std::swap(ticking[i], ticking[ticking.size() - 1]);
+                ticking.pop_back();
+                break;
+            }
+        }
+    }
+
 } WORLD;
 
 
-class Animation : public Tickable {
-    std::vector<PUPPY::RenderTarget*> frames;
-    size_t idx;
+Animation::Animation(const std::vector<PUPPY::RenderTarget*> &frames_, double frame_time) :
+frames(frames_),
+idx(0),
+time(0),
+frame_time(frame_time)
+{
+    WORLD.add(this);
+}
 
-    double time;
-    double frame_time;
+Animation::~Animation() {
+    WORLD.remove(this);
 
-public:
-    Animation(const std::vector<PUPPY::RenderTarget*> &frames_, double frame_time) :
-    frames(frames_),
-    idx(0),
-    time(0),
-    frame_time(frame_time)
-    {
-        WORLD.add(this);
+    for (auto frame : frames) {
+        delete frame;
     }
+}
 
-    virtual ~Animation() {
-        for (auto frame : frames) {
-            delete frame;
-        }
+Animation::Animation(const std::vector<const char*> &frames_, double frame_time) :
+frames(),
+idx(0),
+time(0),
+frame_time(frame_time)
+{
+    for (size_t i = 0; i < frames_.size(); ++i) {
+        frames.push_back(APPI->factory.target->from_file(frames_[i]));
     }
+    WORLD.add(this);
+}
 
-    Animation(const std::vector<const char*> &frames_, double frame_time) :
-    frames(),
-    idx(0),
-    time(0),
-    frame_time(frame_time)
-    {
-        for (size_t i = 0; i < frames_.size(); ++i) {
-            frames.push_back(APPI->factory.target->from_file(frames_[i]));
-        }
-        WORLD.add(this);
-    }
+Animation::Animation(std::filesystem::path path, int frames_cnt, double frame_time) :
+frames(),
+idx(0),
+time(0),
+frame_time(frame_time)
+{
+    auto cur_path = WORLD.path;
+    cur_path += path;
+    cur_path += "/";
+    cur_path.replace_extension(".png");
 
-    Animation(std::filesystem::path path, int frames_cnt, double frame_time) :
-    frames(),
-    idx(0),
-    time(0),
-    frame_time(frame_time)
-    {
-        auto cur_path = WORLD.path;
-        cur_path += path;
-        cur_path += "/";
+    for (int i = 1; i <= frames_cnt; ++i) {
+        cur_path.replace_filename(std::to_string(i));
         cur_path.replace_extension(".png");
-    
-        for (int i = 1; i <= frames_cnt; ++i) {
-            cur_path.replace_filename(std::to_string(i));
-            cur_path.replace_extension(".png");
 
-            frames.push_back(APPI->factory.target->from_file(cur_path.string().c_str()));
-        }
-        WORLD.add(this);
+        frames.push_back(APPI->factory.target->from_file(cur_path.string().c_str()));
     }
+    WORLD.add(this);
+}
 
-    void tick(double dt) override {
-        time += dt;
-        while (time > frame_time) {
-            time -= frame_time;
-            idx = (idx + 1) % frames.size();
-        }
+void Animation::tick(double dt) {
+    time += dt;
+    while (time > frame_time) {
+        time -= frame_time;
+        idx = (idx + 1) % frames.size();
     }
+}
 
-    PUPPY::RenderTarget *get_frame() {
-        return frames[idx];
-    }
+PUPPY::RenderTarget *Animation::get_frame() {
+    return frames[idx];
+}
 
-    double get_length() const {
-        return frame_time * frames.size();
-    }
+double Animation::get_length() const {
+    return frame_time * frames.size();
+}
 
-    void start() {
-        time = 0;
-        idx = 0;
-    }
-};
+void Animation::start() {
+    time = 0;
+    idx = 0;
+}
 
 
-PUPPY::RenderTarget *Unit::get_texture() { if (animation) return animation->get_frame(); else return nullptr; }
+PUPPY::RenderTarget *Unit::get_texture() { if (animation && WORLD.contains(animation)) return animation->get_frame(); else return nullptr; }
 
 
 class FixedPlaceAnimation : public Unit {
@@ -306,10 +372,46 @@ public:
         anm->start();
         WORLD.add(new Task([this](){ set_to_delete(); }, std::min(timer, anm->get_length())));
     }
+
+    virtual ~FixedPlaceAnimation() {
+        WORLD.remove(this);
+    }
 };
 
 
 #define UNIT_AI(method_name) [this](double dt) {method_name(dt);}
+
+
+class Station : public Unit {
+    Animation *anm_building = nullptr;
+    Animation *anm_idle = nullptr;
+    Animation *anm_boom = nullptr;
+
+    ViewBody ground = {0, 0};
+    double idle_time = 1;
+
+    void gen_idle_time();
+
+public:
+    Station(const ViewBody &body, PUPPY::Widget *parent = nullptr);
+    virtual ~Station();
+    void set_ground(const ViewBody &ground_);
+    bool ground_remains_on_place();
+
+    void check_ground();
+
+    void demolish();
+
+    void spawn_ufo();
+// ----------------
+
+    void ai_nothing_at_all(double);
+    void ai_nothing(double);
+    void ai_startup(double);
+    void ai_build(double);
+    void ai_idle(double);
+
+};
 
 
 class UFO : public Unit {
@@ -320,6 +422,9 @@ class UFO : public Unit {
 
     Animation *anm_scan_green = nullptr;
     Animation *anm_boom = nullptr;
+    Animation *anm_dissolve = nullptr;
+
+    Animation *anm_construction = nullptr;
 
     ViewBody target;
     Vec2f target_pos;
@@ -328,6 +433,10 @@ class UFO : public Unit {
 
     double idle_time;
     bool fixed_tpos = false;
+
+    int scans_cnt = 0;
+
+    static int ufo_cnt;
 
 public:
     UFO(const ViewBody &body, PUPPY::Widget *parent = nullptr) :
@@ -342,8 +451,12 @@ public:
 
         anm_fly        = new Animation("ufo/fly", 4, 0.2);
         anm_hide       = new Animation("ufo/hide", 4, 0.2);
+        anm_dissolve   = new Animation("ufo/dissolve", 4, 0.2);
         anm_scan_green = new Animation("ufo/scan_green", 7, .1);
         anm_boom       = new Animation("ufo/boom", 10, 0.1);
+        anm_construction = new Animation("ufo/construction", 20, 0.1);
+
+        ufo_cnt++;
     }
 
     virtual ~UFO() {
@@ -353,32 +466,22 @@ public:
         delete anm_tp_appear;
 
         delete anm_scan_green;
-        delete anm_boom; 
+        delete anm_boom;
+
+        delete anm_construction;
+
+        ufo_cnt--;
     }
 
     void gen_idle_time() {
-        idle_time = rand() % 3 + 1.5;
+        idle_time = rand() % (UFO_MAX_ADDITIONAL_TIME + 1) + UFO_MIN_IDLE_TIME;
     }
 
     void set_speed(float speed_) { speed = speed_; }
 
-    void set_animation(std::string_view anm_name, Animation *anm) {
-        if (anm_name == "fly") {
-            anm_fly = anm;
-        } else if (anm_name == "hide") {
-            anm_hide = anm;
-        } else if (anm_name == "tp_disappear") {
-            anm_tp_disappear = anm;
-        } else if (anm_name == "tp_appear") {
-            anm_tp_appear = anm;
-        } else if (anm_name == "scan_green") {
-            anm_scan_green = anm;
-        }
-    }
-
     void choose_position_on_target() {
         for (int i = 0; i < 10 && is_near_target(true); ++i) {
-            target_pos.x = target.pos.x + randdouble(unit_body.size.x / 2, target.size.x - unit_body.size.x / 2);
+            target_pos.x = target.pos.x + randdouble(0, target.size.x - unit_body.size.x);
         }
     }
 
@@ -431,14 +534,28 @@ public:
 
     void set_rand_target_pos() {
         fixed_tpos = true;
-        float x = (float) randdouble(0, WORLD.root->get_body().size.x - unit_body.size.x);
-        float y = (float) randdouble(0, WORLD.root->get_body().size.y - unit_body.size.y);
+
+        float x = 0;
+        float y = 0;
+
+        int itt = 0;
+        do {
+            ++itt;
+            x = (float) randdouble(0, WORLD.root->get_body().size.x - unit_body.size.x);
+            y = (float) randdouble(0, WORLD.root->get_body().size.y - unit_body.size.y);
+        } while ((Vec2f{x, y} - unit_body.pos).len() < 50 && itt < 10);
+
         target_pos = {x, y};
     }
 
     virtual void on_mouse_press(const PUPPY::Event::MousePress &event) override {
         if (is_inside(event.position)) {
-            set_ai(UNIT_AI(ai_hide));
+
+            if (rand() % UFO_HIDE_CHANCE || ufo_cnt == 1) {
+                set_ai(UNIT_AI(ai_hide));
+            } else {
+                set_ai(UNIT_AI(ai_dissolve));
+            }
         }
     }
 
@@ -466,25 +583,59 @@ public:
         if (!isnan(dt)) {
             gen_idle_time();
 
-            if (on_ground)
-            switch (rand() % 3) {
-                case 0:
-                    set_ai(UNIT_AI(ai_scan_green));
-                    return;
+            if (on_ground) {
+                int rnd = rand() % 3;
+                switch (rnd) {
+                    case 0:
+                        set_ai(UNIT_AI(ai_scan_green));
+                        return;
+                    
+                    case 1:
+                        if (scans_cnt >= UFO_SCANS_FOR_BUILD) {
+                            set_ai(UNIT_AI(ai_spawn_station));
+                            return;
+                        } else {
+                            set_ai(UNIT_AI(ai_scan_green));
+                            return;
+                        }
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
         }
 
-        WORLD.add(new Task([this](){ ai_startup(0); }, idle_time));
+        WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; ai_startup(0); }, idle_time));
         set_ai(UNIT_AI(ai_nothing));
     }
 
     void ai_scan_green(double) {
+        scans_cnt += 1;
+
         idle_time = anm_scan_green->get_length() + randdouble(0.5, 1.5);
         new FixedPlaceAnimation(anm_scan_green, idle_time, unit_body, WORLD.root);
         ai_idle(NAN);
+    }
+
+    void ai_dissolve(double) {
+        set_ai(UNIT_AI(ai_nothing));
+
+        set_animation(anm_dissolve);
+        WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; animation = nullptr; WORLD.remove(this); set_to_delete(); }, anm_dissolve->get_length()));
+    }
+
+    void ai_spawn_station(double) {
+        set_animation(anm_construction);
+        set_ai(UNIT_AI(ai_nothing));
+
+        WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; 
+            auto station = new Station(unit_body, WORLD.root);
+            station->set_ground(target);
+            WORLD.add(station);
+            scans_cnt -= UFO_SCANS_FOR_BUILD;
+
+            set_ai(UNIT_AI(ai_startup));
+        }, anm_construction->get_length()));
     }
 
     void ai_idle_arrived(double dt) {
@@ -551,20 +702,88 @@ public:
     }
 };
 
-class Station : public Unit {
-    Animation *anm_building = nullptr;
-    Animation *anm_reloading = nullptr;
+int UFO::ufo_cnt = 0;
 
-    // ViewBody ground;
+void Station::gen_idle_time() {
+    idle_time = rand() % (STATION_ADDITION_MAX_TIME + 1) + STATION_MIN_IDLE_TIME;
+}
 
-public:
-    Station(const ViewBody &body, PUPPY::Widget *parent = nullptr) :
-    Unit(body, parent)
-    {
-        // anm_building = new Animation("")
+Station::Station(const ViewBody &body, PUPPY::Widget *parent) :
+Unit(body, parent)
+{
+    anm_building = new Animation("station/building", 20, 2.5 / 20.0);
+    anm_idle     = new Animation("station/idle", 7, 2.0 / 7.0);
+    anm_boom     = new Animation("ufo/boom", 10, 0.1);
+    set_ai(UNIT_AI(ai_startup));
+
+    set_animation(anm_idle);
+}
+
+Station::~Station() {
+    delete anm_building;
+    delete anm_boom;
+    delete anm_idle;
+}
+
+void Station::set_ground(const ViewBody &ground_) {
+    ground = ground_;
+}
+
+bool Station::ground_remains_on_place() {
+    for (const auto &window : WORLD.windows) {
+        if (ground == window) {
+            return true;
+        }
     }
 
-};
+    return false;
+}
+
+void Station::check_ground() {
+    if (ground_remains_on_place()) {
+        return;
+    }
+
+    demolish();
+}
+
+void Station::demolish() {
+    set_ai(UNIT_AI(ai_nothing_at_all));
+    set_animation(anm_boom);
+    WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; animation = nullptr; WORLD.remove(this); set_to_delete(); }, anm_boom->get_length()));
+}
+
+void Station::spawn_ufo() {
+    auto ufo = new UFO(unit_body, WORLD.root);
+    WORLD.add(ufo);
+}
+
+void Station::ai_nothing_at_all(double) {
+}
+
+void Station::ai_nothing(double) {
+    check_ground();
+}
+
+void Station::ai_startup(double) {
+    set_ai(UNIT_AI(ai_idle));
+}
+
+void Station::ai_build(double) {
+    set_animation(anm_building);
+    idle_time = anm_building->get_length();
+
+    WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; spawn_ufo(); ai_startup(0); }, idle_time));
+    set_ai(UNIT_AI(ai_nothing));
+}
+
+void Station::ai_idle(double) {
+    set_animation(anm_idle);
+    gen_idle_time();
+
+    WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; ai_build(0); }, idle_time));
+    set_ai(UNIT_AI(ai_nothing));
+}
 
 // ============================================================================ Basics
 
@@ -580,10 +799,13 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, 
     WORLD.path += "invasion/";
 
 
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 2; ++i) {
         auto ufo = new UFO({{500, 100}, 64}, WORLD.root);
         WORLD.add(ufo);
     }
+
+    // auto st = new Station({{100, 100}, 64}, WORLD.root);
+    // WORLD.add(st);
 
     APPI->log("[plugin](%s) inited", PINFO.name);
     return PUPPY::OK;

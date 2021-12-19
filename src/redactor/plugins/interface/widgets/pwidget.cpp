@@ -8,7 +8,7 @@ FWD_ALL_FOR_CLASS_(WidgetView)
 
 
 WidgetView::WidgetView(const ViewBody &body, PUPPY::Widget *widget) :
-v_Highlighter(body, nullptr, true),
+v_Highlighter(body, nullptr, false),
 widget(widget)
 {
     INIT_FWD_TO_WIDGET(WidgetView);
