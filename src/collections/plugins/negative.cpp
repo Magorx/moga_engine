@@ -76,6 +76,7 @@ void MyPluginInterface::tool_on_release(const PUPPY::Vec2f &/*pos*/) const {}
 
 void MyPluginInterface::effect_apply() const {
     auto target = APPI->get_target();
+    if (!target) return;
 
     if (r_shader_neg) {
         target->apply_shader(r_shader_neg);

@@ -30,7 +30,7 @@ const size_t STATION_MIN_IDLE_TIME = 10;
 
 const size_t UFO_MAX_ADDITIONAL_TIME = 3;
 const double UFO_MIN_IDLE_TIME = 1.5;
-const int UFO_SCANS_FOR_BUILD = 3;
+const int UFO_SCANS_FOR_BUILD = 7;
 const int UFO_HIDE_CHANCE = 2;
 
 // ============================================================================ General
@@ -286,6 +286,12 @@ struct World : public Tickable {
         }
     }
 
+    Vec2f randpos() {
+        float x = (float) randdouble(0, root->get_body().size.x);
+        float y = (float) randdouble(0, root->get_body().size.y);
+        return {x, y};
+    }
+
 } WORLD;
 
 
@@ -413,6 +419,30 @@ public:
 
 };
 
+class Cow : public Unit {
+    Animation *anm_idle = nullptr;
+    Animation *anm_levitate = nullptr;
+    Animation *anm_boom = nullptr;
+
+    ViewBody ground = {0, 0};
+    double idle_time = 1;
+
+public:
+    Cow(const ViewBody &body, PUPPY::Widget *parent = nullptr);
+    virtual ~Cow();
+    void set_ground(const ViewBody &ground_);
+    bool ground_remains_on_place();
+
+    void check_ground();
+    void demolish();
+
+// ----------------
+
+    void ai_nothing_at_all(double);
+    void ai_nothing(double);
+
+};
+
 
 class UFO : public Unit {
     Animation *anm_fly = nullptr;
@@ -426,6 +456,7 @@ class UFO : public Unit {
 
     Animation *anm_construction = nullptr;
 
+
     ViewBody target;
     Vec2f target_pos;
     float speed;
@@ -435,6 +466,10 @@ class UFO : public Unit {
     bool fixed_tpos = false;
 
     int scans_cnt = 0;
+
+    bool to_eat_cow = false;
+
+    Cow *cow = nullptr;
 
     static int ufo_cnt;
 
@@ -449,11 +484,11 @@ public:
     {
         set_ai(UNIT_AI(ai_startup));
 
-        anm_fly        = new Animation("ufo/fly", 4, 0.2);
-        anm_hide       = new Animation("ufo/hide", 4, 0.2);
-        anm_dissolve   = new Animation("ufo/dissolve", 4, 0.2);
-        anm_scan_green = new Animation("ufo/scan_green", 7, .1);
-        anm_boom       = new Animation("ufo/boom", 10, 0.1);
+        anm_fly          = new Animation("ufo/fly", 4, 0.2);
+        anm_hide         = new Animation("ufo/hide", 4, 0.2);
+        anm_dissolve     = new Animation("ufo/dissolve", 4, 0.2);
+        anm_scan_green   = new Animation("ufo/scan_green", 7, .1);
+        anm_boom         = new Animation("ufo/boom", 10, 0.1);
         anm_construction = new Animation("ufo/construction", 20, 0.1);
 
         ufo_cnt++;
@@ -521,7 +556,10 @@ public:
     }
 
     void move_to_target(double dt) {
-        Vec2f vel = (target_pos - unit_body.pos).normal() * speed;
+        Vec2f dir = (target_pos - unit_body.pos);
+        if (dir.len() < 0.5) return;
+
+        Vec2f vel = dir.normal() * speed;
         Vec2f new_pos = unit_body.pos + vel * dt;
         set_position(new_pos);
     }
@@ -595,7 +633,7 @@ public:
                             set_ai(UNIT_AI(ai_spawn_station));
                             return;
                         } else {
-                            set_ai(UNIT_AI(ai_scan_green));
+                            set_ai(UNIT_AI(ai_cow_work));
                             return;
                         }
 
@@ -607,6 +645,40 @@ public:
 
         WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; ai_startup(0); }, idle_time));
         set_ai(UNIT_AI(ai_nothing));
+    }
+
+    void ai_cow_work(double) {
+        if (!cow) {
+            cow = new Cow(unit_body, WORLD.root);
+            cow->set_ground(target);
+            WORLD.add(cow);
+        } else {
+            if (true) {
+                to_eat_cow = true;
+            } else {
+                to_eat_cow = false;
+            }
+
+            target_pos = cow->ubody().pos;
+            fixed_tpos = true;
+            set_ai(UNIT_AI(ai_move_to_target));
+            return;
+        }
+
+        gen_idle_time();
+        set_ai(UNIT_AI(ai_nothing));
+        ai_idle(NAN);
+    }
+
+    void ai_eat_cow(double) {
+        to_eat_cow = false;
+
+        if (cow) {
+            cow->demolish();
+            cow = nullptr;
+        }
+
+        set_ai(UNIT_AI(ai_idle));
     }
 
     void ai_scan_green(double) {
@@ -676,6 +748,13 @@ public:
             move_to_target(dt);
             if (is_near_target()) {
                 fixed_tpos = false;
+
+                if (to_eat_cow) {
+                    printf("EAT\n");
+                    set_ai(UNIT_AI(ai_eat_cow));
+                    return;
+                }
+
                 choose_target(true);
                 set_ai(UNIT_AI(ai_idle));
             }
@@ -703,6 +782,7 @@ public:
 };
 
 int UFO::ufo_cnt = 0;
+// Cow *UFO::cow = nullptr;
 
 void Station::gen_idle_time() {
     idle_time = rand() % (STATION_ADDITION_MAX_TIME + 1) + STATION_MIN_IDLE_TIME;
@@ -785,6 +865,61 @@ void Station::ai_idle(double) {
     set_ai(UNIT_AI(ai_nothing));
 }
 
+// ------------------------------
+
+Cow::Cow(const ViewBody &body, PUPPY::Widget *parent) :
+Unit(body, parent)
+{
+    anm_idle     = new Animation("cow/cow", 1, 10);
+    anm_levitate = new Animation("cow/levitate", 4, 0.25);
+    anm_boom     = new Animation("ufo/boom", 10, 0.1);
+    set_ai(UNIT_AI(ai_nothing));
+
+    set_animation(anm_idle);
+}
+
+Cow::~Cow() {
+    delete anm_idle;
+    delete anm_boom;
+}
+
+void Cow::set_ground(const ViewBody &ground_) {
+    ground = ground_;
+}
+
+bool Cow::ground_remains_on_place() {
+    for (const auto &window : WORLD.windows) {
+        if (ground == window) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+void Cow::check_ground() {
+    if (ground_remains_on_place()) {
+        return;
+    }
+
+    demolish();
+}
+
+void Cow::demolish() {
+    set_ai(UNIT_AI(ai_nothing_at_all));
+    set_animation(anm_levitate);
+    WORLD.add(new Task([this](){ if (!WORLD.contains(this)) return; animation = nullptr; WORLD.remove(this); set_to_delete(); }, anm_levitate->get_length()));
+}
+
+void Cow::ai_nothing_at_all(double) {
+}
+
+void Cow::ai_nothing(double) {
+    check_ground();
+}
+
+
 // ============================================================================ Basics
 
 PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, const std::filesystem::path& path) {
@@ -799,8 +934,8 @@ PUPPY::Status MyPluginInterface::init(const PUPPY::AppInterface *app_interface, 
     WORLD.path += "invasion/";
 
 
-    for (int i = 0; i < 2; ++i) {
-        auto ufo = new UFO({{500, 100}, 64}, WORLD.root);
+    for (int i = 0; i < 4; ++i) {
+        auto ufo = new UFO({WORLD.randpos(), 64}, WORLD.root);
         WORLD.add(ufo);
     }
 

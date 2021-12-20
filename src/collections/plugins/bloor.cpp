@@ -215,6 +215,7 @@ void MyPluginInterface::tool_on_release(const PUPPY::Vec2f &/*pos*/) const {}
 
 void MyPluginInterface::effect_apply() const {
     auto target = APPI->get_target();
+    if (!target) return;
 
     size_t w = 0, h = 0;
     w = target->get_size().x;
